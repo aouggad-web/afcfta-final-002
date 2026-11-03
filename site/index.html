@@ -9,33 +9,63 @@
       content="Calculateur de droits de douane et d'opportunités commerciales pour la Zone de libre-échange continentale africaine (ZLECAf / AfCFTA) — 54 pays."
     />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#0f4c5c" />
+    <meta name="theme-color" content="#0C1219" />
     <style>
+      /* Design de l'application : polices Readex Pro (latin et arabe) et Young Serif,
+         hébergées avec la page (fonts/, licence OFL) ; zellige de Tlemcen en fond, bande
+         kente panafricaine, frise du Kasaï (motifs repris de frontend/src/styles/ambiance.css). */
+      @font-face { font-family: "Readex Pro"; font-weight: 400; font-display: swap; src: url(fonts/readex-pro-latin-400.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+      @font-face { font-family: "Readex Pro"; font-weight: 600; font-display: swap; src: url(fonts/readex-pro-latin-600.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+      @font-face { font-family: "Readex Pro"; font-weight: 400; font-display: swap; src: url(fonts/readex-pro-arabic-400.woff2) format("woff2"); unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF; }
+      @font-face { font-family: "Readex Pro"; font-weight: 600; font-display: swap; src: url(fonts/readex-pro-arabic-600.woff2) format("woff2"); unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF; }
+      @font-face { font-family: "Young Serif"; font-weight: 400; font-display: swap; src: url(fonts/young-serif-latin-400.woff2) format("woff2"); }
       :root {
-        --bg: #f7f5f0;
-        --card: #ffffff;
-        --ink: #14213d;
-        --muted: #5b6472;
-        --brand: #0f4c5c;
-        --brand-2: #c9a227;
-        --border: #e4e0d8;
+        --bg: #F7F1E6;
+        --card: #FFFDF8;
+        --ink: #241F18;
+        --muted: #615748;
+        --brand: #136143;
+        --brand-2: #865608;
+        --border: #E0D5C2;
+        --night: #0C1219;
+        --cta: #A8461A;
+        --zellige: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpolygon points='40.00,11.72 48.28,20.00 60.00,20.00 60.00,31.72 68.28,40.00 60.00,48.28 60.00,60.00 48.28,60.00 40.00,68.28 31.72,60.00 20.00,60.00 20.00,48.28 11.72,40.00 20.00,31.72 20.00,20.00 31.72,20.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='40.00,17.94 46.46,24.40 55.60,24.40 55.60,33.54 62.06,40.00 55.60,46.46 55.60,55.60 46.46,55.60 40.00,62.06 33.54,55.60 24.40,55.60 24.40,46.46 17.94,40.00 24.40,33.54 24.40,24.40 33.54,24.40' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='49.41,43.90 43.90,49.41 36.10,49.41 30.59,43.90 30.59,36.10 36.10,30.59 43.90,30.59 49.41,36.10' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3Cpolygon points='0.00,-28.28 8.28,-20.00 20.00,-20.00 20.00,-8.28 28.28,0.00 20.00,8.28 20.00,20.00 8.28,20.00 0.00,28.28 -8.28,20.00 -20.00,20.00 -20.00,8.28 -28.28,0.00 -20.00,-8.28 -20.00,-20.00 -8.28,-20.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='0.00,-22.06 6.46,-15.60 15.60,-15.60 15.60,-6.46 22.06,0.00 15.60,6.46 15.60,15.60 6.46,15.60 0.00,22.06 -6.46,15.60 -15.60,15.60 -15.60,6.46 -22.06,0.00 -15.60,-6.46 -15.60,-15.60 -6.46,-15.60' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='9.41,3.90 3.90,9.41 -3.90,9.41 -9.41,3.90 -9.41,-3.90 -3.90,-9.41 3.90,-9.41 9.41,-3.90' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3Cpolygon points='80.00,-28.28 88.28,-20.00 100.00,-20.00 100.00,-8.28 108.28,0.00 100.00,8.28 100.00,20.00 88.28,20.00 80.00,28.28 71.72,20.00 60.00,20.00 60.00,8.28 51.72,0.00 60.00,-8.28 60.00,-20.00 71.72,-20.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='80.00,-22.06 86.46,-15.60 95.60,-15.60 95.60,-6.46 102.06,0.00 95.60,6.46 95.60,15.60 86.46,15.60 80.00,22.06 73.54,15.60 64.40,15.60 64.40,6.46 57.94,0.00 64.40,-6.46 64.40,-15.60 73.54,-15.60' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='89.41,3.90 83.90,9.41 76.10,9.41 70.59,3.90 70.59,-3.90 76.10,-9.41 83.90,-9.41 89.41,-3.90' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3Cpolygon points='0.00,51.72 8.28,60.00 20.00,60.00 20.00,71.72 28.28,80.00 20.00,88.28 20.00,100.00 8.28,100.00 0.00,108.28 -8.28,100.00 -20.00,100.00 -20.00,88.28 -28.28,80.00 -20.00,71.72 -20.00,60.00 -8.28,60.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='0.00,57.94 6.46,64.40 15.60,64.40 15.60,73.54 22.06,80.00 15.60,86.46 15.60,95.60 6.46,95.60 0.00,102.06 -6.46,95.60 -15.60,95.60 -15.60,86.46 -22.06,80.00 -15.60,73.54 -15.60,64.40 -6.46,64.40' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='9.41,83.90 3.90,89.41 -3.90,89.41 -9.41,83.90 -9.41,76.10 -3.90,70.59 3.90,70.59 9.41,76.10' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3Cpolygon points='80.00,51.72 88.28,60.00 100.00,60.00 100.00,71.72 108.28,80.00 100.00,88.28 100.00,100.00 88.28,100.00 80.00,108.28 71.72,100.00 60.00,100.00 60.00,88.28 51.72,80.00 60.00,71.72 60.00,60.00 71.72,60.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='80.00,57.94 86.46,64.40 95.60,64.40 95.60,73.54 102.06,80.00 95.60,86.46 95.60,95.60 86.46,95.60 80.00,102.06 73.54,95.60 64.40,95.60 64.40,86.46 57.94,80.00 64.40,73.54 64.40,64.40 73.54,64.40' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='89.41,83.90 83.90,89.41 76.10,89.41 70.59,83.90 70.59,76.10 76.10,70.59 83.90,70.59 89.41,76.10' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3C/svg%3E");
+        --frise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10' viewBox='0 0 24 10'%3E%3Crect width='24' height='10' fill='%23F3E6CC'/%3E%3Cpath d='M0 5L6 0L12 5L6 10Z M12 5L18 0L24 5L18 10Z' fill='none' stroke='%238A4B12' stroke-width='1.4'/%3E%3Cpath d='M6 3L8 5L6 7L4 5Z' fill='%232F6FA8'/%3E%3Cpath d='M18 3L20 5L18 7L16 5Z' fill='%232E7D57'/%3E%3C/svg%3E");
+        --kente: linear-gradient(180deg,
+    transparent 46%, rgba(13,8,0,0.3) 46%, rgba(13,8,0,0.3) 54%, transparent 54%),
+  repeating-linear-gradient(90deg,
+    #C8102E 0px, #C8102E 12px, #0D0800 12px, #0D0800 14px,
+    #FCDD09 14px, #FCDD09 26px, #0D0800 26px, #0D0800 28px,
+    #007A3D 28px, #007A3D 40px, #0D0800 40px, #0D0800 42px,
+    #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px);
       }
       @media (prefers-color-scheme: dark) {
         :root {
-          --bg: #0e1726;
-          --card: #121d30;
-          --ink: #eef2f7;
-          --muted: #9aa6b6;
-          --brand: #4bb6c9;
-          --brand-2: #e2bd4a;
-          --border: #22304a;
+          --bg: #111820;
+          --card: #182030;
+          --ink: #EAE0D0;
+          --muted: #9AA6B6;
+          --brand: #3EB57E;
+          --brand-2: #D4891A;
+          --border: rgba(200, 83, 26, 0.22);
+          --zellige: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpolygon points='40.00,11.72 48.28,20.00 60.00,20.00 60.00,31.72 68.28,40.00 60.00,48.28 60.00,60.00 48.28,60.00 40.00,68.28 31.72,60.00 20.00,60.00 20.00,48.28 11.72,40.00 20.00,31.72 20.00,20.00 31.72,20.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='40.00,17.94 46.46,24.40 55.60,24.40 55.60,33.54 62.06,40.00 55.60,46.46 55.60,55.60 46.46,55.60 40.00,62.06 33.54,55.60 24.40,55.60 24.40,46.46 17.94,40.00 24.40,33.54 24.40,24.40 33.54,24.40' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='49.41,43.90 43.90,49.41 36.10,49.41 30.59,43.90 30.59,36.10 36.10,30.59 43.90,30.59 49.41,36.10' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3Cpolygon points='0.00,-28.28 8.28,-20.00 20.00,-20.00 20.00,-8.28 28.28,0.00 20.00,8.28 20.00,20.00 8.28,20.00 0.00,28.28 -8.28,20.00 -20.00,20.00 -20.00,8.28 -28.28,0.00 -20.00,-8.28 -20.00,-20.00 -8.28,-20.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='0.00,-22.06 6.46,-15.60 15.60,-15.60 15.60,-6.46 22.06,0.00 15.60,6.46 15.60,15.60 6.46,15.60 0.00,22.06 -6.46,15.60 -15.60,15.60 -15.60,6.46 -22.06,0.00 -15.60,-6.46 -15.60,-15.60 -6.46,-15.60' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='9.41,3.90 3.90,9.41 -3.90,9.41 -9.41,3.90 -9.41,-3.90 -3.90,-9.41 3.90,-9.41 9.41,-3.90' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3Cpolygon points='80.00,-28.28 88.28,-20.00 100.00,-20.00 100.00,-8.28 108.28,0.00 100.00,8.28 100.00,20.00 88.28,20.00 80.00,28.28 71.72,20.00 60.00,20.00 60.00,8.28 51.72,0.00 60.00,-8.28 60.00,-20.00 71.72,-20.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='80.00,-22.06 86.46,-15.60 95.60,-15.60 95.60,-6.46 102.06,0.00 95.60,6.46 95.60,15.60 86.46,15.60 80.00,22.06 73.54,15.60 64.40,15.60 64.40,6.46 57.94,0.00 64.40,-6.46 64.40,-15.60 73.54,-15.60' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='89.41,3.90 83.90,9.41 76.10,9.41 70.59,3.90 70.59,-3.90 76.10,-9.41 83.90,-9.41 89.41,-3.90' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3Cpolygon points='0.00,51.72 8.28,60.00 20.00,60.00 20.00,71.72 28.28,80.00 20.00,88.28 20.00,100.00 8.28,100.00 0.00,108.28 -8.28,100.00 -20.00,100.00 -20.00,88.28 -28.28,80.00 -20.00,71.72 -20.00,60.00 -8.28,60.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='0.00,57.94 6.46,64.40 15.60,64.40 15.60,73.54 22.06,80.00 15.60,86.46 15.60,95.60 6.46,95.60 0.00,102.06 -6.46,95.60 -15.60,95.60 -15.60,86.46 -22.06,80.00 -15.60,73.54 -15.60,64.40 -6.46,64.40' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='9.41,83.90 3.90,89.41 -3.90,89.41 -9.41,83.90 -9.41,76.10 -3.90,70.59 3.90,70.59 9.41,76.10' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3Cpolygon points='80.00,51.72 88.28,60.00 100.00,60.00 100.00,71.72 108.28,80.00 100.00,88.28 100.00,100.00 88.28,100.00 80.00,108.28 71.72,100.00 60.00,100.00 60.00,88.28 51.72,80.00 60.00,71.72 60.00,60.00 71.72,60.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='80.00,57.94 86.46,64.40 95.60,64.40 95.60,73.54 102.06,80.00 95.60,86.46 95.60,95.60 86.46,95.60 80.00,102.06 73.54,95.60 64.40,95.60 64.40,86.46 57.94,80.00 64.40,73.54 64.40,64.40 73.54,64.40' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='89.41,83.90 83.90,89.41 76.10,89.41 70.59,83.90 70.59,76.10 76.10,70.59 83.90,70.59 89.41,76.10' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3C/svg%3E");
+          --frise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10' viewBox='0 0 24 10'%3E%3Crect width='24' height='10' fill='%231B1206'/%3E%3Cpath d='M0 5L6 0L12 5L6 10Z M12 5L18 0L24 5L18 10Z' fill='none' stroke='%23D4891A' stroke-width='1.4'/%3E%3Cpath d='M6 3L8 5L6 7L4 5Z' fill='%234A90C8'/%3E%3Cpath d='M18 3L20 5L18 7L16 5Z' fill='%233EA06E'/%3E%3C/svg%3E");
         }
       }
+      /* Alternance clair / sombre dans les deux modes : présentation et vidéo sur parchemin
+         clair, carte du réseau, en-tête et pied de page sur fond nuit. */
+      .card, .video {
+        --card: #FFFDF8; --ink: #241F18; --muted: #615748; --brand: #136143; --brand-2: #865608;
+        --border: #E0D5C2; --cta: #A8461A; --frise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10' viewBox='0 0 24 10'%3E%3Crect width='24' height='10' fill='%23F3E6CC'/%3E%3Cpath d='M0 5L6 0L12 5L6 10Z M12 5L18 0L24 5L18 10Z' fill='none' stroke='%238A4B12' stroke-width='1.4'/%3E%3Cpath d='M6 3L8 5L6 7L4 5Z' fill='%232F6FA8'/%3E%3Cpath d='M18 3L20 5L18 7L16 5Z' fill='%232E7D57'/%3E%3C/svg%3E");
+        color: var(--ink);
+      }
+      :root { color-scheme: light dark; }
+      h1, .video h2, .network h2 { font-variant-numeric: lining-nums; }
       * { box-sizing: border-box; }
       html, body { margin: 0; padding: 0; }
       body {
-        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        background: var(--bg);
+        font-family: "Readex Pro", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: var(--zellige) 0 0 / 80px 80px, var(--bg);
         color: var(--ink);
         line-height: 1.6;
         min-height: 100vh;
@@ -43,38 +73,55 @@
         flex-direction: column;
       }
       header {
-        padding: 20px 16px;
-        border-bottom: 1px solid var(--border);
+        position: relative;
+        padding: 20px 16px 30px;
+        background: var(--night);
       }
+      header::after, footer::before {
+        content: ""; position: absolute; left: 0; right: 0; height: 10px;
+        background: var(--kente); box-shadow: 0 1px 0 rgba(212, 137, 26, 0.55);
+      }
+      header::after { bottom: 0; }
+      footer::before { top: 0; }
       .wrap { width: 100%; max-width: 900px; margin: 0 auto; }
-      .brand { font-weight: 700; letter-spacing: .5px; color: var(--brand); font-size: 18px; }
-      .brand span { color: var(--brand-2); }
+      .brand { font-weight: 600; letter-spacing: .5px; color: #D4891A; font-size: 18px; }
+      .brand span { color: #9AA6B6; font-weight: 400; }
       main { flex: 1; display: flex; align-items: center; padding: 48px 16px; }
       .card {
+        position: relative;
+        overflow: hidden;
         background: var(--card);
         border: 1px solid var(--border);
         border-radius: 16px;
-        padding: 40px 32px;
+        padding: 46px 32px 40px;
         width: 100%;
+        box-shadow: 0 10px 30px rgba(60, 40, 10, 0.08);
       }
-      h1 { font-size: clamp(26px, 5vw, 40px); margin: 0 0 8px; color: var(--brand); }
+      .card::before {
+        content: ""; position: absolute; left: 0; right: 0; top: 0; height: 10px;
+        background: var(--frise) 0 0 / 24px 10px repeat-x;
+      }
+      h1 { font-family: "Young Serif", Georgia, serif; font-weight: 400; font-size: clamp(28px, 5vw, 44px); line-height: 1.15; margin: 0 0 10px; color: var(--ink); }
       .tagline { font-size: clamp(16px, 2.5vw, 20px); color: var(--muted); margin: 0 0 28px; }
       .lang { margin: 20px 0; }
       .lang h2 {
-        font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
+        font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
         color: var(--brand-2); margin: 0 0 6px;
       }
+      .lang[dir="rtl"] h2 { letter-spacing: 0; font-size: 15px; }
       .lang p { margin: 0; color: var(--ink); }
       .cta {
         display: inline-block; margin-top: 28px; padding: 13px 26px;
-        background: var(--brand); color: #fff; text-decoration: none;
+        background: var(--cta); color: #fff; text-decoration: none;
         border-radius: 10px; font-weight: 600;
       }
       .cta:hover { opacity: .92; }
       footer {
-        padding: 20px 16px; border-top: 1px solid var(--border);
-        color: var(--muted); font-size: 13px;
+        position: relative;
+        padding: 30px 16px 22px; background: var(--night);
+        color: #9AA6B6; font-size: 13px;
       }
+      footer a { color: #D4891A; }
       .footer-row { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
       /* Carte « Réseau ZLECAf » : canevas toujours nuit, comme dans l'application
@@ -89,9 +136,13 @@
           #0C1219;
         color: #EAE0D0;
       }
-      .network h2 { margin: 0 0 8px; font-size: clamp(20px, 3.4vw, 28px); color: #EAE0D0; text-align: center; }
+      .network h2 { margin: 0 0 8px; font-family: "Young Serif", Georgia, serif; font-weight: 400; font-size: clamp(22px, 3.4vw, 30px); color: #EAE0D0; text-align: center; }
       .network-sub { margin: 0 auto 18px; max-width: 680px; color: #C9C1B3; font-size: 15px; text-align: center; }
       .network .en { display: block; margin-top: 6px; color: #9AA6B6; font-size: 13px; }
+      .network .ar { display: block; margin-top: 6px; color: #C9C1B3; font-size: 15px; }
+      .network h2 .en, .network h2 .ar { font-family: "Readex Pro", system-ui, sans-serif; }
+      .network h2 .en { font-size: 15px; font-weight: 400; color: #9AA6B6; }
+      .network h2 .ar { font-size: 0.8em; font-weight: 600; color: #EAE0D0; }
       .map { margin: 0 auto; max-width: min(760px, calc(78vh * 1.13)); }
       .map svg { display: block; width: 100%; height: auto; }
       .legend {
@@ -103,6 +154,8 @@
       @media (max-width: 560px) { .network .legend .en { display: none; } }
       .legend b { margin-right: 4px; }
       .legend .en { display: inline; margin: 0 0 0 4px; font-size: 12px; }
+      .legend .ar { display: inline; margin: 0 4px 0 0; font-size: 13px; color: #C9C1B3; }
+      @media (max-width: 560px) { .network .legend .ar { display: block; margin: 0; } }
       .sw {
         display: inline-block; width: 11px; height: 11px; border-radius: 50%;
         margin-right: 7px; box-shadow: 0 0 0 2px #0C1219;
@@ -113,25 +166,44 @@
         margin-right: 8px;
       }
       .network-note { margin: 14px auto 0; max-width: 680px; color: #9AA6B6; font-size: 12px; text-align: center; }
+      .network-note .en, .network-note .ar { font-size: 12px; color: #9AA6B6; }
+      .network-note .ar { font-size: 13px; }
 
       /* Vidéo de présentation (1 min, sous-titres FR/EN incrustés, musique originale de synthèse). */
-      .video { margin-top: 24px; }
-      .video h2 { margin: 0 0 12px; font-size: clamp(20px, 3.4vw, 28px); color: var(--brand); text-align: center; }
-      .video h2 .en { display: block; margin-top: 2px; color: var(--muted); font-size: 15px; font-weight: 500; }
+      .video {
+        position: relative; overflow: hidden; margin-top: 24px; padding: 34px 20px 22px;
+        background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(60, 40, 10, 0.08);
+      }
+      .video::before {
+        content: ""; position: absolute; left: 0; right: 0; top: 0; height: 10px;
+        background: var(--frise) 0 0 / 24px 10px repeat-x;
+      }
+      .video h2 { margin: 0 0 14px; font-family: "Young Serif", Georgia, serif; font-weight: 400; font-size: clamp(22px, 3.4vw, 30px); color: var(--ink); text-align: center; }
+      .video h2 .en, .video h2 .ar { display: block; margin-top: 2px; color: var(--muted); font-family: "Readex Pro", system-ui, sans-serif; font-size: 15px; font-weight: 400; }
+      .video h2 .ar { font-size: 17px; }
+      [lang="ar"] { font-family: "Readex Pro", system-ui, "Segoe UI", "Noto Sans Arabic", "Geeza Pro", Tahoma, sans-serif; }
+      .lang[lang="ar"] p { font-size: 1.08em; line-height: 1.8; }
       .video video {
         display: block; width: 100%; height: auto; aspect-ratio: 16 / 9;
         border-radius: 16px; border: 1px solid rgba(212, 137, 26, 0.18); background: #0C1219;
       }
       .video-note { margin: 10px auto 0; max-width: 680px; color: var(--muted); font-size: 13px; text-align: center; }
-      .video-note > span[lang="en"] { display: block; }
+      .video-note > span[lang="en"], .video-note > span[lang="ar"] { display: block; }
       .video-note a { display: inline-block; margin-top: 4px; }
       .video-transcript { margin: 10px auto 0; max-width: 680px; font-size: 13px; color: var(--muted); }
       .video-transcript summary { cursor: pointer; text-align: center; color: var(--brand); }
       .video-transcript ol { margin: 10px 0 0; padding-left: 20px; }
       .video-transcript li { margin-bottom: 6px; }
       .video-transcript li > span[lang="en"] { display: block; font-style: italic; }
+      .video-transcript li > span[lang="ar"] { display: block; text-align: right; font-size: 14px; }
       .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
       a { color: var(--brand); }
+      .network { position: relative; overflow: hidden; padding-top: 34px; }
+      .network::before {
+        content: ""; position: absolute; left: 0; right: 0; top: 0; height: 10px;
+        background: var(--kente); opacity: 0.9;
+      }
     </style>
   </head>
   <body>
@@ -166,58 +238,32 @@
             </p>
           </div>
 
-          <a class="cta" href="mailto:contact@afcfta-zlecaf.com">Nous contacter · Contact us</a>
+          <div class="lang" lang="ar" dir="rtl">
+            <h2>العربية</h2>
+            <p>
+              تحسب المنصة، مع ذكر المصادر، الرسوم والضرائب على الاستيراد والتصدير بين البلدان الأفريقية،
+              وتفضيل زليكاف المطبَّق، والتكلفة الإجمالية للعملية عند الوصول. ويُتاح استخدام المنصة وعرض توضيحي عند الطلب.
+            </p>
+          </div>
+
+          <a class="cta" href="mailto:contact@afcfta-zlecaf.com">Nous contacter · Contact us&nbsp;· <span lang="ar" dir="rtl">تواصلوا معنا</span></a>
         </div>
 
-        <section class="video" aria-labelledby="video-titre">
-          <h2 id="video-titre">La plateforme en 1 minute <span class="en" lang="en"><span class="sr-only"> · </span>The platform in 1 minute</span></h2>
-          <video controls playsinline preload="none" width="1280" height="720"
-                 poster="video/presentation-zlecaf.jpg" aria-describedby="video-desc">
-            <source src="video/presentation-zlecaf.mp4" type="video/mp4" />
-          </video>
-          <p class="video-note" id="video-desc">
-            Calcul Ghana → Kenya (SH 1806.90), droits NPF et préférence ZLECAf, journal de calcul,
-            règles d’origine, réseau ZLECAf. Textes à l’écran en français et en anglais, musique douce.
-            <span lang="en">Ghana → Kenya calculation (HS 1806.90), MFN duties and AfCFTA preference,
-            calculation log, rules of origin, AfCFTA network. On-screen text in French and English, soft music.</span>
-            <a href="video/presentation-zlecaf.mp4" download>Télécharger (MP4, 5 Mo) · <span lang="en">Download</span></a>
-          </p>
-          <details class="video-transcript">
-            <summary>Transcription · <span lang="en">Transcript</span></summary>
-            <ol>
-              <li>Calculateur tarifaire ZLECAf, 54 pays. <span lang="en">AfCFTA tariff calculator, 54 countries.</span></li>
-              <li>Droits et taxes à l’import et à l’export ; la préférence ZLECAf applicable ; le coût rendu, source à l’appui.
-                <span lang="en">Import and export duties and taxes; the applicable AfCFTA preference; the landed cost, with sources.</span></li>
-              <li>Origine, destination, code SH et valeur. <span lang="en">Origin, destination, HS code and value.</span></li>
-              <li>Ghana → Kenya, SH 1806.90 (chocolat et préparations au cacao), valeur CAF 10 000 $ : NPF contre ZLECAf,
-                2 436 $ de droits et taxes en moins (taux 2026, simulation indicative).
-                <span lang="en">Ghana → Kenya, HS 1806.90 (chocolate and cocoa preparations), CIF value $10,000: MFN vs AfCFTA,
-                $2,436 less in duties and taxes (2026 rates, indicative simulation).</span></li>
-              <li>Chaque taxe sur sa base, journal de calcul et références légales.
-                <span lang="en">Each tax on its own base, calculation log and legal references.</span></li>
-              <li>Les règles d’origine ZLECAf, recherchées par code SH (exemple : café non torréfié, SH 0901.11).
-                <span lang="en">AfCFTA rules of origin, searchable by HS code (example: unroasted coffee, HS 0901.11).</span></li>
-              <li>Statistiques et mise en œuvre de l’accord, pays par pays.
-                <span lang="en">Statistics and implementation of the agreement, country by country.</span></li>
-              <li>Tout un espace de travail pour le commerce intra-africain : tableau de bord, profils pays, logistique,
-                production, finance, opportunités, outils, comparaison multi-pays, droits à l’export.
-                <span lang="en">One workspace for intra-African trade: dashboard, country profiles, logistics, production,
-                finance, opportunities, tools, multi-country comparison, export duties.</span></li>
-              <li>Accès et démonstration sur demande : contact@afcfta-zlecaf.com.
-                <span lang="en">Access and demo on request: contact@afcfta-zlecaf.com.</span></li>
-            </ol>
-          </details>
-        </section>
+
 
 <!-- RESEAU:START -->
 <section class="network" aria-labelledby="reseau-titre">
-  <h2 id="reseau-titre">Le réseau ZLECAf en un coup d’œil</h2>
+  <h2 id="reseau-titre">Le réseau ZLECAf en un coup d’œil
+    <span class="en" lang="en"><span class="sr-only"> · </span>The AfCFTA network at a glance</span>
+    <span class="ar" lang="ar" dir="rtl"><span class="sr-only"> · </span>شبكة زليكاف في لمحة</span></h2>
   <p class="network-sub">
     Chaque rond est une capitale : sa surface suit le PIB 2024, sa couleur le stade de mise en œuvre
     de l’accord. Les traits relient deux États quand l’un applique la préférence ZLECAf aux produits de
     l’autre. Survolez une capitale pour son détail.
     <span class="en">Each circle is a capital, sized by 2024 GDP and coloured by implementation status;
     lines link States that apply the AfCFTA preference to each other’s goods.</span>
+    <span class="ar" lang="ar" dir="rtl">تمثل كل دائرة عاصمةً: تتناسب مساحتها مع الناتج المحلي الإجمالي لعام 2024،
+    ويدل لونها على مرحلة تنفيذ الاتفاقية. تربط الخطوط بين دولتين عندما تطبق إحداهما تفضيل زليكاف على سلع الأخرى.</span>
   </p>
   <div class="map">
 <svg viewBox="-31.34 -43.34 95.13 84.13" role="img" aria-labelledby="zn-t zn-d" xmlns="http://www.w3.org/2000/svg">
@@ -621,20 +667,76 @@
 </svg>
   </div>
   <ul class="legend">
-    <li><i class="sw" style="background:#03A762"></i><b>10</b> Déploiement <span class="en">· Implementation</span></li>
-    <li><i class="sw" style="background:#C57D06"></i><b>4</b> Instrument national adopté <span class="en">· National instrument adopted</span></li>
-    <li><i class="sw" style="background:#0C83AB"></i><b>24</b> Offre tarifaire <span class="en">· Tariff offer</span></li>
-    <li><i class="sw" style="background:#9D6BFE"></i><b>12</b> Ratifié <span class="en">· Ratified</span></li>
-    <li><i class="sw" style="background:#6B7688"></i><b>4</b> Signé, non ratifié <span class="en">· Signed, not ratified</span></li>
-    <li><i class="sw hollow"></i><b>1</b> Non signataire <span class="en">· Not signed</span></li>
-    <li><i class="link-sw"></i>Liaison : un État applique la préférence ZLECAf aux produits de l’autre</li>
+    <li><i class="sw" style="background:#03A762"></i><b>10</b> Déploiement <span class="en">· Implementation</span> <span class="ar">·&nbsp;<span lang="ar" dir="rtl">قيد التطبيق</span></span></li>
+    <li><i class="sw" style="background:#C57D06"></i><b>4</b> Instrument national adopté <span class="en">· National instrument adopted</span> <span class="ar">·&nbsp;<span lang="ar" dir="rtl">صك وطني معتمد</span></span></li>
+    <li><i class="sw" style="background:#0C83AB"></i><b>24</b> Offre tarifaire <span class="en">· Tariff offer</span> <span class="ar">·&nbsp;<span lang="ar" dir="rtl">عرض التعريفات الجمركية</span></span></li>
+    <li><i class="sw" style="background:#9D6BFE"></i><b>12</b> Ratifié <span class="en">· Ratified</span> <span class="ar">·&nbsp;<span lang="ar" dir="rtl">مصادِقة</span></span></li>
+    <li><i class="sw" style="background:#6B7688"></i><b>4</b> Signé, non ratifié <span class="en">· Signed, not ratified</span> <span class="ar">·&nbsp;<span lang="ar" dir="rtl">موقِّعة، غير مصادِقة</span></span></li>
+    <li><i class="sw hollow"></i><b>1</b> Non signataire <span class="en">· Not signed</span> <span class="ar">·&nbsp;<span lang="ar" dir="rtl">غير موقِّعة</span></span></li>
+    <li><i class="link-sw"></i>Liaison : un État applique la préférence ZLECAf aux produits de l’autre <span class="en">· Link: one State applies the AfCFTA preference to the other’s goods</span> <span class="ar">·&nbsp;<span lang="ar" dir="rtl">الرابط: دولة تطبق تفضيل زليكاف على سلع الدولة الأخرى</span></span></li>
   </ul>
   <p class="network-note">
     Statuts au 1ᵉʳ novembre 2026, établis à partir des sources officielles citées dans la plateforme
     (225 liaisons entre 54 États). PIB : Banque mondiale (API WDI), PIB en dollars US courants.
+    <span class="en" lang="en">Statuses as of November 1, 2026, from the official sources cited in the platform
+    (225 links between 54 States). GDP: World Bank (WDI API), current US dollars.</span>
+    <span class="ar" lang="ar" dir="rtl">الحالات بتاريخ 1 نوفمبر 2026، استنادًا إلى المصادر الرسمية المذكورة في المنصة
+    (225 رابطًا بين 54 دولة). الناتج المحلي الإجمالي: البنك الدولي (واجهة WDI)، بالدولار الأمريكي الجاري.</span>
   </p>
 </section>
 <!-- RESEAU:END -->
+
+        <section class="video" aria-labelledby="video-titre">
+          <h2 id="video-titre">La plateforme en 1 minute <span class="en" lang="en"><span class="sr-only"> · </span>The platform in 1 minute</span>
+            <span class="ar" lang="ar" dir="rtl"><span class="sr-only"> · </span>المنصة في دقيقة واحدة</span></h2>
+          <video controls playsinline preload="none" width="1280" height="720"
+                 poster="video/presentation-zlecaf.jpg" aria-describedby="video-desc">
+            <source src="video/presentation-zlecaf.mp4" type="video/mp4" />
+          </video>
+          <p class="video-note" id="video-desc">
+            Calcul Ghana → Kenya (SH 1806.90), droits NPF et préférence ZLECAf, journal de calcul,
+            règles d’origine, réseau ZLECAf. Textes à l’écran en français, en anglais et en arabe, musique douce.
+            <span lang="en">Ghana → Kenya calculation (HS 1806.90), MFN duties and AfCFTA preference,
+            calculation log, rules of origin, AfCFTA network. On-screen text in French, English and Arabic, soft music.</span>
+            <span lang="ar" dir="rtl">حساب من غانا إلى كينيا (SH 1806.90)، تعريفة الدولة الأولى بالرعاية وتفضيل زليكاف، سجل الحساب،
+            قواعد المنشأ، شبكة زليكاف. نصوص على الشاشة بالفرنسية والإنجليزية والعربية، وموسيقى هادئة.</span>
+            <a href="video/presentation-zlecaf.mp4" download>Télécharger (MP4, 7 Mo) · <span lang="en">Download</span> · <span lang="ar" dir="rtl">تنزيل</span></a>
+          </p>
+          <details class="video-transcript">
+            <summary>Transcription · <span lang="en">Transcript</span> · <span lang="ar" dir="rtl">النص الكامل</span></summary>
+            <ol>
+              <li>Calculateur tarifaire ZLECAf, 54 pays. <span lang="en">AfCFTA tariff calculator, 54 countries.</span>
+                <span lang="ar" dir="rtl">حاسبة التعريفات الجمركية لزليكاف، 54 دولة.</span></li>
+              <li>Droits et taxes à l’import et à l’export ; la préférence ZLECAf applicable ; le coût rendu, source à l’appui.
+                <span lang="en">Import and export duties and taxes; the applicable AfCFTA preference; the landed cost, with sources.</span>
+                <span lang="ar" dir="rtl">الرسوم والضرائب على الاستيراد والتصدير؛ تفضيل زليكاف المطبَّق؛ التكلفة الإجمالية عند الوصول، مع ذكر المصادر.</span></li>
+              <li>Origine, destination, code SH et valeur. <span lang="en">Origin, destination, HS code and value.</span>
+                <span lang="ar" dir="rtl">بلد المنشأ وبلد المقصد ورمز SH والقيمة.</span></li>
+              <li>Ghana → Kenya, SH 1806.90 (chocolat et préparations au cacao), valeur CAF 10 000 $ : NPF contre ZLECAf,
+                2 436 $ de droits et taxes en moins (taux 2026, simulation indicative).
+                <span lang="en">Ghana → Kenya, HS 1806.90 (chocolate and cocoa preparations), CIF value $10,000: MFN vs AfCFTA,
+                $2,436 less in duties and taxes (2026 rates, indicative simulation).</span>
+                <span lang="ar" dir="rtl">من غانا إلى كينيا، SH 1806.90 (الشوكولاتة ومحضرات الكاكاو)، القيمة سيف (CIF)‏ 10000 دولار: مقارنةً بتعريفة الدولة الأولى بالرعاية، تنخفض الرسوم والضرائب مع زليكاف بمقدار 2436 دولارًا (معدلات 2026، محاكاة إرشادية).</span></li>
+              <li>Chaque taxe sur sa base, journal de calcul et références légales.
+                <span lang="en">Each tax on its own base, calculation log and legal references.</span>
+                <span lang="ar" dir="rtl">كل ضريبة على وعائها، مع سجل الحساب والمراجع القانونية.</span></li>
+              <li>Les règles d’origine ZLECAf, recherchées par code SH (exemple : café non torréfié, SH 0901.11).
+                <span lang="en">AfCFTA rules of origin, searchable by HS code (example: unroasted coffee, HS 0901.11).</span>
+                <span lang="ar" dir="rtl">قواعد المنشأ في زليكاف، مع البحث برمز SH (مثال: البن غير المحمص، SH 0901.11).</span></li>
+              <li>Statistiques et mise en œuvre de l’accord, pays par pays.
+                <span lang="en">Statistics and implementation of the agreement, country by country.</span>
+                <span lang="ar" dir="rtl">الإحصائيات وتنفيذ الاتفاقية، بلدًا بلدًا.</span></li>
+              <li>Tout un espace de travail pour le commerce intra-africain : tableau de bord, profils pays, logistique,
+                production, finance, opportunités, outils, comparaison multi-pays, droits à l’export.
+                <span lang="en">One workspace for intra-African trade: dashboard, country profiles, logistics, production,
+                finance, opportunities, tools, multi-country comparison, export duties.</span>
+                <span lang="ar" dir="rtl">مساحة عمل واحدة للتجارة البينية الأفريقية: لوحة القيادة، ملفات البلدان، اللوجستيك، الإنتاج، التمويل، الفرص، الأدوات، مقارنة متعددة البلدان، رسوم التصدير.</span></li>
+              <li>Accès et démonstration sur demande : contact@afcfta-zlecaf.com.
+                <span lang="en">Access and demo on request: contact@afcfta-zlecaf.com.</span>
+                <span lang="ar" dir="rtl">الوصول إلى المنصة وعرض توضيحي عند الطلب: contact@afcfta-zlecaf.com</span></li>
+            </ol>
+          </details>
+        </section>
       </div>
     </main>
 
