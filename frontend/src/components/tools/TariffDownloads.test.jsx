@@ -30,4 +30,20 @@ describe('TariffDownloads', () => {
     expect(container.querySelectorAll('button, a[download]')).toHaveLength(0);
     expect(container.textContent).not.toMatch(/CSV|JSON|Télécharger/);
   });
+
+  it('montre les téléchargements au seul compte admin autorisé par le serveur', async () => {
+    const cog = {
+      ...LISTE.countries[0],
+      total_size_kb: 120,
+      download_url: '/tariff-data/download-zip/COG',
+      json_download_url: '/tariff-data/download-json/COG',
+    };
+    axios.get.mockResolvedValue({ data: { ...LISTE, telechargement: true, countries: [cog] } });
+    render(<TariffDownloads language="fr" />);
+
+    expect(await screen.findByText(/Télécharger tout le groupe/)).toBeInTheDocument();
+    expect(screen.getByText(/CSV/)).toBeInTheDocument();
+    expect(screen.getByText(/JSON/)).toBeInTheDocument();
+    expect(screen.getByTestId('positions-nationales')).toHaveTextContent('positions tarifaires nationales');
+  });
 });

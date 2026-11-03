@@ -136,8 +136,10 @@ def test_user_with_no_subscription_field_grants_free_tier():
     assert ent.tier == "free"
 
 
-def test_le_compte_admin_a_tous_les_modules_sans_aucun_quota():
-    # Compte admin amorcé (server.py), pour les démonstrations : aucune limite.
+def test_le_compte_admin_a_tous_les_modules_sans_aucun_quota(monkeypatch):
+    # Compte admin amorcé (server.py), pour les démonstrations : aucune limite,
+    # si le déploiement l'active (ADMIN_ACCES_ILLIMITE, Emergent).
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
     ent = resolve_entitlements({"email": "admin@example.com", "role": "admin"})
 
     assert ent.tier == "admin"
@@ -150,6 +152,17 @@ def test_le_compte_admin_a_tous_les_modules_sans_aucun_quota():
     # Hors de la grille vendue, et réservé au rôle admin.
     assert "admin" not in TIERS
     assert resolve_entitlements({"email": "u@example.com", "role": "user"}).tier == "free"
+
+
+@pytest.mark.parametrize("reglage", [None, "", "false", "0"])
+def test_sans_le_reglage_le_compte_admin_suit_sa_formule(monkeypatch, reglage):
+    # Désactivé (défaut, production à décider) : aucun privilège d'abonnement.
+    if reglage is None:
+        monkeypatch.delenv("ADMIN_ACCES_ILLIMITE", raising=False)
+    else:
+        monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", reglage)
+
+    assert resolve_entitlements({"email": "admin@example.com", "role": "admin"}).tier == "free"
 
 
 @pytest.mark.parametrize("tier", ["starter", "pro", "business"])

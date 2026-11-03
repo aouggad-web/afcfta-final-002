@@ -9,9 +9,9 @@ le moteur liquide pour 100 de valeur CAF, en devise nationale. La position
 est préparée comme ``POST /api/calcul`` la prépare sans origine déclarée
 (mesures de la gazette EAC en vigueur à la date de référence, TVA nationale
 documentée quand la source n'en porte aucune) : l'export est le tarif que le
-calculateur applique. Le SaaS ne le sert plus (aucun téléchargement de tarif,
-quelle que soit la formule) : le module Outils n'affiche que le nombre de
-positions de chaque pays, lu sur le manifeste.
+calculateur applique. Le SaaS ne le sert à aucune formule : le module Outils
+affiche le nombre de positions de chaque pays, lu sur le manifeste, et seul le
+compte admin télécharge les fichiers, si ADMIN_ACCES_ILLIMITE est activé.
 
 ``backend/data/exports/socle/MANIFESTE.json`` relie chaque fichier à
 l'empreinte du socle dont il est tiré (``socle_sha256`` de

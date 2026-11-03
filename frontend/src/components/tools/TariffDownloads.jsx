@@ -54,8 +54,71 @@ const REGION_ICONS = {
 };
 
 /* Aucun téléchargement de tarif, quelle que soit la formule (décision du
-   responsable produit, 03/11/2026) : l'écran n'affiche que le nombre de
-   positions tarifaires nationales de chaque pays. */
+   responsable produit, 03/11/2026) : l'écran affiche le nombre de positions
+   tarifaires nationales de chaque pays. Seul le compte admin, quand le
+   serveur l'autorise (`telechargement`, ADMIN_ACCES_ILLIMITE), voit les
+   boutons de téléchargement. */
+function DownloadButton({ url, label, icon, className, size = "normal" }) {
+  const [status, setStatus] = useState('idle');
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (status === 'loading') return;
+    setStatus('loading');
+    try {
+      // La session admin (cookie) autorise le téléchargement : l'envoyer aussi
+      // quand l'API est sur une autre origine (VITE_BACKEND_URL).
+      const res = await fetch(`${API}${url}`, { credentials: 'include' });
+      if (!res.ok) throw new Error('Download failed');
+      const blob = await res.blob();
+      const disposition = res.headers.get('content-disposition') || '';
+      let filename = 'download.zip';
+      const match = disposition.match(/filename="?([^"]+)"?/);
+      if (match) filename = match[1];
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = filename;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(blobUrl);
+      }, 200);
+      setStatus('done');
+      setTimeout(() => setStatus('idle'), 3000);
+    } catch (err) {
+      console.error('Download error:', err);
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+    }
+  };
+
+  const sizeClasses = size === "small"
+    ? "px-2 py-1 text-xs"
+    : "px-4 py-2 text-sm";
+
+  const statusLabel = status === 'loading'
+    ? "⏳"
+    : status === 'done'
+    ? "✅"
+    : status === 'error'
+    ? "❌"
+    : `${icon} ${label}`;
+
+  return (
+    <button
+      onClick={handleClick}
+      disabled={status === 'loading'}
+      className={`inline-flex items-center gap-1 font-semibold rounded-lg transition-all ${sizeClasses} ${className} ${status === 'loading' ? 'opacity-70 cursor-wait' : 'hover:opacity-90 cursor-pointer'}`}
+    >
+      {statusLabel}
+    </button>
+  );
+}
+
 export default function TariffDownloads({ language = 'fr' }) {
   const [downloadData, setDownloadData] = useState(null);
   const [subscriptionNotice, setSubscriptionNotice] = useState(null);
@@ -66,6 +129,9 @@ export default function TariffDownloads({ language = 'fr' }) {
     subtitle: (n) => `${n} pays — nombre de positions du tarif national tel que le calculateur l'applique`,
     loading: "Chargement des données...",
     positions: (n) => `${nombre(n, 'fr')} positions tarifaires nationales`,
+    downloadCountry: "CSV",
+    downloadJson: "JSON",
+    downloadRegion: "Télécharger tout le groupe",
     error: "Erreur de chargement",
     subscriptionTitle: "Module réservé aux abonnés",
     countries: "pays",
@@ -74,6 +140,9 @@ export default function TariffDownloads({ language = 'fr' }) {
     subtitle: (n) => `${n} countries — number of national tariff lines as applied by the calculator`,
     loading: "Loading data...",
     positions: (n) => `${nombre(n, 'en')} national tariff lines`,
+    downloadCountry: "CSV",
+    downloadJson: "JSON",
+    downloadRegion: "Download entire group",
     error: "Loading error",
     subscriptionTitle: "Subscribers-only module",
     countries: "countries",
@@ -82,6 +151,9 @@ export default function TariffDownloads({ language = 'fr' }) {
     subtitle: (n) => `عدد البلدان: ${n} — عدد بنود التعريفة الوطنية كما تطبّقها الحاسبة`,
     loading: "جارٍ تحميل البيانات…",
     positions: (n) => `عدد البنود التعريفية الوطنية: ${nombre(n, 'ar')}`,
+    downloadCountry: "CSV",
+    downloadJson: "JSON",
+    downloadRegion: "تنزيل المجموعة كاملة",
     error: "خطأ في التحميل",
     subscriptionTitle: "وحدة مخصّصة للمشتركين",
     countries: "بلدًا",
@@ -145,6 +217,7 @@ export default function TariffDownloads({ language = 'fr' }) {
 
   const regions = downloadData.regions || {};
   const countries = downloadData.countries || [];
+  const telechargement = downloadData.telechargement === true;
 
   const getCountriesForRegion = (regionKey) => {
     const regionCountryCodes = regions[regionKey]?.countries || [];
@@ -177,6 +250,14 @@ export default function TariffDownloads({ language = 'fr' }) {
                   {regionCountries.length} {t.countries}
                 </div>
               </div>
+              {telechargement && (
+                <DownloadButton
+                  url={`/tariff-data/download-region-zip/${regionKey}`}
+                  label={t.downloadRegion}
+                  icon="📦"
+                  className="bg-white text-gray-800 shadow-md"
+                />
+              )}
             </div>
 
             <CardContent className="p-3">
@@ -191,6 +272,24 @@ export default function TariffDownloads({ language = 'fr' }) {
                           {t.positions(country.positions)}
                         </div>
                       </div>
+                      {telechargement && country.download_url && (
+                        <div className="flex items-center gap-1 ml-2">
+                          <DownloadButton
+                            url={country.download_url}
+                            label={t.downloadCountry}
+                            icon="📥"
+                            className="bg-green-600 text-white"
+                            size="small"
+                          />
+                          <DownloadButton
+                            url={country.json_download_url}
+                            label={t.downloadJson}
+                            icon="📋"
+                            className="bg-blue-600 text-white"
+                            size="small"
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

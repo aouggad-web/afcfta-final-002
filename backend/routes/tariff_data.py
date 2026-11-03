@@ -1,9 +1,16 @@
+import csv
+import io
 import json
 import logging
 import os
+import re
+import zipfile
+from typing import Optional
 
-from entitlement_guard import require_module
-from fastapi import APIRouter, Depends
+from entitlement_guard import get_optional_subscriber, require_admin_illimite, require_module
+from entitlements import admin_acces_illimite
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import JSONResponse, StreamingResponse
 from services.tariff_data_collector import get_collector
 
 logger = logging.getLogger(__name__)
@@ -19,9 +26,11 @@ router = APIRouter(prefix="/tariff-data", tags=["Tariff Data Collection"])
 # save_country_tariffs() — expensive and a disk write, unlike the rest of
 # this router. It keeps the metered require_module("tools") in addition to
 # the router-level gate, so a Starter caller can't bypass its 10/day tools
-# cap by hitting it. Tariff lines and tariff files are no longer served at
-# all (no download for any plan, product decision of 2026-11-03).
+# cap by hitting it. Tariff files are downloadable by no plan (product
+# decision of 2026-11-03): only the admin account can download them, when
+# ADMIN_ACCES_ILLIMITE is on (entitlements.admin_acces_illimite).
 _tools_metered = [Depends(require_module("tools"))]
+_admin_illimite = [Depends(require_admin_illimite())]
 
 EXPORTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "exports")
 
@@ -221,10 +230,15 @@ REGIONS = {
 }
 
 
-# Le nombre de positions de chaque pays est lu sur le manifeste de l'export
-# du socle de calcul (scripts/exporter_tarifs_socle.py), archivé dans le
-# dépôt. Les fichiers eux-mêmes ne sont plus servis.
+# Le tarif est l'export du socle de calcul (scripts/exporter_tarifs_socle.py) :
+# le tarif tel que le calculateur l'applique, archivé avec son manifeste, qui
+# donne aussi le nombre de positions de chaque pays. Les fichiers ne sont
+# servis qu'au compte admin (voir _admin_illimite).
 SOCLE_EXPORTS_DIR = os.path.join(EXPORTS_DIR, "socle")
+
+
+def _fichiers(entree):
+    return [entree["fichier"], entree["fichier_notes"]]
 
 
 def _exports_socle():
@@ -236,10 +250,12 @@ def _exports_socle():
 
 
 @router.get("/download/list")
-async def list_downloads():
+async def list_downloads(user: Optional[dict] = Depends(get_optional_subscriber)):
     # Aucun téléchargement de tarif n'est proposé, quelle que soit la formule
     # (décision du responsable produit, 03/11/2026) : la liste ne donne que le
-    # nombre de positions tarifaires nationales de chaque pays.
+    # nombre de positions tarifaires nationales de chaque pays. Seul le compte
+    # admin, si ADMIN_ACCES_ILLIMITE est activé, reçoit les liens.
+    telechargement = admin_acces_illimite(user)
     countries = []
     for cc, entree in _exports_socle().items():
         country = {
@@ -249,9 +265,137 @@ async def list_downloads():
             "collecte": entree.get("collecte"),
             "devise": entree.get("devise"),
         }
+        if telechargement:
+            size = sum(os.path.getsize(os.path.join(SOCLE_EXPORTS_DIR, f)) for f in _fichiers(entree))
+            country.update(
+                total_size_kb=round(size / 1024),
+                download_url=f"/tariff-data/download-zip/{cc}",
+                json_download_url=f"/tariff-data/download-json/{cc}",
+            )
         countries.append(country)
     return {
+        "telechargement": telechargement,
         "countries": countries,
         "count": len(countries),
         "regions": {k: v for k, v in REGIONS.items()},
     }
+
+
+@router.get("/download-zip/{country_code}", dependencies=_admin_illimite)
+async def download_country_zip(country_code: str):
+    # Le code pays est lu sur le manifeste : le chemin ne reprend jamais
+    # l'entrée brute de l'utilisateur.
+    exports = _exports_socle()
+    cc = next((k for k in exports if k == country_code.upper()), None)
+    if cc is None:
+        raise HTTPException(status_code=404, detail=f"No tariff export for {country_code}")
+
+    name = _safe_filename_part(COUNTRY_NAMES.get(cc, cc))
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for fichier in _fichiers(exports[cc]):
+            zf.write(os.path.join(SOCLE_EXPORTS_DIR, fichier), fichier)
+    buf.seek(0)
+    filename = f"Tarifs_NPF_{name}_{cc}.zip"
+    return StreamingResponse(
+        buf,
+        media_type="application/zip",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+def _safe_filename_part(name: str) -> str:
+    return re.sub(r"[^\w\-]", "_", name)
+
+
+def _valeur(cellule):
+    """Un taux s'écrit en nombre ; une forme publiée (« 8c/kg ») ou « n.d. »
+    reste du texte."""
+    try:
+        return float(cellule)
+    except ValueError:
+        return cellule
+
+
+def _liste(cellule, separateur=" | "):
+    return cellule.split(separateur) if cellule else []
+
+
+def _tarif_json(cc, entree):
+    """Le tarif du pays en JSON, lu sur le CSV archivé et ses notes : il suit
+    donc chaque réexport du socle, sans copie qui pourrait diverger."""
+    codes = [c["code"] for c in entree["colonnes"]]
+    with open(os.path.join(SOCLE_EXPORTS_DIR, entree["fichier"]), encoding="utf-8-sig", newline="") as f:
+        lignes = list(csv.reader(f, delimiter=";"))[1:]
+    with open(os.path.join(SOCLE_EXPORTS_DIR, entree["fichier_notes"]), encoding="utf-8-sig", newline="") as f:
+        notes = {n[0]: {"prelevement": n[1], "texte": n[2]} for n in list(csv.reader(f, delimiter=";"))[1:]}
+
+    positions = []
+    for ligne in lignes:
+        valeurs = ligne[4 : 4 + len(codes)]
+        total, etat, manques, restrictions, renvois = ligne[4 + len(codes) :]
+        positions.append(
+            {
+                "position": ligne[0],
+                "designation": ligne[1],
+                "chapitre": ligne[2],
+                "unite": ligne[3] or None,
+                "droits": {code: _valeur(v) for code, v in zip(codes, valeurs) if v != ""},
+                "total_pour_100_caf": float(total) if total else None,
+                "etat": etat,
+                "manques": _liste(manques),
+                "restrictions": _liste(restrictions),
+                "notes": _liste(renvois, " "),
+            }
+        )
+    return {
+        "pays": cc,
+        "nom": COUNTRY_NAMES.get(cc, cc),
+        "devise": entree.get("devise"),
+        "date_reference": entree.get("date_reference"),
+        "collecte": entree.get("collecte"),
+        "socle_sha256": entree["socle_sha256"],
+        "prelevements": entree["colonnes"],
+        "positions": positions,
+        "notes": notes,
+    }
+
+
+@router.get("/download-json/{country_code}", dependencies=_admin_illimite)
+async def download_country_json(country_code: str):
+    exports = _exports_socle()
+    cc = next((k for k in exports if k == country_code.upper()), None)
+    if cc is None:
+        raise HTTPException(status_code=404, detail=f"No tariff export for {country_code}")
+
+    name = _safe_filename_part(COUNTRY_NAMES.get(cc, cc))
+    filename = f"Tarifs_NPF_{name}_{cc}.json"
+    return JSONResponse(
+        _tarif_json(cc, exports[cc]),
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+@router.get("/download-region-zip/{region_key}", dependencies=_admin_illimite)
+async def download_region_zip(region_key: str):
+    region = REGIONS.get(region_key)
+    if not region:
+        raise HTTPException(status_code=404, detail=f"Unknown region: {region_key}")
+
+    exports = _exports_socle()
+    region_name = region["name"].replace(" / ", "_").replace(" ", "_")
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for cc in region["countries"]:
+            if cc not in exports:
+                continue
+            name = _safe_filename_part(COUNTRY_NAMES.get(cc, cc))
+            for fichier in _fichiers(exports[cc]):
+                zf.write(os.path.join(SOCLE_EXPORTS_DIR, fichier), f"{region_name}/{name}_{cc}/{fichier}")
+    buf.seek(0)
+    filename = f"Tarifs_NPF_{region_name}.zip"
+    return StreamingResponse(
+        buf,
+        media_type="application/zip",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )

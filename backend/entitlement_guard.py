@@ -28,7 +28,7 @@ from typing import Optional
 from auth import require_auth
 from bson import ObjectId
 from bson.errors import InvalidId
-from entitlements import Entitlements, ModuleAccess, resolve_entitlements
+from entitlements import Entitlements, ModuleAccess, admin_acces_illimite, resolve_entitlements
 from fastapi import Depends, HTTPException, Request, status
 from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError, PyMongoError
@@ -272,6 +272,25 @@ def require_paid_module(module_id: str, *, compter: bool = True):
                 return resolve_entitlements(None)
             raise _reserve_aux_abonnements(module_id)
         return await module_dependency(request=request, user=user)
+
+    return _dependency
+
+
+def require_admin_illimite():
+    """Réservé au compte admin quand ADMIN_ACCES_ILLIMITE est activé
+    (`entitlements.admin_acces_illimite`) : téléchargement des tarifs, interdit
+    à toutes les formules (décision du responsable produit, 03/11/2026).
+    Toute autre session, clé API ou appel anonyme reçoit 403."""
+
+    async def _dependency(user: Optional[dict] = Depends(get_optional_subscriber)) -> None:
+        if not admin_acces_illimite(user):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail={
+                    "error": "downloads_disabled",
+                    "message": "Le téléchargement des tarifs n'est pas proposé.",
+                },
+            )
 
     return _dependency
 

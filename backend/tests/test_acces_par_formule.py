@@ -424,7 +424,8 @@ def test_sous_onglets_cle_api_et_absence_de_base(app_api):
 # ── Compte admin : tous les modules, aucun quota ────────────────────────────
 
 
-def test_le_compte_admin_passe_partout_sans_rien_decompter(app_api, base):
+def test_le_compte_admin_passe_partout_sans_rien_decompter(app_api, base, monkeypatch):
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
     admin = _client(app_api, abonne=ADMIN)
 
     assert admin.get("/api/reports/macro/NGA").status_code == 200
@@ -432,6 +433,16 @@ def test_le_compte_admin_passe_partout_sans_rien_decompter(app_api, base):
     assert admin.get("/api/v2/analytics/dashboard").status_code == 200
     assert admin.get("/api/export/tariffs/excel?countries=KE").status_code == 200
     assert base.usage_counters.docs == {}
+    # Téléchargement des tarifs : réservé à ce compte.
+    assert admin.get("/api/tariff-data/download-json/COG").status_code == 200
+
+
+def test_sans_le_reglage_le_compte_admin_n_a_aucun_privilege(app_api, monkeypatch):
+    monkeypatch.delenv("ADMIN_ACCES_ILLIMITE", raising=False)
+    admin = _client(app_api, abonne=ADMIN)
+
+    assert admin.get("/api/reports/macro/NGA").status_code == 403
+    assert admin.get("/api/tariff-data/download-json/COG").status_code == 403
 
 
 # ── API v2 : clé API valide ou session Business ─────────────────────────────
