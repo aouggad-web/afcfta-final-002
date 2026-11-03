@@ -30,7 +30,7 @@ Les risques majeurs ne sont pas dans le code métier mais **autour** : un domain
 
 **Décompte des constats :** 2 Critiques · 5 Élevés · 12 Moyens · 9 Faibles/Info (C2 reclassé en Moyen après vérification, voir ci-dessous).
 
-**Suivi des corrections (PR #750, fusionnée le 01/11/2026 ; PR #753) :** C1 traité (domaine vérifié côté GitHub ; page vitrine en ligne sur `https://www.afcfta-zlecaf.com` depuis le 02/11/2026, documents internes en 404) ; INFO-1 corrigé (publication Pages limitée à `site/`) ; C2 corrigé préventivement (masquage des secrets dans les journaux, clé Comtrade en en-tête) ; E3 et M8 clos (secrets et HTTPS vérifiés sur le pod) ; C3 corrigé (`sync_emergent.sh` ne déploie que `main`, contrôle des crons durci par la PR #753, faux blocage de déploiement levé par la PR #761 ; ruleset « Protéger main » active le 02/11/2026 ; pod Emergent resynchronisé sur `main` le 02/11/2026, contrôle des crons sain). **Phase 0 terminée.** **Phase 1 : PR #765** (E1, E2, E4, E5, M4, M5, M10, INFO-2), détail sous chaque constat.
+**Suivi des corrections (PR #750, fusionnée le 01/11/2026 ; PR #753) :** C1 traité (domaine vérifié côté GitHub ; page vitrine en ligne sur `https://www.afcfta-zlecaf.com` depuis le 02/11/2026, documents internes en 404) ; INFO-1 corrigé (publication Pages limitée à `site/`) ; C2 corrigé préventivement (masquage des secrets dans les journaux, clé Comtrade en en-tête) ; E3 et M8 clos (secrets et HTTPS vérifiés sur le pod) ; C3 corrigé (`sync_emergent.sh` ne déploie que `main`, contrôle des crons durci par la PR #753, faux blocage de déploiement levé par la PR #761 ; ruleset « Protéger main » active le 02/11/2026 ; pod Emergent resynchronisé sur `main` le 02/11/2026, contrôle des crons sain). **Phase 0 terminée.** **Phase 1 : PR #765** (E1, E2, E4, E5, M4, M5, M10, INFO-2), détail sous chaque constat ; fusionnée et déployée sur Emergent le 03/11/2026 (`3a805e62`), vérifiée de l'extérieur (§8, phase 1). **Phase 1 terminée.**
 
 ---
 
@@ -196,6 +196,8 @@ Reproduit en local (faux Mongo) : `/api/reports/health` ×4 en **free connecté*
 >
 > Le réglage par défaut convient sur Emergent.
 >
+> **Vérifié après déploiement** (03/11/2026, `3a805e62`, lecture seule) : `proxy_peer_trusted` vaut `true` ; `client_ip` reste l'adresse réelle sans en-tête, avec `10.1.2.3`, avec `8.8.8.8, 1.1.1.1` et avec un en-tête sur deux lignes (`x_forwarded_for_hops` 3, 4, 5 puis 7).
+>
 > **Restent :**
 > - derrière un relais approuvé, un `TRUSTED_PROXY_HOPS` trop élevé reste falsifiable ;
 > - ne jamais régler `FORWARDED_ALLOW_IPS` ni `UVICORN_FORWARDED_ALLOW_IPS` à `*`.
@@ -285,6 +287,19 @@ Mapping vers les constats entre parenthèses. Effort : XS < 1 j · S 1-3 j · M 
 8. **Protéger les résolveurs cache/perf GraphQL** par un contrôle admin ; retirer `str(exc)` ; désactiver playground/SDL en prod (E4). — *S* — ✅ PR #765 : GraphQL n'est plus servi du tout ; métriques REST réservées à l'admin.
 9. **Fail-closed des middlewares de sécurité** (M10) ; neutraliser les formules CSV/Excel (M5) ; corriger le verrouillage de connexion (M4). — *S* — ✅ PR #765.
 10. **Fiabiliser la détection d'IP** derrière l'ingress + `CLOUDFLARE_EDGE_SECRET` (E5). — *S* — ✅ PR #765, vérifié sur la préproduction avant fusion.
+
+**Vérification après déploiement** (03/11/2026, Emergent sur `3a805e62`, requêtes GET en lecture seule, sauf un POST GraphQL sans effet) :
+
+| Contrôle | Résultat |
+|---|---|
+| IP client (E5, §6.4) | relais approuvé ; en-têtes forgés ignorés, y compris sur deux lignes |
+| Onglet Opportunités sans compte (`/api/reports/macro/NGA`, `/api/substitution/countries`) | 403 `upgrade_required`, « réservé aux abonnements payants » |
+| `/api/reports/health` | 200, public |
+| Téléchargement d'un tarif, API v2, export CSV sans compte | 403 |
+| `/api/performance/metrics` | 403 « Admin tier required » |
+| GraphQL | POST `/api/graphql` → 405 ; un GET reçoit la page de l'application (repli React), pas GraphQL |
+| CSP | `script-src 'self' 'nonce-…'`, sans jsDelivr |
+| `ADMIN_ACCES_ILLIMITE` | `true` sur le pod (contrôle exploitant) |
 
 ### Phase 2 — Chaîne d'approvisionnement et secrets (M)
 11. **Épingler les actions par SHA**, PAT fine-grained/GitHub App, `permissions: contents: read` par défaut, pushes → PR (M1). — *M*
