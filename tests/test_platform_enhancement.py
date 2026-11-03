@@ -755,18 +755,15 @@ class TestPerformanceRoutes:
         assert response.status_code == 200
 
     def test_performance_metrics_endpoint(self):
+        # Réservé aux clés admin, comme /cache/* (constat E4 de l'audit).
         client = self._make_app()
         response = client.get("/api/performance/metrics")
-        assert response.status_code == 200
-        data = response.json()
-        assert "uptime_seconds" in data
+        assert response.status_code == 403
 
     def test_slow_queries_endpoint(self):
         client = self._make_app()
         response = client.get("/api/performance/metrics/slow-queries")
-        assert response.status_code == 200
-        data = response.json()
-        assert "slow_queries" in data
+        assert response.status_code == 403
 
 
 class TestMobileRoutes:
@@ -831,24 +828,25 @@ class TestMobileRoutes:
 
 
 class TestGraphQLEndpoint:
-    """Tests for GraphQL API endpoint."""
+    """GraphQL n'est plus servi par l'application (constats E2 et E4 de l'audit) :
+    le module api/graphql/schema.py est conservé mais n'est plus monté."""
 
     def _make_app(self):
-        from api.graphql.schema import router
-        from fastapi import FastAPI
+        from fastapi import APIRouter, FastAPI
         from fastapi.testclient import TestClient
+        from routes import register_routes
 
+        # Même enregistrement des routes que server.py.
+        api_router = APIRouter(prefix="/api")
+        register_routes(api_router)
         app = FastAPI()
-        app.include_router(router, prefix="/api")
+        app.include_router(api_router)
         return TestClient(app, raise_server_exceptions=False)
 
     def test_schema_endpoint(self):
         client = self._make_app()
         response = client.get("/api/graphql/schema")
-        assert response.status_code == 200
-        data = response.json()
-        assert "schema" in data
-        assert "Query" in data["schema"]
+        assert response.status_code == 404
 
     def test_graphql_health_query(self):
         client = self._make_app()
@@ -858,13 +856,12 @@ class TestGraphQLEndpoint:
                 "query": "{ health }",
             },
         )
-        assert response.status_code in (200, 400)
+        assert response.status_code == 404
 
     def test_graphql_playground(self):
         client = self._make_app()
         response = client.get("/api/graphql")
-        assert response.status_code == 200
-        assert "GraphQL" in response.text
+        assert response.status_code == 404
 
 
 class TestWebSocketStatus:

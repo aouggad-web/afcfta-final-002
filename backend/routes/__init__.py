@@ -327,14 +327,6 @@ except ImportError:
     INSURANCE_AVAILABLE = False
 
 try:
-    from api.graphql.schema import router as graphql_router
-
-    GRAPHQL_AVAILABLE = True
-except ImportError:
-    graphql_router = None
-    GRAPHQL_AVAILABLE = False
-
-try:
     from api.websocket.handlers import router as websocket_router
 
     WEBSOCKET_AVAILABLE = True
@@ -570,8 +562,11 @@ def register_routes(api_router: APIRouter):
             tags=["Insurance"],
             dependencies=_auth,
         )
-    if GRAPHQL_AVAILABLE:
-        api_router.include_router(graphql_router, tags=["GraphQL"], dependencies=_auth)
+    # GraphQL (/api/graphql, playground, /api/graphql/schema) n'est plus servi :
+    # aucun appelant dans l'application, et il exposait aux anonymes la purge
+    # du cache, des métriques internes et des messages d'erreur bruts
+    # (constats E2 et E4 de l'audit de sécurité). Module conservé dans
+    # api/graphql/schema.py, non monté.
     if WEBSOCKET_AVAILABLE:
         api_router.include_router(
             websocket_router, tags=["WebSocket Real-time"], dependencies=_auth

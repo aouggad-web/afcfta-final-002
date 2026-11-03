@@ -86,7 +86,7 @@ async def invalidate_region_cache(
 
 
 @router.get("/metrics")
-async def get_performance_metrics():
+async def get_performance_metrics(key_doc: Annotated[dict, Depends(require_admin)] = None):
     """
     Get in-process performance metrics:
     - Cache hit/miss rates per operation
@@ -102,7 +102,7 @@ async def get_performance_metrics():
 
 
 @router.get("/metrics/slow-queries")
-async def get_slow_queries():
+async def get_slow_queries(key_doc: Annotated[dict, Depends(require_admin)] = None):
     """Return the 200 most recent slow queries (> 500ms)."""
     try:
         from performance.monitoring.performance_metrics import get_metrics
