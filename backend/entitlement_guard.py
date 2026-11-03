@@ -249,16 +249,18 @@ def require_module(module_id: str):
     return _dependency
 
 
-def require_paid_module(module_id: str):
+def require_paid_module(module_id: str, *, compter: bool = True):
     """`require_module` pour un module réservé aux abonnements payants (module
     Opportunités, « reports », refusé à la formule free — audit E1).
 
-    Un abonné est traité par `require_module` (403 en free, quota sinon). Un
-    appel sans session est refusé (403 upgrade_required), sauf s'il porte une
-    clé API valide, ou s'il n'y a pas de base (dev, workflow CI
+    Un abonné est traité par `require_module` (403 en free, quota sinon), ou,
+    avec `compter=False`, par `require_module_enabled` (403 en free, sans
+    décompte : écrans de consultation du même onglet, qui envoient beaucoup de
+    requêtes). Un appel sans session est refusé (403 upgrade_required), sauf
+    s'il porte une clé API valide, ou s'il n'y a pas de base (dev, workflow CI
     opportunites_module.yml) : le module reste alors ouvert comme avant."""
 
-    module_dependency = require_module(module_id)
+    module_dependency = (require_module if compter else require_module_enabled)(module_id)
 
     async def _dependency(
         request: Request,

@@ -23,6 +23,8 @@ import {
 import TradeSankeyDiagram from './TradeSankeyDiagram';
 import OpportunityPdfExport from './OpportunityPdfExport';
 import { pick } from '../../i18n/lang';
+import { reportsNoticeText } from '../tools/entitlementNotice';
+import SubscriptionNotice from '../tools/SubscriptionNotice';
 import { getCountryName } from '../../utils/translations';
 import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 import { montant, montantCompact } from '../../utils/nombres';
@@ -524,6 +526,10 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
         setCountries(response.data.countries || []);
       } catch (err) {
         console.error('Error fetching countries:', err);
+        // Module réservé aux abonnements payants (audit E1) : le dire dès
+        // l'ouverture de l'onglet plutôt qu'au premier clic.
+        const notice = reportsNoticeText(err, currentLang);
+        if (notice) setError(<SubscriptionNotice text={notice} language={currentLang} />);
       }
     };
     fetchCountries();
@@ -556,7 +562,8 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
       setExportData(exportRes.data);
     } catch (err) {
       console.error('Error analyzing country:', err);
-      setError(pick(currentLang, 'Erreur lors de l\'analyse. Veuillez réessayer.', 'Erreur lors de l\'analyse. Veuillez réessayer.', 'خطأ أثناء التحليل. يُرجى إعادة المحاولة.'));
+      const notice = reportsNoticeText(err, currentLang);
+      setError(notice ? <SubscriptionNotice text={notice} language={currentLang} /> : pick(currentLang, 'Erreur lors de l\'analyse. Veuillez réessayer.', 'Erreur lors de l\'analyse. Veuillez réessayer.', 'خطأ أثناء التحليل. يُرجى إعادة المحاولة.'));
     } finally {
       setLoading(false);
     }

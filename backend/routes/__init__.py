@@ -62,6 +62,10 @@ _roo_entitlement = [Depends(require_module_enabled("roo"))]
 _tools_entitlement = [Depends(require_module_enabled("tools"))]
 # Module Opportunités réservé aux abonnements payants (audit E1).
 _reports_entitlement = [Depends(require_paid_module("reports"))]
+# Sous-onglets du même onglet Opportunités (Substitution, Flux stratégiques,
+# Algérie) : réservés eux aussi aux abonnements payants, sans décompte du
+# quota de rapports (écrans de consultation, nombreuses requêtes).
+_opportunites_entitlement = [Depends(require_paid_module("reports", compter=False))]
 _calculator_entitlement = [Depends(require_calculations_quota())]
 _api_entitlement = [Depends(require_api_access())]
 
@@ -443,12 +447,20 @@ def register_routes(api_router: APIRouter):
         dependencies=_auth + _stats_entitlement,
     )
     api_router.include_router(etl_router, tags=["ETL Administration"], dependencies=_admin)
-    api_router.include_router(substitution_router, tags=["Trade Substitution"], dependencies=_auth)
     api_router.include_router(
-        industrie_nationale_router, tags=["Industrie nationale"], dependencies=_auth
+        substitution_router,
+        tags=["Trade Substitution"],
+        dependencies=_auth + _opportunites_entitlement,
     )
     api_router.include_router(
-        strategic_router, tags=["Strategic Trade Intelligence"], dependencies=_auth
+        industrie_nationale_router,
+        tags=["Industrie nationale"],
+        dependencies=_auth + _opportunites_entitlement,
+    )
+    api_router.include_router(
+        strategic_router,
+        tags=["Strategic Trade Intelligence"],
+        dependencies=_auth + _opportunites_entitlement,
     )
     if GEMINI_AVAILABLE:
         api_router.include_router(gemini_router, tags=["AI Analysis"], dependencies=_auth)

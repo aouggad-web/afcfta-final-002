@@ -372,6 +372,53 @@ def test_diagnostics_rapports_restent_publics_et_hors_quota(app_api, base):
     assert controles and all(controles.values())
 
 
+# ── Sous-onglets de l'onglet Opportunités : abonnement payant, sans décompte ─
+
+_SOUS_ONGLETS = ("/api/substitution/", "/api/strategic/", "/api/industrie-nationale/")
+
+
+def test_sous_onglets_opportunites_portent_le_controle_d_abonnement(app_api):
+    routes_sous_onglets = [
+        route
+        for route in app_api.routes
+        if isinstance(route, APIRoute) and route.path.startswith(_SOUS_ONGLETS)
+    ]
+
+    assert {r.path.split("/")[2] for r in routes_sous_onglets} == {
+        "substitution",
+        "strategic",
+        "industrie-nationale",
+    }
+    for route in routes_sous_onglets:
+        assert _porte(route, "require_paid_module."), route.path
+
+
+def test_sous_onglets_refuses_a_un_anonyme_et_au_free(app_api, base):
+    anonyme = _client(app_api).get("/api/substitution/countries")
+    free = _client(app_api, abonne=ABONNES["free"]).get("/api/substitution/countries")
+
+    assert anonyme.status_code == 403
+    assert anonyme.json()["detail"]["tier"] == "anonymous"
+    assert free.status_code == 403
+    assert free.json()["detail"]["error"] == "upgrade_required"
+
+
+def test_sous_onglets_ouverts_aux_formules_payantes_sans_decompte(app_api, base):
+    # Starter a 10 rapports par jour : la consultation ne doit pas les user.
+    client = _client(app_api, abonne=ABONNES["starter"])
+
+    assert _statuts(client, 12, "get", "/api/substitution/countries") == [200] * 12
+    assert base.usage_counters.docs == {}
+    assert client.get("/api/reports/macro/NGA").status_code == 200
+
+
+def test_sous_onglets_cle_api_et_absence_de_base(app_api):
+    assert _client(app_api, cle=CLE_VENDUE).get("/api/substitution/countries").status_code == 200
+    entitlement_guard.set_database(None)
+    auth.set_database(None)
+    assert _client(app_api).get("/api/substitution/countries").status_code == 200
+
+
 # ── API v2 : clé API valide ou session Business ─────────────────────────────
 
 
