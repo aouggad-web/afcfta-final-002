@@ -169,9 +169,19 @@ async def export_analysis(
     from fastapi.responses import Response
     from intelligence.ai_engine.investment_scoring import (
         COUNTRY_INDICATORS,
+        SECTOR_MULTIPLIERS,
         get_intelligence_engine,
     )
     from search.enhanced_search import get_search_engine
+
+    # Le secteur est recopié dans chaque ligne du fichier : une valeur libre y
+    # glisserait une formule de tableur (audit M5).
+    secteurs = ["general", *SECTOR_MULTIPLIERS]
+    if sector not in secteurs:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Secteur inconnu. Valeurs admises : {', '.join(secteurs)}.",
+        )
 
     engine = get_intelligence_engine()
     countries = list(COUNTRY_INDICATORS.keys())

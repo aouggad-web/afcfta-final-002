@@ -356,3 +356,59 @@ class TestExportErrorHandling:
         # Missing countries parameter for Excel
         response = client_with_mock_db.get("/api/export/tariffs/excel")
         assert response.status_code == 422
+
+
+class TestInjectionDeFormules:
+    """Audit M5 : aucune cellule exportée ne doit être lue comme une formule."""
+
+    FORMULE = '=HYPERLINK("https://exemple.invalid","x")'
+
+    @pytest.fixture
+    def client_formule(self, mock_db):
+        async def find_one(*args, **kwargs):
+            query = args[0] if args else {}
+            return {
+                "country_code": query.get("country_code", "KE"),
+                "imported_at": "2024-01-01T00:00:00Z",
+                "tariffs": {
+                    "tariff_lines": [
+                        {"hs_code": "010110", "description": self.FORMULE, "customs_duty": -5.0}
+                    ]
+                },
+            }
+
+        mock_db["customs_data"].find_one = find_one
+        init_db(mock_db)
+        return TestClient(_app_comme_en_production())
+
+    def test_export_csv_neutralise_une_description_formule(self, client_formule):
+        import csv
+
+        response = client_formule.get("/api/export/tariffs/csv?country=KE")
+
+        ligne = next(csv.DictReader(io.StringIO(response.text)))
+        assert ligne["description"] == "'" + self.FORMULE
+        assert ligne["customs_duty"] == "-5.0"
+
+    def test_export_excel_n_ecrit_aucune_formule(self, client_formule):
+        import openpyxl
+
+        response = client_formule.get("/api/export/tariffs/excel?countries=KE")
+
+        feuille = openpyxl.load_workbook(io.BytesIO(response.content))["KE"]
+        cellules = [c for ligne in feuille.iter_rows() for c in ligne if c.value is not None]
+        assert not [c.coordinate for c in cellules if c.data_type == "f"]
+        assert "'" + self.FORMULE in [c.value for c in cellules]
+        assert [c.data_type for c in cellules if c.value == -5.0] == ["n"]
+
+    def test_comparaison_csv_neutralise_un_code_pays_formule_dans_l_en_tete(
+        self, client_with_mock_db
+    ):
+        response = client_with_mock_db.get(
+            "/api/export/comparison/csv", params={"countries": "KE,=1+1"}
+        )
+
+        en_tete = response.text.splitlines()[0].split(",")
+        assert "'=1+1_duty" in en_tete
+        assert "=1+1_duty" not in en_tete
+        assert "comparison_KE__1_1_" in response.headers["content-disposition"]

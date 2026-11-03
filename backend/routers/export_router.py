@@ -14,6 +14,7 @@ from auth import require_admin
 from entitlement_guard import require_export_format
 from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from fastapi.responses import StreamingResponse
+from formules_tableur import neutraliser_formule
 from motor.motor_asyncio import AsyncIOMotorClient
 
 logger = logging.getLogger(__name__)
@@ -28,6 +29,11 @@ def init_db(db):
     """Initialize database connection"""
     global _db
     _db = db
+
+
+def _sans_formules(rows):
+    """Cellules texte neutralisées contre l'injection de formules (audit M5)."""
+    return [{k: neutraliser_formule(v) for k, v in row.items()} for row in rows]
 
 
 def get_db():
@@ -88,7 +94,7 @@ async def export_tariffs_csv(
         if rows:
             writer = csv.DictWriter(output, fieldnames=rows[0].keys())
             writer.writeheader()
-            writer.writerows(rows)
+            writer.writerows(_sans_formules(rows))
 
         filename = f"tariffs_{re.sub(r'[^A-Za-z0-9_-]', '_', country)}_{datetime.now(timezone.utc).strftime('%Y%m%d')}.csv"
 
@@ -146,7 +152,7 @@ async def export_tariffs_excel(
                     )
 
                 if rows:
-                    df = pd.DataFrame(rows)
+                    df = pd.DataFrame(_sans_formules(rows))
                     df.to_excel(
                         writer, sheet_name=country[:31], index=False
                     )  # Excel sheet name limit is 31 chars
@@ -315,10 +321,12 @@ async def export_comparison_csv(
         # Generate CSV
         output = io.StringIO()
         writer = csv.DictWriter(output, fieldnames=rows[0].keys())
-        writer.writeheader()
-        writer.writerows(rows)
+        # L'en-tête reprend les codes pays de la requête (`{pays}_duty`).
+        writer.writerow({k: neutraliser_formule(k) for k in rows[0]})
+        writer.writerows(_sans_formules(rows))
 
-        filename = f"comparison_{'_'.join(country_list)}_{datetime.now(timezone.utc).strftime('%Y%m%d')}.csv"
+        pays = re.sub(r"[^A-Za-z0-9_-]", "_", "_".join(country_list))
+        filename = f"comparison_{pays}_{datetime.now(timezone.utc).strftime('%Y%m%d')}.csv"
 
         return Response(
             content=output.getvalue(),
