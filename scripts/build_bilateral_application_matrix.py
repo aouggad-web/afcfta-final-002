@@ -164,7 +164,7 @@ def listes_verifiees() -> dict[str, dict]:
         "fiche": None,
     }
 
-    # --- Tunisie : origines publiées au tarif, sens du taux non tranché ---
+    # --- Tunisie : origines publiées au tarif, sens du taux tranché -------
     tun = _fiche("TUN_application_2026-09-13.json")
     listes["TUN"] = {
         "origines": {e["iso3"]: None for e in tun["accepted_origins"]["detail"]},
@@ -172,10 +172,9 @@ def listes_verifiees() -> dict[str, dict]:
         "preuve": "primaire — portail tarifaire officiel scellé dans le dépôt",
         "fiche": "TUN_application_2026-09-13.json",
         "reserve": (
-            "Les origines sont établies, mais le SENS du taux préférentiel "
-            "publié ne l'est pas (40 % affiché contre 36 % de NPF). Une case "
-            "ACCORDEE dit ici que la Tunisie sert cette origine sous régime "
-            "ZLECAf, pas quel droit en résulte."
+            "Le taux publié est un coefficient du texte TA n°016/2023 : le droit "
+            "servi est ce coefficient appliqué au droit de base 2019, plafonné "
+            "au NPF (TUN_droit_de_base_2019_2026-10-03.json)."
         ),
     }
 
