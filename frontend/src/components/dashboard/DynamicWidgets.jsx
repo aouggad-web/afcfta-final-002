@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -87,7 +88,7 @@ export function LiveTradeWidget({ language }) {
           <div key={exp.country} className="flex justify-between items-center text-xs">
             <span className="flex items-center gap-1">
               <span className="w-4 text-gray-400">{idx + 1}.</span>
-              {exp.name}
+              {trDonnee(exp.name, language)}
             </span>
             <Badge variant="outline" className="text-xs py-0">
               {exp.share_pct}%
@@ -182,7 +183,7 @@ export function LSCIChartWidget({ language }) {
   if (loading) return <WidgetLoader />;
 
   const chartData = data.slice(0, 8).map(d => ({
-    name: pick(language, d.country_fr, d.country, d.country_fr),
+    name: pick(language, d.country_fr, d.country, trDonnee(d.country_fr, language)),
     lsci: d.lsci_2023,
     rank: d.rank_africa
   }));
