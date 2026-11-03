@@ -128,6 +128,28 @@ def client_ip(request: Request) -> Optional[str]:
     return str(parsed)
 
 
+def cle_de_comptage(request: Request) -> Optional[str]:
+    """Clé d'un visiteur pour les compteurs (débit, quota des anonymes).
+
+    Une IPv4 compte telle quelle ; une IPv6 compte pour tout son préfixe /64,
+    que reçoit chaque abonné et dans lequel il peut changer d'adresse à volonté
+    (sans quoi un seul visiteur contournerait tout compteur). Une IPv4 notée en
+    IPv6 (`::ffff:a.b.c.d`) redevient une IPv4 : sinon toutes partageraient le
+    même /64 `::`.
+
+    None si l'IP client est inconnue (voir `client_ip`).
+    """
+    ip = client_ip(request)
+    if ip is None:
+        return None
+    adresse = ipaddress.ip_address(ip)
+    if adresse.version == 6 and adresse.ipv4_mapped:
+        adresse = adresse.ipv4_mapped
+    if adresse.version == 4:
+        return str(adresse)
+    return str(ipaddress.ip_network(f"{adresse}/64", strict=False))
+
+
 def _geoip_reader():
     """Charge (une seule fois) la base GeoLite2 si elle est configurée."""
     global _reader, _reader_loaded
