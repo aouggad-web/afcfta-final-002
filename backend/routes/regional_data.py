@@ -9,9 +9,11 @@ Endpoints:
   GET /api/regional/data-inventory    # Full data inventory for every country
 """
 
+import functools
 import json
 import logging
 import os
+import threading
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -127,6 +129,32 @@ def _build_country_entry(cc: str, data: Dict) -> Dict[str, Any]:
     }
 
 
+# Inventaire en cache (constat E2) : relire tous les *_tariffs.json (~800 Mo) à
+# chaque requête anonyme gelait le worker. Les entrées ne dépendent que du
+# contenu des fichiers, identifié par (chemin, mtime_ns, taille) ; les
+# paramètres ne font que filtrer et trier après coup. Le verrou évite que des
+# requêtes simultanées à froid reconstruisent chacune l'inventaire.
+_verrou_inventaire = threading.Lock()
+
+
+@functools.lru_cache(maxsize=1)
+def _entrees_pays(signature: tuple) -> tuple:
+    """Entrées par pays pour un état des fichiers (``signature``)."""
+    return tuple(_build_country_entry(cc, data) for cc, data in _iter_country_files())
+
+
+def _entrees_pays_a_jour() -> tuple:
+    """Entrées par pays, reconstruites seulement quand un fichier a changé."""
+    signature = []
+    if CRAWLED_DIR.exists():
+        for fn in sorted(CRAWLED_DIR.iterdir()):
+            if fn.name.endswith("_tariffs.json"):
+                st = fn.stat()
+                signature.append((str(fn), st.st_mtime_ns, st.st_size))
+    with _verrou_inventaire:
+        return _entrees_pays(tuple(signature))
+
+
 # ==================== Business logic (testable without FastAPI) ====================
 
 
@@ -141,8 +169,7 @@ def _compute_sub_positions(
     total_lines = 0
     total_sub = 0
 
-    for cc, data in _iter_country_files():
-        entry = _build_country_entry(cc, data)
+    for entry in _entrees_pays_a_jour():
         rows.append(entry)
         total_lines += entry["tariff_lines"]
         total_sub += entry["sub_positions"]
@@ -181,8 +208,7 @@ def _compute_data_inventory(format_filter: Optional[str] = None) -> Dict[str, An
     total_lines = 0
     total_sub = 0
 
-    for cc, data in _iter_country_files():
-        entry = _build_country_entry(cc, data)
+    for entry in _entrees_pays_a_jour():
         if format_filter and entry.get("data_format") != format_filter:
             continue
         rows.append(entry)

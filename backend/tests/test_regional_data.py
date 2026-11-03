@@ -8,8 +8,11 @@ Covers:
 - Cross-country format detection
 """
 
+import json
 import os
 import sys
+import time
+from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 
@@ -460,3 +463,81 @@ class TestRegionalDataInventory:
         result = self._call()
         sub_sum = sum(r["sub_positions"] for r in result["countries"])
         assert result["summary"]["total_sub_positions"] == sub_sum
+
+
+# ==================== Inventaire en cache (constat E2) ====================
+
+
+def _ecrire_pays(dossier, iso3, sous_positions):
+    (dossier / f"{iso3}_tariffs.json").write_text(
+        json.dumps(
+            {
+                "data_format": "enhanced_v2",
+                "tariff_lines": [{"hs6": "010121", "sub_position_count": sous_positions}],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+
+@pytest.fixture
+def dossier_factice(tmp_path, monkeypatch):
+    """Deux pays factices ; lectures des fichiers comptées ; cache vidé avant et
+    après, pour ne rien laisser aux autres tests."""
+    from routes import regional_data as rd
+
+    _ecrire_pays(tmp_path, "AAA", 3)
+    _ecrire_pays(tmp_path, "BBB", 1)
+    monkeypatch.setattr(rd, "CRAWLED_DIR", tmp_path)
+    lectures = []
+    original = rd._iter_country_files
+
+    def compte():
+        lectures.append(1)
+        return original()
+
+    monkeypatch.setattr(rd, "_iter_country_files", compte)
+    rd._entrees_pays.cache_clear()
+    yield rd, tmp_path, lectures
+    rd._entrees_pays.cache_clear()
+
+
+def test_inventaire_lu_une_seule_fois_tant_que_les_fichiers_ne_changent_pas(dossier_factice):
+    rd, _, lectures = dossier_factice
+    par_sous_positions = rd._compute_sub_positions()
+    par_code = rd._compute_sub_positions(sort="iso3")
+    filtre = rd._compute_sub_positions(min_sub=2)
+    inventaire = rd._compute_data_inventory(format_filter="enhanced_v2")
+    assert len(lectures) == 1
+    # Tri et filtres s'appliquent sur l'inventaire en cache, sans l'altérer.
+    assert [r["iso3"] for r in par_sous_positions["countries"]] == ["AAA", "BBB"]
+    assert [r["iso3"] for r in par_code["countries"]] == ["AAA", "BBB"]
+    assert [r["iso3"] for r in filtre["countries"]] == ["AAA"]
+    assert inventaire["summary"]["total_sub_positions"] == 4
+    assert rd._compute_data_inventory(format_filter="old")["countries"] == []
+    assert len(lectures) == 1
+
+
+def test_inventaire_relu_apres_modification_d_un_fichier(dossier_factice):
+    rd, dossier, lectures = dossier_factice
+    assert rd._compute_sub_positions()["totals"]["total_sub_positions"] == 4
+    _ecrire_pays(dossier, "BBB", 7)  # même taille : seul le mtime change
+    st = (dossier / "BBB_tariffs.json").stat()
+    os.utime(dossier / "BBB_tariffs.json", ns=(st.st_atime_ns, st.st_mtime_ns + 10**9))
+    assert rd._compute_sub_positions()["totals"]["total_sub_positions"] == 10
+    assert len(lectures) == 2
+
+
+def test_inventaire_construit_une_seule_fois_par_requetes_simultanees(dossier_factice, monkeypatch):
+    rd, _, lectures = dossier_factice
+    lecture = rd._iter_country_files
+
+    def lecture_lente():  # une construction à froid prend du temps
+        time.sleep(0.2)
+        return lecture()
+
+    monkeypatch.setattr(rd, "_iter_country_files", lecture_lente)
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        totaux = list(pool.map(lambda _: rd._compute_data_inventory()["summary"], range(4)))
+    assert len(lectures) == 1
+    assert all(t["total_sub_positions"] == 4 for t in totaux)
