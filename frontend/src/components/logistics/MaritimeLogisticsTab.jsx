@@ -19,6 +19,7 @@ import {
 } from '../common/FilterComponents';
 import { Anchor, Ship, MapPin, BarChart3, DollarSign } from 'lucide-react';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -269,8 +270,8 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-sm">{port.port_name}</p>
-                        <p className="text-xs text-[var(--afcfta-muted)]">{port.country_name}</p>
+                        <p className="font-medium text-sm">{trDonnee(port.port_name, language)}</p>
+                        <p className="text-xs text-[var(--afcfta-muted)]">{trDonnee(port.country_name, language)}</p>
                       </div>
                       {port.trs_analysis?.container_dwell_time_days && 
                        port.trs_analysis.container_dwell_time_days !== 'NA' && (

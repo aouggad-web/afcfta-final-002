@@ -10,6 +10,7 @@ import {
   LineChart, Line, Legend, AreaChart, Area 
 } from 'recharts';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
   const texts = {
@@ -223,10 +224,10 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                 <span className="text-4xl">⚓</span>
                 <div>
                   <DialogTitle className="text-3xl font-bold text-white">
-                    {port.port_name}
+                    {trDonnee(port.port_name, language)}
                   </DialogTitle>
                   <DialogDescription className="text-blue-100 mt-1 text-lg flex items-center gap-2">
-                    <span>📍 {port.port_authority?.address || port.country_name}</span>
+                    <span>📍 {port.port_authority?.address || trDonnee(port.country_name, language)}</span>
                     {port.un_locode && <Badge variant="outline" className="text-white border-white/30 text-xs">{port.un_locode}</Badge>}
                   </DialogDescription>
                 </div>
@@ -234,7 +235,7 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
             </div>
             <div className="flex flex-col items-end gap-2">
               <Badge className="bg-white/20 hover:bg-white/30 text-white border-0 px-3 py-1">
-                {port.port_type}
+                {trDonnee(port.port_type, language)}
               </Badge>
               {metrics.efficiency_grade && (
                 <Badge className={`${getEfficiencyColor(metrics.efficiency_grade)} text-white font-bold px-4 py-1 text-base shadow-sm border border-white/20`}>
@@ -419,7 +420,7 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                             trs.source_reliability_level === 2 ? "bg-blue-100 text-blue-800" :
                             trs.source_reliability_level === 3 ? "bg-yellow-100 text-yellow-800" :
                             "bg-gray-100 text-gray-600"
-                          }>{trs.source_reliability_label}</Badge>
+                          }>{trDonnee(trs.source_reliability_label, language)}</Badge>
                         </span>
                       ) : pick(language, "Données TRS (Time Release Study)", "TRS Data (Time Release Study)", "بيانات TRS (دراسة زمن الإفراج)")}
                     </CardDescription>
@@ -471,7 +472,7 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                       <div className="bg-orange-50 p-4 rounded-lg text-center">
                         <p className="text-xs font-semibold text-orange-600">{t.dataYear}</p>
                         <p className="text-2xl font-bold text-orange-800">{trs.data_year}</p>
-                        <p className="text-xs text-orange-500">{trs.source_reliability_label || ''}</p>
+                        <p className="text-xs text-orange-500">{trDonnee(trs.source_reliability_label, language) || ''}</p>
                       </div>
                     </div>
                     
@@ -700,7 +701,7 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                               <div className="flex justify-between items-start mb-1 gap-2">
                                 <span className="font-bold text-blue-900 text-sm leading-tight">{service.service_name || service.carrier}</span>
                                 <Badge className="bg-blue-100 text-blue-800 border-blue-300 text-xs shrink-0">
-                                  {service.frequency || pick(language, 'Régulier', 'Regular', 'منتظم')}
+                                  {trDonnee(service.frequency, language) || pick(language, 'Régulier', 'Regular', 'منتظم')}
                                 </Badge>
                               </div>
                               <div className="text-xs text-gray-700 mb-1">
@@ -756,10 +757,10 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                           <>
                             <div className="flex justify-between items-start gap-2">
                               <span className="font-bold text-gray-800 text-sm leading-tight">{agent.agent_name}</span>
-                              {agent.group && <Badge variant="outline" className="text-xs text-gray-500 shrink-0">{agent.group}</Badge>}
+                              {agent.group && <Badge variant="outline" className="text-xs text-gray-500 shrink-0">{trDonnee(agent.group, language)}</Badge>}
                             </div>
                             {agent.role && (
-                              <p className="text-xs text-blue-700 font-medium">{agent.role}</p>
+                              <p className="text-xs text-blue-700 font-medium">{trDonnee(agent.role, language)}</p>
                             )}
                             {agent.address && (
                               <div className="flex items-start gap-1 text-xs text-gray-500">
@@ -798,7 +799,7 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                             {agent.services && agent.services.length > 0 && (
                               <div className="flex flex-wrap gap-1 mt-1">
                                 {agent.services.map((s, i) => (
-                                  <span key={i} className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">{s}</span>
+                                  <span key={i} className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">{trDonnee(s, language)}</span>
                                 ))}
                               </div>
                             )}

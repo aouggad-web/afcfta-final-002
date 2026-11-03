@@ -5,6 +5,7 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { montant, montantUnite } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -17,6 +18,15 @@ const PRODUCT_TYPES = [
   { value: 'tender', fr: "Garantie d'appel d'offres", en: 'Tender guarantee', ar: 'ضمان المناقصة' },
   { value: 'transport', fr: 'Assurance transport', en: 'Transport insurance', ar: 'تأمين النقل' },
 ];
+
+// Niveaux de risque renvoyés par l'API (codes anglais) → arabe.
+const RISK_LEVEL_AR = {
+  very_low: 'منخفض جدًا',
+  low: 'منخفض',
+  moderate: 'متوسط',
+  high: 'مرتفع',
+  very_high: 'مرتفع جدًا',
+};
 
 const texts = {
   fr: {
@@ -252,7 +262,7 @@ export default function Insurance({ language = 'en' }) {
                   >
                     {countries.map((c) => (
                       <option key={c.country_code} value={c.country_code}>
-                        {c.country_name} ({c.country_code})
+                        {trDonnee(c.country_name, language)} ({c.country_code})
                       </option>
                     ))}
                   </select>
@@ -332,14 +342,14 @@ export default function Insurance({ language = 'en' }) {
                 <CardTitle className="text-base flex items-center gap-2">
                   {t.profile}
                   <Badge variant="outline">
-                    {profile.country_code} — {profile.country_name}
+                    {profile.country_code} — {trDonnee(profile.country_name, language)}
                   </Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span>{t.riskLevel}:</span>
-                  <Badge className="capitalize">{profile.risk_level}</Badge>
+                  <Badge className="capitalize">{pick(language, profile.risk_level, profile.risk_level, RISK_LEVEL_AR[profile.risk_level] || profile.risk_level)}</Badge>
                 </div>
                 <div>
                   {t.insurers}: {profile.available_insurers?.length || 0}

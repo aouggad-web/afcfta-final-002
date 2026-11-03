@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Badge } from '../ui/badge';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { pick, intlLocale } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
   const texts = {
@@ -118,12 +119,12 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-[var(--info)] flex items-center gap-2">
             <span>&#x1F6A2;</span>
-            <span>{port.port_name}</span>
+            <span>{trDonnee(port.port_name, language)}</span>
           </DialogTitle>
           <DialogDescription>
             <div className="flex items-center gap-2 mt-2 flex-wrap">
-              <Badge variant="outline">{port.country_name}</Badge>
-              <Badge variant="secondary">{port.port_type}</Badge>
+              <Badge variant="outline">{trDonnee(port.country_name, language)}</Badge>
+              <Badge variant="secondary">{trDonnee(port.port_type, language)}</Badge>
               {port.un_locode && <Badge>{port.un_locode}</Badge>}
               {(perfMetrics.efficiency_grade || latestStats.performance_grade) && (
                 <Badge className={`${gradeColor(perfMetrics.efficiency_grade || latestStats.performance_grade)} text-[var(--text)]`}>
@@ -190,7 +191,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
             <div className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] p-3 rounded-lg border-l-4 border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
               <p className="text-xs font-semibold text-[var(--gold)]">&#x1F4E6; {t.dwellTime}</p>
               <p className="text-lg font-bold text-[var(--gold)]">{trsAnalysis.container_dwell_time_days} {t.days}</p>
-              <p className="text-xs text-[var(--gold)] truncate">{trsAnalysis.source_reliability_label || trsAnalysis.source_type}</p>
+              <p className="text-xs text-[var(--gold)] truncate">{trDonnee(trsAnalysis.source_reliability_label, language) || trsAnalysis.source_type}</p>
             </div>
           )}
           {trsAnalysis && (trsAnalysis.vessel_waiting_days || (trsAnalysis.vessel_turnaround_hours && trsAnalysis.vessel_turnaround_hours !== 'NA')) && (
@@ -232,12 +233,12 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                       <p className="font-bold text-[var(--text)] text-sm leading-tight">{agent.agent_name}</p>
                       {agent.group && (
                         <Badge variant="outline" className="text-xs shrink-0">
-                          {agent.group}
+                          {trDonnee(agent.group, language)}
                         </Badge>
                       )}
                     </div>
                     {agent.role && (
-                      <p className="text-xs text-[var(--info)] font-medium">{agent.role}</p>
+                      <p className="text-xs text-[var(--info)] font-medium">{trDonnee(agent.role, language)}</p>
                     )}
                     {agent.contact && (
                       <p className="text-xs text-[var(--afcfta-muted)] flex items-center gap-1">
@@ -254,7 +255,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                       <div className="flex flex-wrap gap-1 mt-1">
                         {agent.services.map((s, i) => (
                           <span key={i} className="text-xs bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] px-1.5 py-0.5 rounded">
-                            {s}
+                            {trDonnee(s, language)}
                           </span>
                         ))}
                       </div>
@@ -263,13 +264,13 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                       <div className="flex flex-wrap gap-1">
                         {agent.cargo_types.map((c, i) => (
                           <span key={i} className="text-xs bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] px-1.5 py-0.5 rounded">
-                            {c}
+                            {trDonnee(c, language)}
                           </span>
                         ))}
                       </div>
                     )}
                     {agent.operating_hours && (
-                      <p className="text-xs text-[var(--afcfta-muted)]">🕐 {agent.operating_hours}</p>
+                      <p className="text-xs text-[var(--afcfta-muted)]">🕐 {trDonnee(agent.operating_hours, language)}</p>
                     )}
                     {agent.website && agent.website !== 'Non disponible' && (
                       <a
@@ -301,7 +302,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                     <p className="text-sm text-[var(--text)] font-semibold mt-1">{service.service_name}</p>
                     {service.frequency && (
                       <p className="text-sm text-[var(--text)] mt-1">
-                        <span className="font-semibold">{t.frequency}:</span> {service.frequency}
+                        <span className="font-semibold">{t.frequency}:</span> {trDonnee(service.frequency, language)}
                       </p>
                     )}
                     {service.rotation && (
@@ -460,7 +461,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                 <h3 className="text-sm font-bold text-[var(--text)] mb-2">
                   &#x1F4CB; TRS — {pick(language, 'Time Release Study', 'Time Release Study', 'دراسة زمن الإفراج')}
                   {trsAnalysis.source_reliability_label && (
-                    <Badge className="ml-2 text-xs bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]">{trsAnalysis.source_reliability_label}</Badge>
+                    <Badge className="ml-2 text-xs bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]">{trDonnee(trsAnalysis.source_reliability_label, language)}</Badge>
                   )}
                 </h3>
                 {trsAnalysis.warning && (
@@ -550,7 +551,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                     <p className="text-xs font-semibold text-[var(--afcfta-muted)] mb-1">{t.service_providers}</p>
                     <div className="flex flex-wrap gap-1">
                       {logisticsNetwork.service_providers_available.map((s, i) => (
-                        <Badge key={i} variant="outline" className="text-xs">{s}</Badge>
+                        <Badge key={i} variant="outline" className="text-xs">{trDonnee(s, language)}</Badge>
                       ))}
                     </div>
                   </div>

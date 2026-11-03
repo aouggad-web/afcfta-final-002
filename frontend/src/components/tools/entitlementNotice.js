@@ -15,7 +15,7 @@
  * entièrement côté serveur.
  */
 
-import { pick } from '../../i18n/lang';
+import { isRtl, pick } from '../../i18n/lang';
 
 /** Charge utile d'un refus d'entitlement, ou `null` pour toute autre erreur. */
 export function entitlementRefusal(error) {
@@ -36,11 +36,18 @@ export function entitlementRefusal(error) {
 
 /**
  * Message à afficher pour un refus. On préfère celui du serveur (il nomme la
- * formule courante) et on retombe sur un libellé local sinon.
+ * formule courante) et on retombe sur un libellé local sinon. Le serveur ne
+ * rédige qu'en français : en arabe, on reconstruit le message à partir du
+ * code du refus et de la formule.
  */
 export function entitlementNoticeText(refusal, language = 'fr') {
   if (!refusal) return null;
-  if (refusal.message) return refusal.message;
+  if (isRtl(language) && refusal.tier) {
+    return refusal.kind === 'quota_exceeded'
+      ? `تم بلوغ حصة الباقة '${refusal.tier}' لهذه الوحدة. قم بالترقية إلى باقة أعلى للمتابعة.`
+      : `هذه الوحدة غير مشمولة في الباقة '${refusal.tier}'. قم بالترقية إلى باقة أعلى للوصول إليها.`;
+  }
+  if (refusal.message && !isRtl(language)) return refusal.message;
 
   if (refusal.kind === 'quota_exceeded') {
     return pick(language, "Quota de téléchargements atteint pour votre formule. Il se renouvelle à la prochaine période.", 'Download quota reached for your plan. It renews at the next period.', 'تم بلوغ حصة التنزيلات المخصّصة لباقتك. تتجدّد في الفترة القادمة.');

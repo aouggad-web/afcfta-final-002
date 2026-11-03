@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { intlLocale } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 export default function PortCard({ port, onOpenDetails, language = 'fr' }) {
   const texts = {
@@ -79,15 +80,15 @@ export default function PortCard({ port, onOpenDetails, language = 'fr' }) {
       <CardHeader className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] border-b pb-3">
         <CardTitle className="text-xl font-bold text-[var(--info)] flex items-center gap-2">
           <span>🚢</span>
-          <span className="flex-1">{port.port_name}</span>
+          <span className="flex-1">{trDonnee(port.port_name, language)}</span>
           {port.un_locode && (
             <span className="text-sm font-normal text-[var(--afcfta-muted)]">({port.un_locode})</span>
           )}
         </CardTitle>
         <CardDescription className="text-sm flex items-center gap-2 flex-wrap">
-          <span className="font-semibold">{port.country_name}</span>
+          <span className="font-semibold">{trDonnee(port.country_name, language)}</span>
           <span className="text-[var(--afcfta-muted)]">•</span>
-          <span className="text-[var(--info)]">{port.port_type}</span>
+          <span className="text-[var(--info)]">{trDonnee(port.port_type, language)}</span>
           {perfMetrics.efficiency_grade && (
             <Badge className={`text-xs ${gradeColor(perfMetrics.efficiency_grade)}`}>
               {perfMetrics.efficiency_grade}

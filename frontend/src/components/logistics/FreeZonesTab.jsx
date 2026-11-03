@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { toast } from '../../hooks/use-toast';
 import { Building2 } from 'lucide-react';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -211,12 +212,12 @@ export default function FreeZonesTab({ language = 'fr' }) {
                 <Popup>
                   <div className="p-2 min-w-[280px]">
                     <h3 className="font-bold text-lg text-[var(--terra)] mb-1">{zone.name}</h3>
-                    <Badge className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)] mb-2">{zone.type}</Badge>
-                    <p className="text-sm text-[var(--afcfta-muted)] mb-2">{zone.country}</p>
+                    <Badge className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)] mb-2">{trDonnee(zone.type, language)}</Badge>
+                    <p className="text-sm text-[var(--afcfta-muted)] mb-2">{trDonnee(zone.country, language)}</p>
                     <div className="text-xs space-y-1">
-                      <p><strong>🏗️ {t.industries}:</strong> {zone.industries.join(', ')}</p>
+                      <p><strong>🏗️ {t.industries}:</strong> {zone.industries.map((ind) => trDonnee(ind, language)).join(pick(language, ', ', ', ', '، '))}</p>
                       <p><strong>📏 {t.surface}:</strong> {zone.surface_ha} {pick(language, 'ha', 'ha', 'هكتار')}</p>
-                      <p><strong>🔗 {t.connection}:</strong> {zone.connection}</p>
+                      <p><strong>🔗 {t.connection}:</strong> {trDonnee(zone.connection, language)}</p>
                     </div>
                     {zone.authority && (
                       <div className="mt-2 pt-2 border-t border-[var(--afcfta-border)]">
@@ -242,13 +243,13 @@ export default function FreeZonesTab({ language = 'fr' }) {
               <Card key={zone.id} className="hover:shadow-lg transition-shadow border-t-4 border-t-orange-500">
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
-                  <Badge variant="outline" className="text-xs">{zone.country}</Badge>
+                  <Badge variant="outline" className="text-xs">{trDonnee(zone.country, language)}</Badge>
                   <Badge className={zone.status.includes('Opérationnel') ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]' : 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]'}>
-                    {zone.status}
+                    {trDonnee(zone.status, language)}
                   </Badge>
                 </div>
                 <CardTitle className="text-xl mt-2">{zone.name}</CardTitle>
-                <CardDescription>{zone.type}</CardDescription>
+                <CardDescription>{trDonnee(zone.type, language)}</CardDescription>
               </CardHeader>
               <CardContent className="text-sm space-y-4">
                 <div>
@@ -256,7 +257,7 @@ export default function FreeZonesTab({ language = 'fr' }) {
                   <div className="flex flex-wrap gap-1">
                     {zone.industries.map((ind, i) => (
                       <Badge key={i} variant="secondary" className="bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)] text-xs">
-                        {ind}
+                        {trDonnee(ind, language)}
                       </Badge>
                     ))}
                   </div>
@@ -264,13 +265,13 @@ export default function FreeZonesTab({ language = 'fr' }) {
                 
                 <div className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] p-3 rounded-lg border border-[color-mix(in_srgb,var(--terra)_30%,transparent)]">
                   <p className="font-semibold text-[var(--terra)] mb-1">💡 {t.incentives}:</p>
-                  <p className="text-xs text-[var(--terra)]">{zone.incentives}</p>
+                  <p className="text-xs text-[var(--terra)]">{trDonnee(zone.incentives, language)}</p>
                 </div>
 
                 <div className="space-y-1 text-[var(--afcfta-muted)]">
-                  <p><strong>🏢 {t.keyTenants}:</strong> {zone.key_tenants.join(', ')}</p>
-                  <p><strong>🌍 {t.impact}:</strong> {zone.impact}</p>
-                  <p><strong>⚓ {t.connection}:</strong> {zone.connection}</p>
+                  <p><strong>🏢 {t.keyTenants}:</strong> {zone.key_tenants.map((k) => trDonnee(k, language)).join(pick(language, ', ', ', ', '، '))}</p>
+                  <p><strong>🌍 {t.impact}:</strong> {trDonnee(zone.impact, language)}</p>
+                  <p><strong>⚓ {t.connection}:</strong> {trDonnee(zone.connection, language)}</p>
                 </div>
 
                 {zone.authority && (

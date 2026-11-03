@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Ship, Anchor, Waves, Loader2, Leaf, AlertTriangle, Package, TrendingUp } from 'lucide-react';
 import { montant } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -44,8 +45,8 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
   }, []);
 
   const portOptions = useMemo(
-    () => ports.map((p) => ({ value: p.locode, label: `${p.name} (${p.locode})${p.max_draft_m ? ` · ${p.max_draft_m} m` : ''}` })),
-    [ports]
+    () => ports.map((p) => ({ value: p.locode, label: `${trDonnee(p.name, language)} (${p.locode})${p.max_draft_m ? ` · ${p.max_draft_m} m` : ''}` })),
+    [ports, language]
   );
 
   const run = async () => {
@@ -261,8 +262,8 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
             )}
 
             <div className="mt-4 text-[11px] text-[var(--afcfta-muted)]">
-              {result.commodity?.label && <span>{result.commodity.label} · </span>}
-              {override?.source || cost.disclaimer}
+              {result.commodity?.label && <span>{trDonnee(result.commodity.label, language)} · </span>}
+              {override?.source || trDonnee(cost.disclaimer, language)}
             </div>
           </CardContent>
         </Card>

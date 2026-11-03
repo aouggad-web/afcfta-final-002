@@ -9,7 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Ship, Plane, Truck, Train, Loader2, Layers, Award, Zap, Leaf, Construction, Sparkles, TrendingUp, Building2 } from 'lucide-react';
 import { PDFExportButton } from '../common/ExportTools';
 import { montant } from '../../utils/nombres';
-import { pick } from '../../i18n/lang';
+import { pick, isRtl } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -80,6 +81,19 @@ function fmtDays(min, max, language) {
   return `${min}–${max} ${d}`;
 }
 
+// Libellés composés renvoyés par l'API (« Maritime + Terrestre — via Abidjan → Corridor … ») :
+// en arabe, chaque morceau passe par le dictionnaire de données ; ailleurs le texte reste inchangé.
+function trLibelle(texte, language) {
+  if (!texte || !isRtl(language)) return texte;
+  return texte
+    .split(' — ')
+    .map((partie) => partie
+      .split(' → ')
+      .map((p) => (p.startsWith('via ') ? `عبر ${trDonnee(p.slice(4), language)}` : trDonnee(p, language)))
+      .join(' ← '))
+    .join(' — ');
+}
+
 function OptionCard({ opt, language }) {
   // Pick icon by corridor mode when available (so rail uses Train, not Truck)
   const iconKey = opt.corridor_mode || opt.mode;
@@ -108,7 +122,7 @@ function OptionCard({ opt, language }) {
             </div>
             <div>
               <CardTitle className="text-base text-[var(--text)] flex items-center gap-2 flex-wrap">
-                {opt.label}
+                {trLibelle(opt.label, language)}
                 {opt.is_future && (
                   <Badge variant="outline" className={`text-[11px] ${phaseMeta.cls}`}>
                     <Construction className="w-3 h-3 mr-1" />{pick(language, phaseMeta.label, phaseMeta.label, phaseMeta.label_ar)}
@@ -117,8 +131,8 @@ function OptionCard({ opt, language }) {
               </CardTitle>
               {opt.via_port && (
                 <CardDescription className="text-xs mt-1 text-[var(--afcfta-muted)]">
-                  {pick(language, 'Transit via', 'Transit via', 'عبور عبر')} <span className="text-[var(--text)]">{opt.via_port}</span>
-                  {opt.corridor_name && <> · {pick(language, 'Corridor', 'Corridor', 'ممر')} <span className="text-[var(--text)]">{opt.corridor_name}</span></>}
+                  {pick(language, 'Transit via', 'Transit via', 'عبور عبر')} <span className="text-[var(--text)]">{trDonnee(opt.via_port, language)}</span>
+                  {opt.corridor_name && <> · {pick(language, 'Corridor', 'Corridor', 'ممر')} <span className="text-[var(--text)]">{trLibelle(opt.corridor_name, language)}</span></>}
                 </CardDescription>
               )}
             </div>
@@ -170,15 +184,15 @@ function OptionCard({ opt, language }) {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="text-[var(--text)]">
-                        <span className="font-medium">{seg.from}</span>
-                        {' → '}
-                        <span className="font-medium">{seg.to}</span>
+                        <span className="font-medium">{trDonnee(seg.from, language)}</span>
+                        {pick(language, ' → ', ' → ', ' ← ')}
+                        <span className="font-medium">{trDonnee(seg.to, language)}</span>
                       </div>
                       <div className="text-xs text-[var(--afcfta-muted)] mt-0.5">
                         {seg.distance_km != null && <span>{seg.distance_km.toLocaleString('en-US')} km</span>}
                         {seg.transit_days_min != null && <span> · {fmtDays(seg.transit_days_min, seg.transit_days_max, language)}</span>}
                         {seg.cost_usd != null && <span> · {fmtUsd(seg.cost_usd, language)}</span>}
-                        {seg.corridor_name && <span> · {seg.corridor_name}</span>}
+                        {seg.corridor_name && <span> · {trLibelle(seg.corridor_name, language)}</span>}
                       </div>
                       {seg.carriers && seg.carriers.length > 0 && (
                         <div className="flex flex-wrap items-center gap-1 mt-1">
@@ -471,7 +485,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
                   <div className="rounded-lg bg-[var(--overlay)] p-3 border border-[var(--overlay-border)]">
                     <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">{pick(language, "Aujourd'hui", "Aujourd'hui", 'اليوم')}</div>
                     <div className="text-sm text-[var(--text)] mb-2">
-                      {result.roi_infrastructure.reference_operational.label}
+                      {trLibelle(result.roi_infrastructure.reference_operational.label, language)}
                     </div>
                     <div className="grid grid-cols-3 gap-2">
                       <div><span className="text-[var(--afcfta-muted)] text-[11px]">{pick(language, 'Coût', 'Coût', 'التكلفة')}</span><div className="font-display text-base text-[var(--text)]">{fmtUsd(result.roi_infrastructure.reference_operational.cost_usd, language)}</div></div>
@@ -481,10 +495,10 @@ export default function MultimodalComparator({ language = 'fr' }) {
                   </div>
                   <div className="rounded-lg bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] p-3 border border-dashed border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
                     <div className="text-[11px] text-[var(--info)] mb-1">
-                      🚧 {pick(language, 'Futur', 'Futur', 'مستقبلي')} · {result.roi_infrastructure.best_future_cost.status}
+                      🚧 {pick(language, 'Futur', 'Futur', 'مستقبلي')} · {trDonnee(result.roi_infrastructure.best_future_cost.status, language)}
                     </div>
                     <div className="text-sm text-[var(--text)] mb-2">
-                      {result.roi_infrastructure.best_future_cost.label}
+                      {trLibelle(result.roi_infrastructure.best_future_cost.label, language)}
                     </div>
                     <div className="grid grid-cols-3 gap-2">
                       <div><span className="text-[var(--afcfta-muted)] text-[11px]">{pick(language, 'Coût', 'Coût', 'التكلفة')}</span><div className="font-display text-base text-[var(--info)]">{fmtUsd(result.roi_infrastructure.best_future_cost.cost_usd, language)}</div></div>

@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, CircleMarker, Tooltip, Popup, useMap } from 'r
 import L from 'leaflet';
 import axios from 'axios';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 // Fix for Leaflet default marker icons in React
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -197,9 +198,9 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
           >
             <Tooltip direction="top" offset={[0, -10]} opacity={0.9}>
               <div className="text-center">
-                <strong className="text-sm">{port.port_name}</strong>
+                <strong className="text-sm">{trDonnee(port.port_name, language)}</strong>
                 <br />
-                <span className="text-xs text-[var(--afcfta-muted)]">{port.country_name}</span>
+                <span className="text-xs text-[var(--afcfta-muted)]">{trDonnee(port.country_name, language)}</span>
                 <br />
                 <span className="text-xs">
                   📦 {port.latest_stats?.container_throughput_teu?.toLocaleString('fr-FR') || 'N/A'} TEU
@@ -210,10 +211,10 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
               <div className="p-2 min-w-[220px]">
                 <h3 className="font-bold text-base mb-1 flex items-center gap-2">
                   <span>⚓</span>
-                  {port.port_name}
+                  {trDonnee(port.port_name, language)}
                 </h3>
                 <p className="text-sm text-[var(--afcfta-muted)] mb-2">
-                  {port.country_name}{port.un_locode ? ` • ${port.un_locode}` : ''}
+                  {trDonnee(port.country_name, language)}{port.un_locode ? ` • ${port.un_locode}` : ''}
                 </p>
                 <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-2 rounded text-sm mb-1">
                   <p className="font-semibold text-[var(--info)]">📦 {t.teuYear}</p>
