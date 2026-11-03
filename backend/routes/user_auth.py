@@ -5,8 +5,11 @@ Session is a JWT stored in an httpOnly cookie (7-day TTL). Separate from the
 X-API-Key tiered system in `auth.py`, which governs the public trade-data API.
 """
 
+import hashlib
+import hmac
 import logging
 import os
+import secrets
 from datetime import datetime, timedelta, timezone
 
 import httpx
@@ -35,6 +38,11 @@ _db = None
 MAX_FAILED_ATTEMPTS = 5
 LOCKOUT_MINUTES = 15
 COOKIE_MAX_AGE = 7 * 24 * 3600
+# Cookie « appareil connu » (constat M4) : posé à chaque connexion réussie, il
+# survit à la session et à la déconnexion pour que ce navigateur garde son
+# propre compteur d'échecs.
+DEVICE_COOKIE = "appareil_connu"
+DEVICE_COOKIE_MAX_AGE = 365 * 24 * 3600
 # Same flag the CSRF/security-headers middlewares use to decide the Secure
 # cookie attribute — keep the session cookie usable in HTTP dev/internal
 # environments instead of silently never being sent back by the browser.
@@ -161,6 +169,50 @@ def _set_session_cookie(response: Response, token: str, max_age: int = COOKIE_MA
         _add_partitioned_attribute(response, "access_token")
 
 
+def _device_key() -> bytes | None:
+    """Clé HMAC des cookies d'appareil, dérivée de JWT_SECRET avec une étiquette
+    propre (jamais la clé des sessions elle-même). None si JWT_SECRET est vide :
+    les cookies d'appareil sont alors ignorés."""
+    secret = os.environ.get("JWT_SECRET", "")
+    if not secret:
+        return None
+    return hmac.new(secret.encode(), b"appareil-connu", hashlib.sha256).digest()
+
+
+def _device_signature(key: bytes, email: str, nonce: str) -> str:
+    return hmac.new(key, f"{email}|{nonce}".encode(), hashlib.sha256).hexdigest()
+
+
+def _known_device_nonce(request: Request, email: str) -> str | None:
+    """Nonce du cookie d'appareil s'il a été émis pour CET email, sinon None."""
+    key = _device_key()
+    nonce, _, signature = request.cookies.get(DEVICE_COOKIE, "").partition(".")
+    if key is None or not nonce or not signature:
+        return None
+    expected = _device_signature(key, email, nonce)
+    return nonce if hmac.compare_digest(signature.encode(), expected.encode()) else None
+
+
+def _set_device_cookie(response: Response, email: str) -> None:
+    """Cookie `<nonce>.<HMAC(clé, email|nonce)>`, mêmes attributs Secure /
+    SameSite / Partitioned que le cookie de session."""
+    key = _device_key()
+    if key is None:
+        return
+    nonce = secrets.token_urlsafe(16)
+    response.set_cookie(
+        key=DEVICE_COOKIE,
+        value=f"{nonce}.{_device_signature(key, email, nonce)}",
+        httponly=True,
+        secure=_COOKIE_SECURE,
+        samesite="none" if _COOKIE_SECURE else "lax",
+        max_age=DEVICE_COOKIE_MAX_AGE,
+        path="/",
+    )
+    if _COOKIE_SECURE:
+        _add_partitioned_attribute(response, DEVICE_COOKIE)
+
+
 @router.post("/register")
 async def register(
     payload: RegisterPayload,
@@ -241,13 +293,18 @@ async def _is_locked_out(db, identifier: str) -> bool:
 
 
 @router.post("/login")
-async def login(payload: LoginPayload, response: Response):
+async def login(payload: LoginPayload, request: Request, response: Response):
     db = _require_db()
     email = str(payload.email)
-    # Keyed by email only (not IP): behind this app's ingress, the proxy hop
-    # seen as request.client.host varies between requests from the same
-    # browser, which would make an IP-based identifier unreliable.
-    identifier = email
+    # Verrou par appareil connu (OWASP « device cookie », constat M4) : un
+    # navigateur qui s'est déjà connecté à ce compte a son propre compteur, et
+    # seul lui se verrouille — un tiers ne peut plus bloquer la victime sur ses
+    # navigateurs habituels. Les autres tentatives partagent le compteur du
+    # compte, comme avant. Aucune adresse IP : elles ne sont pas conservées
+    # (politique de confidentialité), et derrière l'ingress le relais vu dans
+    # request.client.host varie d'une requête à l'autre.
+    nonce = _known_device_nonce(request, email)
+    identifier = f"{email}|appareil|{nonce}" if nonce else email
 
     if await _is_locked_out(db, identifier):
         raise HTTPException(
@@ -266,7 +323,8 @@ async def login(payload: LoginPayload, response: Response):
     if not user_doc or not password_ok:
         updated = await db.login_attempts.find_one_and_update(
             {"identifier": identifier},
-            {"$inc": {"count": 1}},
+            # `email` : retrouver les compteurs d'appareil à la suppression du compte.
+            {"$inc": {"count": 1}, "$setOnInsert": {"email": email}},
             upsert=True,
             return_document=ReturnDocument.AFTER,
         )
@@ -288,6 +346,7 @@ async def login(payload: LoginPayload, response: Response):
 
     token = _issue_session_token(str(user_doc["_id"]), email)
     _set_session_cookie(response, token)
+    _set_device_cookie(response, email)
     return _public_user(user_doc)
 
 
@@ -546,6 +605,7 @@ async def delete_account(request: Request, response: Response):
     await db.payment_attempts.delete_many({"user_id": uid})
     await db.usage_counters.delete_many({"user_id": uid})
     await db.login_attempts.delete_many({"identifier": user["email"]})
+    await db.login_attempts.delete_many({"email": user["email"]})
     await db.contact_messages.delete_many({"email": user["email"]})
     await db.users.delete_one({"_id": uid})
 
