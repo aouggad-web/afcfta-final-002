@@ -1,7 +1,7 @@
 /**
  * Lecture des refus d'abonnement renvoyés par la couche d'entitlements.
  *
- * Le module Outils (téléchargements tarifaires, monitoring de la collecte)
+ * Le module Outils (positions tarifaires nationales, monitoring de la collecte)
  * est réservé aux formules payantes : `routes/__init__.py` monte le routeur
  * `tariff-data` derrière `require_module_enabled("tools")`, et
  * `entitlements.py` place `"tools"` à `_DENIED` sur la formule gratuite. Un
