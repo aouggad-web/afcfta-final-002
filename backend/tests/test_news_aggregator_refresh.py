@@ -142,14 +142,17 @@ def test_actualiser_rend_le_cache_si_la_collecte_depasse_l_attente(tmp_path, mon
 
     monkeypatch.setattr(na, "fetch_all_news", collecte_interminable)
 
-    debut = time.perf_counter()
-    reponse = asyncio.run(na.get_news(force_refresh=True))
-    assert time.perf_counter() - debut < 3
-    assert reponse["source"] == "cache"
-    assert reponse["articles"] == [{"title": "ancien"}]
-
-    libere.set()
-    na._background_refresh_thread.join(5)
+    try:
+        debut = time.perf_counter()
+        reponse = asyncio.run(na.get_news(force_refresh=True))
+        assert time.perf_counter() - debut < 3
+        assert reponse["source"] == "cache"
+        assert reponse["articles"] == [{"title": "ancien"}]
+    finally:
+        # Libérer la collecte avant que monkeypatch ne rende NEWS_CACHE_FILE :
+        # sinon, sur un échec, elle écrirait dans le vrai cache.
+        libere.set()
+        na._background_refresh_thread.join(5)
 
 
 def test_cache_a_jour_ne_declenche_aucune_collecte(tmp_path, monkeypatch):

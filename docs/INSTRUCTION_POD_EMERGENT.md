@@ -158,9 +158,12 @@ Un exportateur ne peut servir que ce que le pays **ne produit pas** : la
 production nationale est soustraite (`importable_need`), et c'est sur cette
 grandeur que les marchés sont classés.
 
+Le module Opportunités est réservé aux abonnements payants : sans session, ces
+appels exigent une clé API (ici une clé admin, `ADMIN_KEY`, à ne pas afficher).
+
 ```bash
-curl -s "http://localhost:8001/api/reports/national-need?hs_code=0714&country=DZA"
-curl -s "http://localhost:8001/api/reports/national-need?hs_code=0803&country=DZA"
+curl -s -H "X-API-Key: $ADMIN_KEY" "http://localhost:8001/api/reports/national-need?hs_code=0714&country=DZA"
+curl -s -H "X-API-Key: $ADMIN_KEY" "http://localhost:8001/api/reports/national-need?hs_code=0803&country=DZA"
 ```
 
 Le premier doit être **non établi** ; le second doit **rester un marché réel**.

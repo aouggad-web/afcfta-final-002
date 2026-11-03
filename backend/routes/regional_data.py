@@ -149,7 +149,11 @@ def _entrees_pays_a_jour() -> tuple:
     if CRAWLED_DIR.exists():
         for fn in sorted(CRAWLED_DIR.iterdir()):
             if fn.name.endswith("_tariffs.json"):
-                st = fn.stat()
+                try:
+                    st = fn.stat()
+                except OSError:  # lien cassé, fichier retiré entre-temps
+                    logger.warning("Fichier tarifaire illisible ignoré : %s", fn.name)
+                    continue
                 signature.append((str(fn), st.st_mtime_ns, st.st_size))
     with _verrou_inventaire:
         return _entrees_pays(tuple(signature))

@@ -411,6 +411,8 @@ def require_calculations_quota():
         if user is None:
             if _db is None or _cle_api(key_doc):
                 return ent
+            if ent.daily_calculations is None:
+                return ent
             cle = geo_service.cle_de_comptage(request)
             if cle is not None and not _calcul_anonyme_autorise(cle, ent.daily_calculations):
                 raise _limite_anonyme_atteinte(ent.daily_calculations)

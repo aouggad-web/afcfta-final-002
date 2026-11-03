@@ -166,7 +166,8 @@ def _textes_cherchables(iso3: str, positions: dict):
 def recherche(
     iso3: str,
     # Borné (constat E2) : une désignation nationale collée tient (jusqu'à
-    # ~1 200 caractères au Maroc).
+    # ~1 200 caractères au Maroc ; au-delà, seules quelques notes de chapitre
+    # recopiées dans la désignation, à Madagascar et en Zambie).
     q: str = Query(..., min_length=2, max_length=2000),
     limit: int = Query(25, ge=1, le=100),
     langue: str = Query("fr", pattern="^(fr|en)$"),

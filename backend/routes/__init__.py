@@ -41,7 +41,10 @@ _admin = [Depends(require_admin)]
 # API key", these check "does this subscriber's tier include this module". A
 # JWT-session subscriber is gated on their real tier; anyone else (API-key-only,
 # or no auth at all) is gated as the free tier — see
-# entitlement_guard.get_optional_subscriber.
+# entitlement_guard.get_optional_subscriber. Exceptions (audit E1): without a
+# session, calculations are counted in memory per visitor, and reports, API v2
+# and file exports are refused unless a valid API key is sent — see the
+# entitlement_guard module docstring.
 #
 # Browse/reference modules (stats, production, logistics, roo, tools) are gated
 # on the tier on/off switch ONLY — no per-request metering. A single UI view of

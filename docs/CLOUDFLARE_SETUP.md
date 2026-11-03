@@ -115,7 +115,8 @@ défaut est `127.0.0.1`. **Gardez ce défaut et ne passez jamais à
 `UVICORN_FORWARDED_ALLOW_IPS=*`** : uvicorn remplacerait alors `request.client`
 par l'entrée la plus à gauche de `X-Forwarded-For`, fournie par le client, et la
 vérification du relais la croirait — n'importe qui choisirait son IP, donc son
-pays.
+pays. Hors Docker (supervisord, `start.sh`), uvicorn lit `FORWARDED_ALLOW_IPS` :
+même règle.
 
 N'exposez jamais directement le proxy de Vite (`yarn dev` ou `vite preview`) :
 il transmet tel quel le `X-Forwarded-For` du client, que le backend reçoit de
