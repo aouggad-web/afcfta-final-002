@@ -201,11 +201,6 @@ def _parse_period_end(value):
 def _effective_tier(user: Optional[dict], *, now: Optional[datetime] = None) -> str:
     if not user:
         return "free"
-    if user.get("role") == "admin":
-        # Le compte admin amorcé depuis l'environnement (server.py, seul à
-        # porter ce rôle) n'a pas de formule : sans cela, il serait traité en
-        # free et perdrait le module Opportunités, réservé aux formules payantes.
-        return "business"
 
     tier = user.get("subscription_tier") or "free"
     if tier not in _TIER_ENTITLEMENTS:
@@ -262,6 +257,22 @@ def all_tier_entitlements() -> Mapping[str, Entitlements]:
     return _ALL_TIER_ENTITLEMENTS_VIEW
 
 
+# Compte admin amorcé depuis l'environnement (server.py, seul à porter le rôle
+# « admin ») : tous les modules, aucun quota, pour les démonstrations du
+# produit. Hors de la grille des formules (TIERS) : ni vendu ni affiché sur
+# la page des tarifs.
+_ADMIN_ENTITLEMENTS = Entitlements(
+    tier="admin",
+    daily_calculations=None,
+    monthly_country_profiles=None,
+    export_formats=("csv", "excel", "pdf"),
+    api_access=True,
+    api_monthly_quota=None,
+    seats_included=_TIER_ENTITLEMENTS["business"].seats_included,
+    modules={module_id: _UNLIMITED for module_id in MODULES},
+)
+
+
 def resolve_entitlements(user: Optional[dict], *, now: Optional[datetime] = None) -> Entitlements:
     """Resolve the effective entitlements for a user document. `user=None`
     (an unauthenticated visitor) resolves to the free tier, same as any
@@ -269,4 +280,6 @@ def resolve_entitlements(user: Optional[dict], *, now: Optional[datetime] = None
     Entitlements instance, never None. Never raises — always returns at
     least the free tier, so callers can gate features without a separate
     "no subscription" branch."""
+    if user and user.get("role") == "admin":
+        return _ADMIN_ENTITLEMENTS
     return _TIER_ENTITLEMENTS[_effective_tier(user, now=now)]

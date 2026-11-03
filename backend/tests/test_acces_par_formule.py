@@ -152,6 +152,8 @@ def _abonne(formule):
 
 
 ABONNES = {formule: _abonne(formule) for formule in ("free", "starter", "pro", "business")}
+# Compte admin amorcé (server.py) : rôle admin, aucune formule.
+ADMIN = {"_id": ObjectId(), "email": "admin@exemple.invalid", "role": "admin"}
 
 
 @pytest.fixture(autouse=True)
@@ -161,7 +163,7 @@ def base(monkeypatch):
     # en-tête Cloudflare à croire.
     for nom in ("TRUSTED_PROXY_CIDRS", "TRUST_CLOUDFLARE_HEADERS", "CLOUDFLARE_EDGE_SECRET"):
         monkeypatch.delenv(nom, raising=False)
-    db = _FausseBase(ABONNES.values())
+    db = _FausseBase([*ABONNES.values(), ADMIN])
     auth.set_database(db)
     entitlement_guard.set_database(db)
     export_router.init_db(db)
@@ -417,6 +419,19 @@ def test_sous_onglets_cle_api_et_absence_de_base(app_api):
     entitlement_guard.set_database(None)
     auth.set_database(None)
     assert _client(app_api).get("/api/substitution/countries").status_code == 200
+
+
+# ── Compte admin : tous les modules, aucun quota ────────────────────────────
+
+
+def test_le_compte_admin_passe_partout_sans_rien_decompter(app_api, base):
+    admin = _client(app_api, abonne=ADMIN)
+
+    assert admin.get("/api/reports/macro/NGA").status_code == 200
+    assert admin.get("/api/substitution/countries").status_code == 200
+    assert admin.get("/api/v2/analytics/dashboard").status_code == 200
+    assert admin.get("/api/export/tariffs/excel?countries=KE").status_code == 200
+    assert base.usage_counters.docs == {}
 
 
 # ── API v2 : clé API valide ou session Business ─────────────────────────────

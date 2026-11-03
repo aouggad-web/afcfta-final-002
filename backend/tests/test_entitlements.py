@@ -136,13 +136,19 @@ def test_user_with_no_subscription_field_grants_free_tier():
     assert ent.tier == "free"
 
 
-def test_le_compte_admin_a_les_droits_business_sans_formule():
-    # Le compte admin amorcé (server.py) n'a pas de formule : il ne doit pas
-    # perdre le module Opportunités, réservé aux formules payantes.
+def test_le_compte_admin_a_tous_les_modules_sans_aucun_quota():
+    # Compte admin amorcé (server.py), pour les démonstrations : aucune limite.
     ent = resolve_entitlements({"email": "admin@example.com", "role": "admin"})
 
-    assert ent.tier == "business"
-    assert ent.module("reports").enabled is True
+    assert ent.tier == "admin"
+    assert ent.daily_calculations is None
+    assert ent.api_access is True and ent.api_monthly_quota is None
+    assert ent.export_formats == ("csv", "excel", "pdf")
+    for module_id in MODULES:
+        access = ent.module(module_id)
+        assert access.enabled is True and access.quota is None, module_id
+    # Hors de la grille vendue, et réservé au rôle admin.
+    assert "admin" not in TIERS
     assert resolve_entitlements({"email": "u@example.com", "role": "user"}).tier == "free"
 
 

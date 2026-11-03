@@ -584,7 +584,8 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
   );
 }
 
-const PLAN_LABELS = { free: 'Free', starter: 'Starter', pro: 'Pro', business: 'Business' };
+// « admin » : compte admin amorcé, tous les modules sans quota (hors grille vendue).
+const PLAN_LABELS = { free: 'Free', starter: 'Starter', pro: 'Pro', business: 'Business', admin: 'Admin' };
 
 function formatDate(value, language) {
   if (!value) return null;
@@ -621,7 +622,7 @@ function SubscriptionBlock({ subscription, language, infoStyle, loading, onManag
       <strong>
         {pick(language, 'Formule ', 'Plan ', 'الباقة ')}
         {PLAN_LABELS[tier] || tier}
-        {isPaid ? ` · ${cycle}` : ''}
+        {isPaid && tier !== 'admin' ? ` · ${cycle}` : ''}
       </strong>
       {detail && <div style={{ fontSize: 13, marginTop: 4 }}>{detail}</div>}
       <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
