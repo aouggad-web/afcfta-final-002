@@ -25,8 +25,8 @@ from auth import require_admin, require_auth
 from entitlement_guard import (
     require_api_access,
     require_calculations_quota,
-    require_module,
     require_module_enabled,
+    require_paid_module,
 )
 from fastapi import APIRouter, Depends
 
@@ -57,7 +57,8 @@ _production_entitlement = [Depends(require_module_enabled("production"))]
 _logistics_entitlement = [Depends(require_module_enabled("logistics"))]
 _roo_entitlement = [Depends(require_module_enabled("roo"))]
 _tools_entitlement = [Depends(require_module_enabled("tools"))]
-_reports_entitlement = [Depends(require_module("reports"))]
+# Module Opportunités réservé aux abonnements payants (audit E1).
+_reports_entitlement = [Depends(require_paid_module("reports"))]
 _calculator_entitlement = [Depends(require_calculations_quota())]
 _api_entitlement = [Depends(require_api_access())]
 
@@ -375,10 +376,12 @@ except ImportError:
 
 try:
     from .reports import router as reports_router
+    from .reports import router_diagnostics as reports_diagnostics_router
 
     REPORTS_AVAILABLE = True
 except ImportError as e:
     reports_router = None
+    reports_diagnostics_router = None
     REPORTS_AVAILABLE = False
     _logger.warning(f"Premium reports route unavailable: {e}")
 
@@ -590,6 +593,12 @@ def register_routes(api_router: APIRouter):
             reports_router,
             tags=["Premium Opportunity Reports"],
             dependencies=_auth + _reports_entitlement,
+        )
+        # Diagnostics publics, hors abonnement et hors quota.
+        api_router.include_router(
+            reports_diagnostics_router,
+            tags=["Premium Opportunity Reports"],
+            dependencies=_auth,
         )
 
     # SaaS layer: user accounts (JWT session, separate from the X-API-Key

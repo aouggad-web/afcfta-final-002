@@ -326,6 +326,8 @@ def test_free_tier_module_caps_and_denials():
     assert stats.quota_period is None
 
     assert ent.module("tools").enabled is False
+    # Module Opportunités réservé aux abonnements payants (audit E1).
+    assert ent.module("reports").enabled is False
     roo = ent.module("roo")
     assert roo.enabled is True
     assert roo.quota is None
@@ -469,11 +471,12 @@ async def test_require_module_enabled_never_meters_capped_module():
     # A single logistics/stats/production/roo screen fans out to many GETs;
     # enablement-only gating must let a signed-in free user load it any
     # number of times without being blocked. Exercised here against "reports"
-    # (still genuinely capped at 2/day via the metered require_module()) to
+    # (still genuinely capped at 10/day for starter via the metered
+    # require_module(); free no longer has it at all) to
     # prove require_module_enabled() ignores a module's quota entirely,
     # rather than happening to pass because the module has none.
     dep = entitlement_guard.require_module_enabled("reports")
-    user = _user("free")
+    user = _user("starter")
     for _ in range(50):
         await _call_dep(dep, user)
 
@@ -703,13 +706,18 @@ async def test_api_access_denied_below_business(fake_db, monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_api_access_anonymous_keeps_prior_unmetered_access(fake_db):
-    # No JWT session at all — same "keep prior behavior" fallback as
-    # require_module, so an existing API-key-only integration isn't newly
-    # locked out of api_v2 by this provisional wiring.
+async def test_api_access_anonyme_sans_cle_refuse_avec_cle_accepte(fake_db):
+    # Audit E1 : sans session, l'API v2 n'est plus ouverte à tous. Seule une
+    # clé API valide (document api_keys, plans API vendus) passe ; le contexte
+    # public que rend require_auth sans clé est refusé.
     dep = entitlement_guard.require_api_access()
-    for _ in range(5):
-        await dep(request=None, user=None)
+    with pytest.raises(HTTPException) as exc:
+        await dep(request=None, user=None, key_doc={"tier": "public", "no_key": True})
+    assert exc.value.status_code == 403
+    assert exc.value.detail["error"] == "upgrade_required"
+
+    ent = await dep(request=None, user=None, key_doc={"key_hash": "h", "tier": "free"})
+    assert ent.tier == "free"
 
 
 @pytest.mark.asyncio

@@ -110,13 +110,22 @@ def _app_comme_en_production():
     cassé, mais parce que le test ne reproduisait pas le montage réel. Un test
     qui interroge une URL que la production ne sert pas ne prouve rien : on
     reconstitue ici la même composition.
+
+    Ces tests portent sur le contenu des fichiers : l'appelant y présente une
+    clé API admin, admise par chaque contrôle d'accès des exports (audit E1).
+    Ces contrôles eux-mêmes sont testés dans test_acces_par_formule.py.
     """
+    from auth import require_auth
     from fastapi import APIRouter, FastAPI
+
+    async def _cle_admin():
+        return {"key_hash": "empreinte-de-test", "tier": "admin", "active": True}
 
     api_router = APIRouter(prefix="/api")
     api_router.include_router(router)
     app = FastAPI()
     app.include_router(api_router)
+    app.dependency_overrides[require_auth] = _cle_admin
     return app
 
 

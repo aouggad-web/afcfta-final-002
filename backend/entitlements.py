@@ -110,7 +110,10 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             # request. It is _DENIED here for free, not _capped(...), because
             # the module is withheld outright rather than rate-limited.
             "tools": _DENIED,
-            "reports": _capped(2, "day"),
+            # Module Opportunités réservé aux abonnements payants (audit E1).
+            # Un visiteur sans session reçoit lui aussi le 403, sauf clé API
+            # valide : voir entitlement_guard.require_paid_module.
+            "reports": _DENIED,
         },
     ),
     "starter": Entitlements(

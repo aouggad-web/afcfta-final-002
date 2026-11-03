@@ -9,7 +9,9 @@ from __future__ import annotations
 import logging
 from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from auth import require_auth
+from entitlement_guard import check_export_format, get_optional_subscriber
+from fastapi import APIRouter, Depends, HTTPException, Query
 
 logger = logging.getLogger(__name__)
 
@@ -141,9 +143,22 @@ async def get_visualization_data(
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+async def _format_d_export(
+    format: str = Query("excel", description="Output format: excel | pdf | json"),
+    user: Optional[dict] = Depends(get_optional_subscriber),
+    key_doc: dict = Depends(require_auth),
+) -> str:
+    """Format demandé, contrôlé contre la formule (audit E1) : excel et pdf sont
+    des formats vendus, json reste libre. Le handler reçoit le format d'ici, sans
+    second paramètre dont le défaut pourrait diverger."""
+    if format in ("excel", "pdf"):
+        check_export_format(format, user, key_doc)
+    return format
+
+
 @router.get("/export")
 async def export_analysis(
-    format: str = Query("excel", description="Output format: excel | pdf | json"),
+    format: str = Depends(_format_d_export),
     blocs: Optional[str] = Query(None),
     sector: str = Query("general"),
 ):
