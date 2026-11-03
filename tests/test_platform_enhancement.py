@@ -752,7 +752,8 @@ class TestPerformanceRoutes:
     def test_cache_stats_endpoint(self):
         client = self._make_app()
         response = client.get("/api/performance/cache/stats")
-        assert response.status_code == 200
+        # Réservé à l'admin (require_admin) : refusé sans clé.
+        assert response.status_code == 403
 
     def test_performance_metrics_endpoint(self):
         # Réservé aux clés admin, comme /cache/* (constat E4 de l'audit).

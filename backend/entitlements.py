@@ -201,6 +201,11 @@ def _parse_period_end(value):
 def _effective_tier(user: Optional[dict], *, now: Optional[datetime] = None) -> str:
     if not user:
         return "free"
+    if user.get("role") == "admin":
+        # Le compte admin amorcé depuis l'environnement (server.py, seul à
+        # porter ce rôle) n'a pas de formule : sans cela, il serait traité en
+        # free et perdrait le module Opportunités, réservé aux formules payantes.
+        return "business"
 
     tier = user.get("subscription_tier") or "free"
     if tier not in _TIER_ENTITLEMENTS:

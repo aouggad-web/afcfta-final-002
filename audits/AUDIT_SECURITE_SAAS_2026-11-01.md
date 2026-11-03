@@ -128,7 +128,7 @@ Reproduit en local (faux Mongo) : `/api/reports/health` ×4 en **free connecté*
 > - **Module Opportunités** (`/api/reports/*`) : réservé aux abonnements payants. La formule free est refusée ; un anonyme reçoit un 403, sauf avec une clé API valide. Les quotas des formules payantes sont inchangés et seront revus. `/api/reports/health` et `/oec-health` restent publics et non comptés.
 > - **API v2** : un anonyme est refusé, sauf avec une clé API valide. Une clé vendue n'est comptée qu'une fois.
 > - **Exports** : `export_formats` est enfin appliqué (`/api/export/*`, et `/api/regional-analytics/export` en excel ou pdf). `/api/export/validation-report/json` est réservé à l'admin. Constat additionnel corrigé : `/api/regional-analytics/export` générait aussi des fichiers pour un anonyme.
-> - **Reste** : une réponse 422 ou 404 consomme une unité (choix tarifaire) ; les compteurs anonymes sont par processus (un seul worker en production) ; le compte admin amorcé n'a pas de formule et passe par sa clé admin.
+> - **Reste** : une réponse 422 ou 404 consomme une unité (choix tarifaire) ; les compteurs anonymes sont par processus (un seul worker en production) ; le compte admin amorcé, qui n'a pas de formule, reçoit les droits Business (sinon il perdait le module Opportunités) ; avec plusieurs workers, chacun a son compteur (voir `DEPLOYMENT.md`) ; une IPv6 compte par /64 : qui dispose d'un /56 ou d'un /48 obtient beaucoup de clés ; les adresses 6to4 et Teredo, classées privées, ne sont pas comptées ; quand le compteur est plein (100 000 visiteurs), les plus anciens sont oubliés, sans rouvrir le quota de tous. Le cookie `appareil_connu` et le compteur en mémoire sont décrits dans `confidentialite.html`.
 
 ### E2 — Points de déni de service anonymes sur un worker unique
 **Confiance : Confirmé (reproduit).** Le déploiement est mono-worker (`start.sh`, `uvicorn … --workers 1`) : tout calcul synchrone lourd dans un handler `async` gèle toute l'API.
@@ -246,7 +246,8 @@ Ces points ne peuvent être tranchés que par vous, sur l'instance de production
    1. appeler `GET /api/billing/geo-diagnostic` sans en-tête, puis avec `-H 'X-Forwarded-For: 10.1.2.3'`, puis avec `-H 'X-Forwarded-For: 8.8.8.8, 1.1.1.1'` ;
    2. vérifier que `asgi_client_is_private` vaut `true` et ne change pas d'un appel à l'autre ;
    3. vérifier que `client_ip` reste l'adresse réelle (api.ipify.org) ;
-   4. après le déploiement, vérifier que `proxy_peer_trusted` vaut `true`.
+   4. vérifier aussi le cas où l'en-tête est envoyé sur deux lignes : `-H 'X-Forwarded-For: 8.8.8.8' -H 'X-Forwarded-For: 1.1.1.1, 9.9.9.9, 4.4.4.4'`. `client_ip` doit rester l'adresse réelle : le correctif lit toutes les lignes, et un relais qui ajouterait sa propre entrée à la première ligne seulement laisserait le client choisir ;
+   5. après le déploiement, vérifier que `proxy_peer_trusted` vaut `true`.
 5. **Supabase (M6)** : dans le tableau de bord, vérifier que les « Redirect URLs » ne contiennent **aucun** wildcard sur un domaine partagé (`*.emergentagent.com`).
 6. **Déploiement (C3)** : confirmer sous quel utilisateur tournent les programmes supervisord et si `main` est protégée (y compris contre les Actions).
 

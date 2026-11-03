@@ -304,11 +304,15 @@ def test_compteur_anonyme_borne_en_memoire(monkeypatch, caplog):
     for ip in ("41.0.0.1", "41.0.0.2", "41.0.0.3"):
         _client(app, ip=ip).post("/api/calcul")
 
+    monkeypatch.setattr(entitlement_guard, "_compteur_plein_signale", False)
     with caplog.at_level(logging.WARNING, logger="entitlement_guard"):
         assert _client(app, ip="41.0.0.4").post("/api/calcul").status_code == 200
+        assert _client(app, ip="41.0.0.5").post("/api/calcul").status_code == 200
 
-    assert entitlement_guard._calculs_anonymes == {"41.0.0.4": 1}
-    assert "remis à zéro" in caplog.text
+    # Le plus ancien est oublié, les autres gardent leur compte : le quota du
+    # jour ne se rouvre pas pour tous. Une seule alerte.
+    assert entitlement_guard._calculs_anonymes == {"41.0.0.3": 1, "41.0.0.4": 1, "41.0.0.5": 1}
+    assert caplog.text.count("les plus anciens sont oubliés") == 1
 
 
 # ── Module Opportunités : réservé aux abonnements payants ───────────────────

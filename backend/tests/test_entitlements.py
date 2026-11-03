@@ -136,6 +136,16 @@ def test_user_with_no_subscription_field_grants_free_tier():
     assert ent.tier == "free"
 
 
+def test_le_compte_admin_a_les_droits_business_sans_formule():
+    # Le compte admin amorcé (server.py) n'a pas de formule : il ne doit pas
+    # perdre le module Opportunités, réservé aux formules payantes.
+    ent = resolve_entitlements({"email": "admin@example.com", "role": "admin"})
+
+    assert ent.tier == "business"
+    assert ent.module("reports").enabled is True
+    assert resolve_entitlements({"email": "u@example.com", "role": "user"}).tier == "free"
+
+
 @pytest.mark.parametrize("tier", ["starter", "pro", "business"])
 def test_active_subscription_grants_its_tier(tier):
     user = {"subscription_tier": tier, "subscription_status": "active"}

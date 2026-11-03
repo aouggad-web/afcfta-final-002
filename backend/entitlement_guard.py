@@ -349,26 +349,31 @@ def require_api_access():
 # un visiteur aurait N fois le quota), et un redémarrage le remet à zéro.
 _calculs_anonymes: dict[str, int] = {}
 _jour_calculs_anonymes: Optional[str] = None
-# Borne de la mémoire : au-delà, on repart de zéro (le quota du jour se
-# rouvre pour tous, plutôt que de laisser croître le dictionnaire).
+# Borne de la mémoire : au-delà, le visiteur le plus ancien est oublié. Tout
+# vider rouvrirait le quota du jour pour tous dès qu'un client inonde le
+# compteur de clés neuves.
 _MAX_VISITEURS_ANONYMES = 100_000
+_compteur_plein_signale = False
 
 
 def _calcul_anonyme_autorise(cle: str, quota: int) -> bool:
     """Compte un calcul de `cle` pour aujourd'hui ; faux au-delà de `quota`.
     Sans `await` : sur la boucle asyncio, lecture et écriture ne s'entrelacent
     pas entre deux requêtes."""
-    global _jour_calculs_anonymes
+    global _jour_calculs_anonymes, _compteur_plein_signale
     jour = _period_key("day", {})
     if jour != _jour_calculs_anonymes:
         _calculs_anonymes.clear()
         _jour_calculs_anonymes = jour
+        _compteur_plein_signale = False
     elif len(_calculs_anonymes) >= _MAX_VISITEURS_ANONYMES and cle not in _calculs_anonymes:
-        logger.warning(
-            "Compteur des calculs anonymes plein (%d visiteurs) : remis à zéro.",
-            len(_calculs_anonymes),
-        )
-        _calculs_anonymes.clear()
+        if not _compteur_plein_signale:  # une fois par jour, pas à chaque requête
+            logger.warning(
+                "Compteur des calculs anonymes plein (%d visiteurs) : les plus anciens sont oubliés.",
+                len(_calculs_anonymes),
+            )
+            _compteur_plein_signale = True
+        del _calculs_anonymes[next(iter(_calculs_anonymes))]
     compte = _calculs_anonymes.get(cle, 0)
     if compte >= quota:
         return False
