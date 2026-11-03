@@ -278,7 +278,7 @@ function OperatorCard({ operator, catMeta, language }) {
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h4 className="text-sm font-semibold text-[var(--text)] leading-tight">{operator.name}</h4>
+                <h4 className="text-sm font-semibold text-[var(--text)] leading-tight">{trDonnee(operator.name, language)}</h4>
                 {operator.hq && (
                   <div className="flex items-center gap-1 mt-0.5">
                     <MapPin className="w-3 h-3 text-[var(--afcfta-muted)]" />
