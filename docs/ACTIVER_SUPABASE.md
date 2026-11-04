@@ -47,7 +47,7 @@ Toutes ces étapes se font dans le tableau de bord du projet. Aucune clé ne doi
 | Champ | Valeur |
 |---|---|
 | Sender email | l'adresse d'envoi Zoho, par exemple `no-reply@afcfta-zlecaf.com` |
-| Sender name | `ZLECAf` |
+| Sender name | `AF Trade Intelligence` (le nom de la société, pas celui de l'institution ZLECAf) |
 | Host | `smtp.zoho.eu` (ou `smtp.zoho.com`, selon le centre de données du compte Zoho) |
 | Port | `465` |
 | Username | l'adresse d'envoi |
@@ -60,14 +60,27 @@ suffit pas pour des testeurs.
 
 L'application utilise le flux PKCE (audit M6). Avec les modèles par défaut, un
 lien de confirmation ouvert sur un autre appareil que celui de l'inscription
-échouerait. Dans **Authentication → Emails → Templates**, remplacer le lien de
-chaque modèle :
+échouerait. Les trois modèles prêts à l'emploi, en français, anglais et arabe,
+avec le logo d'AF Trade Intelligence, sont dans `docs/emails-supabase/`. Leurs
+liens suivent la forme `{{ .SiteURL }}/?token_hash={{ .TokenHash }}&type=…`.
 
-| Modèle | Lien |
-|---|---|
-| Confirm signup | `<a href="{{ .SiteURL }}/?token_hash={{ .TokenHash }}&type=email">Confirmer mon adresse</a>` |
-| Reset password | `<a href="{{ .SiteURL }}/?token_hash={{ .TokenHash }}&type=recovery">Choisir un nouveau mot de passe</a>` |
-| Change email address | `<a href="{{ .SiteURL }}/?token_hash={{ .TokenHash }}&type=email_change">Confirmer ma nouvelle adresse</a>` |
+**À ne faire qu'après la fusion dans `main`** et la fin du workflow `pages.yml`.
+Le logo est publié par la vitrine : vérifier d'abord que
+`https://www.afcfta-zlecaf.com/email/logo-af-trade-intelligence.png` s'affiche.
+
+Dans **Authentication → Emails → Templates**, pour chaque modèle : coller l'objet
+dans **Subject**, puis remplacer tout le **Message body** par le contenu complet
+du fichier, et enregistrer.
+
+| Modèle Supabase | Fichier | Subject |
+|---|---|---|
+| Confirm signup | `docs/emails-supabase/confirm-signup.html` | `Confirmez votre adresse e-mail · Confirm your email · أكِّد بريدك الإلكتروني` |
+| Reset password | `docs/emails-supabase/reset-password.html` | `Réinitialisez votre mot de passe · Reset your password · إعادة تعيين كلمة المرور` |
+| Change email address | `docs/emails-supabase/change-email.html` | `Confirmez le changement d'adresse e-mail · Confirm your email change · تأكيد تغيير البريد الإلكتروني` |
+
+Avec « Secure email change », Supabase envoie le dernier modèle aux deux
+adresses, l'ancienne et la nouvelle : son texte parle donc d'un changement à
+confirmer, pas d'une nouvelle adresse.
 
 L'application efface ce jeton de la barre d'adresse dès l'ouverture de la page.
 Ensuite, deux cas :
