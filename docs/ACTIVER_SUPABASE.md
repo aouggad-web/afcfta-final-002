@@ -25,7 +25,7 @@ Toutes ces étapes se font dans le tableau de bord du projet. Aucune clé ne doi
 
 **Authentication → URL Configuration** :
 
-- **Site URL** : l'adresse de l'application, par exemple
+- **Site URL** : l'adresse de l'application, **sans `/` final**, par exemple
   `https://git-sync-41.preview.emergentagent.com` pour la préproduction.
 - **Redirect URLs** : la même adresse, **exacte**. Pas de motif `*` ni `**` : un
   motif permettrait de renvoyer un lien de connexion vers un autre site.
@@ -69,8 +69,17 @@ chaque modèle :
 | Reset password | `<a href="{{ .SiteURL }}/?token_hash={{ .TokenHash }}&type=recovery">Choisir un nouveau mot de passe</a>` |
 | Change email address | `<a href="{{ .SiteURL }}/?token_hash={{ .TokenHash }}&type=email_change">Confirmer ma nouvelle adresse</a>` |
 
-L'application vérifie ce jeton à l'ouverture de la page, puis l'efface de la
-barre d'adresse. Un lien expiré ou déjà utilisé affiche un message.
+L'application efface ce jeton de la barre d'adresse dès l'ouverture de la page.
+Ensuite, deux cas :
+- le navigateur qui a fait la demande (inscription, mot de passe oublié) attend
+  ce lien : il le vérifie aussitôt, et refuse un lien qui concerne une autre
+  adresse ;
+- sinon (autre appareil, lien transmis, scanner de messagerie), le lien n'est
+  vérifié qu'après un clic sur « Continuer ». Un lien obtenu par un tiers pour
+  son propre compte ne peut donc pas connecter quelqu'un à son insu.
+
+L'adresse du compte connecté est toujours affichée. Un lien expiré ou déjà
+utilisé affiche un message.
 
 ### Sessions
 
@@ -107,8 +116,14 @@ Les comptes transférés sont considérés comme confirmés. L'option
 | `/app/frontend/.env` | `VITE_SUPABASE_URL` | la même URL |
 | `/app/frontend/.env` | `VITE_SUPABASE_PUBLISHABLE_KEY` | Project Settings → API Keys : la clé publique (`sb_publishable_…`) |
 
-La synchronisation (`sync_emergent.sh`) recompile l'interface, qui lit ses
-variables `VITE_*` à ce moment-là.
+Les variables `VITE_*` doivent aller dans `/app/frontend/.env`, pas dans celui
+du backend : Vite ne lit que ce fichier, au moment de la compilation. La
+synchronisation (`sync_emergent.sh`) recompile l'interface.
+
+Juste après, relancer `python scripts/migrate_users_to_supabase.py --apply`. Les
+comptes créés entre le premier transfert et l'activation sont ainsi transférés
+à leur tour. L'ancienne inscription étant désormais fermée, il n'en apparaîtra
+plus de nouveaux.
 
 ## 4. Vérifier
 
@@ -119,11 +134,22 @@ variables `VITE_*` à ce moment-là.
    passe, aussi depuis un autre appareil.
 4. Le compte admin se connecte avec son mot de passe actuel, et garde son accès
    illimité (`ADMIN_ACCES_ILLIMITE`).
-5. `POST /api/auth/login` répond 410.
+5. L'ancienne route de connexion est fermée : `POST /api/auth/login` répond 410
+   quand la requête porte le jeton CSRF. Sans lui, la protection CSRF répond
+   d'abord par 403 : faire d'abord un `GET /api/health`, puis envoyer le cookie
+   `csrf_token` et l'en-tête `X-CSRF-Token` reçus.
 
 ## Revenir en arrière
 
-Retirer les quatre variables et redéployer remet l'ancien système en service :
-les fiches MongoDB n'ont pas été modifiées, en dehors de leur lien
-`supabase_id`. Attention : un mot de passe changé entre-temps dans Supabase ne
-l'est pas dans MongoDB.
+Retirer les quatre variables et redéployer remet l'ancien système en service.
+Les fiches MongoDB n'ont pas été modifiées, en dehors de leur lien
+`supabase_id`. Trois conséquences :
+
+- toutes les sessions Supabase sont coupées aussitôt : chacun doit se
+  reconnecter ;
+- un mot de passe changé entre-temps dans Supabase ne l'est pas dans MongoDB :
+  c'est l'ancien qui redevient valable ;
+- les comptes **créés** pendant l'activation n'ont pas de mot de passe dans
+  MongoDB : ils ne peuvent plus se connecter du tout. Les compter avant de
+  revenir en arrière :
+  `db.users.count_documents({"supabase_id": {"$exists": True}, "password_hash": {"$exists": False}})`.
