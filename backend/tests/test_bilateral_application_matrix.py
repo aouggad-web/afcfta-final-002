@@ -161,6 +161,7 @@ def test_les_listes_ne_sont_pas_recopiees_dans_le_generateur(rapport):
 
     from services.zlecaf_implementation_registry import RECORDS
     from services.zlecaf_schedule_dza import ACTIVE_PARTNERS
+    from services.zlecaf_schedule_nam import DATES_ENTREE_NAM
     from services.zlecaf_schedule_zaf import ACTIVE_PARTNERS_ZAF
 
     fiches = RACINE / "backend" / "data" / "legal_refs" / "zlecaf_application"
@@ -170,6 +171,11 @@ def test_les_listes_ne_sont_pas_recopiees_dans_le_generateur(rapport):
         "ZAF": len(ACTIVE_PARTNERS_ZAF),
         "KEN": len(RECORDS["KEN"].accepted_origins),
         "MAR": mar["accepted_origins"]["count"],
+        "TZA": len(RECORDS["TZA"].accepted_origins),
+        "RWA": len(RECORDS["RWA"].accepted_origins),
+        "UGA": len(RECORDS["UGA"].accepted_origins),
+        "SYC": len(RECORDS["SYC"].accepted_origins),
+        "NAM": len(DATES_ENTREE_NAM),
     }
     for iso, compte in attendu.items():
         assert rapport["destinations_etablies"][iso]["origines_admises"] == compte, iso

@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "titre": "État d'application de la ZLECAf entre pays, couple par couple",
- "genere_le": "2026-11-03",
+ "genere_le": "2026-11-04",
  "genere_par": "scripts/build_bilateral_application_matrix.py",
  "avertissement": "La ratification est continentale, l'application est bilatérale. Une case ACCORDEE atteste que l'acte national de la destination nomme cette origine ; elle ne dispense ni de la preuve d'origine ZLECAf ni de la vérification en douane.",
  "methode": "Trois conditions, dans cet ordre : acte national d'application lu en source primaire ; liste nominative des origines qu'il admet ; confrontation à la carte continentale du e-Tariff Book. Les listes sont lues à leur source d'autorité dans le dépôt, jamais recopiées.",
@@ -40,12 +40,47 @@
    "niveau_de_preuve": "primaire — circulaire lue intégralement, SHA-256 consigné",
    "fiche": "MAR_application_2026-09-13.json"
   },
+  "NAM": {
+   "origines_admises": 8,
+   "instrument": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)",
+   "niveau_de_preuve": "primaire — Government Gazette de Namibie (copies archivées)",
+   "fiche": "NAM_zlecaf_2026-10-25.json",
+   "reserve": "Les membres de la SACU et de la SADC sont absents : la Namibie échange avec eux sous ces régimes, pas sous la ZLECAf."
+  },
+  "RWA": {
+   "origines_admises": 28,
+   "instrument": "EAC/321/2022",
+   "niveau_de_preuve": "primaire — avis EAC et Directive 1/2021 archivés (règle B)",
+   "fiche": null,
+   "reserve": "Origines de l'Annexe 1 de la Directive 1/2021, traitées comme un plafond par le registre."
+  },
+  "SYC": {
+   "origines_admises": 38,
+   "instrument": "S.I. 113 of 2022",
+   "niveau_de_preuve": "primaire — règlement publié au Supplement to Official Gazette (28/10/2022)",
+   "fiche": "SYC_application_2026-09-28.json",
+   "reserve": "La Schedule VI nomme des « State Parties » : une liste d'États parties, non de partenaires vérifiés bilatéralement."
+  },
   "TUN": {
    "origines_admises": 8,
    "instrument": "Tarif Web 2026, douane.gov.tn",
    "niveau_de_preuve": "primaire — portail tarifaire officiel scellé dans le dépôt",
    "fiche": "TUN_application_2026-09-13.json",
    "reserve": "Le taux publié est un coefficient du texte TA n°016/2023 : le droit servi est ce coefficient appliqué au droit de base 2019, plafonné au NPF (TUN_droit_de_base_2019_2026-10-03.json)."
+  },
+  "TZA": {
+   "origines_admises": 28,
+   "instrument": "EAC/321/2022",
+   "niveau_de_preuve": "primaire — avis EAC et Directive 1/2021 archivés (règle B)",
+   "fiche": null,
+   "reserve": "Origines de l'Annexe 1 de la Directive 1/2021, traitées comme un plafond par le registre."
+  },
+  "UGA": {
+   "origines_admises": 28,
+   "instrument": "EAC/321/2022",
+   "niveau_de_preuve": "primaire — avis EAC et Directive 1/2021 archivés (règle B)",
+   "fiche": null,
+   "reserve": "Origines de l'Annexe 1 de la Directive 1/2021, traitées comme un plafond par le registre."
   },
   "ZAF": {
    "origines_admises": 13,
@@ -99,9 +134,7 @@
   "MRT",
   "MUS",
   "MWI",
-  "NAM",
   "NER",
-  "RWA",
   "SDN",
   "SEN",
   "SLE",
@@ -109,23 +142,20 @@
   "SSD",
   "STP",
   "SWZ",
-  "SYC",
   "TCD",
   "TGO",
-  "TZA",
-  "UGA",
   "ZMB",
   "ZWE"
  ],
  "repartition_des_couples": {
-  "ACCORDEE": 117,
+  "ACCORDEE": 246,
   "ADMISSION_PAR_REGLE": 96,
-  "DESTINATION_NON_ETABLIE": 2213,
+  "DESTINATION_NON_ETABLIE": 1973,
   "MEME_PAYS": 54,
-  "NON_ACCORDEE": 171,
+  "NON_ACCORDEE": 282,
   "ORIGINE_NON_RATIFIANTE": 265
  },
- "couverture_pct": 9.88,
+ "couverture_pct": 18.11,
  "contradictions_ratification": {
   "note": "Origines nommées par l'acte d'une destination alors que le registre continental les donne pour non ratifiantes. Aucune préférence n'est accordée dans ce cas ; la case le dit et la divergence entre deux sources primaires reste visible.",
   "cas": []
@@ -137,8 +167,15 @@
    "DZA<->ZAF",
    "EGY<->KEN",
    "EGY<->MAR",
+   "EGY<->NAM",
+   "EGY<->RWA",
+   "EGY<->TZA",
+   "EGY<->UGA",
    "EGY<->ZAF",
+   "KEN<->SYC",
    "MAR<->ZAF",
+   "RWA<->SYC",
+   "SYC<->UGA",
    "TUN<->ZAF"
   ],
   "asymetries": [
@@ -153,9 +190,34 @@
     "lecture": "MAR admet DZA à son tarif ZLECAf, DZA n'admet pas MAR."
    },
    {
+    "accorde_par": "NAM",
+    "non_accorde_par": "DZA",
+    "lecture": "NAM admet DZA à son tarif ZLECAf, DZA n'admet pas NAM."
+   },
+   {
+    "accorde_par": "DZA",
+    "non_accorde_par": "RWA",
+    "lecture": "DZA admet RWA à son tarif ZLECAf, RWA n'admet pas DZA."
+   },
+   {
+    "accorde_par": "SYC",
+    "non_accorde_par": "DZA",
+    "lecture": "SYC admet DZA à son tarif ZLECAf, DZA n'admet pas SYC."
+   },
+   {
     "accorde_par": "DZA",
     "non_accorde_par": "TUN",
     "lecture": "DZA admet TUN à son tarif ZLECAf, TUN n'admet pas DZA."
+   },
+   {
+    "accorde_par": "DZA",
+    "non_accorde_par": "TZA",
+    "lecture": "DZA admet TZA à son tarif ZLECAf, TZA n'admet pas DZA."
+   },
+   {
+    "accorde_par": "SYC",
+    "non_accorde_par": "EGY",
+    "lecture": "SYC admet EGY à son tarif ZLECAf, EGY n'admet pas SYC."
    },
    {
     "accorde_par": "EGY",
@@ -166,6 +228,11 @@
     "accorde_par": "MAR",
     "non_accorde_par": "KEN",
     "lecture": "MAR admet KEN à son tarif ZLECAf, KEN n'admet pas MAR."
+   },
+   {
+    "accorde_par": "NAM",
+    "non_accorde_par": "KEN",
+    "lecture": "NAM admet KEN à son tarif ZLECAf, KEN n'admet pas NAM."
    },
    {
     "accorde_par": "TUN",
@@ -179,8 +246,83 @@
    },
    {
     "accorde_par": "MAR",
+    "non_accorde_par": "NAM",
+    "lecture": "MAR admet NAM à son tarif ZLECAf, NAM n'admet pas MAR."
+   },
+   {
+    "accorde_par": "MAR",
+    "non_accorde_par": "RWA",
+    "lecture": "MAR admet RWA à son tarif ZLECAf, RWA n'admet pas MAR."
+   },
+   {
+    "accorde_par": "MAR",
+    "non_accorde_par": "SYC",
+    "lecture": "MAR admet SYC à son tarif ZLECAf, SYC n'admet pas MAR."
+   },
+   {
+    "accorde_par": "MAR",
     "non_accorde_par": "TUN",
     "lecture": "MAR admet TUN à son tarif ZLECAf, TUN n'admet pas MAR."
+   },
+   {
+    "accorde_par": "MAR",
+    "non_accorde_par": "TZA",
+    "lecture": "MAR admet TZA à son tarif ZLECAf, TZA n'admet pas MAR."
+   },
+   {
+    "accorde_par": "MAR",
+    "non_accorde_par": "UGA",
+    "lecture": "MAR admet UGA à son tarif ZLECAf, UGA n'admet pas MAR."
+   },
+   {
+    "accorde_par": "NAM",
+    "non_accorde_par": "RWA",
+    "lecture": "NAM admet RWA à son tarif ZLECAf, RWA n'admet pas NAM."
+   },
+   {
+    "accorde_par": "SYC",
+    "non_accorde_par": "NAM",
+    "lecture": "SYC admet NAM à son tarif ZLECAf, NAM n'admet pas SYC."
+   },
+   {
+    "accorde_par": "NAM",
+    "non_accorde_par": "TUN",
+    "lecture": "NAM admet TUN à son tarif ZLECAf, TUN n'admet pas NAM."
+   },
+   {
+    "accorde_par": "TUN",
+    "non_accorde_par": "RWA",
+    "lecture": "TUN admet RWA à son tarif ZLECAf, RWA n'admet pas TUN."
+   },
+   {
+    "accorde_par": "ZAF",
+    "non_accorde_par": "RWA",
+    "lecture": "ZAF admet RWA à son tarif ZLECAf, RWA n'admet pas ZAF."
+   },
+   {
+    "accorde_par": "SYC",
+    "non_accorde_par": "TUN",
+    "lecture": "SYC admet TUN à son tarif ZLECAf, TUN n'admet pas SYC."
+   },
+   {
+    "accorde_par": "TZA",
+    "non_accorde_par": "SYC",
+    "lecture": "TZA admet SYC à son tarif ZLECAf, SYC n'admet pas TZA."
+   },
+   {
+    "accorde_par": "SYC",
+    "non_accorde_par": "ZAF",
+    "lecture": "SYC admet ZAF à son tarif ZLECAf, ZAF n'admet pas SYC."
+   },
+   {
+    "accorde_par": "TUN",
+    "non_accorde_par": "TZA",
+    "lecture": "TUN admet TZA à son tarif ZLECAf, TZA n'admet pas TUN."
+   },
+   {
+    "accorde_par": "ZAF",
+    "non_accorde_par": "UGA",
+    "lecture": "ZAF admet UGA à son tarif ZLECAf, UGA n'admet pas ZAF."
    }
   ]
  },
@@ -6631,171 +6773,219 @@
   },
   "NAM": {
    "AGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "BDI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "BEN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "BFA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "BWA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "CAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "CIV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "CMR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "COD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "COG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "COM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "CPV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "DJI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "DZA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "EGY": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "ERI": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "non signataire"
    },
    "ETH": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "GAB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "GHA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "GIN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "GMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "GNB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "GNQ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "KEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "LBR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "LBY": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "LSO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "MAR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "MDG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "MLI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "MOZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "MRT": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "MUS": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "MWI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "NAM": {
     "etat": "MEME_PAYS"
    },
    "NER": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "NGA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "RWA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "SDN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "SEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "SLE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "SOM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "SSD": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "STP": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "SWZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "SYC": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "TCD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "TGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "TUN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "TZA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "UGA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "ZAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "ZMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    },
    "ZWE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)"
    }
   },
   "NER": {
@@ -7330,118 +7520,152 @@
   },
   "RWA": {
    "AGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "BDI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "BEN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "BFA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "BWA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "CAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "CIV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "CMR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "COD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "COG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "COM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "CPV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "DJI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "DZA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "EGY": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "ERI": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "non signataire"
    },
    "ETH": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GAB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GHA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GIN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GNB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GNQ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "KEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "LBR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "LBY": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "LSO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MAR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MDG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MLI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MOZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MRT": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MUS": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MWI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "NAM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "NER": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "NGA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "RWA": {
     "etat": "MEME_PAYS"
@@ -7451,50 +7675,64 @@
     "motif": "signataire, ratification non déposée"
    },
    "SEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SLE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SOM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SSD": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "STP": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SWZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SYC": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "TCD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "TGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "TUN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "TZA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "UGA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "ZAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "ZMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "ZWE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    }
   },
   "SDN": {
@@ -8680,171 +8918,219 @@
   },
   "SYC": {
    "AGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "BDI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "BEN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "BFA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "BWA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "CAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "CIV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "CMR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "COD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "COG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "COM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "CPV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "DJI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "DZA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "EGY": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "ERI": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "non signataire"
    },
    "ETH": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "GAB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "GHA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "GIN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "GMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "GNB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "GNQ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "KEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "LBR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "LBY": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "LSO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "MAR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "MDG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "MLI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "MOZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "MRT": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "MUS": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "MWI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "NAM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "NER": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "NGA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "RWA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "SDN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "SEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "SLE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "SOM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "SSD": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "STP": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "SWZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "SYC": {
     "etat": "MEME_PAYS"
    },
    "TCD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "TGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "TUN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "TZA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "UGA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "ZAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "ZMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    },
    "ZWE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "S.I. 113 of 2022"
    }
   },
   "TCD": {
@@ -9404,340 +9690,436 @@
   },
   "TZA": {
    "AGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "BDI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "BEN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "BFA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "BWA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "CAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "CIV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "CMR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "COD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "COG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "COM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "CPV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "DJI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "DZA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "EGY": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "ERI": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "non signataire"
    },
    "ETH": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GAB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GHA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GIN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GNB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GNQ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "KEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "LBR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "LBY": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "LSO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MAR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MDG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MLI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MOZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MRT": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MUS": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MWI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "NAM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "NER": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "NGA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "RWA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SDN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "SEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SLE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SOM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SSD": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "STP": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SWZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SYC": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "TCD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "TGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "TUN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "TZA": {
     "etat": "MEME_PAYS"
    },
    "UGA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "ZAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "ZMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "ZWE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    }
   },
   "UGA": {
    "AGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "BDI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "BEN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "BFA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "BWA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "CAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "CIV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "CMR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "COD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "COG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "COM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "CPV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "DJI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "DZA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "EGY": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "ERI": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "non signataire"
    },
    "ETH": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GAB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GHA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GIN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GNB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "GNQ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "KEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "LBR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "LBY": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "LSO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MAR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MDG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MLI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MOZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MRT": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MUS": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "MWI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "NAM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "NER": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "NGA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "RWA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SDN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "SEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SLE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SOM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SSD": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "STP": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SWZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "SYC": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "TCD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "TGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "TUN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "TZA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "UGA": {
     "etat": "MEME_PAYS"
    },
    "ZAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "ZMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ACCORDEE",
+    "fondement": "EAC/321/2022"
    },
    "ZWE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "NON_ACCORDEE",
+    "fondement": "EAC/321/2022"
    }
   },
   "ZAF": {
