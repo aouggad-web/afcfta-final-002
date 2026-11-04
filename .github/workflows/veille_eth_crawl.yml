@@ -43,6 +43,8 @@ jobs:
     timeout-minutes: 340
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false  # jeton fourni à la seule étape qui pousse
 
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
@@ -180,12 +182,18 @@ jobs:
       - name: Publier (branche crawl/eth + PR) — uniquement si gate PASS
         if: ${{ steps.gate.outputs.verdict == 'PASS' }}
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.DATA_BOT_TOKEN || github.token }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
+          # Identifiants git pour cette étape seulement : le checkout n'en
+          # garde aucun. DATA_BOT_TOKEN s'il existe (la CI tourne alors sur la
+          # PR), sinon GITHUB_TOKEN.
+          auth=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)
+          echo "::add-mask::$auth"
+          git_auth() { git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $auth" "$@"; }
+          git_auth fetch origin main
           git checkout -B crawl/eth origin/main
           mkdir -p backend/data/crawled
           (cd backend && python -m crawlers.scrapling_engine.merge_publish \
@@ -202,7 +210,7 @@ jobs:
           # c'est ce qui a fait inscrire « WITS/TRAINS » au commit ETH de
           # juillet alors que la session était customs.erca.gov.et.
           git commit -m "data(crawl): tarifs douaniers ETH (portail ERCA customs.erca.gov.et, gate PASS)"
-          git push -f origin crawl/eth
+          git_auth push -f origin crawl/eth
           gh pr create \
             --base main --head crawl/eth --draft \
             --title "data(crawl): tarifs douaniers ETH — 0 % publiés récupérés (gate PASS)" \

@@ -62,7 +62,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
-          persist-credentials: true
+          persist-credentials: false  # jeton fourni à la seule étape qui pousse
 
       - name: Setup Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
@@ -165,16 +165,22 @@ jobs:
         if: ${{ inputs.recon == '' && inputs.recon_js == '' && inputs.mode == 'publish' && steps.gate.outputs.verdict == 'PASS' }}
         env:
           COUNTRY: ${{ inputs.country }}
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.DATA_BOT_TOKEN || github.token }}
         run: |
           set -euo pipefail
           ISO_LOWER=$(echo "$COUNTRY" | tr '[:upper:]' '[:lower:]')
           BRANCH="crawl/${ISO_LOWER}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Identifiants git pour cette étape seulement : le checkout n'en
+          # garde aucun. DATA_BOT_TOKEN s'il existe (la CI tourne alors sur la
+          # PR), sinon GITHUB_TOKEN.
+          auth=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)
+          echo "::add-mask::$auth"
+          git_auth() { git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $auth" "$@"; }
           # Brancher depuis main (pas la branche d'infra) : la PR pays ne
           # contient QUE le fichier de données, pas tout le code du crawler.
-          git fetch origin main
+          git_auth fetch origin main
           git checkout -B "$BRANCH" origin/main
           # IMPORTANT : les datasets vivent dans backend/data/crawled (lu par
           # scripts/build_socle.py). Cette étape tourne à la RACINE du repo
@@ -196,7 +202,7 @@ jobs:
           # national — c'est ainsi que le commit ETH de juillet a été
           # étiqueté WITS alors que la session était customs.erca.gov.et.
           git commit -m "data(crawl): tarifs douaniers ${COUNTRY} (source ${{ inputs.source }}, gate PASS)"
-          git push -f origin "$BRANCH"
+          git_auth push -f origin "$BRANCH"
           gh pr create \
             --base main --head "$BRANCH" --draft \
             --title "data(crawl): tarifs douaniers ${COUNTRY} (gate PASS)" \

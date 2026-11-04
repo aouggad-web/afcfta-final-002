@@ -71,7 +71,10 @@ class CSRFMiddleware(BaseHTTPMiddleware):
             response.headers[CSRF_HEADER] = token
             return response
 
-        raw_path = request.url.path
+        # Chemin routé, jamais request.url : Starlette reconstruit l'URL à
+        # partir de l'en-tête Host, qu'un client peut forger pour faire lire un
+        # chemin exempté (audit M3).
+        raw_path = request.scope["path"]
         path = raw_path
         if not path.startswith("/"):
             parts = raw_path.split("/api/", 1)

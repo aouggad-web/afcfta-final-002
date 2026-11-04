@@ -62,7 +62,6 @@ from entitlement_guard import set_database as set_entitlement_guard_db
 from routes import register_routes
 from routes.admin_keys import router as admin_keys_router
 from routes.contact import set_database as set_contact_db
-from routes.substitution import register_routes as register_substitution_routes
 from routes.user_auth import set_database as set_user_auth_db
 
 # Billing en défaut mou UNIQUEMENT quand la dépendance externe `stripe` manque
@@ -422,8 +421,9 @@ async def startup_load_tariff_data():
 # REGISTER ALL ROUTES
 # =============================================================================
 
+# Le routeur de substitution est inclus par register_routes, avec le contrôle
+# d'abonnement de l'onglet Opportunités : ne pas le réinclure ici.
 register_routes(api_router)
-register_substitution_routes(api_router)
 api_router.include_router(admin_keys_router, tags=["Admin: API Keys"])
 
 # Include the router in the main app

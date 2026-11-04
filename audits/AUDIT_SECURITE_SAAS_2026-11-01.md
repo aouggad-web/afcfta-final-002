@@ -30,7 +30,7 @@ Les risques majeurs ne sont pas dans le code métier mais **autour** : un domain
 
 **Décompte des constats :** 2 Critiques · 5 Élevés · 12 Moyens · 9 Faibles/Info (C2 reclassé en Moyen après vérification, voir ci-dessous).
 
-**Suivi des corrections (PR #750, fusionnée le 01/11/2026 ; PR #753) :** C1 traité (domaine vérifié côté GitHub ; page vitrine en ligne sur `https://www.afcfta-zlecaf.com` depuis le 02/11/2026, documents internes en 404) ; INFO-1 corrigé (publication Pages limitée à `site/`) ; C2 corrigé préventivement (masquage des secrets dans les journaux, clé Comtrade en en-tête) ; E3 et M8 clos (secrets et HTTPS vérifiés sur le pod) ; C3 corrigé (`sync_emergent.sh` ne déploie que `main`, contrôle des crons durci par la PR #753, faux blocage de déploiement levé par la PR #761 ; ruleset « Protéger main » active le 02/11/2026 ; pod Emergent resynchronisé sur `main` le 02/11/2026, contrôle des crons sain). **Phase 0 terminée.** **Phase 1 : PR #765** (E1, E2, E4, E5, M4, M5, M10, INFO-2), détail sous chaque constat ; fusionnée et déployée sur Emergent le 03/11/2026 (`3a805e62`), vérifiée de l'extérieur (§8, phase 1). **Phase 1 terminée.**
+**Suivi des corrections (PR #750, fusionnée le 01/11/2026 ; PR #753) :** C1 traité (domaine vérifié côté GitHub ; page vitrine en ligne sur `https://www.afcfta-zlecaf.com` depuis le 02/11/2026, documents internes en 404) ; INFO-1 corrigé (publication Pages limitée à `site/`) ; C2 corrigé préventivement (masquage des secrets dans les journaux, clé Comtrade en en-tête) ; E3 et M8 clos (secrets et HTTPS vérifiés sur le pod) ; C3 corrigé (`sync_emergent.sh` ne déploie que `main`, contrôle des crons durci par la PR #753, faux blocage de déploiement levé par la PR #761 ; ruleset « Protéger main » active le 02/11/2026 ; pod Emergent resynchronisé sur `main` le 02/11/2026, contrôle des crons sain). **Phase 0 terminée.** **Phase 1 : PR #765** (E1, E2, E4, E5, M4, M5, M10, INFO-2), détail sous chaque constat ; fusionnée et déployée sur Emergent le 03/11/2026 (`3a805e62`), vérifiée de l'extérieur (§8, phase 1). **Phase 1 terminée.** **Phase 2 : PR #768** (M1 partiel, M7, INFO-8), fusionnée le 04/11/2026 (`c79787bb`) ; **PR #770** (M3, INFO-10 partiel).
 
 ---
 
@@ -208,9 +208,9 @@ Reproduit en local (faux Mongo) : `/api/reports/health` ×4 en **free connecté*
 
 | # | Constat | Preuve | Correctif |
 |---|---|---|---|
-| **M1** | **Chaîne CI** : actions épinglées par tag mutable (`peter-evans/create-pull-request@v7`), jetons `contents: write` + `persist-credentials: true`, PAT à portée `repo`, installs non figés (`pip install requests …`), pushes directs sur `main` via `GITHUB_TOKEN` (non testés par la CI) | `auto_update_data.yml:22-25,38,50,113,122` ; `production_etl.yml` ; `tariff_crawl.yml`, `veille_eth_crawl.yml` | Épingler par SHA ; PAT fine-grained limité au dépôt ou GitHub App ; `persist-credentials:false` ; `pip-compile --generate-hashes` ; transformer les pushes en PR ; `permissions: contents: read` par défaut ✅ **Partiel, PR #768** : les 37 références d'actions sont épinglées par SHA (versions inchangées) ; `persist-credentials: false` sur la CI et Pages ; `production_etl` et `opportunites_module`, lancés sur `main`, poussent une branche dédiée et ouvrent une PR (la poussée directe était refusée par la protection de `main`). Restent : un jeton dédié `DATA_BOT_TOKEN` (PAT fine-grained limité au dépôt, contenu et PR en écriture), pour que la CI tourne sur les PR de données ; `persist-credentials` des workflows de données ; les installations non figées (point 12). |
+| **M1** | **Chaîne CI** : actions épinglées par tag mutable (`peter-evans/create-pull-request@v7`), jetons `contents: write` + `persist-credentials: true`, PAT à portée `repo`, installs non figés (`pip install requests …`), pushes directs sur `main` via `GITHUB_TOKEN` (non testés par la CI) | `auto_update_data.yml:22-25,38,50,113,122` ; `production_etl.yml` ; `tariff_crawl.yml`, `veille_eth_crawl.yml` | Épingler par SHA ; PAT fine-grained limité au dépôt ou GitHub App ; `persist-credentials:false` ; `pip-compile --generate-hashes` ; transformer les pushes en PR ; `permissions: contents: read` par défaut ✅ **Partiel, PR #768** : les 37 références d'actions sont épinglées par SHA (versions inchangées) ; `persist-credentials: false` sur la CI et Pages ; `production_etl` et `opportunites_module`, lancés sur `main`, poussent une branche dédiée et ouvrent une PR (la poussée directe était refusée par la protection de `main`). ✅ **PR #770** : les 8 workflows qui publient des données utilisent `DATA_BOT_TOKEN` s'il existe, sinon `GITHUB_TOKEN`. Les 4 qui poussent eux-mêmes (`production_etl`, `opportunites_module`, `tariff_crawl`, `veille_eth_crawl`) ne gardent plus aucun identifiant après le checkout : le jeton n'est passé qu'aux `git fetch` et `git push` de l'étape de publication, jamais aux crawlers ni aux scripts. Restent : créer le secret `DATA_BOT_TOKEN` (jeton fine-grained limité au dépôt, Contents et Pull requests en écriture, action de l'exploitant) ; `persist-credentials` des 4 workflows qui passent par `peter-evans/create-pull-request` ; les installations non figées (point 12). |
 | **M2** | **`.dockerignore`** : `.env`/`.env.*` ne matchent qu'à la racine ; `COPY . /app` embarque les `.env` imbriqués et `.local_backups/*.bak` (qui contiendraient `SECRET_KEY`, `MONGO_URL`) dans l'image | `.dockerignore:12-13`, `Dockerfile:25`, `.local_backups/RESTORE_NOTES.md:7-8` | Ajouter `**/.env`, `**/.env.*`, `!**/.env.example`, `.local_backups`, `**/*.bak`, `**/node_modules`, `**/.venv*`, `.emergent`, `**/*.mmdb` |
-| **M3** | **Dépendances vulnérables** sur des chemins actifs (voir annexe A) : starlette 0.37.2, pyjwt 2.10.1, cryptography 46.0.2, urllib3 2.5.0, pymongo 4.17.0 ; côté front dompurify (critique), axios, react-router | `pip-audit`, `npm/yarn audit` | Montées de version de l'annexe A ; faire pointer les middlewares sur `request.scope["path"]` |
+| **M3** | **Dépendances vulnérables** sur des chemins actifs (voir annexe A) : starlette 0.37.2, pyjwt 2.10.1, cryptography 46.0.2, urllib3 2.5.0, pymongo 4.17.0 ; côté front dompurify (critique), axios, react-router | `pip-audit`, `npm/yarn audit` | Montées de version de l'annexe A ; faire pointer les middlewares sur `request.scope["path"]` ✅ **PR #770** : versions de l'annexe A montées dans les deux `requirements` et le `yarn.lock`. `pip-audit` ne trouve plus aucune vulnérabilité connue dans `backend/requirements.txt` (Emergent) ni dans `requirements.txt` (CI, Docker) ; `yarn audit` n'en trouve plus dans les dépendances de production. Les middlewares CSRF et de débit lisent `request.scope["path"]`. Constat confirmé par test avant correction : un en-tête `Host: testserver/api/health?` faisait lire `/api/health` (exempté) et dispensait la requête du jeton CSRF comme du quota de connexion. Reste : vitest 3 et ses dépendances (outil de test, non livré), dont le correctif exige vitest 4. |
 | **M4** | **Verrouillage de compte par email** : 5 échecs → blocage 15 min, indexé sur l'email seul → un tiers qui connaît l'email bloque la connexion de la victime à volonté | `routes/user_auth.py:244,250-291` | Combiner signal par compte + throttle par IP/appareil + CAPTCHA/backoff ; ne pas bloquer durement sur l'email seul. ✅ **PR #765** : cookie « appareil connu » (HMAC, aucune IP conservée). Les échecs depuis un navigateur où l'on s'est déjà connecté ne verrouillent que ce navigateur ; sans ce cookie, le verrou du compte reste de 5 échecs / 15 min. |
 | **M5** | **Injection de formules CSV/Excel** : `sector` (query) et des champs Mongo écrits tels quels dans les cellules ; `=HYPERLINK(...)` ressort en formule `<f>` | `routes/regional_analytics.py:145-148` → `dashboard/export_services.py:95-105` ; `routers/export_router.py` ; `frontend/src/components/common/ExportTools.jsx:100` | Préfixer par `'` toute cellule commençant par `= + - @ \t \r` ; valider `sector` contre une liste. ✅ **PR #765** : `formules_tableur.neutraliser_formule` appliquée à tous les exports serveur, et la même règle dans `ExportTools.jsx` ; secteur inconnu refusé (422). Constat additionnel corrigé : l'en-tête de `comparison/csv` reprenait `countries`. Reste : un fichier CSV ouvert avec le séparateur `;` (Excel en français) peut couper une cellule après un `;`. |
 | **M6** | **Client Supabase par défaut** : `createClient(url,key)` sans options → `persistSession` (refresh token en `localStorage`), `flowType:'implicit'`, `detectSessionInUrl:true` → login CSRF (`#access_token=…`) et exfiltration de jeton via tout XSS | `frontend/src/lib/supabase.js:9` ; `context/AuthContext.jsx:43-55,89,143` | `auth:{flowType:'pkce'}` ; après `/api/auth/session`, `signOut({scope:'local'})` ; URLs de redirection **exactes** dans le tableau de bord Supabase + rotation des refresh tokens **Différé** : Supabase n'est pas configuré sur la préproduction (aucune URL Supabase dans l'application déployée, vérifié le 04/11/2026). À traiter à son activation (phase 3). Le mode PKCE impose des gabarits d'email `token_hash`, sinon un lien de confirmation ouvert sur un autre appareil échoue. La session Supabase sert aussi au renouvellement de celle de l'application : pas de `signOut` local juste après l'échange. |
@@ -234,7 +234,7 @@ Reproduit en local (faux Mongo) : `/api/reports/health` ×4 en **free connecté*
 - **INFO-7 — TLS désactivé dans deux collecteurs** : `scripts/tun_recrawl_rates.py:30-31` (`CERT_NONE`) et `tariff_engine/ingest.py:38` (`verify=False` en repli). CLI/crawl, pas exposé HTTP → faible, mais contredit la doctrine du projet. Restaurer la vérification + certificat intermédiaire.
 - **INFO-8 — `cleanup-branches.yml:9`** : `dry_run` par défaut `"false"` → un run manuel par défaut est destructif. Passer le défaut à `"true"`. ✅ **PR #768** : défaut à `"true"`.
 - **INFO-9 — `AdminProjectsPage.jsx`** stocke la clé admin en `localStorage` (`:39,107`) — composant **non importé** aujourd'hui (absent du bundle). Le supprimer ou passer par un rôle admin sur la session serveur.
-- **INFO-10 — Hygiène des lockfiles** : `package-lock.json` sans `integrity`/`resolved` et périmé (il manque `@supabase/supabase-js`) alors que les déploiements utilisent **yarn** ; `requirements.txt` non figé (`stripe>=9`, `anthropic>=0.40`…) et divergent entre racine (Docker) et `backend/` (Emergent) ; outils de dev livrés en prod. Un seul lockfile yarn figé + un `requirements` compilé et haché.
+- **INFO-10 — Hygiène des lockfiles** : `package-lock.json` sans `integrity`/`resolved` et périmé (il manque `@supabase/supabase-js`) alors que les déploiements utilisent **yarn** ; `requirements.txt` non figé (`stripe>=9`, `anthropic>=0.40`…) et divergent entre racine (Docker) et `backend/` (Emergent) ; outils de dev livrés en prod. Un seul lockfile yarn figé + un `requirements` compilé et haché. ✅ **Partiel, PR #770** : `package-lock.json` retiré, `yarn.lock` seul ; toutes les versions figées (`==`) dans les deux `requirements`, y compris stripe, anthropic, google-genai, geoip2 et aiohttp ; `backend/requirements.txt` recompilé avec ses dépendances indirectes ; `dulwich`, `python-jose`, `passlib`, `ecdsa`, `aioredis` retirés (aucun import). Restent : les empreintes (`--require-hashes`), à ajouter quand l'agent Emergent ne modifiera plus ce fichier à la main (une seule ligne sans empreinte bloque toute l'installation) ; l'écart racine / `backend/` (openpyxl, aiosmtplib, APScheduler absents du fichier Emergent) ; les outils de développement encore listés pour Emergent, dont l'agent de test se sert.
 
 ---
 
@@ -302,9 +302,9 @@ Mapping vers les constats entre parenthèses. Effort : XS < 1 j · S 1-3 j · M 
 | `ADMIN_ACCES_ILLIMITE` | `true` sur le pod (contrôle exploitant) |
 
 ### Phase 2 — Chaîne d'approvisionnement et secrets (M)
-11. **Épingler les actions par SHA**, PAT fine-grained/GitHub App, `permissions: contents: read` par défaut, pushes → PR (M1). — *M* — ✅ partiel (PR #768) : épinglage, PR au lieu des poussées sur `main`, jeton non conservé dans la CI ; reste le PAT dédié (action de l'exploitant).
-12. **Figer les dépendances** : un lockfile yarn + `requirements` compilé/haché, `--ignore-scripts`, retirer outils de dev et paquets inutilisés (INFO-10). — *M*
-13. **Monter les dépendances vulnérables** (annexe A) ; middlewares sur `request.scope["path"]` (M3). — *M*
+11. **Épingler les actions par SHA**, PAT fine-grained/GitHub App, `permissions: contents: read` par défaut, pushes → PR (M1). — *M* — ✅ partiel (PR #768) : épinglage, PR au lieu des poussées sur `main`, jeton non conservé dans la CI ; PR #770 : `DATA_BOT_TOKEN` branché dans les workflows de données, avec repli sur `GITHUB_TOKEN` ; reste à créer le secret (action de l'exploitant).
+12. **Figer les dépendances** : un lockfile yarn + `requirements` compilé/haché, `--ignore-scripts`, retirer outils de dev et paquets inutilisés (INFO-10). — *M* — ✅ partiel (PR #770) : versions figées, un seul lockfile, paquets inutilisés retirés ; restent les empreintes et l'écart racine / `backend/`.
+13. **Monter les dépendances vulnérables** (annexe A) ; middlewares sur `request.scope["path"]` (M3). — *M* — ✅ PR #770.
 14. **Corriger `.dockerignore`** (M2) ; durcir `docker-compose` (Mongo `readWrite`, digests) et `.replit` (INFO-5, INFO-6). — *S*
 15. **Durcir le client Supabase** (PKCE, signOut local, redirections exactes) (M6) ; SRI + sandbox Business Atlas (M7). — *S* — ✅ partiel (PR #768) : SRI de Chart.js ; M6 différé à l'activation de Supabase ; bac à sable écarté (voir M7).
 
@@ -318,22 +318,22 @@ Mapping vers les constats entre parenthèses. Effort : XS < 1 j · S 1-3 j · M 
 
 `[E]` = `backend/requirements.txt` (Emergent) · `[D]` = `requirements.txt` racine (Docker/CI).
 
-| Paquet | Actuel | Corrigé | Pertinent runtime |
-|---|---|---|---|
-| starlette (via fastapi 0.110.1) [E,D] | 0.37.2 | ≥ 1.3.1 (FastAPI 0.162) | oui (`request.url` dans les middlewares) |
-| PyJWT [E,D] | 2.10.1 | ≥ 2.15.0 | oui (JWKS Supabase + sessions HS256) |
-| cryptography [E,D] | 46.0.2 | ≥ 50.0.0 (min 46.0.7) | oui (OpenSSL embarqué) |
-| urllib3 [E] | 2.5.0 | ≥ 2.8.0 | oui (fetchers) |
-| pymongo [E,D] | 4.17.0 | ≥ 4.18.3 | oui |
-| certifi [E] | 2025.10.5 | ≥ 2026.10.18 | oui |
-| aiosmtplib [D] | 3.0.1 | ≥ 5.1.2 | oui (image Docker) |
-| requests [E,D] | 2.32.5 | ≥ 2.33.0 | faible |
-| python-multipart [E,D] | 0.0.20 | ≥ 0.0.31 | faible (pas d'endpoint Form) |
-| python-jose / passlib / ecdsa / aioredis [E] | — | **retirer** (inutilisés/abandonnés) | non |
-| dompurify (via jspdf) | 3.4.12 | ≥ 3.4.17 | non (`jsPDF.html()` non utilisé) |
-| axios | 1.15.2 | ≥ 1.21.0 | partiel (bundle navigateur) |
-| react-router(-dom) | 7.18.1 | ≥ 7.18.2 | non (non importé) |
-| vite [dev, sert la prod via `preview`] | 6.4.3 | ≥ 6.4.5 | seulement si serveur exposé |
+| Paquet | Actuel | Corrigé | Pertinent runtime | Retenu (PR #770) |
+|---|---|---|---|---|
+| starlette (via fastapi 0.110.1) [E,D] | 0.37.2 | ≥ 1.3.1 (FastAPI 0.162) | oui (`request.url` dans les middlewares) | 1.10.0 (FastAPI 0.162.0) |
+| PyJWT [E,D] | 2.10.1 | ≥ 2.15.0 | oui (JWKS Supabase + sessions HS256) | 2.15.1 |
+| cryptography [E,D] | 46.0.2 | ≥ 50.0.0 (min 46.0.7) | oui (OpenSSL embarqué) | 50.0.2 |
+| urllib3 [E] | 2.5.0 | ≥ 2.8.0 | oui (fetchers) | 2.8.0 |
+| pymongo [E,D] | 4.17.0 | ≥ 4.18.3 | oui | 4.19.0 |
+| certifi [E] | 2025.10.5 | ≥ 2026.10.18 | oui | 2026.10.23 |
+| aiosmtplib [D] | 3.0.1 | ≥ 5.1.2 | oui (image Docker) | 5.1.3 |
+| requests [E,D] | 2.32.5 | ≥ 2.33.0 | faible | 2.34.2 |
+| python-multipart [E,D] | 0.0.20 | ≥ 0.0.31 | faible (pas d'endpoint Form) | 0.0.33 |
+| python-jose / passlib / ecdsa / aioredis [E] | — | **retirer** (inutilisés/abandonnés) | non | retirés |
+| dompurify (via jspdf) | 3.4.12 | ≥ 3.4.17 | non (`jsPDF.html()` non utilisé) | 3.4.17 |
+| axios | 1.15.2 | ≥ 1.21.0 | partiel (bundle navigateur) | 1.21.0 |
+| react-router(-dom) | 7.18.1 | ≥ 7.18.2 | non (non importé) | retiré (ainsi que zod, non importé) |
+| vite [dev, sert la prod via `preview`] | 6.4.3 | ≥ 6.4.5 | seulement si serveur exposé | 6.4.5 |
 
 `pip-audit` : 20 paquets vulnérables côté `backend/`, 11 côté racine. `npm audit` (prod) : 11 (1 critique, 8 high). Détails bruts conservés sous `pipaudit/`, `npm-audit/`, `yarn-audit/`.
 

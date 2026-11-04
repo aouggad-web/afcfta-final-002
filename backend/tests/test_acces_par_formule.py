@@ -24,7 +24,6 @@ from pathlib import Path
 import pytest
 from bson import ObjectId
 from fastapi import APIRouter, FastAPI
-from fastapi.routing import APIRoute
 from fastapi.testclient import TestClient
 from pymongo.errors import DuplicateKeyError
 
@@ -35,6 +34,8 @@ import entitlement_guard  # noqa: E402
 import routes  # noqa: E402
 from routers import export_router  # noqa: E402
 from services.user_auth_service import create_access_token  # noqa: E402
+
+from backend.tests.routes_effectives import routes_api  # noqa: E402
 
 CLE_VENDUE = "cle-plan-api-vendu"
 CLE_ADMIN = "cle-admin"
@@ -366,8 +367,8 @@ def test_diagnostics_rapports_restent_publics_et_hors_quota(app_api, base):
 
     controles = {
         route.path: _porte(route, "require_paid_module.")
-        for route in app_api.routes
-        if isinstance(route, APIRoute) and route.path.startswith("/api/reports/")
+        for route in routes_api(app_api)
+        if route.path.startswith("/api/reports/")
     }
     assert controles.pop("/api/reports/health") is False
     assert controles.pop("/api/reports/oec-health") is False
@@ -382,8 +383,8 @@ _SOUS_ONGLETS = ("/api/substitution/", "/api/strategic/", "/api/industrie-nation
 def test_sous_onglets_opportunites_portent_le_controle_d_abonnement(app_api):
     routes_sous_onglets = [
         route
-        for route in app_api.routes
-        if isinstance(route, APIRoute) and route.path.startswith(_SOUS_ONGLETS)
+        for route in routes_api(app_api)
+        if route.path.startswith(_SOUS_ONGLETS)
     ]
 
     assert {r.path.split("/")[2] for r in routes_sous_onglets} == {
@@ -391,6 +392,20 @@ def test_sous_onglets_opportunites_portent_le_controle_d_abonnement(app_api):
         "strategic",
         "industrie-nationale",
     }
+    for route in routes_sous_onglets:
+        assert _porte(route, "require_paid_module."), route.path
+
+
+def test_l_application_ne_sert_aucune_copie_non_controlee_des_sous_onglets():
+    """server.py incluait une seconde fois le routeur de substitution, sans le
+    contrôle d'abonnement. La copie contrôlée, incluse en premier, servait les
+    requêtes ; un simple changement d'ordre aurait ouvert l'onglet à tous.
+    Vérifié sur l'application réelle, pas sur `app_api`."""
+    from server import app
+
+    routes_sous_onglets = [r for r in routes_api(app) if r.path.startswith(_SOUS_ONGLETS)]
+
+    assert routes_sous_onglets
     for route in routes_sous_onglets:
         assert _porte(route, "require_paid_module."), route.path
 
@@ -555,9 +570,8 @@ def _porte(route, prefixe):
 def test_chaque_export_de_fichier_porte_un_controle(app_api):
     exports = [
         route
-        for route in app_api.routes
-        if isinstance(route, APIRoute)
-        and (
+        for route in routes_api(app_api)
+        if (
             route.path.startswith("/api/export/") or route.path == "/api/regional-analytics/export"
         )
     ]

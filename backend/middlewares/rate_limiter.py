@@ -129,7 +129,9 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self._last_cleanup = now
 
     async def dispatch(self, request: Request, call_next):
-        path = request.url.path
+        # Chemin routé, jamais request.url : Starlette reconstruit l'URL à
+        # partir de l'en-tête Host, qu'un client peut forger (audit M3).
+        path = request.scope["path"]
         # Comparaison exacte : un préfixe rendrait le middleware inopérant.
         if not self.enabled or path in self.exempt_paths:
             return await call_next(request)
