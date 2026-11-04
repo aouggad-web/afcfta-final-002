@@ -1,7 +1,7 @@
 # État d'application de la ZLECAf entre pays
 
 > Généré par `scripts/build_bilateral_application_matrix.py` — ne pas éditer à la main.
-> Données : `reports/ETAT_APPLICATION_BILATERAL.json`, générées le 2026-11-03.
+> Données : `reports/ETAT_APPLICATION_BILATERAL.json`, générées le 2026-11-04.
 
 ## Ce que ce tableau répond
 
@@ -16,19 +16,19 @@ titre de la réciprocité. Le sens du flux change donc le droit.
 |---|---|
 | Pays couverts | 54 |
 | Couples possibles | 2916 |
-| Destinations à liste vérifiée | **6** |
-| Couples renseignés | **9.88 %** |
+| Destinations à liste vérifiée | **11** |
+| Couples renseignés | **18.11 %** |
 
 | État | Couples | Sens |
 |---|---:|---|
-| `ACCORDEE` | 117 | L'acte national de la destination nomme cette origine parmi celles qui bénéficient du tarif ZLECAf. |
+| `ACCORDEE` | 246 | L'acte national de la destination nomme cette origine parmi celles qui bénéficient du tarif ZLECAf. |
 | `ADMISSION_PAR_REGLE` | 96 | La destination admet les origines par un CRITÈRE et non par une liste nominative. La règle est citée ; elle n'est pas résolue ici, car ses termes sont ambigus et la résoudre par supposition accorderait une préférence que personne n'a constatée. |
-| `DESTINATION_NON_ETABLIE` | 2213 | Aucune liste d'origines admises n'a été vérifiée pour cette destination. Absence de recherche, PAS un refus de préférence. |
+| `DESTINATION_NON_ETABLIE` | 1973 | Aucune liste d'origines admises n'a été vérifiée pour cette destination. Absence de recherche, PAS un refus de préférence. |
 | `MEME_PAYS` | 54 | Origine et destination confondues. |
-| `NON_ACCORDEE` | 171 | La destination publie une liste nominative vérifiée et cette origine n'y figure pas : la préférence ne lui est pas accordée à ce jour. |
+| `NON_ACCORDEE` | 282 | La destination publie une liste nominative vérifiée et cette origine n'y figure pas : la préférence ne lui est pas accordée à ce jour. |
 | `ORIGINE_NON_RATIFIANTE` | 265 | L'origine n'a pas déposé ses instruments de ratification : aucune préférence ZLECAf ne peut lui être accordée, quelle que soit la destination. |
 
-Les 2213 couples `DESTINATION_NON_ETABLIE` sont le déficit d'information que
+Les 1973 couples `DESTINATION_NON_ETABLIE` sont le déficit d'information que
 ce travail vise à combler. Ils ne signifient **pas** qu'il n'y a pas de préférence :
 ils signifient que personne ne l'a vérifié. Les afficher comme tels, plutôt que de les
 remplir par défaut, est le seul traitement honnête.
@@ -45,7 +45,7 @@ accorderait une préférence que personne n'a constatée.
 | **Ghana** (GHA) | « Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers. » | AfCFTA National Coordination Office du Ghana (afcftagh.org) | « State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays. |
 | **Nigeria** (NGA) | « Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires. » | communiqués de l'Union africaine et de l'administration nigériane | La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation. |
 
-## Les 6 destinations établies
+## Les 11 destinations établies
 
 | Destination | Origines admises | Instrument | Niveau de preuve |
 |---|---:|---|---|
@@ -53,10 +53,25 @@ accorderait une préférence que personne n'a constatée.
 | **Égypte** (EGY) | 19 | منشور اتفاقيات رقم 38 لسنة 2024 | primaire — PDF officiels douane égyptienne, OCR arabe |
 | **Kenya** (KEN) | 28 | EAC/321/2022 | primaire (revue antérieure du dépôt) |
 | **Maroc** (MAR) | 40 | Circulaire ADII n° 6530/223 du 2024-01-22 | primaire — circulaire lue intégralement, SHA-256 consigné |
+| **Namibie** (NAM) | 8 | General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025) | primaire — Government Gazette de Namibie (copies archivées) |
+| **Rwanda** (RWA) | 28 | EAC/321/2022 | primaire — avis EAC et Directive 1/2021 archivés (règle B) |
+| **Seychelles** (SYC) | 38 | S.I. 113 of 2022 | primaire — règlement publié au Supplement to Official Gazette (28/10/2022) |
 | **Tunisie** (TUN) | 8 | Tarif Web 2026, douane.gov.tn | primaire — portail tarifaire officiel scellé dans le dépôt |
+| **Tanzanie** (TZA) | 28 | EAC/321/2022 | primaire — avis EAC et Directive 1/2021 archivés (règle B) |
+| **Ouganda** (UGA) | 28 | EAC/321/2022 | primaire — avis EAC et Directive 1/2021 archivés (règle B) |
 | **Afrique du Sud** (ZAF) | 13 | « Update on the AfCFTA », the dtic / SARS, newsletter mars 2026 | officielle — publication gouvernementale, non un acte réglementaire |
 
+**Réserve — Namibie** : Les membres de la SACU et de la SADC sont absents : la Namibie échange avec eux sous ces régimes, pas sous la ZLECAf.
+
+**Réserve — Rwanda** : Origines de l'Annexe 1 de la Directive 1/2021, traitées comme un plafond par le registre.
+
+**Réserve — Seychelles** : La Schedule VI nomme des « State Parties » : une liste d'États parties, non de partenaires vérifiés bilatéralement.
+
 **Réserve — Tunisie** : Le taux publié est un coefficient du texte TA n°016/2023 : le droit servi est ce coefficient appliqué au droit de base 2019, plafonné au NPF (TUN_droit_de_base_2019_2026-10-03.json).
+
+**Réserve — Tanzanie** : Origines de l'Annexe 1 de la Directive 1/2021, traitées comme un plafond par le registre.
+
+**Réserve — Ouganda** : Origines de l'Annexe 1 de la Directive 1/2021, traitées comme un plafond par le registre.
 
 **Réserve — Afrique du Sud** : Les membres de la SACU et de la SADC sont volontairement absents : l'Afrique du Sud échange avec eux sous ces régimes, pas sous la ZLECAf. Leur absence n'est donc pas un refus de préférence.
 
@@ -64,41 +79,74 @@ accorderait une préférence que personne n'a constatée.
 
 Lecture : la **ligne** est le pays d'importation, la **colonne** le pays d'origine.
 
-| Destination \ Origine | Algérie | Égypte | Kenya | Maroc | Tunisie | Afrique du Sud |
-|---|---|---|---|---|---|---|
-| **Algérie** | — | ✅ | ✅ | ❌ | ✅ | ✅ |
-| **Égypte** | ✅ 5 ans | — | ✅ 10 ans | ✅ 5 ans | ✅ 5 ans | ✅ 10 ans |
-| **Kenya** | ❌ | ✅ | — | ❌ | ❌ | ❌ |
-| **Maroc** | ✅ 5 ans | ✅ 5 ans | ✅ 10 ans | — | ✅ 5 ans | ✅ 10 ans |
-| **Tunisie** | ❌ | ❌ | ✅ | ❌ | — | ✅ |
-| **Afrique du Sud** | ✅ | ✅ | ✅ | ✅ | ✅ | — |
+| Destination \ Origine | Algérie | Égypte | Kenya | Maroc | Namibie | Rwanda | Seychelles | Tunisie | Tanzanie | Ouganda | Afrique du Sud |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| **Algérie** | — | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ | ✅ | ✅ | ❌ | ✅ |
+| **Égypte** | ✅ 5 ans | — | ✅ 10 ans | ✅ 5 ans | ✅ 10 ans | ✅ 5 ans | ❌ | ✅ 5 ans | ✅ 5 ans | ✅ 5 ans | ✅ 10 ans |
+| **Kenya** | ❌ | ✅ | — | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **Maroc** | ✅ 5 ans | ✅ 5 ans | ✅ 10 ans | — | ✅ 10 ans | ✅ 5 ans | ✅ 5 ans | ✅ 5 ans | ✅ 5 ans | ✅ 5 ans | ✅ 10 ans |
+| **Namibie** | ✅ | ✅ | ✅ | ❌ | — | ✅ | ❌ | ✅ | ❌ | ❌ | ❌ |
+| **Rwanda** | ❌ | ✅ | ❌ | ❌ | ❌ | — | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **Seychelles** | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | — | ✅ | ❌ | ✅ | ✅ |
+| **Tunisie** | ❌ | ❌ | ✅ | ❌ | ❌ | ✅ | ❌ | — | ✅ | ❌ | ✅ |
+| **Tanzanie** | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | — | ❌ | ❌ |
+| **Ouganda** | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | — | ❌ |
+| **Afrique du Sud** | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | ❌ | ✅ | — |
 
 ✅ préférence accordée · ❌ origine absente de la liste vérifiée · ◐ admission par règle, non résolue · · non établi · — même pays
 
 ## Ce que le croisement révèle
 
-**7 réciprocités confirmées** — les deux sens sont établis :
+**14 réciprocités confirmées** — les deux sens sont établis :
 
 - Algérie ↔ Égypte
 - Algérie ↔ Afrique du Sud
 - Égypte ↔ Kenya
 - Égypte ↔ Maroc
+- Égypte ↔ Namibie
+- Égypte ↔ Rwanda
+- Égypte ↔ Tanzanie
+- Égypte ↔ Ouganda
 - Égypte ↔ Afrique du Sud
+- Kenya ↔ Seychelles
 - Maroc ↔ Afrique du Sud
+- Rwanda ↔ Seychelles
+- Seychelles ↔ Ouganda
 - Tunisie ↔ Afrique du Sud
 
-**8 asymétries** — un sens accorde, l'autre non :
+**29 asymétries** — un sens accorde, l'autre non :
 
 - **Algérie → Kenya** : DZA admet KEN à son tarif ZLECAf, KEN n'admet pas DZA.
 - **Maroc → Algérie** : MAR admet DZA à son tarif ZLECAf, DZA n'admet pas MAR.
+- **Namibie → Algérie** : NAM admet DZA à son tarif ZLECAf, DZA n'admet pas NAM.
+- **Algérie → Rwanda** : DZA admet RWA à son tarif ZLECAf, RWA n'admet pas DZA.
+- **Seychelles → Algérie** : SYC admet DZA à son tarif ZLECAf, DZA n'admet pas SYC.
 - **Algérie → Tunisie** : DZA admet TUN à son tarif ZLECAf, TUN n'admet pas DZA.
+- **Algérie → Tanzanie** : DZA admet TZA à son tarif ZLECAf, TZA n'admet pas DZA.
+- **Seychelles → Égypte** : SYC admet EGY à son tarif ZLECAf, EGY n'admet pas SYC.
 - **Égypte → Tunisie** : EGY admet TUN à son tarif ZLECAf, TUN n'admet pas EGY.
 - **Maroc → Kenya** : MAR admet KEN à son tarif ZLECAf, KEN n'admet pas MAR.
+- **Namibie → Kenya** : NAM admet KEN à son tarif ZLECAf, KEN n'admet pas NAM.
 - **Tunisie → Kenya** : TUN admet KEN à son tarif ZLECAf, KEN n'admet pas TUN.
 - **Afrique du Sud → Kenya** : ZAF admet KEN à son tarif ZLECAf, KEN n'admet pas ZAF.
+- **Maroc → Namibie** : MAR admet NAM à son tarif ZLECAf, NAM n'admet pas MAR.
+- **Maroc → Rwanda** : MAR admet RWA à son tarif ZLECAf, RWA n'admet pas MAR.
+- **Maroc → Seychelles** : MAR admet SYC à son tarif ZLECAf, SYC n'admet pas MAR.
 - **Maroc → Tunisie** : MAR admet TUN à son tarif ZLECAf, TUN n'admet pas MAR.
+- **Maroc → Tanzanie** : MAR admet TZA à son tarif ZLECAf, TZA n'admet pas MAR.
+- **Maroc → Ouganda** : MAR admet UGA à son tarif ZLECAf, UGA n'admet pas MAR.
+- **Namibie → Rwanda** : NAM admet RWA à son tarif ZLECAf, RWA n'admet pas NAM.
+- **Seychelles → Namibie** : SYC admet NAM à son tarif ZLECAf, NAM n'admet pas SYC.
+- **Namibie → Tunisie** : NAM admet TUN à son tarif ZLECAf, TUN n'admet pas NAM.
+- **Tunisie → Rwanda** : TUN admet RWA à son tarif ZLECAf, RWA n'admet pas TUN.
+- **Afrique du Sud → Rwanda** : ZAF admet RWA à son tarif ZLECAf, RWA n'admet pas ZAF.
+- **Seychelles → Tunisie** : SYC admet TUN à son tarif ZLECAf, TUN n'admet pas SYC.
+- **Tanzanie → Seychelles** : TZA admet SYC à son tarif ZLECAf, SYC n'admet pas TZA.
+- **Seychelles → Afrique du Sud** : SYC admet ZAF à son tarif ZLECAf, ZAF n'admet pas SYC.
+- **Tunisie → Tanzanie** : TUN admet TZA à son tarif ZLECAf, TZA n'admet pas TUN.
+- **Afrique du Sud → Ouganda** : ZAF admet UGA à son tarif ZLECAf, UGA n'admet pas ZAF.
 
-Kenya est le receveur de 4 de ces 8 asymétries : ces pays l'admettent à leur tarif ZLECAf,
+Kenya est le receveur de 5 de ces 29 asymétries : ces pays l'admettent à leur tarif ZLECAf,
 sa propre liste ne les admet pas. Un exportateur dans ce sens peut invoquer
 la ZLECAf ; dans le sens inverse, en l'état des listes vérifiées, non.
 
