@@ -235,6 +235,42 @@ def test_session_route_absent_without_supabase(client, db, supabase, monkeypatch
     assert _open_session(client).status_code == 404
 
 
+def test_anciennes_routes_fermees_quand_supabase_est_actif(client, db, supabase):
+    """Supabase actif : l'ancien formulaire créerait un compte sans
+    confirmation d'email, et l'ancien mot de passe (bcrypt dans Mongo)
+    resterait valable après une réinitialisation faite dans Supabase."""
+    db.users.docs.append(
+        {
+            "_id": ObjectId(),
+            "email": "old@example.com",
+            "name": "Old",
+            "password_hash": "$2b$12$ancien-hachage-qui-ne-doit-plus-servir",
+        }
+    )
+    inscription = client.post(
+        "/auth/register",
+        json={"name": "Nouveau", "email": "new@example.com", "password": "MotDePasse123"},
+    )
+    connexion = client.post(
+        "/auth/login", json={"email": "old@example.com", "password": "MotDePasse123"}
+    )
+
+    assert inscription.status_code == 410
+    assert connexion.status_code == 410
+    assert "access_token" not in client.cookies
+    assert [u["email"] for u in db.users.docs] == ["old@example.com"]
+
+
+def test_anciennes_routes_ouvertes_sans_supabase(client, db, supabase, monkeypatch):
+    monkeypatch.delenv("SUPABASE_URL")
+    reponse = client.post(
+        "/auth/register",
+        json={"name": "Nouveau", "email": "new@example.com", "password": "MotDePasse123"},
+    )
+    assert reponse.status_code == 200
+    assert reponse.json()["email"] == "new@example.com"
+
+
 def test_me_and_entitlements_recognise_supabase_session(client, db, supabase):
     _open_session(client)
     me = client.get("/auth/me")

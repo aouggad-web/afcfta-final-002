@@ -16,6 +16,9 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
     logout,
     supabaseEnabled,
     recovery,
+    lienEnAttente,
+    confirmerLienEmail,
+    ignorerLienEmail,
     requestPasswordReset,
     updatePassword,
     exportAccount,
@@ -57,6 +60,9 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
   };
 
   const handleClose = () => {
+    // Fermer la fenêtre (Échap, croix, clic dehors, « Annuler ») vaut refus
+    // du lien d'e-mail en attente : il ne revient pas à la prochaine ouverture.
+    if (lienEnAttente) ignorerLienEmail?.();
     resetForms();
     onClose();
   };
@@ -226,10 +232,50 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
   );
 
   let panel = null;
-  if (recovery) {
+  if (lienEnAttente) {
+    // Lien d'e-mail que ce navigateur n'attendait pas : rien n'est utilisé
+    // sans l'accord de la personne (lien transmis par un tiers, scanner).
+    panel = (
+      <div style={infoStyle} role="status" data-testid="lien-email">
+        {lienEnAttente.type === 'recovery'
+          ? pick(language, 'Vous avez ouvert un lien pour choisir un nouveau mot de passe.', 'You opened a link to choose a new password.', 'لقد فتحت رابطًا لاختيار كلمة مرور جديدة.')
+          : pick(language, 'Vous avez ouvert un lien de confirmation d\'adresse e-mail.', 'You opened an email confirmation link.', 'لقد فتحت رابط تأكيد عنوان البريد الإلكتروني.')}{' '}
+        {pick(language, 'Continuez seulement si vous venez de le demander vous-même.', 'Only continue if you requested it yourself.', 'تابع فقط إذا كنت قد طلبته بنفسك.')}
+        <Button
+          className="w-full"
+          style={{ marginTop: 12 }}
+          disabled={loading}
+          onClick={async () => {
+            setLoading(true);
+            try {
+              await confirmerLienEmail();
+            } finally {
+              setLoading(false);
+            }
+          }}
+        >
+          {pick(language, 'Continuer', 'Continue', 'متابعة')}
+        </Button>
+        <Button
+          variant="outline"
+          className="w-full"
+          style={{ marginTop: 8 }}
+          onClick={handleClose}
+        >
+          {pick(language, 'Annuler', 'Cancel', 'إلغاء')}
+        </Button>
+      </div>
+    );
+  } else if (recovery) {
     panel = (
       <form className="space-y-4 pt-2" onSubmit={handleNewPassword} data-testid="recovery-form">
         {errorBox}
+        {user?.email && (
+          <p style={{ color: 'var(--afcfta-muted)', fontSize: 14 }} data-testid="recovery-account">
+            {pick(language, 'Compte : ', 'Account: ', 'الحساب: ')}
+            <strong>{user.email}</strong>
+          </p>
+        )}
         <div className="space-y-1">
           <Label htmlFor="new-password">{pick(language, 'Nouveau mot de passe', 'New password', 'كلمة المرور الجديدة')}</Label>
           <Input

@@ -100,13 +100,14 @@ function App() {
   // ── Gestion du thème (sombre / clair) ──
   const [theme, setTheme] = useState(() => localStorage.getItem('zlecaf_theme') || 'dark');
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const { recovery } = useAuth() || {};
+  const { recovery, lienEnAttente } = useAuth() || {};
 
   // Arrivée par le lien « mot de passe oublié » : ouvrir la modale sur le
-  // formulaire de nouveau mot de passe.
+  // formulaire de nouveau mot de passe. Lien d'e-mail non attendu par ce
+  // navigateur : l'ouvrir sur la demande de confirmation.
   useEffect(() => {
-    if (recovery) setAuthModalOpen(true);
-  }, [recovery]);
+    if (recovery || lienEnAttente) setAuthModalOpen(true);
+  }, [recovery, lienEnAttente]);
 
   // Le lien "Démarrer un plan" de pricing.html renvoie ici avec
   // `#auth=login&next=<écran>` quand le visiteur n'est pas connecté. On lit ce

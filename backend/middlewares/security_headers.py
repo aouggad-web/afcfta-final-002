@@ -1,9 +1,20 @@
 import os
 import secrets
+from urllib.parse import urlsplit
 
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
+
+
+def _origine_supabase() -> str:
+    """Origine exacte du projet Supabase (https uniquement), que le navigateur
+    joint pour l'inscription, la connexion et le renouvellement de session.
+    Vide quand SUPABASE_URL n'est pas une URL https valide."""
+    parties = urlsplit(os.environ.get("SUPABASE_URL", "").strip())
+    if parties.scheme != "https" or not parties.hostname:
+        return ""
+    return f"https://{parties.netloc}"
 
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
@@ -13,6 +24,11 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 
         response: Response = await call_next(request)
 
+        connect_src = "connect-src 'self' https://api.worldbank.org https://api-v2.oec.world"
+        supabase = _origine_supabase()
+        if supabase:
+            connect_src = f"{connect_src} {supabase}"
+
         csp = "; ".join(
             [
                 "default-src 'self'",
@@ -20,7 +36,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
                 f"style-src 'self' 'nonce-{nonce}' https://fonts.googleapis.com",
                 "img-src 'self' data: https: blob:",
                 "font-src 'self' https://fonts.gstatic.com",
-                "connect-src 'self' https://api.worldbank.org https://api-v2.oec.world",
+                connect_src,
                 "frame-ancestors 'self'",
                 "base-uri 'self'",
                 "form-action 'self'",

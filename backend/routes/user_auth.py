@@ -193,6 +193,19 @@ def _known_device_nonce(request: Request, email: str) -> str | None:
     return nonce if hmac.compare_digest(signature.encode(), expected.encode()) else None
 
 
+def _refuser_si_supabase_actif() -> None:
+    """Comptes gérés par Supabase : l'ancien formulaire créerait un compte
+    sans confirmation d'email, et l'ancien mot de passe (bcrypt dans Mongo)
+    resterait valable après une réinitialisation faite dans Supabase. Les
+    sessions déjà ouvertes par l'ancien système restent acceptées jusqu'à
+    leur expiration (7 jours au plus) : seule la création en est fermée."""
+    if supabase_auth.is_enabled():
+        raise HTTPException(
+            status_code=status.HTTP_410_GONE,
+            detail="La connexion passe désormais par le nouveau système : rechargez la page.",
+        )
+
+
 def _set_device_cookie(response: Response, email: str) -> None:
     """Cookie `<nonce>.<HMAC(clé, email|nonce)>`, mêmes attributs Secure /
     SameSite / Partitioned que le cookie de session."""
@@ -220,6 +233,7 @@ async def register(
     response: Response,
     background_tasks: BackgroundTasks,
 ):
+    _refuser_si_supabase_actif()
     db = _require_db()
     email = str(payload.email)
 
@@ -294,6 +308,7 @@ async def _is_locked_out(db, identifier: str) -> bool:
 
 @router.post("/login")
 async def login(payload: LoginPayload, request: Request, response: Response):
+    _refuser_si_supabase_actif()
     db = _require_db()
     email = str(payload.email)
     # Verrou par appareil connu (OWASP « device cookie », constat M4) : un
