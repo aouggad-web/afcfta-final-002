@@ -1659,15 +1659,16 @@ EXPORT_PAR_TEXTE = {
     "COD": (
         "Tarif des droits et taxes à l'exportation de l'ordonnance-loi n° 012/2012 du 21 septembre 2012, tel que "
         "modifié : liste consolidée des produits soumis aux droits de sortie (CLRDC/Larcier, 2019, « Autres produits "
-        "miniers marchands »), recoupée avec l'annexe XVI des projets de lois de finances 2025 et 2026 ; loi de "
-        "finances n° 24/011 (or et diamants) et n° 25/060 pour 2026, annexe XVI ; Code minier (loi n° 007/2002 modifiée par la loi n° 18/001), art. 234 "
+        "miniers marchands »), recoupée avec l'annexe XVI des projets de lois de finances 2025 et 2026 ; annexe "
+        "de la loi de finances n° 24/011, appliquée par la loi rectificative n° 26/032 pour 2026 (art. 6), l'annexe XVI "
+        "de la loi n° 25/060 étant supprimée (art. 10) ; Code minier (loi n° 007/2002 modifiée par la loi n° 18/001), "
+        "art. 234 "
         "(sources/COD_tarif_exportation_OL_012-2012.texte-extrait.txt, "
         "sources/COD_tarif_exportation_consolide.texte-extrait.txt)",
         None,
         {
             "09011100": (0.0, None, "Café vert non torréfié et non décaféiné (Robusta, Arabica, déchets et brisures) : "
-                                    "exempt (loi de finances n° 25/060 pour 2026, annexe XVI ; 1 % à l'ordonnance-loi "
-                                    "n° 012/2012)."),
+                                    "exempt (annexe des droits de sortie de la loi n° 24/011 pour 2025, appliquée par la loi rectificative n° 26/032, art. 6 ; même taux au projet de LF 2025 et à l'annexe XVI de la LF 2026, supprimée ; 1 % à l'ordonnance-loi n° 012/2012)."),
             "22019000": (None, None, "Eau douce : 5 % ; autres eaux de cette ligne : exemptes. La ligne couvre les "
                                      "deux : à établir."),
             **{p: _COD_MINERAI for p in (
@@ -1678,8 +1679,7 @@ EXPORT_PAR_TEXTE = {
                                      "vérifié.", minier=False),
             "2716": _export_cod(5.0, "Énergie électrique, 5 % (les 1 000 kWh) ; le décret n° 18/054 du 27 décembre 2018 "
                                      "l'avait ramené à 1 % pour cinq ans, durée échue fin 2023.", minier=False),
-            "2817": _export_cod(5.0, "Oxyde et peroxyde de zinc, 5 % (loi de finances n° 25/060 pour 2026, annexe "
-                                     "XVI)."),
+            "2817": _export_cod(5.0, "Oxyde et peroxyde de zinc, 5 % (annexe des droits de sortie de la loi n° 24/011 pour 2025, appliquée par la loi rectificative n° 26/032, art. 6 ; même taux au projet de LF 2025 et à l'annexe XVI de la LF 2026, supprimée)."),
             # Hydroxydes de cobalt, sulfures de dénickelage, carbonates de
             # cobalt : produits de la métallurgie extractive, ajoutés au tarif
             # après 2012. Toute la position est taxée, sodium compris.
@@ -1692,15 +1692,14 @@ EXPORT_PAR_TEXTE = {
             **{p: _export_cod(10.0, "Bois bruts (positions 4403.49 et 4403.99 du tarif), toutes essences, 10 % (mètre "
                                     "cube).", minier=False)
                for p in ("44034200", "44034900", "44039500", "44039600", "44039700", "44039800", "44039900")},
-            **{p: (None, None, "Bois tropicaux sciés : exempts jusqu'à 150 mm d'épaisseur, 5 % au-delà (loi de finances "
-                               "n° 25/060 pour 2026, annexe XVI) ; la ligne ne dit pas l'épaisseur : à établir.")
+            **{p: (None, None, "Bois tropicaux sciés : exempts jusqu'à 150 mm d'épaisseur, 5 % au-delà (annexe des droits de sortie de la loi n° 24/011 pour 2025, appliquée par la loi rectificative n° 26/032, art. 6 ; même taux au projet de LF 2025 et à l'annexe XVI de la LF 2026, supprimée) ; la ligne ne dit pas l'épaisseur : à établir.")
                for p in ("440721", "440722", "440723", "440725", "440726", "440727", "440728", "440729")},
-            **{p: (None, None, "Diamants bruts : 0,5 % d'exploitation artisanale, 3 % de production industrielle (lois "
-                               "de finances n° 24/011 pour 2025 et n° 25/060 pour 2026, annexe XVI) ; titulaire minier exonéré (Code minier, art. 234) : "
+            **{p: (None, None, "Diamants bruts : 0,5 % d'exploitation artisanale, 3 % de production industrielle (loi "
+                               "de finances n° 24/011 pour 2025, appliquée par la loi rectificative n° 26/032, art. 6) ; titulaire minier exonéré (Code minier, art. 234) : "
                                "à établir.", _COD_MINIER)
                for p in ("710221", "710231")},
             **{p: (None, None, "Or en poudre ou sous forme brute : 0,5 % d'exploitation artisanale, 3 % de production "
-                               "industrielle (lois de finances n° 24/011 pour 2025 et n° 25/060 pour 2026, annexe XVI) ; titulaire minier exonéré (Code "
+                               "industrielle (loi de finances n° 24/011 pour 2025, appliquée par la loi rectificative n° 26/032, art. 6) ; titulaire minier exonéré (Code "
                                "minier, art. 234) : à établir.", _COD_MINIER)
                for p in ("71081100", "71081200")},
             **{p: _export_cod(10.0, "Argent en poudre ou sous forme brute, 10 %.") for p in ("71061000", "71069100")},
@@ -1710,8 +1709,8 @@ EXPORT_PAR_TEXTE = {
                for p in ("72042100", "72042900")},
             "7224": _export_cod(10.0, "Autres aciers alliés en lingots ou autres formes primaires ; demi-produits, 10 %."),
             "7401": _export_cod(5.0, "Mattes de cuivre, cuivre de cément, 5 %."),
-            "74020000": _export_cod(5.0, "Cuivre non affiné, blister et cuivre noir, 5 % (loi de finances n° 25/060 pour "
-                                         "2026, annexe XVI ; 10 % au tarif de 2012, sous la position 74.03)."),
+            "74020000": _export_cod(5.0, "Cuivre non affiné, blister et cuivre noir, 5 % (annexe des droits de sortie de la loi n° 24/011 pour 2025, appliquée par la loi rectificative n° 26/032, art. 6 ; même taux au projet de LF 2025 et à l'annexe XVI de la LF 2026, supprimée ; 10 % au tarif de 2012, "
+                                         "sous la position 74.03)."),
             "7403": _export_cod(10.0, "Cuivre affiné (cathodes, barres, billettes, lingots) et alliages de cuivre sous "
                                       "forme brute, 10 %."),
             "7404": _export_cod(5.0, "Déchets et débris de cuivre (nodules, scraps, déchets), 5 %."),
@@ -5935,8 +5934,15 @@ NOTE_DD_COD = ("La RDC n'applique pas le tarif extérieur commun de l'EAC : le t
                "obtenu ligne à ligne : droit à établir.")
 
 
-_SOURCE_DD_COD_LF2026 = ("Loi de finances n° 25/060 du 29 décembre 2025 pour 2026, annexe XV « Produits soumis aux "
-                         "droits de douane à l'importation »")
+_SOURCE_DD_COD_LF2026 = (
+    "Loi de finances n° 24/011 pour 2025, annexe « Produits soumis aux droits de douane à l'importation », appliquée "
+    "par la loi de finances rectificative n° 26/032 pour 2026 (art. 6 ; JO du 17 août 2026) — texte adopté non lu ; "
+    "taux concordant dans le projet de loi de finances 2025 (annexe XV) et dans l'annexe XV de la loi de finances "
+    "n° 25/060 pour 2026, supprimée par la loi rectificative (art. 10)"
+)
+_ANNEXE_COD_2026 = ("Annexe XV de la loi de finances n° 25/060 pour 2026, supprimée par la loi de finances rectificative "
+                    "n° 26/032 (art. 10), qui remet en application les annexes de la loi n° 24/011 pour 2025, dont le "
+                    "texte adopté n'est pas lu")
 
 
 def _dd_cod(taux, produits):
@@ -5948,28 +5954,39 @@ def _dd_cod_partiel(texte):
                   f"le reste du tarif national n'est pas obtenu : droit à établir.")
 
 
-#: Droits de douane que la loi de finances 2026 fixe position par position
-#: (annexe XV). Clés : préfixes du code du socle ; une ligne nationale plus fine
-#: que la position du socle reste à établir, avec ce que le texte en dit.
+def _dd_cod_2026(texte):
+    return (None, f"{_ANNEXE_COD_2026} : {texte} Taux absent du projet de loi de finances 2025 : droit à établir.")
+
+
+#: Droits de douane fixés position par position. Un taux n'est servi que là où
+#: le projet de loi de finances 2025 et l'annexe XV (supprimée) de la loi de
+#: finances 2026 concordent ; une ligne nationale plus fine que la position du
+#: socle, ou un taux que seule l'annexe 2026 portait, reste à établir avec ce que
+#: les textes en disent.
 DD_COD_LF2026 = {
     **{p: _dd_cod(5.0, "intrants industriels et produits de base nommés") for p in (
-        "09052000", "12081000", "18050000", "25221000", "48191000", "72082600",
-        "72082700", "72083800", "72083900", "72091500", "72091600", "72091700", "75021000", "78011000",
-        "78019900", "78020000", "79031000", "73079900", "760719")},
+        "09052000", "12081000", "18050000", "25221000", "48191000", "73079900", "760719")},
     **{p: _dd_cod(10.0, "produits nommés (huile de palme brute, pâtes alimentaires, dentifrices, pneumatiques "
-                        "rechapés ou usagés, plaques de plâtre)") for p in (
+                        "rechapés ou usagés)") for p in (
         "15111000", "19021100", "19021900", "33061000", "401211", "401212", "401213", "401219", "40122000",
-        "401290", "68091100", "68091900")},
-    **{p: _dd_cod(20.0, "viandes, œufs, explosifs, produits de la 38.24, produits laminés, tubes et boulets pour broyeurs "
-                        "nommés") for p in (
-        "0201", "0202", "0203", "0204", "04072100", "36020000", "3824", "72092600", "72092700", "72111400",
-        "72142000", "72162100", "72101", "72102", "72103", "72104", "72105", "72106", "72107",
-        "73063", "73064", "73065", "73066", "73069", "73261100", "73261900")},
-    "72109000": _dd_cod_partiel("produits plaqués ou revêtus destinés aux tôles de toiture (7210.90.10) 5 %, autres "
-                                "produits de la 72.10 20 %."),
-    # L'annexe nomme la dolomie « non calcinée ni frittée, dite crue » (2518.10)
-    # sous le code 2518.20.00 (dolomie calcinée ou frittée) : le texte se
-    # contredit, aucune des deux positions ne reçoit le taux.
+        "401290")},
+    **{p: _dd_cod(20.0, "viandes, œufs, produits laminés et profilés nommés") for p in (
+        "0201", "0202", "0203", "0204", "04072100", "72111400", "72142000", "72162100")},
+    **{p: _dd_cod_2026(f"{taux:g} % ({texte}).") for taux, texte, codes in (
+        (5.0, "produits laminés, nickel, plomb, poussières de zinc nommés",
+         ("72082600", "72082700", "72083800", "72083900", "72091500", "72091600", "72091700", "75021000",
+          "78011000", "78019900", "78020000", "79031000")),
+        (10.0, "plaques de plâtre", ("68091100", "68091900")),
+        (20.0, "explosifs, produits de la 38.24, laminés, tubes et boulets pour broyeurs nommés",
+         ("36020000", "3824", "72092600", "72092700", "73063", "73064", "73065", "73066", "73069", "73261100",
+          "73261900")),
+    ) for p in codes},
+    **{p: (None, f"{_ANNEXE_COD_2026} : produits plaqués ou revêtus de la 72.10, 20 % (5 % pour les tôles de "
+                 "toiture, 7210.90.10) ; le projet de loi de finances 2025 les porte à 10 % : droit à établir.")
+       for p in ("72101", "72102", "72103", "72104", "72105", "72106", "72107", "72109000")},
+    # Les deux textes nomment la dolomie « non calcinée ni frittée, dite crue »
+    # (2518.10) sous le code 2518.20.00 (dolomie calcinée ou frittée) : ils se
+    # contredisent, aucune des deux positions ne reçoit le taux.
     **{p: (None, f"{_SOURCE_DD_COD_LF2026} : « Dolomie non calcinée ni frittée, dite « crue » », 5 %, sous le code "
                  "2518.20.00, qui désigne la dolomie calcinée ou frittée (la dolomie crue relève du 2518.10) ; le texte "
                  "se contredit : droit à établir.") for p in ("25181000", "25182000")},
@@ -5977,25 +5994,41 @@ DD_COD_LF2026 = {
                                 "l'industrie locale pour la fabrication des collants (scotches) » 5 % ; les autres "
                                 "usages ne sont pas visés."),
     "17023000": _dd_cod_partiel("glucose et sirop utilisés dans l'industrie pharmaceutique (1702.30.10) 5 %."),
-    "31023000": _dd_cod_partiel("nitrate d'ammonium destiné aux engrais (3102.30.10) 5 %, aux explosifs des "
-                                "carrières minières (3102.30.90) 20 %."),
-    "34029000": _dd_cod_partiel("préparations tensio-actives pour l'industrie locale (3402.90.11) 5 %, "
-                                "préparations de dégraissage ou de nettoyage pour l'industrie (3402.90.20) 10 %."),
+    "31023000": (None, f"{_ANNEXE_COD_2026} : nitrate d'ammonium destiné aux engrais (3102.30.10) 5 %, aux explosifs "
+                       "des carrières minières (3102.30.90) 20 % ; absents du projet de loi de finances 2025 : droit à "
+                       "établir."),
+    "34029000": _dd_cod_partiel("préparations tensio-actives pour l'industrie locale (3402.90.11) 5 % ; préparations "
+                                "de dégraissage ou de nettoyage pour l'industrie (3402.90.20) : 10 % dans la seule annexe "
+                                "XV de 2026, supprimée."),
     "39233000": _dd_cod_partiel("ébauches de bouteilles (3923.30.10) 10 %."),
     "40111000": _dd_cod_partiel("autres pneumatiques pour voitures de tourisme (4011.10.99) 10 %."),
     "40114000": _dd_cod_partiel("pneumatiques pour motocycles à base de caoutchouc synthétique (4011.40.11) 10 %."),
     "48030000": _dd_cod_partiel("papiers destinés à la fabrication des papiers hygiéniques (4803.10.00) 5 %, autres "
                                 "papiers de ce type (4803.00.90) 20 %."),
     "72111900": _dd_cod_partiel("produits laminés d'une épaisseur inférieure à 4,75 mm (7211.19.10) 20 %."),
-    "73170000": _dd_cod_partiel("pointes et clous (7317.00.10) 10 %."),
+    "73170000": (None, f"{_ANNEXE_COD_2026} : pointes et clous (7317.00.10) 10 % ; absents du projet de loi de "
+                       "finances 2025 : droit à établir."),
     "96190010": _dd_cod_partiel("serviettes hygiéniques (9619.00.10) 10 %."),
 }
+
+#: TVA : taux réduit de 8 % « aux acquisitions et ventes » des produits que
+#: nomme la loi de finances rectificative 2026 (art. 13, Code de la TVA, art.
+#: 35). Le texte ne dit pas s'il vaut à l'importation : la TVA de ces positions
+#: reste à établir, entre 16 % et 8 %.
+TVA_COD_TAUX_REDUIT = (
+    "0201", "0202", "0203", "0206", "0207", "030323", "030355", "030551", "030552", "030553", "030554", "030559",
+    "100620", "100630", "100640", "170199", "190190", "0402", "250100", "340119", "360500")
+NOTE_TVA_COD_REDUITE = (
+    "Loi de finances rectificative n° 26/032 pour 2026, art. 13 (Code de la TVA, art. 35) : taux réduit de 8 % « aux "
+    "acquisitions et ventes » de ce produit (viandes, abats, poissons séchés ou congelés, riz, sucre, lait, eaux, "
+    "sel iodé, savon, allumettes) ; le texte ne dit pas s'il vaut à l'importation : TVA à établir, 16 % ou 8 %.")
 
 
 def _droit_douane_rdc(positions, compteurs):
     """RDC : le taux et la part spécifique du TEC EAC sont retirés. Seules les
-    positions dont la loi de finances 2026 fixe le droit (annexe XV) en portent
-    un ; ailleurs, le barème DGDA n'est pas obtenu."""
+    positions dont le droit est fixé par des textes concordants (DD_COD_LF2026)
+    en portent un ; ailleurs, le barème DGDA n'est pas obtenu. La TVA des
+    produits à taux réduit (TVA_COD_TAUX_REDUIT) reste à établir."""
     cles = sorted(DD_COD_LF2026, key=len, reverse=True)
     for code, position in positions.items():
         regle = next((DD_COD_LF2026[c] for c in cles if code.startswith(c)), None)
@@ -6012,6 +6045,13 @@ def _droit_douane_rdc(positions, compteurs):
             if d["taux"] is not None:
                 d["assiette"] = d.get("assiette") or "CIF"
             _compter_ligne(d, compteurs, 1)
+        if code.startswith(TVA_COD_TAUX_REDUIT):
+            for d in position.get("droits") or []:
+                if d.get("code") == "TVA" and d.get("taux") is not None:
+                    _compter_ligne(d, compteurs, -1)
+                    d["taux"] = None
+                    d["note"] = NOTE_TVA_COD_REDUITE
+                    _compter_ligne(d, compteurs, 1)
 
 
 def _taxe_specifique_tchad(positions, compteurs):
