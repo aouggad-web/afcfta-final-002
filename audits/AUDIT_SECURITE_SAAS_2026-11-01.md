@@ -213,7 +213,11 @@ Reproduit en local (faux Mongo) : `/api/reports/health` ×4 en **free connecté*
 > - `docker-compose.yml` exige `ALLOWED_ORIGINS`, sans valeur par défaut.
 > - Les nouveaux tests échouent sur l'ancien code.
 >
-> **À vérifier après déploiement** : une requête avec `Origin: https://afcfta.trade` ne doit plus recevoir d'en-tête `Access-Control-Allow-Origin`.
+> **Vérifié après déploiement** (04/11/2026, `5fc4f34c`, de l'extérieur, en lecture seule) :
+> - `Origin: https://afcfta.trade`, `https://www.afcfta.trade`, `http://localhost:3000` et `http://localhost:5000` : plus aucun en-tête `Access-Control-Allow-Origin` ;
+> - pré-vérification d'un `POST /api/auth/login` depuis `afcfta.trade` : 400 « Disallowed CORS origin » ;
+> - l'application se charge et appelle l'API normalement (aucune erreur dans la console du navigateur), le calculateur s'affiche ;
+> - les contrôles des phases 1 et 2 tiennent : Opportunités, rapports et téléchargement de tarif à 403 sans compte, GraphQL à 405, CSP sans jsDelivr, jeton CSRF émis.
 
 ---
 
