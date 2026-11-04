@@ -82,5 +82,5 @@ manquantes marquées indisponibles (jamais inventées).
 
 - **67 tests** backend verts (`backend/tests/test_report_engine.py`).
 - CI GitHub verte (lint, tests, build frontend, marqueurs de conflit).
-- Guides : `docs/DEPLOYER_SUR_EMERGENT.md`, `docs/ESSAYER_SUR_REPLIT.md`,
+- Guides : `docs/DEPLOYER_SUR_EMERGENT.md`,
   `docs/EXECUTER_DEPUIS_GITHUB.md` ; appels prêts dans `requests.http`.

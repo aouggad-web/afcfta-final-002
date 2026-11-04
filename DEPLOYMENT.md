@@ -211,10 +211,18 @@ docker stats
 
 ### Sécurité
 
-1. **Changer les mots de passe par défaut**
+1. **Renseigner les secrets** : `docker compose` refuse de démarrer sans eux.
 ```bash
+MONGO_ROOT_USER=admin                      # administration de MongoDB seulement
 MONGO_ROOT_PASSWORD=your-very-secure-password-here
+MONGO_APP_USER=afcfta_app                  # utilisateur du backend, readWrite sur sa base
+MONGO_APP_PASSWORD=another-secure-password # lettres et chiffres (il entre dans MONGO_URL)
+REDIS_PASSWORD=redis-password              # lettres et chiffres
+ALLOWED_ORIGINS=https://votre-domaine.example  # origines exactes du frontend
 ```
+L'utilisateur `MONGO_APP_USER` est créé par `docker/mongo-init/` à la création
+du volume. Sur un volume existant, créez-le à la main (même commande, connecté
+en root avec `mongosh`).
 
 2. **Utiliser HTTPS**
    - Ajouter un reverse proxy (Nginx, Traefik)
