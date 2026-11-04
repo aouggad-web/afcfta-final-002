@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { montantUnite } from '../utils/nombres';
 import { pick } from '../i18n/lang';
+import { trDonnee } from '../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -205,7 +206,7 @@ function TradeProductsTable({ language = 'fr' }) {
                     {product.rank}
                   </span>
                 </td>
-                <td style={{ fontWeight: 600, color: 'var(--text)', whiteSpace: 'normal', overflowWrap: 'anywhere' }}>{product.product}</td>
+                <td style={{ fontWeight: 600, color: 'var(--text)', whiteSpace: 'normal', overflowWrap: 'anywhere' }}>{trDonnee(product.product, language)}</td>
                 <td>
                   <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', padding: '2px 6px', borderRadius: 4, background: 'var(--overlay)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-soft)' }}>
                     {product.hs_code}
@@ -226,7 +227,7 @@ function TradeProductsTable({ language = 'fr' }) {
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                     {(isExport ? product.top_exporters : product.top_importers)?.slice(0, 3).map((country, i) => (
                       <span key={i} style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 100, background: `color-mix(in srgb, ${accentColor} 13%, transparent)`, border: `1px solid color-mix(in srgb, ${accentColor} 27%, transparent)`, color: 'var(--text-soft)' }}>
-                        {country}
+                        {trDonnee(country, language)}
                       </span>
                     ))}
                   </div>
@@ -251,7 +252,7 @@ function TradeProductsTable({ language = 'fr' }) {
               </span>
               <span className="spc-hs">{product.hs_code}</span>
             </div>
-            <div className="spc-name">{product.product}</div>
+            <div className="spc-name">{trDonnee(product.product, language)}</div>
             <div className="spc-metrics">
               <div className="spc-metric">
                 <span className="spc-label">{t.value}</span>
@@ -270,7 +271,7 @@ function TradeProductsTable({ language = 'fr' }) {
               <span className="spc-label">{isExport ? t.topExporters : t.topImporters}</span>
               <div className="spc-chips">
                 {(isExport ? product.top_exporters : product.top_importers)?.slice(0, 3).map((country, i) => (
-                  <span key={i} className="spc-chip">{country}</span>
+                  <span key={i} className="spc-chip">{trDonnee(country, language)}</span>
                 ))}
               </div>
             </div>

@@ -6,6 +6,7 @@ import { Button } from '../ui/button';
 import { Plane, DollarSign, Clock, Package, Info, Weight } from 'lucide-react';
 import { montant } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -194,7 +195,7 @@ export default function AirFreightCalculator({ language = 'fr' }) {
                 {Object.entries(groupByRegion(airports)).map(([region, list]) => (
                   <optgroup key={region} label={pick(language, region, region, REGION_AR[region] || region)}>
                     {list.map(a => (
-                      <option key={a.iata} value={a.iata}>{a.flag} {a.name} ({a.iata})</option>
+                      <option key={a.iata} value={a.iata}>{a.flag} {trDonnee(a.name, language)} ({a.iata})</option>
                     ))}
                   </optgroup>
                 ))}
@@ -213,7 +214,7 @@ export default function AirFreightCalculator({ language = 'fr' }) {
                 {Object.entries(groupByRegion(destinationOptions)).map(([region, list]) => (
                   <optgroup key={region} label={pick(language, region, region, REGION_AR[region] || region)}>
                     {list.map(a => (
-                      <option key={a.iata} value={a.iata}>{a.flag} {a.name} ({a.iata})</option>
+                      <option key={a.iata} value={a.iata}>{a.flag} {trDonnee(a.name, language)} ({a.iata})</option>
                     ))}
                   </optgroup>
                 ))}
@@ -286,7 +287,7 @@ export default function AirFreightCalculator({ language = 'fr' }) {
               <Badge variant="outline" className="text-xs"><Plane className="w-3 h-3 mr-1" />{result.origin_iata} → {result.destination_iata}</Badge>
               <Badge variant="outline" className="text-xs">{result.distance_km.toLocaleString()} {t.km}</Badge>
               <Badge variant="outline" className="text-xs"><Clock className="w-3 h-3 mr-1" />{result.transit_days_min}–{result.transit_days_max} {t.days}</Badge>
-              <Badge variant="outline" className="text-xs"><Package className="w-3 h-3 mr-1" />{result.commodity_label}</Badge>
+              <Badge variant="outline" className="text-xs"><Package className="w-3 h-3 mr-1" />{trDonnee(result.commodity_label, language)}</Badge>
             </div>
           </CardHeader>
           <CardContent className="pt-4 space-y-5">
@@ -335,7 +336,7 @@ export default function AirFreightCalculator({ language = 'fr' }) {
                 <span className="text-[var(--afcfta-muted)]">{result.source}</span>
               </div>
               <div className="p-3 bg-[var(--afcfta-card2)] rounded-lg border border-[var(--afcfta-border)] text-xs text-[var(--afcfta-muted)]">
-                <span className="font-semibold">{t.disclaimer}: </span>{result.disclaimer}
+                <span className="font-semibold">{t.disclaimer}: </span>{trDonnee(result.disclaimer, language)}
               </div>
             </div>
           </CardContent>

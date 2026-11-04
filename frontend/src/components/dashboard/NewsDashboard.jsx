@@ -12,6 +12,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { pick, intlLocale } from '../../i18n/lang';
+import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -329,8 +330,8 @@ const CategorySection = ({ category, articles, t, language }) => {
 
 const CountrySpotlight = ({ spotlight, t, language }) => {
   if (!spotlight || !spotlight.country) return null;
-  const countryName = pick(language, spotlight.country_name_fr, spotlight.country_name_en, spotlight.country_name_fr);
-  const profile = pick(language, spotlight.profile_fr, spotlight.profile_en, spotlight.profile_fr);
+  const countryName = pick(language, spotlight.country_name_fr, spotlight.country_name_en, AFRICAN_COUNTRIES[spotlight.country]?.name_ar || spotlight.country_name_fr);
+  const profile = pick(language, spotlight.profile_fr, spotlight.profile_en, spotlight.profile_ar || spotlight.profile_fr);
 
   return (
     <section

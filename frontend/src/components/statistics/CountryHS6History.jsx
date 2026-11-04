@@ -13,6 +13,7 @@ import { buildTradeReportPdf, tradeReportFilename } from '../../utils/tradeRepor
 import { montantCompact, nombreCompact, chiffres } from '../../utils/nombres';
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { pick, isRtl } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -587,7 +588,7 @@ export default function CountryHS6History({ language = 'fr' }) {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', padding: '0 16px 14px' }}>
             <p className="stats-source-note" style={{ margin: 0, flex: '1 1 auto' }}>
-              {data.source} · {data.country_name} · HS {data.hs_code} · {data.currency}
+              {data.source} · {trDonnee(data.country_name, language)} · HS {data.hs_code} · {data.currency}
             </p>
             <button
               data-testid="hs6-export-pdf-light"

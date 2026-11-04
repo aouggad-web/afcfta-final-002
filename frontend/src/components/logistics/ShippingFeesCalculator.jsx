@@ -6,6 +6,7 @@ import { Button } from '../ui/button';
 import { Ship, DollarSign, Clock, Anchor, BarChart3, Info, ExternalLink } from 'lucide-react';
 import { montant } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -288,7 +289,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                   <optgroup key={region} label={pick(language, region, region, REGION_AR[region] || region)}>
                     {list.map(p => (
                       <option key={p.locode} value={p.locode}>
-                        {p.flag} {p.name} ({p.country})
+                        {p.flag} {trDonnee(p.name, language)} ({trDonnee(p.country, language)})
                       </option>
                     ))}
                   </optgroup>
@@ -313,7 +314,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                   <optgroup key={region} label={pick(language, region, region, REGION_AR[region] || region)}>
                     {list.map(p => (
                       <option key={p.locode} value={p.locode}>
-                        {p.flag} {p.name} ({p.country})
+                        {p.flag} {trDonnee(p.name, language)} ({trDonnee(p.country, language)})
                       </option>
                     ))}
                   </optgroup>
@@ -370,7 +371,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
             <div className="flex flex-wrap gap-2 mt-1">
               <Badge variant="outline" className="text-xs">
                 <Anchor className="w-3 h-3 mr-1" />
-                {result.origin_port} → {result.destination_port}
+                {trDonnee(result.origin_port, language)}{pick(language, ' → ', ' → ', ' ← ')}{trDonnee(result.destination_port, language)}
               </Badge>
               <Badge variant="outline" className="text-xs">
                 {containerLabel(containerType)}
@@ -406,7 +407,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
               />
               {result.origin_thc_usd > 0 && (
                 <CostBar
-                  label={`${t.originTHC} (${result.origin_port})`}
+                  label={`${t.originTHC} (${trDonnee(result.origin_port, language)})`}
                   value={result.origin_thc_usd}
                   total={result.total_cost_usd}
                   color="bg-orange-400"
@@ -415,7 +416,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
               )}
               {result.destination_thc_usd > 0 && (
                 <CostBar
-                  label={`${t.destinationTHC} (${result.destination_port})`}
+                  label={`${t.destinationTHC} (${trDonnee(result.destination_port, language)})`}
                   value={result.destination_thc_usd}
                   total={result.total_cost_usd}
                   color="bg-purple-400"
@@ -452,7 +453,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
               </div>
               <div className="p-3 bg-[var(--afcfta-card)] rounded-lg border border-[var(--afcfta-border)]">
                 <p className="text-xs font-semibold text-[var(--afcfta-muted)] mb-1">{t.frequency}</p>
-                <p className="text-sm font-medium text-[var(--text)]">{result.frequency}</p>
+                <p className="text-sm font-medium text-[var(--text)]">{trDonnee(result.frequency, language)}</p>
               </div>
             </div>
 
@@ -512,8 +513,8 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                 <tbody>
                   {allRoutes.slice(0, MAX_TABLE_ROWS).map(r => (
                     <tr key={r.route_id} className="border-b hover:bg-[var(--afcfta-card2)] transition-colors">
-                      <td className="p-2 font-medium text-[var(--text)]">{r.origin_port}</td>
-                      <td className="p-2 text-[var(--text)]">{r.destination_port}</td>
+                      <td className="p-2 font-medium text-[var(--text)]">{trDonnee(r.origin_port, language)}</td>
+                      <td className="p-2 text-[var(--text)]">{trDonnee(r.destination_port, language)}</td>
                       <td className="p-2 text-right font-semibold text-[var(--info)]">
                         {montant(r.teu_usd, language, 3)}
                       </td>

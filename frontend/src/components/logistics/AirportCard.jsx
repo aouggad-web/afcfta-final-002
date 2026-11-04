@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
 import { pick, intlLocale } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 export default function AirportCard({ airport, onOpenDetails, language = 'fr' }) {
   const texts = {
@@ -57,13 +58,13 @@ export default function AirportCard({ airport, onOpenDetails, language = 'fr' })
       <CardHeader className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] border-b">
         <CardTitle className="text-xl font-bold text-[var(--info)] flex items-center gap-2">
           <span>✈️</span>
-          <span>{airport.airport_name}</span>
+          <span>{trDonnee(airport.airport_name, language)}</span>
           {airport.iata_code && (
             <span className="text-sm font-normal text-[var(--afcfta-muted)]">({airport.iata_code})</span>
           )}
         </CardTitle>
         <CardDescription className="text-sm">
-          <span className="font-semibold">{airport.country_name}</span> • 
+          <span className="font-semibold">{trDonnee(airport.country_name, language)}</span> • 
           <span className="ml-2 text-[var(--info)]">{airport.icao_code}</span>
         </CardDescription>
       </CardHeader>

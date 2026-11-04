@@ -6,6 +6,7 @@ import { Globe, TrendingUp } from 'lucide-react';
 import { montantUnite, chiffres } from '../utils/nombres';
 import { AFRICAN_COUNTRIES, ISO2_TO_ISO3 } from '../utils/countryCodes';
 import { pick } from '../i18n/lang';
+import { trDonnee } from '../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API_URL = BACKEND_URL || '';
@@ -411,7 +412,7 @@ const TradeComparison = ({ language = 'fr' }) => {
               <div className="stats-kpi-card gold">
                 <p className="stats-kpi-label">{t.growth2324}</p>
                 <p className="stats-kpi-value gold">+{statistics.trade_evolution.growth_rate_2023_2024}%</p>
-                <p className="stats-kpi-footer">{statistics.trade_evolution.trend}</p>
+                <p className="stats-kpi-footer">{trDonnee(statistics.trade_evolution.trend, language)}</p>
               </div>
             </div>
 

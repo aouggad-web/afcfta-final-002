@@ -18,7 +18,9 @@ from typing import Dict, List, Optional
 
 import aiohttp
 import feedparser
+from constants import AFRICAN_COUNTRIES
 from country_data import REAL_COUNTRY_DATA
+from translations import COUNTRY_TRANSLATIONS
 
 # Décodeur Google News (base64 → URL source réelle). Sans lui, les entrées de
 # `news.google.com/rss/articles/...` renvoient "refused to connect" quand un
@@ -969,6 +971,23 @@ SECTOR_NAME_TRANSLATIONS = {
     "Services": "services",
 }
 
+# Traduction (FR -> AR) des mêmes secteurs, pour la variante arabe du profil.
+SECTOR_NAME_TRANSLATIONS_AR = {
+    "Agriculture": "الزراعة",
+    "Diamants": "الماس",
+    "Hydrocarbures": "المحروقات",
+    "Industrie": "الصناعة",
+    "Mines": "التعدين",
+    "Pétrole": "النفط",
+    "Services": "الخدمات",
+}
+
+
+def _country_name_ar(iso3: str, fallback: str) -> str:
+    """Nom arabe d'un pays (ISO3) d'après translations.COUNTRY_TRANSLATIONS."""
+    iso2 = next((c["code"] for c in AFRICAN_COUNTRIES if c.get("iso3") == iso3), None)
+    return COUNTRY_TRANSLATIONS.get(iso2, {}).get("ar", fallback)
+
 
 def _format_millions(value: float) -> str:
     """Formate un nombre de millions sans décimale superflue (45.6 -> « 45.6 »,
@@ -998,7 +1017,7 @@ def build_country_profile(country: str) -> Dict[str, str]:
     data = REAL_COUNTRY_DATA.get(country)
     name_fr, name_en, _flag = COUNTRY_DISPLAY_NAMES.get(country, (country, country, "🌍"))
     if not data:
-        return {"fr": "", "en": ""}
+        return {"fr": "", "en": "", "ar": ""}
 
     sectors = sorted(
         data.get("key_sectors") or [], key=lambda s: s.get("pib_share", 0), reverse=True
@@ -1050,7 +1069,27 @@ def build_country_profile(country: str) -> Dict[str, str]:
     else:
         en += " Its outlook is anchored in intra-African trade and regional integration under the AfCFTA."
 
-    return {"fr": fr, "en": en}
+    name_ar = _country_name_ar(country, name_fr)
+    top_sectors_ar = [
+        SECTOR_NAME_TRANSLATIONS_AR.get(s["name"], s["name"]) for s in sectors[:2] if s.get("name")
+    ]
+    sectors_ar = " و".join(top_sectors_ar) if top_sectors_ar else "قاعدة متنوعة"
+    ar = f"يرتكز اقتصاد {name_ar}"
+    if rank:
+        ar += f" (المرتبة {rank} أفريقيًا من حيث الناتج المحلي الإجمالي)"
+    ar += f" على {sectors_ar}"
+    if population_m:
+        ar += f"، ويبلغ عدد سكان البلد نحو {_format_millions(population_m)} مليون نسمة"
+    ar += "."
+    if growth_2025:
+        ar += f" وتُقدَّر آفاق النمو بنحو {growth_2025}"
+        if growth_2026 and growth_2026 != growth_2025:
+            ar += f" في 2025 و{growth_2026} في 2026"
+        ar += "، بدعم من التجارة البينية الأفريقية والتكامل الإقليمي في إطار منطقة التجارة الحرة القارية الأفريقية."
+    else:
+        ar += " وترتكز آفاق البلد على التجارة البينية الأفريقية والتكامل الإقليمي في إطار منطقة التجارة الحرة القارية الأفريقية."
+
+    return {"fr": fr, "en": en, "ar": ar}
 
 
 def region_from_country(country: str, text: str) -> str:
@@ -1318,6 +1357,7 @@ def get_country_of_the_week(articles: List[Dict], week_number: Optional[int] = N
         "week_number": week_number,
         "profile_fr": profile["fr"],
         "profile_en": profile["en"],
+        "profile_ar": profile["ar"],
         "highlights": highlights[:5],
     }
 

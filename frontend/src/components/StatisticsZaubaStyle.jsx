@@ -6,6 +6,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { TrendingUp, TrendingDown, DollarSign, BarChart3, Globe, Users, ArrowUpRight } from 'lucide-react';
 import { montantUnite } from '../utils/nombres';
 import { pick } from '../i18n/lang';
+import { trDonnee } from '../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API_URL = BACKEND_URL || '';
@@ -180,8 +181,8 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
     if (language === 'en' && countryNames.en[name]) {
       return countryNames.en[name];
     }
-    if (language === 'ar' && countryNames.ar[name]) {
-      return countryNames.ar[name];
+    if (language === 'ar') {
+      return countryNames.ar[name] || trDonnee(name, language);
     }
     return name;
   };
@@ -648,7 +649,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                       const shareValue = typeof value === 'object' && value.share ? value.share
                                        : typeof value === 'object' && value.value_2024 ? value.value_2024
                                        : parseFloat(value) || 10;
-                      return { name: key.replace(/_/g, ' '), value: parseFloat(shareValue) };
+                      return { name: trDonnee(key.replace(/_/g, ' '), language), value: parseFloat(shareValue) };
                     })}
                     cx="50%" cy="50%"
                     outerRadius={100}
@@ -684,7 +685,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                       <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 0' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                           <div style={{ width: 10, height: 10, borderRadius: 2, background: COLORS[index % COLORS.length], flexShrink: 0 }} />
-                          <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text)' }}>{displayName}</span>
+                          <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text)' }}>{trDonnee(displayName, language)}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="stats-progress-bar" style={{ width: 60 }}>

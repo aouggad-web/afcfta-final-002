@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../styles/isic4-table.css';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 // Ce tableau n'existe qu'en français ; l'arabe s'y ajoute, le français reste
 // servi aussi en anglais.
@@ -237,7 +238,7 @@ export default function ISIC4DetailTable({ countryISO3 }) {
   return (
     <div className="isic4-container">
       <div className="isic4-header">
-        <h2>{L(language, 'Secteurs manufacturiers', 'القطاعات الصناعية التحويلية')} — {data.country_name} ({data.country_iso3})</h2>
+        <h2>{L(language, 'Secteurs manufacturiers', 'القطاعات الصناعية التحويلية')} — {trDonnee(data.country_name, language)} ({data.country_iso3})</h2>
         <div className="isic4-metadata">
           <span className="meta-item">
             <strong>{data.total_sectors}</strong> {L(language, 'secteurs', 'قطاعاً')}
@@ -333,7 +334,7 @@ export default function ISIC4DetailTable({ countryISO3 }) {
                   {/* Colonnes figées */}
                   <td className="sticky-col col-isic4">{sector.isic4}</td>
                   <td className="sticky-col col-description">
-                    <span className="sector-description-text">{sector.description}</span>
+                    <span className="sector-description-text">{trDonnee(sector.description, language)}</span>
                     {getSectorNatureBadge(sector, language)}
                   </td>
 
@@ -427,7 +428,7 @@ function TimeseriesChart({ timeseries }) {
   if (indicators.length === 0) {
     return (
       <div className="timeseries-chart">
-        <h4>{L(language, 'Détail complet', 'التفاصيل الكاملة')} : {timeseries.isic_description}</h4>
+        <h4>{L(language, 'Détail complet', 'التفاصيل الكاملة')} : {trDonnee(timeseries.isic_description, language)}</h4>
         <p className="detail-empty-note">{L(language, 'Aucune donnée détaillée pour ce secteur.', 'لا توجد بيانات مفصلة لهذا القطاع.')}</p>
       </div>
     );
@@ -452,7 +453,7 @@ function TimeseriesChart({ timeseries }) {
   return (
     <div className="timeseries-chart">
       <h4>
-        {L(language, 'Détail complet', 'التفاصيل الكاملة')} — {timeseries.isic_description}{' '}
+        {L(language, 'Détail complet', 'التفاصيل الكاملة')} — {trDonnee(timeseries.isic_description, language)}{' '}
         <span className="detail-isic-code">({timeseries.isic4})</span>
       </h4>
 

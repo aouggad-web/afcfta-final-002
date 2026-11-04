@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Polyline, CircleMarker, Popup, useMap } from '
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
 import { pick, intlLocale } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -176,7 +177,7 @@ export default function CorridorMap({ onCorridorClick, selectedType, selectedImp
               <Popup>
                 <div className="p-2 min-w-[250px]">
                   <h3 className="font-bold text-base mb-1">
-                    {corridor.corridor_name}
+                    {trDonnee(corridor.corridor_name, language)}
                   </h3>
                   <p className="text-xs text-[var(--afcfta-muted)] mb-2">
                     {corridor.countries_spanned?.join(' → ')}
@@ -193,7 +194,7 @@ export default function CorridorMap({ onCorridorClick, selectedType, selectedImp
                     </div>
                     <div className="flex justify-between">
                       <span className="text-[var(--afcfta-muted)]">{t.status}:</span>
-                      <span className="font-semibold">{corridor.status}</span>
+                      <span className="font-semibold">{trDonnee(corridor.status, language)}</span>
                     </div>
                     {corridor.stats?.freight_throughput_tons && (
                       <div className="flex justify-between">
@@ -230,8 +231,8 @@ export default function CorridorMap({ onCorridorClick, selectedType, selectedImp
             >
               <Popup>
                 <div className="text-xs">
-                  <p className="font-bold">{node.node_name}</p>
-                  <p className="text-[var(--afcfta-muted)]">{node.node_type}</p>
+                  <p className="font-bold">{trDonnee(node.node_name, language)}</p>
+                  <p className="text-[var(--afcfta-muted)]">{trDonnee(node.node_type, language)}</p>
                   {node.is_osbp && <p className="text-[var(--success)] font-semibold">✓ OSBP</p>}
                 </div>
               </Popup>

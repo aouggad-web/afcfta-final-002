@@ -4,6 +4,7 @@ import { Badge } from '../ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { pick, intlLocale } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const CORRIDOR_TYPE_AR = { road: 'طريق بري', rail: 'سكك حديدية', multimodal: 'متعدد الوسائط' };
 
@@ -158,11 +159,11 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-[var(--text)] flex items-center gap-2">
             <span>{getTypeIcon(corridor.corridor_type)}</span>
-            {corridor.corridor_name}
+            {trDonnee(corridor.corridor_name, language)}
           </DialogTitle>
           <DialogDescription className="flex gap-2 mt-2 flex-wrap">
             <Badge className="bg-[var(--afcfta-card2)]">{pick(language, corridor.corridor_type, corridor.corridor_type, CORRIDOR_TYPE_AR[corridor.corridor_type] || corridor.corridor_type)}</Badge>
-            <Badge variant="outline">{corridor.status}</Badge>
+            <Badge variant="outline">{trDonnee(corridor.status, language)}</Badge>
             {corridor.importance === 'high' && <Badge className="bg-amber-500">⭐ {t.pidaPriority}</Badge>}
             <Badge variant="outline">{corridor.length_km} km</Badge>
           </DialogDescription>
@@ -173,7 +174,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
           <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)] mb-4">
             <p className="text-sm text-[var(--text)]">
               <span className="font-semibold">📋 {t.description}: </span>
-              {corridor.description}
+              {trDonnee(corridor.description, language)}
             </p>
           </div>
         )}
@@ -237,11 +238,11 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
               </div>
               <div>
                 <p className="text-sm font-semibold text-[var(--text)]">{t.startEndPoints}:</p>
-                <p className="text-base">{corridor.start_node} → {corridor.end_node}</p>
+                <p className="text-base">{trDonnee(corridor.start_node, language)}{pick(language, ' → ', ' → ', ' ← ')}{trDonnee(corridor.end_node, language)}</p>
               </div>
               <div className="bg-[var(--afcfta-card2)] p-3 rounded">
                 <p className="text-sm font-semibold text-[var(--text)] mb-1">{t.technicalDetails}:</p>
-                <p className="text-sm text-[var(--text)]">{corridor.infra_details}</p>
+                <p className="text-sm text-[var(--text)]">{trDonnee(corridor.infra_details, language)}</p>
               </div>
               {stats.source_org && (
                 <div className="text-xs text-[var(--afcfta-muted)]">
@@ -288,12 +289,12 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                           <div className="flex-1">
                             <p className="font-bold text-base flex items-center gap-2">
                               <span>{getNodeTypeIcon(node.node_type)}</span>
-                              {node.node_name}
+                              {trDonnee(node.node_name, language)}
                               {node.is_osbp && <Badge className="bg-[var(--success)] text-[var(--bg)] text-xs">OSBP</Badge>}
                             </p>
-                            <p className="text-sm text-[var(--afcfta-muted)]">{node.country_iso} • {node.node_type}</p>
+                            <p className="text-sm text-[var(--afcfta-muted)]">{node.country_iso} • {trDonnee(node.node_type, language)}</p>
                             {node.notes && (
-                              <p className="text-xs text-[var(--text)] mt-1">{node.notes}</p>
+                              <p className="text-xs text-[var(--text)] mt-1">{trDonnee(node.notes, language)}</p>
                             )}
                           </div>
                           <div className="text-xs text-[var(--afcfta-muted)]">
@@ -333,7 +334,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                             <p className="font-bold text-base">
                               {operator.operator_type === 'rail_operator' ? '🚂' : '🚛'} {operator.operator_name}
                             </p>
-                            <p className="text-sm text-[var(--afcfta-muted)]">{operator.group}</p>
+                            <p className="text-sm text-[var(--afcfta-muted)]">{trDonnee(operator.group, language)}</p>
                             <p className="text-xs text-[var(--afcfta-muted)] mt-1">{operator.country_iso}</p>
                           </div>
                           {operator.fleet_size > 0 && (
@@ -431,7 +432,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                               {agents.map((agent, i) => (
                                 <div key={i} className="p-2 bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] rounded border-l-2 border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
                                   <p className="font-semibold text-sm text-[var(--success)]">{agent.company_name}</p>
-                                  {agent.city && <p className="text-xs text-[var(--afcfta-muted)]">📍 {agent.city}{agent.address ? ` – ${agent.address}` : ''}</p>}
+                                  {agent.city && <p className="text-xs text-[var(--afcfta-muted)]">📍 {trDonnee(agent.city, language)}{agent.address ? ` – ${agent.address}` : ''}</p>}
                                   <div className="flex flex-wrap gap-2 mt-1">
                                     {agent.phone && (
                                       <a href={`tel:${agent.phone}`} className="text-xs text-[var(--info)] hover:underline">📞 {agent.phone}</a>
@@ -443,11 +444,11 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                                       <a href={agent.website} target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--info)] hover:underline">🌐 {agent.website.replace(/^https?:\/\//, '')}</a>
                                     )}
                                   </div>
-                                  {agent.operating_hours && <p className="text-xs text-[var(--afcfta-muted)] mt-1">🕐 {agent.operating_hours}</p>}
+                                  {agent.operating_hours && <p className="text-xs text-[var(--afcfta-muted)] mt-1">🕐 {trDonnee(agent.operating_hours, language)}</p>}
                                   {agent.services?.length > 0 && (
                                     <div className="flex flex-wrap gap-1 mt-1">
                                       {agent.services.map((s, si) => (
-                                        <Badge key={si} variant="secondary" className="text-xs bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]">{s}</Badge>
+                                        <Badge key={si} variant="secondary" className="text-xs bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]">{trDonnee(s, language)}</Badge>
                                       ))}
                                     </div>
                                   )}
@@ -475,7 +476,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                     <CardContent className="pt-0">
                       <div className="flex flex-wrap gap-2">
                         {logisticsNetwork.service_providers_available.map((s, i) => (
-                          <Badge key={i} variant="outline">{s}</Badge>
+                          <Badge key={i} variant="outline">{trDonnee(s, language)}</Badge>
                         ))}
                       </div>
                     </CardContent>

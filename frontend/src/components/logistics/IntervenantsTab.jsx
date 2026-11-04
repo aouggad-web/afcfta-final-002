@@ -9,6 +9,7 @@ import {
   ChevronUp, Anchor, Package, ShieldCheck, Star
 } from 'lucide-react';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -193,8 +194,8 @@ function ContactRow({ icon: Icon, label, value, href, mono = false }) {
   );
 }
 
-function FlatContactRow({ contactKey, value }) {
-  const label = GENERIC_CONTACT_KEYS.has(contactKey) ? null : contactKey.replace(/_/g, ' ');
+function FlatContactRow({ contactKey, value, language }) {
+  const label = GENERIC_CONTACT_KEYS.has(contactKey) ? null : trDonnee(contactKey.replace(/_/g, ' '), language);
   if (isUrl(value)) {
     return <ContactRow icon={ExternalLink} label={label} value={value.replace(/^https?:\/\//i, '')} href={value} />;
   }
@@ -207,7 +208,7 @@ function FlatContactRow({ contactKey, value }) {
   return <ContactRow icon={MapPin} label={label} value={value} />;
 }
 
-function ContactsBlock({ contacts }) {
+function ContactsBlock({ contacts, language }) {
   if (!contacts || Object.keys(contacts).length === 0) return null;
   const entries = Object.entries(contacts);
   const flatEntries = entries.filter(([k, v]) => k !== 'website' && typeof v === 'string' && v);
@@ -225,7 +226,7 @@ function ContactsBlock({ contacts }) {
       {flatEntries.length > 0 && (
         <div className="space-y-1">
           {flatEntries.map(([key, val]) => (
-            <FlatContactRow key={key} contactKey={key} value={val} />
+            <FlatContactRow key={key} contactKey={key} value={val} language={language} />
           ))}
         </div>
       )}
@@ -234,7 +235,7 @@ function ContactsBlock({ contacts }) {
           {officeEntries.map(([key, val]) => {
             const { phone, email, address, website } = val;
             if (!phone && !email && !address && !website) return null;
-            const label = key.replace(/_/g, ' ');
+            const label = trDonnee(key.replace(/_/g, ' '), language);
             return (
               <div key={key} className="p-2 rounded-lg bg-[var(--overlay)] border border-[var(--overlay-border)] min-w-0">
                 <div className="text-[11px] text-[var(--afcfta-muted)] mb-1 font-medium"
@@ -277,16 +278,16 @@ function OperatorCard({ operator, catMeta, language }) {
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h4 className="text-sm font-semibold text-[var(--text)] leading-tight">{operator.name}</h4>
+                <h4 className="text-sm font-semibold text-[var(--text)] leading-tight">{trDonnee(operator.name, language)}</h4>
                 {operator.hq && (
                   <div className="flex items-center gap-1 mt-0.5">
                     <MapPin className="w-3 h-3 text-[var(--afcfta-muted)]" />
-                    <span className="text-xs text-[var(--afcfta-muted)]">{operator.hq}</span>
+                    <span className="text-xs text-[var(--afcfta-muted)]">{trDonnee(operator.hq, language)}</span>
                   </div>
                 )}
               </div>
               <Badge className={`text-[11px] px-1.5 flex-shrink-0 border ${catMeta.badge}`}>
-                {operator.type_label || operator.type}
+                {trDonnee(operator.type_label || operator.type, language)}
               </Badge>
             </div>
 
@@ -393,7 +394,7 @@ function OperatorCard({ operator, catMeta, language }) {
 
         {/* Full contacts when expanded */}
         {expanded && hasContacts && (
-          <ContactsBlock contacts={operator.contacts} />
+          <ContactsBlock contacts={operator.contacts} language={language} />
         )}
 
         {/* Services list */}
@@ -402,7 +403,7 @@ function OperatorCard({ operator, catMeta, language }) {
             <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">{pick(language, 'Services', 'Services', 'الخدمات')}</div>
             <div className="flex flex-wrap gap-1">
               {operator.services.map(s => (
-                <span key={s} className="text-[11px] px-2 py-0.5 rounded-full bg-[var(--overlay)] border border-[var(--overlay-border)] text-[var(--text)]">{s}</span>
+                <span key={s} className="text-[11px] px-2 py-0.5 rounded-full bg-[var(--overlay)] border border-[var(--overlay-border)] text-[var(--text)]">{trDonnee(s, language)}</span>
               ))}
             </div>
           </div>
@@ -416,7 +417,7 @@ function OperatorCard({ operator, catMeta, language }) {
               {operator.africa_terminals.map((t, i) => (
                 <div key={i} className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1.5 px-2 py-1 rounded-lg bg-[var(--overlay)]">
                   <Anchor className="w-2.5 h-2.5 text-[var(--atlantic)] flex-shrink-0" />
-                  <span>{t.port} ({t.country})</span>
+                  <span>{trDonnee(t.port, language)} ({t.country})</span>
                   {t.teu_capacity && <span className="text-[var(--afcfta-muted)]">— {(t.teu_capacity/1000).toFixed(0)}K TEU</span>}
                 </div>
               ))}

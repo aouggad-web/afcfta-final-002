@@ -172,7 +172,7 @@ export default function TaxBreakdownDual({
               tone="red"
             />
             <SummaryCard
-              title={regimeLabel ? `Total ${regimeLabel}` : pick(language, 'Total ZLECAf', 'Total AfCFTA', 'مجموع زليكاف')}
+              title={regimeLabel ? pick(language, `Total ${regimeLabel}`, `Total ${regimeLabel}`, `مجموع ${regimeLabel}`) : pick(language, 'Total ZLECAf', 'Total AfCFTA', 'مجموع زليكاف')}
               s={zlc}
               sLocal={zlecafAvailable ? slZlc : {}}
               useLocal={useLocal}

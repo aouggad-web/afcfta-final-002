@@ -8,6 +8,7 @@ import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { Factory, TrendingUp, Award, Building2, Package, Loader2, AlertTriangle, Info, DollarSign, Users, Download } from 'lucide-react';
 import { buildProductionPdf, productionPdfFilename } from '../../utils/productionPdf';
 import { chiffres, montant, montantCompact, montantUnite, nombre } from '../../utils/nombres';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -389,7 +390,7 @@ function ProductionManufacturing({ language = 'fr' }) {
       value: `${signe && v > 0 ? '+' : ''}${nombre(v, language, decimales)}`,
     });
   // Libellé anglais quand l'entrée le porte (branches d'un office national).
-  const nomBranche = (sector) => (language === 'en' && sector.name_en) || sector.name;
+  const nomBranche = (sector) => (language === 'en' && sector.name_en) || trDonnee(sector.name, language);
 
   const secteursPlies = () => (unidoData?.top_sectors?.length || 0) > MAX_PARTS_CAMEMBERT;
   const couleurBranche = (index) =>
@@ -427,8 +428,8 @@ function ProductionManufacturing({ language = 'fr' }) {
 
   const prepareRankingBarData = () => {
     return mvaRanking.slice(0, 10).map((country) => ({
-      name: country.country_name.length > 15 ? country.country_name.substring(0, 15) + '...' : country.country_name,
-      fullName: country.country_name,
+      name: trDonnee(country.country_name, language).length > 15 ? trDonnee(country.country_name, language).substring(0, 15) + '...' : trDonnee(country.country_name, language),
+      fullName: trDonnee(country.country_name, language),
       mva: country.mva_2023_mln_usd,
       isSelected: country.country_iso3 === selectedCountry
     }));
@@ -630,8 +631,8 @@ function ProductionManufacturing({ language = 'fr' }) {
                 </div>
                 <details className="mt-3 text-xs text-[var(--text-soft)]">
                   <summary className="cursor-pointer">{t('production.manufacturing.panel.estimateMethod')}</summary>
-                  <p className="mt-2 leading-relaxed">{unidoData.estimation_2025.methode}</p>
-                  <p className="mt-1">{unidoData.estimation_2025.note} — {unidoData.estimation_2025.base_prix}</p>
+                  <p className="mt-2 leading-relaxed">{trDonnee(unidoData.estimation_2025.methode, language)}</p>
+                  <p className="mt-1">{trDonnee(unidoData.estimation_2025.note, language)} — {trDonnee(unidoData.estimation_2025.base_prix, language)}</p>
                 </details>
               </CardContent>
             </Card>
@@ -642,10 +643,10 @@ function ProductionManufacturing({ language = 'fr' }) {
             <CardHeader className="pb-2">
               <CardTitle className="text-2xl text-[var(--info)] flex items-center gap-3">
                 <Building2 className="w-7 h-7" />
-                {unidoData.country_name}
+                {trDonnee(unidoData.country_name, language)}
               </CardTitle>
               <CardDescription className="text-[var(--info)] flex items-center gap-2 flex-wrap">
-                <Badge variant="outline" className="border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)]">{unidoData.region}</Badge>
+                <Badge variant="outline" className="border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)]">{trDonnee(unidoData.region, language)}</Badge>
                 <Badge variant="outline" className="border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)]">{t('production.manufacturing.panel.data')} {unidoData.data_year}</Badge>
                 {unidoData.industrial_zones && (
                   <Badge variant="outline" className="border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)]">
@@ -917,6 +918,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                         formatIndicatorValue={formatIndicatorValue}
                         onRetry={() => fetchIsic4Timeseries(expandedIsic4)}
                         onClose={() => setExpandedIsic4(null)}
+                        language={language}
                       />
                     )}
                   </div>
@@ -941,7 +943,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                       key={index} 
                       className="text-sm py-2 px-4 bg-[var(--afcfta-card2)] text-[var(--text)] border border-[var(--afcfta-border)] hover:bg-[var(--afcfta-card2)]"
                     >
-                      {product}
+                      {trDonnee(product, language)}
                     </Badge>
                   ))}
                 </div>
@@ -1035,7 +1037,7 @@ function ComptesOns({ comptes, language, t }) {
   const annees = Object.keys(comptes.total.va_musd);
   const derniere = annees[annees.length - 1];
   const totalDerniere = comptes.total.va_musd[derniere];
-  const libelle = (b) => (language === 'en' && b.libelle_en) || b.libelle_fr;
+  const libelle = (b) => (language === 'en' && b.libelle_en) || trDonnee(b.libelle_fr, language);
   const e25 = comptes.total.estimation_2025;
   return (
     <Card className="shadow-lg" data-testid="manufacture-comptes-ons">
@@ -1234,7 +1236,7 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, annee,
                   {sector.isic4}
                 </span>
                 <span className="text-sm text-[var(--text)] leading-snug break-words min-w-0">
-                  {sector.isic_description || sector.description || (
+                  {trDonnee(sector.isic_description || sector.description, language) || (
                     <span className="text-[var(--afcfta-muted)] italic">
                       {t('production.manufacturing.panel.labelNotPublished')}
                     </span>
@@ -1319,7 +1321,7 @@ function YearMatrix({ title, subtitle, fields, series, years, formatIndicatorVal
 }
 
 // Détail d'une classe ISIC 4, affiché sous la grille.
-function Isic4DetailPanel({ sector, timeseries, dataBasis, formatIndicatorValue, onRetry, onClose }) {
+function Isic4DetailPanel({ sector, timeseries, dataBasis, formatIndicatorValue, onRetry, onClose, language }) {
   const { t } = useTranslation();
   const isEstimatedCountry = dataBasis === 'ESTIMATED_FROM_ISIC2';
   const status = timeseries?.status;
@@ -1350,10 +1352,10 @@ function Isic4DetailPanel({ sector, timeseries, dataBasis, formatIndicatorValue,
           <h4 className="font-bold text-[var(--text)] leading-snug break-words">
             <span className="font-mono text-[var(--info)]">{sector?.isic4}</span>
             <span className="text-[var(--afcfta-muted)] mx-2">·</span>
-            {sector?.isic_description || sector?.description}
+            {trDonnee(sector?.isic_description || sector?.description, language)}
           </h4>
           {sector?.division_name && (
-            <p className="text-xs text-[var(--afcfta-muted)] mt-0.5">{sector.division_name}</p>
+            <p className="text-xs text-[var(--afcfta-muted)] mt-0.5">{trDonnee(sector.division_name, language)}</p>
           )}
         </div>
         <button

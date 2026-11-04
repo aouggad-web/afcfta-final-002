@@ -24,8 +24,16 @@ export function isDisplayableZlecafResult(result) {
  * quand c'est bien la ZLECAf : une franchise GZALE ne doit jamais être
  * présentée comme une préférence ZLECAf.
  */
-export function preferentialRegimeLabel(result) {
-  return result?.trade_regime === 'FTA_CONDITIONAL' ? (result?.trade_regime_code || null) : null;
+// En arabe, les zones arabes se lisent sous leur nom ; les autres sigles
+// (SACU, CEDEAO…) restent tels quels, comme dans le reste de l'interface.
+const REGIMES_AR = {
+  GZALE: 'منطقة التجارة الحرة العربية الكبرى',
+  ZALE: 'منطقة التجارة الحرة العربية',
+};
+
+export function preferentialRegimeLabel(result, language) {
+  const code = result?.trade_regime === 'FTA_CONDITIONAL' ? (result?.trade_regime_code || null) : null;
+  return code && language === 'ar' ? (REGIMES_AR[code] || code) : code;
 }
 
 /**

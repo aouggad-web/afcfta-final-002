@@ -6,6 +6,7 @@ import { Button } from '../ui/button';
 import { Truck, Clock, Package, Info, MapPin, Flag } from 'lucide-react';
 import { montant } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -153,7 +154,7 @@ export default function LandFreightCalculator({ language = 'fr' }) {
                 <option value="">— {t.corridor} —</option>
                 {corridors.map(c => (
                   <option key={c.corridor_id} value={c.corridor_id}>
-                    {c.name} · {c.length_km} {t.km} · {(c.countries || []).join('–')}
+                    {trDonnee(c.name, language)} · {c.length_km} {t.km} · {(c.countries || []).join('–')}
                   </option>
                 ))}
               </select>
@@ -230,7 +231,7 @@ export default function LandFreightCalculator({ language = 'fr' }) {
               )}
               <Badge variant="outline" className="text-xs"><Clock className="w-3 h-3 mr-1" />{result.transit_days_min}–{result.transit_days_max} {t.days}</Badge>
               <Badge variant="outline" className="text-xs"><Flag className="w-3 h-3 mr-1" />{result.border_crossings} {t.borders} ({result.osbp_crossings} {t.osbp})</Badge>
-              <Badge variant="outline" className="text-xs"><Package className="w-3 h-3 mr-1" />{result.cargo_label}</Badge>
+              <Badge variant="outline" className="text-xs"><Package className="w-3 h-3 mr-1" />{trDonnee(result.cargo_label, language)}</Badge>
             </div>
           </CardHeader>
           <CardContent className="pt-4 space-y-5">
@@ -266,7 +267,7 @@ export default function LandFreightCalculator({ language = 'fr' }) {
                 <span className="text-[var(--afcfta-muted)]">{result.source}</span>
               </div>
               <div className="p-3 bg-[var(--afcfta-card2)] rounded-lg border border-[var(--afcfta-border)] text-xs text-[var(--afcfta-muted)]">
-                <span className="font-semibold">{t.disclaimer}: </span>{result.disclaimer}
+                <span className="font-semibold">{t.disclaimer}: </span>{trDonnee(result.disclaimer, language)}
               </div>
             </div>
           </CardContent>

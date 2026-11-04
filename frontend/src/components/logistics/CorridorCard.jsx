@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const CORRIDOR_TYPE_AR = { road: 'طريق بري', rail: 'سكك حديدية', multimodal: 'متعدد الوسائط' };
 
@@ -90,7 +91,7 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
           <div className="flex-1">
             <CardTitle className="text-lg font-bold text-[var(--text)] flex items-center gap-2">
               <span>{getTypeIcon(corridor.corridor_type)}</span>
-              <span>{corridor.corridor_name}</span>
+              <span>{trDonnee(corridor.corridor_name, language)}</span>
             </CardTitle>
             <CardDescription className="text-sm mt-1">
               {corridor.countries_spanned?.join(' → ')}
@@ -117,7 +118,7 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
           <div className="bg-[var(--afcfta-card2)] p-2 rounded">
             <p className="text-xs font-semibold text-[var(--text)]">🚦 {t.status}</p>
             <Badge className={getStatusColor(corridor.status)} variant="outline">
-              {corridor.status}
+              {trDonnee(corridor.status, language)}
             </Badge>
           </div>
         </div>
@@ -163,7 +164,7 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
           <div className="bg-[var(--afcfta-card2)] p-2 rounded mb-4">
             <p className="text-xs text-[var(--text)]">
               <span className="font-semibold">🔧 {t.infrastructure}: </span>
-              {corridor.infra_details.substring(0, 80)}{corridor.infra_details.length > 80 ? '...' : ''}
+              {trDonnee(corridor.infra_details, language).substring(0, 80)}{trDonnee(corridor.infra_details, language).length > 80 ? '...' : ''}
             </p>
           </div>
         )}

@@ -8,7 +8,7 @@
  */
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import { MapContainer, TileLayer, CircleMarker, Tooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Tooltip, ZoomControl } from 'react-leaflet';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -192,7 +192,11 @@ export default function AfricaTradeMap({ language = 'fr' }) {
           ) : error ? (
             <div className="flex items-center justify-center h-full text-[var(--danger)]">{txt.error}</div>
           ) : (
-            <MapContainer center={[2, 18]} zoom={3} style={{ height: '100%', width: '100%' }} className="z-0" scrollWheelZoom={false}>
+            <MapContainer center={[2, 18]} zoom={3} style={{ height: '100%', width: '100%' }} className="z-0" scrollWheelZoom={false} zoomControl={false}>
+              <ZoomControl
+                zoomInTitle={pick(language, 'Zoom in', 'Zoom in', 'تكبير')}
+                zoomOutTitle={pick(language, 'Zoom out', 'Zoom out', 'تصغير')}
+              />
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

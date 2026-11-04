@@ -76,6 +76,26 @@ describe('entitlementNoticeText', () => {
   });
 });
 
+describe('entitlementNoticeText en arabe', () => {
+  it('traduit le refus du serveur en gardant le nom de la formule', () => {
+    const text = entitlementNoticeText(entitlementRefusal(upgradeRequired), 'ar');
+    expect(text).toContain("'free'");
+    expect(text).not.toContain('Ce module');
+    expect(text).toMatch(/[؀-ۿ]/);
+  });
+
+  it('traduit le dépassement de quota', () => {
+    const text = entitlementNoticeText({ kind: 'quota_exceeded', tier: 'starter', message: 'Quota de la formule ...' }, 'ar');
+    expect(text).toContain("'starter'");
+    expect(text).toContain('حصة');
+  });
+
+  it('retombe sur le libellé local arabe sans formule connue', () => {
+    const text = entitlementNoticeText({ kind: 'upgrade_required', tier: null, message: "Ce module n'est pas inclus…" }, 'ar');
+    expect(text).toContain('للباقات المدفوعة');
+  });
+});
+
 // Refus des routes /api/reports/* et du calculateur (audit E1).
 const anonymousReports = {
   response: {

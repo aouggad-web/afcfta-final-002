@@ -1768,7 +1768,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 
                 {/* Total ZLECAf */}
                 <div className="bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
-                  <p className="text-[var(--success)] text-xs font-medium">{preferentialRegimeLabel(result) ? `Total ${preferentialRegimeLabel(result)}` : pick(language, 'Total ZLECAf', 'Total AfCFTA', 'مجموع زليكاف')}</p>
+                  <p className="text-[var(--success)] text-xs font-medium">{preferentialRegimeLabel(result, language) ? pick(language, `Total ${preferentialRegimeLabel(result)}`, `Total ${preferentialRegimeLabel(result)}`, `مجموع ${preferentialRegimeLabel(result, language)}`) : pick(language, 'Total ZLECAf', 'Total AfCFTA', 'مجموع زليكاف')}</p>
                   <p className="text-3xl font-bold text-[var(--success)] mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
                       ? `${zlecafTotalTaxRatePct(result).toFixed(1)}%`
@@ -1885,7 +1885,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           <p className="text-[var(--text)] font-bold">{tax.rate}%</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-[var(--afcfta-muted)] text-xs">{preferentialRegimeLabel(result) || pick(language, 'ZLECAf', 'AfCFTA', 'زليكاف')}</p>
+                          <p className="text-[var(--afcfta-muted)] text-xs">{preferentialRegimeLabel(result, language) || pick(language, 'ZLECAf', 'AfCFTA', 'زليكاف')}</p>
                           <p className="text-[var(--success)] font-bold">
                             {isDisplayableZlecafResult(result)
                               ? (typeof tax.rate_zlecaf_pct === 'number'
@@ -1920,7 +1920,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               summary={result.taxes_summary}
               currency={result.currency}
               zlecafAvailable={isDisplayableZlecafResult(result)}
-              regimeLabel={preferentialRegimeLabel(result)}
+              regimeLabel={preferentialRegimeLabel(result, language)}
               language={language}
             />
           )}
@@ -2064,10 +2064,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                             ? (constatSource
                               ? (pick(language, 'Aucune formalité particulière', 'No specific formality', 'لا يوجد إجراء خاص'))
                               : (pick(language, 'Non établies', 'Not established', 'غير محددة')))
-                            : `${formalities.length} ${pick(language, 'formalités', 'formalities', 'إجراءات')}`}
+                            : pick(language, `${formalities.length} formalités`, `${formalities.length} formalities`, `عدد الإجراءات: ${formalities.length}`)}
                           {isPositionLevel && (
                             <span className="ml-2 text-[var(--violet)] text-xs font-mono">
-                              — position {positionCode}
+                              — {pick(language, 'position', 'position', 'البند')} {positionCode}
                             </span>
                           )}
                         </CardDescription>

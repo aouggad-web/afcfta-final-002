@@ -53,19 +53,21 @@ _TRANSSHIP_DELAY = 0.75  # délai par rupture de charge (jours)
 
 # Coefficients par nature de marchandise
 CARGO_FACTORS = {
-    "general": {"factor": 1.0, "label_fr": "Marchandise générale", "label_en": "General cargo"},
-    "container": {"factor": 1.05, "label_fr": "Conteneurisé", "label_en": "Containerised"},
+    "general": {"factor": 1.0, "label_fr": "Marchandise générale", "label_en": "General cargo", "label_ar": "بضائع عامة"},
+    "container": {"factor": 1.05, "label_fr": "Conteneurisé", "label_en": "Containerised", "label_ar": "بضائع في حاويات"},
     "perishable": {
         "factor": 1.25,
         "label_fr": "Périssable (camion frigo)",
         "label_en": "Perishable (reefer)",
+        "label_ar": "بضائع قابلة للتلف (شاحنة مبرَّدة)",
     },
     "dangerous": {
         "factor": 1.30,
         "label_fr": "Marchandise dangereuse (ADR)",
         "label_en": "Dangerous goods (ADR)",
+        "label_ar": "بضائع خطرة (ADR)",
     },
-    "bulk": {"factor": 0.90, "label_fr": "Vrac", "label_en": "Bulk"},
+    "bulk": {"factor": 0.90, "label_fr": "Vrac", "label_en": "Bulk", "label_ar": "بضائع سائبة"},
 }
 
 
@@ -126,7 +128,13 @@ def get_land_corridors_list() -> List[Dict[str, Any]]:
 
 def get_cargo_types() -> List[Dict[str, Any]]:
     return [
-        {"value": k, "label_fr": v["label_fr"], "label_en": v["label_en"], "factor": v["factor"]}
+        {
+            "value": k,
+            "label_fr": v["label_fr"],
+            "label_en": v["label_en"],
+            "label_ar": v["label_ar"],
+            "factor": v["factor"],
+        }
         for k, v in CARGO_FACTORS.items()
     ]
 

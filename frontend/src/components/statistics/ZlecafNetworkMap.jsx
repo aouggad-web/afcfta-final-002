@@ -17,6 +17,7 @@ import geo from '../../data/zlecafNetworkGeo.json';
 import { montantCompact } from '../../utils/nombres';
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { pick, intlLocale } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 import '../../styles/zlecafNetwork.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -283,7 +284,7 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
     p.pib_usd == null ? fill(txt.gdpNa, { year }) : `${fill(txt.gdp, { year })} : ${pib(p.pib_usd)}`;
   const capitale = (iso3) => {
     const c = geo.capitals[iso3];
-    return c ? pick(lang, c.name_fr, c.name, c.name_fr) : null;
+    return c ? pick(lang, c.name_fr, c.name, trDonnee(c.name_fr, lang)) : null;
   };
   const lie = (iso3) =>
     iso3 === actif || model.sortantes[actif]?.has(iso3) || model.recues[actif]?.has(iso3);
