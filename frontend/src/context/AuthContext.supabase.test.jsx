@@ -2,9 +2,11 @@
  * Liens reçus par e-mail (audit M6) : avec le flux PKCE, ils portent un
  * token_hash vérifié par verifyOtp, pour marcher sur n'importe quel appareil.
  * - Le jeton ne doit jamais rester dans la barre d'adresse.
- * - Ce navigateur l'utilise sans demander seulement s'il l'attendait, pour la
- *   même adresse ; sinon, il faut cliquer sur « Continuer » (connexion forcée
- *   par un lien transmis, scanners de messagerie).
+ * - La vérification passe par un client jetable : le client principal ne
+ *   reçoit la session qu'après le contrôle de l'adresse.
+ * - Ce navigateur utilise le lien sans demander seulement s'il l'attendait,
+ *   pour la même adresse et depuis moins de 24 h ; sinon, il faut cliquer sur
+ *   « Continuer » (connexion forcée par un lien transmis, scanners).
  */
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
@@ -13,20 +15,28 @@ import axios from 'axios';
 
 import { AuthProvider, useAuth } from './AuthContext';
 
+// Client principal (persistant) et client jetable de vérification.
 const auth = vi.hoisted(() => ({
-  verifyOtp: vi.fn(),
   getSession: vi.fn(),
   onAuthStateChange: vi.fn(),
+  setSession: vi.fn(),
   signOut: vi.fn(),
 }));
+const verif = vi.hoisted(() => ({ verifyOtp: vi.fn(), signOut: vi.fn() }));
 const toast = vi.hoisted(() => vi.fn());
 
-vi.mock('../lib/supabase', () => ({ supabase: { auth }, TERMS_VERSION: 'test' }));
+vi.mock('../lib/supabase', () => ({
+  supabase: { auth },
+  creerClientVerification: () => ({ auth: verif }),
+  TERMS_VERSION: 'test',
+}));
 vi.mock('../hooks/use-toast', () => ({ toast }));
 vi.mock('axios');
 
 const CLE = 'zlecaf_lien_email_attendu';
+const SESSION = { access_token: 'jeton-alice', refresh_token: 'rafraichissement-alice' };
 let contexte;
+let ecouteur;
 
 function Etat() {
   contexte = useAuth();
@@ -44,13 +54,26 @@ function rendre() {
 }
 
 const etat = () => screen.getByTestId('etat').textContent;
+const marquer = (email, t = Date.now()) => localStorage.setItem(CLE, JSON.stringify({ email, t }));
+const messages = () => toast.mock.calls.map(([m]) => m.description).join(' | ');
 
 beforeEach(() => {
-  auth.verifyOtp.mockResolvedValue({ data: { user: { email: 'alice@example.com' } }, error: null });
-  auth.getSession.mockResolvedValue({ data: { session: null } });
-  auth.onAuthStateChange.mockReturnValue({ data: { subscription: { unsubscribe: vi.fn() } } });
+  verif.verifyOtp.mockResolvedValue({ data: { user: { email: 'alice@example.com' }, session: SESSION }, error: null });
+  verif.signOut.mockResolvedValue({ error: null });
+  // Le client principal ne connaît une session qu'après setSession.
+  let session = null;
+  auth.setSession.mockImplementation(async (s) => {
+    session = s;
+    return { data: { session: s }, error: null };
+  });
+  auth.getSession.mockImplementation(async () => ({ data: { session } }));
   auth.signOut.mockResolvedValue({ error: null });
+  auth.onAuthStateChange.mockImplementation((rappel) => {
+    ecouteur = rappel;
+    return { data: { subscription: { unsubscribe: vi.fn() } } };
+  });
   axios.get.mockRejectedValue(new Error('401'));
+  axios.post.mockResolvedValue({ data: { email: 'alice@example.com' } });
 });
 
 afterEach(() => {
@@ -59,56 +82,104 @@ afterEach(() => {
   window.history.replaceState(null, '', '/');
 });
 
-it('lien attendu par ce navigateur : vérifié, jeton effacé, saisie du nouveau mot de passe', async () => {
-  localStorage.setItem(CLE, 'alice@example.com');
+it('lien attendu : vérifié, session confiée au client principal, saisie du nouveau mot de passe', async () => {
+  marquer('alice@example.com');
   window.history.replaceState(null, '', '/?onglet=calcul&token_hash=abc123&type=recovery#haut');
   rendre();
 
-  await waitFor(() => expect(etat()).toBe('true|anonyme|-'));
-  expect(auth.verifyOtp).toHaveBeenCalledWith({ token_hash: 'abc123', type: 'recovery' });
+  await waitFor(() => expect(etat()).toBe('true|alice@example.com|-'));
+  expect(verif.verifyOtp).toHaveBeenCalledWith({ token_hash: 'abc123', type: 'recovery' });
+  expect(auth.setSession).toHaveBeenCalledWith(SESSION);
   expect(window.location.search).toBe('?onglet=calcul');
   expect(window.location.hash).toBe('#haut');
-  expect(toast.mock.calls[0][0].description).toMatch(/alice@example\.com/);
+  await waitFor(() => expect(messages()).toMatch(/Connecté en tant que alice@example\.com/));
   expect(localStorage.getItem(CLE)).toBeNull();
 });
 
-it("lien non attendu : rien n'est vérifié avant « Continuer »", async () => {
+it("lien non attendu : rien n'est vérifié avant « Continuer », puis connexion annoncée", async () => {
   window.history.replaceState(null, '', '/?token_hash=lien-transmis&type=email');
   rendre();
 
   await waitFor(() => expect(etat()).toBe('false|anonyme|email'));
-  expect(auth.verifyOtp).not.toHaveBeenCalled();
+  expect(verif.verifyOtp).not.toHaveBeenCalled();
   expect(window.location.search).toBe('');
 
   await act(async () => {
     await contexte.confirmerLienEmail();
   });
-  expect(auth.verifyOtp).toHaveBeenCalledWith({ token_hash: 'lien-transmis', type: 'email' });
-  expect(toast.mock.calls[0][0].description).toMatch(/Connecté en tant que alice@example\.com/);
-  expect(etat()).toMatch(/\|-$/);
+  expect(verif.verifyOtp).toHaveBeenCalledWith({ token_hash: 'lien-transmis', type: 'email' });
+  expect(axios.post).toHaveBeenCalledWith(
+    expect.stringContaining('/auth/session'),
+    {},
+    expect.objectContaining({ headers: { Authorization: 'Bearer jeton-alice' } })
+  );
+  expect(messages()).toMatch(/Connecté en tant que alice@example\.com/);
+  expect(etat()).toBe('false|alice@example.com|-');
 });
 
-it("lien d'un autre compte que celui attendu : session retirée, pas de saisie de mot de passe", async () => {
-  localStorage.setItem(CLE, 'victime@example.com');
-  auth.verifyOtp.mockResolvedValue({ data: { user: { email: 'attaquant@example.com' } }, error: null });
+it("lien d'un autre compte : jamais confié au client principal, même si la déconnexion échoue", async () => {
+  marquer('victime@example.com');
+  verif.verifyOtp.mockImplementation(async () => {
+    // Comme auth-js : l'événement part pendant la vérification… mais du
+    // client jetable, que l'application n'écoute pas.
+    return { data: { user: { email: 'attaquant@example.com' }, session: { access_token: 'jeton-attaquant', refresh_token: 'r' } }, error: null };
+  });
+  verif.signOut.mockResolvedValue({ error: { message: 'réseau' } });
   window.history.replaceState(null, '', '/?token_hash=autre&type=recovery');
   rendre();
 
-  await waitFor(() => expect(auth.signOut).toHaveBeenCalledWith({ scope: 'local' }));
+  await waitFor(() => expect(verif.signOut).toHaveBeenCalledWith({ scope: 'local' }));
+  await waitFor(() => expect(etat()).toBe('false|anonyme|-'));
+  expect(auth.setSession).not.toHaveBeenCalled();
+  expect(axios.post).not.toHaveBeenCalled();
+  expect(localStorage.getItem(CLE)).toBeNull();
   expect(toast.mock.calls[0][0].variant).toBe('destructive');
-  expect(toast.mock.calls[0][0].description).toMatch(/autre compte/);
+  expect(messages()).toMatch(/autre compte.*refusé/);
+});
+
+it('PASSWORD_RECOVERY du client principal ne précède plus le contrôle : aucun formulaire après un refus', async () => {
+  marquer('victime@example.com');
+  verif.verifyOtp.mockResolvedValue({ data: { user: { email: 'attaquant@example.com' }, session: SESSION }, error: null });
+  window.history.replaceState(null, '', '/?token_hash=autre&type=recovery');
+  rendre();
+
+  await waitFor(() => expect(verif.signOut).toHaveBeenCalled());
+  expect(typeof ecouteur).toBe('function');
   await waitFor(() => expect(etat()).toBe('false|anonyme|-'));
 });
 
-it('lien expiré : signalé, sans saisie du mot de passe', async () => {
-  localStorage.setItem(CLE, 'alice@example.com');
-  auth.verifyOtp.mockResolvedValue({ data: {}, error: { code: 'otp_expired', message: 'expired' } });
+it('marqueur de plus de 24 h : traité comme absent, le lien demande confirmation', async () => {
+  marquer('alice@example.com', Date.now() - 25 * 3600 * 1000);
+  window.history.replaceState(null, '', '/?token_hash=vieux-marqueur&type=email');
+  rendre();
+
+  await waitFor(() => expect(etat()).toBe('false|anonyme|email'));
+  expect(verif.verifyOtp).not.toHaveBeenCalled();
+  expect(localStorage.getItem(CLE)).toBeNull();
+});
+
+it('lien expiré : signalé, sans session ni saisie du mot de passe', async () => {
+  marquer('alice@example.com');
+  verif.verifyOtp.mockResolvedValue({ data: {}, error: { code: 'otp_expired', message: 'expired' } });
   window.history.replaceState(null, '', '/?token_hash=vieux&type=email');
   rendre();
 
-  await waitFor(() => expect(toast).toHaveBeenCalled());
-  expect(toast.mock.calls[0][0].description).toMatch(/expiré/);
+  await waitFor(() => expect(messages()).toMatch(/expiré/));
   await waitFor(() => expect(etat()).toBe('false|anonyme|-'));
+  expect(auth.setSession).not.toHaveBeenCalled();
+});
+
+it("« Continuer » puis échec de l'ouverture de session du site : erreur affichée, pas de « Connecté »", async () => {
+  axios.post.mockRejectedValue({ response: { data: { detail: "Service d'authentification injoignable, réessayez." } } });
+  window.history.replaceState(null, '', '/?token_hash=lien&type=email');
+  rendre();
+  await waitFor(() => expect(etat()).toBe('false|anonyme|email'));
+
+  await act(async () => {
+    await expect(contexte.confirmerLienEmail()).resolves.toBeNull();
+  });
+  expect(messages()).toMatch(/injoignable/);
+  expect(messages()).not.toMatch(/Connecté en tant que/);
 });
 
 it('Site URL terminée par « / » : le lien //?token_hash= ne fait pas planter la page', async () => {
@@ -124,6 +195,6 @@ it("ignore une adresse sans lien d'e-mail", async () => {
   rendre();
 
   await waitFor(() => expect(auth.getSession).toHaveBeenCalled());
-  expect(auth.verifyOtp).not.toHaveBeenCalled();
+  expect(verif.verifyOtp).not.toHaveBeenCalled();
   expect(window.location.search).toBe('?type=recovery');
 });

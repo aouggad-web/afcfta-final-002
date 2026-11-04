@@ -28,6 +28,22 @@ export const supabase =
     ? createClient(url, publishableKey, { auth: SUPABASE_AUTH_OPTIONS })
     : null;
 
+// Client jetable pour vérifier un lien d'e-mail : il ne garde rien (ni
+// stockage, ni rafraîchissement, ni diffusion aux autres onglets). La session
+// qu'il obtient n'est confiée au client principal qu'après le contrôle de
+// l'adresse, si bien qu'un lien refusé ne laisse aucune trace (voir
+// AuthContext, lireLienEmail).
+export function creerClientVerification() {
+  return createClient(url, publishableKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+      storageKey: 'zlecaf-verification-lien',
+    },
+  });
+}
+
 // Version des CGU / politique de confidentialité acceptée à l'inscription.
 // À changer à chaque nouvelle version des textes (preuve du consentement).
 export const TERMS_VERSION = '2026-09';

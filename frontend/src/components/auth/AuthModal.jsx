@@ -60,6 +60,9 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
   };
 
   const handleClose = () => {
+    // Fermer la fenêtre (Échap, croix, clic dehors, « Annuler ») vaut refus
+    // du lien d'e-mail en attente : il ne revient pas à la prochaine ouverture.
+    if (lienEnAttente) ignorerLienEmail?.();
     resetForms();
     onClose();
   };
@@ -257,10 +260,7 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
           variant="outline"
           className="w-full"
           style={{ marginTop: 8 }}
-          onClick={() => {
-            ignorerLienEmail();
-            handleClose();
-          }}
+          onClick={handleClose}
         >
           {pick(language, 'Annuler', 'Cancel', 'إلغاء')}
         </Button>

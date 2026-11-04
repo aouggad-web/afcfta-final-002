@@ -35,3 +35,18 @@ it("n'en crée aucun sans configuration", async () => {
   expect(supabase).toBeNull();
   expect(createClient).not.toHaveBeenCalled();
 });
+
+it('crée le client de vérification des liens sans stockage ni rafraîchissement', async () => {
+  vi.stubEnv('VITE_SUPABASE_URL', 'https://projet.supabase.co');
+  vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', 'sb_publishable_test');
+  vi.resetModules();
+  const { createClient } = await import('@supabase/supabase-js');
+  const { creerClientVerification } = await import('./supabase');
+  createClient.mockClear();
+
+  creerClientVerification();
+
+  expect(createClient).toHaveBeenCalledWith('https://projet.supabase.co', 'sb_publishable_test', {
+    auth: expect.objectContaining({ persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }),
+  });
+});
