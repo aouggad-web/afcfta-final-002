@@ -141,8 +141,3 @@ async def get_export_opportunities(
     except Exception as e:
         logger.error(f"Error finding export opportunities: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail="Internal server error")
-
-
-def register_routes(app_router):
-    """Register substitution routes with the main API router"""
-    app_router.include_router(router)
