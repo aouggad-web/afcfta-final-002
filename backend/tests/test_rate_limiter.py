@@ -199,3 +199,20 @@ def test_les_adresses_d_un_meme_slash64_partagent_le_quota(monkeypatch):
         for i in range(5)
     ]
     assert codes == [200, 200, 200, 429, 429]
+
+
+@pytest.mark.parametrize("hote", [b"testserver/api/health?", b"testserver/api/health#"])
+def test_host_forge_ne_contourne_pas_le_quota_de_connexion(hote):
+    """Audit M3 : avec request.url, un Host « testserver/api/health? » faisait
+    passer la connexion pour /api/health, exemptée, donc sans aucun quota."""
+    client = _make_app(requests_per_minute=50, auth_requests_per_minute=2, burst_limit=100)
+
+    async def asgi(scope, receive, send):
+        if scope["type"] == "http":
+            entetes = [(k, v) for k, v in scope["headers"] if k != b"host"]
+            scope = {**scope, "headers": entetes + [(b"host", hote)]}
+        await client.app(scope, receive, send)
+
+    forge = TestClient(asgi)
+    codes = [forge.post("/api/auth/login").status_code for _ in range(4)]
+    assert codes == [200, 200, 429, 429]
