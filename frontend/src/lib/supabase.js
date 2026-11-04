@@ -13,7 +13,9 @@ const publishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 // par un code échangé contre la session avec une preuve gardée par ce
 // navigateur seulement. Les liens envoyés par e-mail portent, eux, un
 // token_hash vérifié par AuthContext : ils marchent aussi ouverts sur un autre
-// appareil (voir docs/ACTIVER_SUPABASE.md, modèles d'e-mail).
+// appareil (voir docs/ACTIVER_SUPABASE.md, modèles d'e-mail). Ce jeton n'étant
+// lié à aucun navigateur, AuthContext ne l'utilise sans demander que si ce
+// navigateur l'attendait, pour la même adresse (voir lireLienEmail).
 export const SUPABASE_AUTH_OPTIONS = {
   flowType: 'pkce',
   autoRefreshToken: true,

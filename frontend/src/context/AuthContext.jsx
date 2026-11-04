@@ -43,8 +43,54 @@ function supabaseError(error) {
 // Liens envoyés par e-mail (confirmation d'adresse, mot de passe oublié,
 // changement d'adresse) : /?token_hash=…&type=…, vérifiés par verifyOtp.
 // Contrairement au code PKCE, ce jeton ne dépend pas du navigateur qui a fait
-// la demande : le lien marche ouvert sur un autre appareil.
+// la demande : le lien marche ouvert sur un autre appareil. Revers : un lien
+// que quelqu'un obtient pour SON compte, puis transmet, connecterait la
+// personne qui l'ouvre à ce compte (connexion forcée). D'où deux garde-fous :
+// - le navigateur qui fait la demande note l'adresse attendue ; un lien d'un
+//   autre compte n'y est pas utilisé ;
+// - un lien que ce navigateur n'attend pas (autre appareil, lien transmis,
+//   scanner de messagerie) n'est vérifié qu'après un clic sur « Continuer ».
+// Après vérification, l'adresse du compte connecté est toujours affichée.
 const TYPES_LIEN_EMAIL = new Set(['email', 'signup', 'recovery', 'email_change']);
+const CLE_LIEN_ATTENDU = 'zlecaf_lien_email_attendu';
+
+function noterLienAttendu(email) {
+  try {
+    localStorage.setItem(CLE_LIEN_ATTENDU, email);
+  } catch {
+    // Stockage indisponible (navigation privée stricte) : le lien demandera
+    // simplement une confirmation.
+  }
+}
+
+function lireLienAttendu() {
+  try {
+    return localStorage.getItem(CLE_LIEN_ATTENDU);
+  } catch {
+    return null;
+  }
+}
+
+function oublierLienAttendu() {
+  try {
+    localStorage.removeItem(CLE_LIEN_ATTENDU);
+  } catch {
+    // rien à faire
+  }
+}
+
+const MESSAGES_LIEN = {
+  connecte: { fr: 'Connecté en tant que {email}.', ar: 'تم تسجيل الدخول بالحساب {email}.' },
+  autreCompte: {
+    fr: "Ce lien concerne un autre compte que celui demandé dans ce navigateur : il n'a pas été utilisé.",
+    ar: 'يخص هذا الرابط حسابًا غير الحساب المطلوب في هذا المتصفح: لم يُستخدم.',
+  },
+};
+
+function messageLien(cle, email = '') {
+  const m = MESSAGES_LIEN[cle];
+  return (i18n.language === 'ar' ? m.ar : m.fr).replace('{email}', email);
+}
 
 export function lireLienEmail() {
   const url = new URL(window.location.href);
@@ -52,9 +98,11 @@ export function lireLienEmail() {
   const type = url.searchParams.get('type');
   if (!tokenHash || !TYPES_LIEN_EMAIL.has(type)) return null;
   // Le jeton ne doit rester ni dans la barre d'adresse ni dans l'historique.
+  // URL complète : un chemin relatif « //… » (Site URL terminée par « / »)
+  // serait lu comme une autre origine et ferait échouer replaceState.
   url.searchParams.delete('token_hash');
   url.searchParams.delete('type');
-  window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+  window.history.replaceState(window.history.state, '', url.href);
   return { tokenHash, type };
 }
 
@@ -63,6 +111,9 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(undefined);
   // Vrai quand l'utilisateur arrive depuis le lien « mot de passe oublié ».
   const [recovery, setRecovery] = useState(false);
+  // Lien d'e-mail que ce navigateur n'attendait pas : vérifié seulement si la
+  // personne clique sur « Continuer » (voir lireLienEmail).
+  const [lienEnAttente, setLienEnAttente] = useState(null);
 
   const refreshUser = useCallback(async () => {
     try {
@@ -89,6 +140,31 @@ export function AuthProvider({ children }) {
     return data;
   }, []);
 
+  // Vérifie un lien d'e-mail. `attendu` : adresse notée par ce navigateur au
+  // moment de la demande (null quand la personne a confirmé à la main).
+  // Renvoie l'adresse du compte connecté, ou null.
+  const verifierLien = useCallback(async (lien, attendu) => {
+    const { data, error } = await supabase.auth.verifyOtp({
+      token_hash: lien.tokenHash,
+      type: lien.type,
+    });
+    if (error) {
+      toast({ variant: 'destructive', description: supabaseError(error).response.data.detail });
+      return null;
+    }
+    const email = String(data?.user?.email || '').toLowerCase();
+    if (attendu && email !== attendu) {
+      // Lien d'un autre compte que celui demandé ici : on n'y reste pas.
+      await supabase.auth.signOut({ scope: 'local' }).catch(() => {});
+      toast({ variant: 'destructive', description: messageLien('autreCompte') });
+      return null;
+    }
+    oublierLienAttendu();
+    if (lien.type === 'recovery') setRecovery(true);
+    toast({ description: messageLien('connecte', email) });
+    return email;
+  }, []);
+
   useEffect(() => {
     if (!supabase) {
       refreshUser();
@@ -96,18 +172,13 @@ export function AuthProvider({ children }) {
     }
     let active = true;
     const lien = lireLienEmail();
-    const verification = lien
-      ? supabase.auth
-          .verifyOtp({ token_hash: lien.tokenHash, type: lien.type })
-          .then(({ error }) => {
-            if (error) {
-              toast({ variant: 'destructive', description: supabaseError(error).response.data.detail });
-            } else if (lien.type === 'recovery') {
-              setRecovery(true);
-            }
-          })
-          .catch(() => {})
-      : Promise.resolve();
+    const attendu = lien ? lireLienAttendu() : null;
+    let verification = Promise.resolve();
+    if (lien && attendu) {
+      verification = verifierLien(lien, attendu).catch(() => {});
+    } else if (lien) {
+      setLienEnAttente(lien);
+    }
     verification
       .then(() => supabase.auth.getSession())
       .then(({ data }) => {
@@ -128,7 +199,19 @@ export function AuthProvider({ children }) {
       active = false;
       listener.subscription.unsubscribe();
     };
-  }, [refreshUser, syncSupabaseSession]);
+  }, [refreshUser, syncSupabaseSession, verifierLien]);
+
+  const confirmerLienEmail = async () => {
+    const lien = lienEnAttente;
+    setLienEnAttente(null);
+    if (!lien) return null;
+    const email = await verifierLien(lien, null);
+    if (!email) return null;
+    const { data } = await supabase.auth.getSession();
+    return syncSupabaseSession(data.session);
+  };
+
+  const ignorerLienEmail = () => setLienEnAttente(null);
 
   const register = async (name, email, password) => {
     if (supabase) {
@@ -147,7 +230,10 @@ export function AuthProvider({ children }) {
       if (error) throw supabaseError(error);
       // Confirmation d'email activée : pas de session tant que le lien
       // reçu par email n'a pas été cliqué.
-      if (!data.session) return { needsConfirmation: true };
+      if (!data.session) {
+        noterLienAttendu(email.trim().toLowerCase());
+        return { needsConfirmation: true };
+      }
       return syncSupabaseSession(data.session);
     }
     const { data } = await axios.post(
@@ -193,6 +279,7 @@ export function AuthProvider({ children }) {
       redirectTo: window.location.origin,
     });
     if (error) throw supabaseError(error);
+    noterLienAttendu(email.trim().toLowerCase());
   };
 
   const updatePassword = async (password) => {
@@ -241,6 +328,9 @@ export function AuthProvider({ children }) {
         logout,
         supabaseEnabled: Boolean(supabase),
         recovery,
+        lienEnAttente,
+        confirmerLienEmail,
+        ignorerLienEmail,
         requestPasswordReset,
         updatePassword,
         exportAccount,
