@@ -90,6 +90,8 @@ it('lien attendu : vérifié, session confiée au client principal, saisie du no
   await waitFor(() => expect(etat()).toBe('true|alice@example.com|-'));
   expect(verif.verifyOtp).toHaveBeenCalledWith({ token_hash: 'abc123', type: 'recovery' });
   expect(auth.setSession).toHaveBeenCalledWith(SESSION);
+  // Le site ouvre sa session d'abord ; le client principal ne la reçoit qu'ensuite.
+  expect(axios.post.mock.invocationCallOrder[0]).toBeLessThan(auth.setSession.mock.invocationCallOrder[0]);
   expect(window.location.search).toBe('?onglet=calcul');
   expect(window.location.hash).toBe('#haut');
   await waitFor(() => expect(messages()).toMatch(/Connecté en tant que alice@example\.com/));
@@ -169,17 +171,70 @@ it('lien expiré : signalé, sans session ni saisie du mot de passe', async () =
   expect(auth.setSession).not.toHaveBeenCalled();
 });
 
-it("« Continuer » puis échec de l'ouverture de session du site : erreur affichée, pas de « Connecté »", async () => {
+it("« Continuer » puis échec de l'ouverture de session du site : session révoquée, client principal intact", async () => {
   axios.post.mockRejectedValue({ response: { data: { detail: "Service d'authentification injoignable, réessayez." } } });
-  window.history.replaceState(null, '', '/?token_hash=lien&type=email');
+  window.history.replaceState(null, '', '/?token_hash=lien&type=recovery');
   rendre();
-  await waitFor(() => expect(etat()).toBe('false|anonyme|email'));
+  await waitFor(() => expect(etat()).toBe('false|anonyme|recovery'));
 
   await act(async () => {
     await expect(contexte.confirmerLienEmail()).resolves.toBeNull();
   });
+  expect(verif.signOut).toHaveBeenCalledWith({ scope: 'local' });
+  expect(auth.setSession).not.toHaveBeenCalled();
+  expect(etat()).toBe('false|anonyme|-');
   expect(messages()).toMatch(/injoignable/);
   expect(messages()).not.toMatch(/Connecté en tant que/);
+});
+
+it("lien attendu puis échec de l'ouverture de session du site : rien ne reste dans le client principal", async () => {
+  marquer('alice@example.com');
+  axios.post.mockRejectedValue({ response: { data: { detail: 'Session invalide ou expirée' } } });
+  window.history.replaceState(null, '', '/?token_hash=abc&type=email');
+  rendre();
+
+  await waitFor(() => expect(verif.signOut).toHaveBeenCalledWith({ scope: 'local' }));
+  await waitFor(() => expect(etat()).toBe('false|anonyme|-'));
+  expect(auth.setSession).not.toHaveBeenCalled();
+  expect(messages()).toMatch(/Session invalide/);
+});
+
+it('une coupure brève pendant setSession est rattrapée par une nouvelle tentative', async () => {
+  marquer('alice@example.com');
+  let session = null;
+  auth.setSession
+    .mockResolvedValueOnce({ data: {}, error: { message: '{}' } })
+    .mockImplementation(async (s) => {
+      session = s;
+      return { data: { session: s }, error: null };
+    });
+  auth.getSession.mockImplementation(async () => ({ data: { session } }));
+  window.history.replaceState(null, '', '/?token_hash=abc&type=recovery');
+  rendre();
+
+  await waitFor(() => expect(etat()).toBe('true|alice@example.com|-'), { timeout: 3000 });
+  expect(auth.setSession).toHaveBeenCalledTimes(2);
+  expect(messages()).not.toMatch(/impossible/);
+});
+
+it("changement d'adresse sans session à ouvrir : confirmation enregistrée, rien d'autre", async () => {
+  verif.verifyOtp.mockResolvedValue({ data: { user: null, session: null }, error: null });
+  marquer('alice@example.com');
+  window.history.replaceState(null, '', '/?token_hash=chg&type=email_change');
+  rendre();
+
+  await waitFor(() => expect(messages()).toMatch(/Confirmation enregistrée/));
+  expect(axios.post).not.toHaveBeenCalled();
+  expect(auth.setSession).not.toHaveBeenCalled();
+});
+
+it('erreur sans message (« {} ») : libellé lisible', async () => {
+  marquer('alice@example.com');
+  verif.verifyOtp.mockResolvedValue({ data: {}, error: { message: '{}' } });
+  window.history.replaceState(null, '', '/?token_hash=x&type=email');
+  rendre();
+
+  await waitFor(() => expect(messages()).toMatch(/service d'authentification impossible/));
 });
 
 it('Site URL terminée par « / » : le lien //?token_hash= ne fait pas planter la page', async () => {

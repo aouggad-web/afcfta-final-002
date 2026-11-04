@@ -94,8 +94,17 @@ const MESSAGES_LIEN = {
     fr: "Ce lien concerne un autre compte que celui demandé dans ce navigateur : il a été refusé. Ouvrez-le sur l'appareil qui l'a demandé, ou demandez-en un nouveau.",
     ar: 'يخص هذا الرابط حسابًا غير الحساب المطلوب في هذا المتصفح، فتم رفضه. افتحه على الجهاز الذي طلبه، أو اطلب رابطًا جديدًا.',
   },
-  adresseConfirmee: { fr: 'Adresse {email} confirmée.', ar: 'تم تأكيد العنوان {email}.' },
+  confirmationEnregistree: {
+    fr: "Confirmation enregistrée. Ouvrez aussi le lien envoyé à l'autre adresse.",
+    ar: 'تم تسجيل التأكيد. افتح أيضًا الرابط المرسل إلى العنوان الآخر.',
+  },
+  serviceIndisponible: {
+    fr: "Connexion au service d'authentification impossible, réessayez.",
+    ar: 'تعذّر الاتصال بخدمة المصادقة، أعد المحاولة.',
+  },
 };
+
+const attendre = (ms) => new Promise((fin) => setTimeout(fin, ms));
 
 function messageLien(cle, email = '') {
   const m = MESSAGES_LIEN[cle];
@@ -154,7 +163,7 @@ export function AuthProvider({ children }) {
   // moment de la demande (null quand la personne a confirmé à la main).
   // La vérification passe par un client jetable : rien n'est enregistré ni
   // annoncé (autres onglets, écouteurs, serveur) avant le contrôle. Renvoie
-  // { email, session } quand le lien est accepté, sinon null.
+  // le lien accepté ({ email, session, verification, type }), sinon null.
   const verifierLien = useCallback(async (lien, attendu) => {
     const verification = creerClientVerification();
     const { data, error } = await verification.auth.verifyOtp({
@@ -162,10 +171,18 @@ export function AuthProvider({ children }) {
       type: lien.type,
     });
     if (error) {
-      toast({ variant: 'destructive', description: supabaseError(error).response.data.detail });
+      const detail = error.message && error.message !== '{}' ? supabaseError(error).response.data.detail : messageLien('serviceIndisponible');
+      toast({ variant: 'destructive', description: detail });
       return null;
     }
-    const email = String(data?.user?.email || '').toLowerCase();
+    if (!data?.session) {
+      // Rien à ouvrir (changement d'adresse : première des deux
+      // confirmations) : aucun risque de connexion forcée.
+      oublierLienAttendu();
+      toast({ description: messageLien('confirmationEnregistree') });
+      return null;
+    }
+    const email = String(data.user?.email || '').toLowerCase();
     if (attendu && email !== attendu) {
       // Lien d'un autre compte que celui demandé ici : la session obtenue est
       // révoquée côté Supabase, et le client principal n'en a jamais rien su.
@@ -175,22 +192,42 @@ export function AuthProvider({ children }) {
       return null;
     }
     oublierLienAttendu();
-    if (!data?.session) {
-      // Changement d'adresse sans session à ouvrir : seulement confirmé.
-      toast({ description: messageLien('adresseConfirmee', email) });
-      return null;
-    }
-    const { error: erreurSession } = await supabase.auth.setSession({
-      access_token: data.session.access_token,
-      refresh_token: data.session.refresh_token,
-    });
-    if (erreurSession) {
-      toast({ variant: 'destructive', description: supabaseError(erreurSession).response.data.detail });
-      return null;
-    }
-    if (lien.type === 'recovery') setRecovery(true);
-    return { email, session: data.session };
+    return { email, session: data.session, verification, type: lien.type };
   }, []);
+
+  // Ouvre la session du site pour un lien accepté, puis seulement la confie au
+  // client principal (renouvellement, changement de mot de passe). Si le site
+  // refuse, la session est révoquée et le client principal reste intact :
+  // rien ne peut s'ouvrir plus tard sans prévenir.
+  const ouvrirSessionLien = useCallback(
+    async (accepte) => {
+      let compte;
+      try {
+        compte = await syncSupabaseSession(accepte.session);
+      } catch (err) {
+        await accepte.verification.auth.signOut({ scope: 'local' }).catch(() => {});
+        throw err;
+      }
+      let erreur = null;
+      // Une coupure brève ne doit pas perdre un lien déjà consommé.
+      for (const delai of [0, 500, 1500]) {
+        if (delai) await attendre(delai);
+        ({ error: erreur } = await supabase.auth.setSession({
+          access_token: accepte.session.access_token,
+          refresh_token: accepte.session.refresh_token,
+        }));
+        if (!erreur) break;
+      }
+      if (erreur) {
+        toast({ variant: 'destructive', description: messageLien('serviceIndisponible') });
+      } else if (accepte.type === 'recovery') {
+        setRecovery(true);
+      }
+      toast({ description: messageLien('connecte', accepte.email) });
+      return compte;
+    },
+    [syncSupabaseSession]
+  );
 
   useEffect(() => {
     if (!supabase) {
@@ -206,21 +243,25 @@ export function AuthProvider({ children }) {
     } else if (lien) {
       setLienEnAttente(lien);
     }
-    verification.then((accepte) =>
-      supabase.auth.getSession().then(({ data }) => {
-        if (!active) return;
-        if (data.session) {
-          syncSupabaseSession(data.session)
-            .then((compte) => {
-              if (accepte && compte) toast({ description: messageLien('connecte', accepte.email) });
-            })
-            .catch(() => setUser(null));
-        } else {
-          // Session de l'ancien système encore valide pendant la transition.
-          refreshUser();
+    verification.then(async (accepte) => {
+      if (accepte) {
+        try {
+          await ouvrirSessionLien(accepte);
+        } catch (err) {
+          toast({ variant: 'destructive', description: formatApiErrorDetail(err?.response?.data?.detail) });
+          setUser(null);
         }
-      })
-    );
+        return;
+      }
+      const { data } = await supabase.auth.getSession();
+      if (!active) return;
+      if (data.session) {
+        syncSupabaseSession(data.session).catch(() => setUser(null));
+      } else {
+        // Session de l'ancien système encore valide pendant la transition.
+        refreshUser();
+      }
+    });
     const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') setRecovery(true);
       if (event === 'TOKEN_REFRESHED') syncSupabaseSession(session).catch(() => {});
@@ -230,7 +271,7 @@ export function AuthProvider({ children }) {
       active = false;
       listener.subscription.unsubscribe();
     };
-  }, [refreshUser, syncSupabaseSession, verifierLien]);
+  }, [refreshUser, syncSupabaseSession, verifierLien, ouvrirSessionLien]);
 
   // Clic sur « Continuer » pour un lien non attendu. Ne rejette jamais : une
   // erreur est affichée, et « Connecté en tant que » n'apparaît qu'une fois la
@@ -242,9 +283,7 @@ export function AuthProvider({ children }) {
     try {
       const accepte = await verifierLien(lien, null);
       if (!accepte) return null;
-      const compte = await syncSupabaseSession(accepte.session);
-      toast({ description: messageLien('connecte', accepte.email) });
-      return compte;
+      return await ouvrirSessionLien(accepte);
     } catch (err) {
       toast({
         variant: 'destructive',
