@@ -1,20 +1,27 @@
-__pycache__
-*.pyc
-*.pyo
-*.pyd
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
 .Python
 env/
-venv/
-.venv
+**/venv
+**/.venv*
 .git
 .gitignore
 .dockerignore
-.env
-.env.*
+# Secrets : Docker ancre les motifs à la racine du contexte, « .env » seul
+# laissait passer backend/.env et frontend/.env.* (audit M2).
+**/.env
+**/.env.*
+.local_backups
+**/*.bak
+.emergent
+# Base GeoIP MaxMind : fournie à l'exécution, jamais copiée dans l'image.
+**/*.mmdb
 *.log
 *.sqlite
-node_modules/
-.pytest_cache/
+**/node_modules
+**/.pytest_cache
 .coverage
 htmlcov/
 dist/
