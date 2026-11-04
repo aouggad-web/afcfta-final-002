@@ -384,7 +384,7 @@
         }
       ],
       "devise": "CDF",
-      "date_reference": "2026-11-01",
+      "date_reference": "2026-11-04",
       "sha256": "ad485018cd4ff77c628fad5556651f53ed5074aef76e1027f10bcdc59e708ef8",
       "notes_sha256": "d4d4918b97471eb1f8be3168fb339762c5f669a7186f044d39d904d341ff031d",
       "socle_sha256": "5478de14dc58ec68121c123cd13915159933e855306f545b16d5412223bea98c",
@@ -416,6 +416,10 @@
           "libelle": "Contribution Communautaire d'Intégration (CEEAC)"
         },
         {
+          "code": "CIA",
+          "libelle": "Contribution d'intégration africaine"
+        },
+        {
           "code": "RI",
           "libelle": "Redevance informatique"
         },
@@ -437,10 +441,10 @@
         }
       ],
       "devise": "XAF",
-      "date_reference": "2026-11-01",
-      "sha256": "e4f0dbbf9781971bf6821c82e85811a3fd63e675894173110cecb2d5a844e283",
-      "notes_sha256": "bc2eec198ea07f825743360d9fa4166e9ef6a01c4d9ed42a36403d9bb3e6f3ed",
-      "socle_sha256": "d315217b27a02f27aadac4b25a464755d6225e324f1b33f3a231f51da1a0404b",
+      "date_reference": "2026-11-02",
+      "sha256": "e2d4ff6d5ef3e19930053a7cf3a784cc30d1372debfb8bb056195588fcc8526d",
+      "notes_sha256": "dd25aa378b0e79fb991fd6d85522e350eaaf4e1aa8a902f3dd0997526c00fb34",
+      "socle_sha256": "f765f7223b7f129b0e7b9767d87e4ad7d5db8ee014369152065e70bd2e25e4f3",
       "collecte": "2026-02-19T22:39:52.620876"
     },
     "COM": {
@@ -487,7 +491,7 @@
         },
         {
           "code": "TEA",
-          "libelle": "Taxa específica sobre o álcool (Lei 69/X/2025, art. 91.º) — montant par litre non publié"
+          "libelle": "Taxa específica sobre o álcool"
         },
         {
           "code": "TET",
@@ -499,10 +503,10 @@
         }
       ],
       "devise": "CVE",
-      "date_reference": "2026-10-28",
-      "sha256": "a8a74a08447af2d2fa8069517696c894b44b8838b92a465c516094b9cf321f63",
-      "notes_sha256": "aa3c4290b16abe93f47a8987785823936521b8d65bdd77cad09ab60bfd07581c",
-      "socle_sha256": "4982de7f40832cb209a687dbf4af0ca9dece1a7b641606a90d4c11090cb0d6a8",
+      "date_reference": "2026-11-02",
+      "sha256": "e3ed4e506eaf243d7e4e28ef64ecafaa65967b6375bd30e4b975b7c4488ee724",
+      "notes_sha256": "54b35fe40fc6fb5dcc952298db64f939ef599e2fa57c1cd6a117702eae1d596b",
+      "socle_sha256": "fd682fb4b906c748ad81d541136797d652611e31227a9b0036eefbc6b0dab79c",
       "collecte": "2026-10-12T21:25:12.776398+00:00"
     },
     "DZA": {
@@ -1156,15 +1160,19 @@
           "libelle": "Droits d'accises"
         },
         {
+          "code": "PSC",
+          "libelle": "Taxe de promotion de la culture et du sport (PSC)"
+        },
+        {
           "code": "TLC",
           "libelle": "Taxe de recherche et de lutte contre le cancer"
         }
       ],
       "devise": "MRU",
-      "date_reference": "2026-10-28",
-      "sha256": "e13b17c8eee45b1e6902e3def4d700093ba6bbf106c45ea52878cdc89b0ee6c9",
-      "notes_sha256": "9d5e3c5fee856656bb4c91ecc59b3243fa75a3e76ad4624fbb43585a2f4f8274",
-      "socle_sha256": "66498a3f8fcedf561ff003a48dfc37e9d8b0fb74e0157209bdd731be05ae7bc1",
+      "date_reference": "2026-11-01",
+      "sha256": "b0706f3b2c80748aad8613997811d4ff7e1d5d6f7351ac7f3c19b01a8d501d86",
+      "notes_sha256": "fed0dd861b3bc848c3be46caa032667a8164224952e03e56081a7726bf4cebb4",
+      "socle_sha256": "e61a3f8a558bd996077530c7454a03e12805b793a41d655bd32f7ddccc19774a",
       "collecte": "2026-09-18T00:00:00+00:00"
     },
     "MUS": {

@@ -7,6 +7,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { pick } from '../../i18n/lang';
 
 const API = import.meta.env.VITE_BACKEND_URL
   ? `${import.meta.env.VITE_BACKEND_URL}/api`
@@ -16,11 +17,11 @@ const API = import.meta.env.VITE_BACKEND_URL
 // Sub-components
 // ---------------------------------------------------------------------------
 
-function BlocCard({ bloc }) {
+function BlocCard({ bloc, language }) {
   const tierColors = {
-    tier1: { bg: '#D1FAE5', border: '#10B981', text: '#065F46', label: 'Tier 1 – Excellent' },
-    tier2: { bg: '#DBEAFE', border: '#3B82F6', text: '#1E40AF', label: 'Tier 2 – Good' },
-    tier3: { bg: '#FEF3C7', border: '#F59E0B', text: '#92400E', label: 'Tier 3 – Developing' },
+    tier1: { bg: '#D1FAE5', border: '#10B981', text: '#065F46', label: pick(language, 'Tier 1 – Excellent', 'Tier 1 – Excellent', 'الفئة الأولى – ممتاز') },
+    tier2: { bg: '#DBEAFE', border: '#3B82F6', text: '#1E40AF', label: pick(language, 'Tier 2 – Good', 'Tier 2 – Good', 'الفئة الثانية – جيد') },
+    tier3: { bg: '#FEF3C7', border: '#F59E0B', text: '#92400E', label: pick(language, 'Tier 3 – Developing', 'Tier 3 – Developing', 'الفئة الثالثة – قيد التطور') },
   };
   const tier = tierColors[bloc.opportunity_tier] || tierColors.tier3;
 
@@ -57,10 +58,10 @@ function BlocCard({ bloc }) {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginTop: '0.75rem' }}>
-        <Metric label="Investment Score" value={`${(bloc.investment_score * 100).toFixed(0)}%`} />
-        <Metric label="Trade Integration" value={`${bloc.trade_integration?.toFixed(1)}%`} />
-        <Metric label="GDP (bn USD)" value={`$${bloc.gdp_bn_usd?.toLocaleString()}`} />
-        <Metric label="Countries" value={bloc.country_count} />
+        <Metric label={pick(language, 'Investment Score', 'Investment Score', 'مؤشر الاستثمار')} value={`${(bloc.investment_score * 100).toFixed(0)}%`} />
+        <Metric label={pick(language, 'Trade Integration', 'Trade Integration', 'التكامل التجاري')} value={`${bloc.trade_integration?.toFixed(1)}%`} />
+        <Metric label={pick(language, 'GDP (bn USD)', 'GDP (bn USD)', 'الناتج المحلي الإجمالي (مليار USD)')} value={`$${bloc.gdp_bn_usd?.toLocaleString()}`} />
+        <Metric label={pick(language, 'Countries', 'Countries', 'البلدان')} value={bloc.country_count} />
       </div>
     </div>
   );
@@ -129,6 +130,14 @@ export default function RegionalAnalyticsDashboard({ language = 'fr' }) {
       compare: 'Bloc Comparison',
       exportBtn: 'Export (Excel)',
       loading: 'Loading…',
+    },
+    ar: {
+      title: 'التحليل الإقليمي المقارن',
+      heatmap: 'خريطة الفرص',
+      corridors: 'الممرات التجارية',
+      compare: 'مقارنة التكتلات',
+      exportBtn: 'تصدير (Excel)',
+      loading: 'جارٍ التحميل…',
     },
   };
   const t = labels[language] || labels.en;
@@ -244,7 +253,7 @@ export default function RegionalAnalyticsDashboard({ language = 'fr' }) {
                 style={{ cursor: 'pointer' }}
                 onClick={() => fetchBlocDetail(bloc.bloc)}
               >
-                <BlocCard bloc={bloc} />
+                <BlocCard bloc={bloc} language={language} />
               </div>
             ))}
           </div>
@@ -262,13 +271,13 @@ export default function RegionalAnalyticsDashboard({ language = 'fr' }) {
                 {blocDetail.full_name} ({blocDetail.bloc})
               </h3>
               <div className="kpi-grid">
-                <Metric label="Member Countries" value={blocDetail.member_count} />
-                <Metric label="GDP (bn USD)" value={`$${blocDetail.gdp_bn_usd}`} />
-                <Metric label="Population (mn)" value={blocDetail.population_mn} />
-                <Metric label="Intra-Trade" value={`${blocDetail.intra_trade_pct}%`} />
+                <Metric label={pick(language, 'Member Countries', 'Member Countries', 'البلدان الأعضاء')} value={blocDetail.member_count} />
+                <Metric label={pick(language, 'GDP (bn USD)', 'GDP (bn USD)', 'الناتج المحلي الإجمالي (مليار USD)')} value={`$${blocDetail.gdp_bn_usd}`} />
+                <Metric label={pick(language, 'Population (mn)', 'Population (mn)', 'السكان (مليون)')} value={blocDetail.population_mn} />
+                <Metric label={pick(language, 'Intra-Trade', 'Intra-Trade', 'التجارة البينية')} value={`${blocDetail.intra_trade_pct}%`} />
               </div>
               <p style={{ marginTop: '0.75rem', fontSize: '0.8rem', color: '#6B7280' }}>
-                Headquarters: {blocDetail.headquarters} · Established: {blocDetail.established}
+                {pick(language, 'Headquarters', 'Headquarters', 'المقر')}: {blocDetail.headquarters} · {pick(language, 'Established', 'Established', 'تاريخ التأسيس')}: {blocDetail.established}
               </p>
             </div>
           )}
@@ -284,10 +293,10 @@ export default function RegionalAnalyticsDashboard({ language = 'fr' }) {
           >
             <thead>
               <tr style={{ background: '#1A365D', color: '#fff' }}>
-                <th style={{ padding: '0.75rem', textAlign: 'left' }}>Corridor</th>
-                <th style={{ padding: '0.75rem', textAlign: 'right' }}>Trade Value</th>
-                <th style={{ padding: '0.75rem', textAlign: 'right' }}>Growth</th>
-                <th style={{ padding: '0.75rem', textAlign: 'left' }}>Key Products</th>
+                <th style={{ padding: '0.75rem', textAlign: 'left' }}>{pick(language, 'Corridor', 'Corridor', 'الممر')}</th>
+                <th style={{ padding: '0.75rem', textAlign: 'right' }}>{pick(language, 'Trade Value', 'Trade Value', 'قيمة التجارة')}</th>
+                <th style={{ padding: '0.75rem', textAlign: 'right' }}>{pick(language, 'Growth', 'Growth', 'النمو')}</th>
+                <th style={{ padding: '0.75rem', textAlign: 'left' }}>{pick(language, 'Key Products', 'Key Products', 'المنتجات الرئيسية')}</th>
               </tr>
             </thead>
             <tbody>

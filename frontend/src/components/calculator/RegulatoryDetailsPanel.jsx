@@ -33,6 +33,7 @@ import {
   ScrollText,
   Award
 } from 'lucide-react';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -148,6 +149,42 @@ const texts = {
     sensitive: 'Sensitive',
     excluded: 'Excluded',
     exoneration: 'Exemption'
+  },
+  ar: {
+    title: 'التفاصيل التنظيمية',
+    subtitle: 'المحرك التنظيمي لزليكاف v3',
+    productInfo: 'معلومات المنتج',
+    nationalCode: 'الرمز الوطني',
+    hs6Code: 'رمز SH6',
+    chapter: 'الفصل',
+    category: 'الفئة',
+    unit: 'الوحدة',
+    sensitivity: 'الحساسية في إطار زليكاف',
+    measures: 'الرسوم والضرائب',
+    measuresDesc: 'تفصيل التدابير التعريفية المطبقة',
+    taxCode: 'الرمز',
+    taxName: 'التسمية',
+    taxRate: 'معدل NPF',
+    zlecafRate: 'معدل زليكاف',
+    requirements: 'الوثائق المطلوبة',
+    requirementsDesc: 'الإجراءات الإدارية عند الاستيراد',
+    document: 'الوثيقة',
+    authority: 'الجهة المُصدِرة',
+    mandatory: 'إلزامي',
+    fiscalAdvantages: 'مزايا زليكاف',
+    fiscalAdvantagesDesc: 'الإعفاءات والتخفيضات التعريفية',
+    condition: 'الشرط',
+    reduction: 'التخفيض',
+    totalNPF: 'مجموع NPF',
+    totalZLECAf: 'مجموع زليكاف',
+    savings: 'الوفورات',
+    noData: 'لا توجد بيانات لهذا الرمز',
+    loading: 'جارٍ تحميل البيانات…',
+    notAvailable: 'البلد غير متاح في المحرك التنظيمي',
+    normal: 'عادي',
+    sensitive: 'حساس',
+    excluded: 'مستثنى',
+    exoneration: 'إعفاء'
   }
 };
 
@@ -166,7 +203,7 @@ export default function RegulatoryDetailsPanel({
     advantages: true
   });
 
-  const t = texts[language];
+  const t = texts[language] || texts.fr;
 
   const convertToISO3 = (iso2) => {
     const map = {
@@ -269,7 +306,7 @@ export default function RegulatoryDetailsPanel({
           </div>
           <p className="text-[var(--afcfta-muted)] text-lg">{error || t.noData}</p>
           <p className="text-[var(--afcfta-muted)] text-sm mt-2">
-            {language === 'fr' ? 'Vérifiez le code HS ou essayez un autre pays' : 'Check the HS code or try another country'}
+            {pick(language, 'Vérifiez le code HS ou essayez un autre pays', 'Check the HS code or try another country', 'تحقق من رمز SH أو جرّب بلدًا آخر')}
           </p>
         </CardContent>
       </Card>
@@ -319,7 +356,7 @@ export default function RegulatoryDetailsPanel({
               </div>
               <p className="text-[var(--afcfta-muted)] text-sm font-medium">{t.totalNPF}</p>
               <p className="text-3xl font-bold text-[var(--danger)] mt-1">{(total_npf_pct || 0).toFixed(1)}%</p>
-              <p className="text-[var(--afcfta-muted)] text-xs mt-1">{language === 'fr' ? 'Tarif Nation Plus Favorisée' : 'Most Favored Nation'}</p>
+              <p className="text-[var(--afcfta-muted)] text-xs mt-1">{pick(language, 'Tarif Nation Plus Favorisée', 'Most Favored Nation', 'تعريفة الدولة الأولى بالرعاية')}</p>
             </div>
             
             {/* Total ZLECAf */}
@@ -332,7 +369,7 @@ export default function RegulatoryDetailsPanel({
               </div>
               <p className="text-[var(--afcfta-muted)] text-sm font-medium">{t.totalZLECAf}</p>
               <p className="text-3xl font-bold text-[var(--success)] mt-1">{(total_zlecaf_pct || 0).toFixed(1)}%</p>
-              <p className="text-[var(--afcfta-muted)] text-xs mt-1">{language === 'fr' ? 'Accord de Libre-Échange' : 'Free Trade Agreement'}</p>
+              <p className="text-[var(--afcfta-muted)] text-xs mt-1">{pick(language, 'Accord de Libre-Échange', 'Free Trade Agreement', 'اتفاقية التجارة الحرة')}</p>
             </div>
             
             {/* Économie */}
@@ -342,7 +379,7 @@ export default function RegulatoryDetailsPanel({
               </div>
               <p className="text-[var(--gold)] text-sm font-medium">{t.savings}</p>
               <p className="text-3xl font-bold text-[var(--gold)] mt-1">-{(savings_pct || 0).toFixed(1)}%</p>
-              <p className="text-[var(--gold)] text-xs mt-1">{language === 'fr' ? 'Avec Certificat d\'Origine' : 'With Certificate of Origin'}</p>
+              <p className="text-[var(--gold)] text-xs mt-1">{pick(language, 'Avec Certificat d\'Origine', 'With Certificate of Origin', 'مع شهادة المنشأ')}</p>
             </div>
           </div>
         </CardContent>
@@ -409,7 +446,7 @@ export default function RegulatoryDetailsPanel({
               </div>
               <div className="flex items-center gap-3">
                 <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)] border px-3">
-                  {measures.length} {language === 'fr' ? 'taxes' : 'taxes'}
+                  {measures.length} {pick(language, 'taxes', 'taxes', 'ضرائب')}
                 </Badge>
                 {expandedSections.measures ? 
                   <ChevronUp className="w-5 h-5 text-[var(--afcfta-muted)]" /> : 
@@ -493,7 +530,7 @@ export default function RegulatoryDetailsPanel({
               </div>
               <div className="flex items-center gap-3">
                 <Badge className="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)] border px-3">
-                  {requirements.length} {language === 'fr' ? 'documents' : 'documents'}
+                  {requirements.length} {pick(language, 'documents', 'documents', 'وثائق')}
                 </Badge>
                 {expandedSections.requirements ? 
                   <ChevronUp className="w-5 h-5 text-[var(--afcfta-muted)]" /> : 

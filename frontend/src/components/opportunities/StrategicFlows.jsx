@@ -22,6 +22,9 @@ import {
   ShieldCheck, Percent, Package, Sparkles,
 } from 'lucide-react';
 import { montant, montantCompact } from '../../utils/nombres';
+import { getCountryName } from '../../utils/translations';
+import { reportsNoticeText } from '../tools/entitlementNotice';
+import SubscriptionNotice from '../tools/SubscriptionNotice';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -241,6 +244,9 @@ function FlowCard({ flow, lang }) {
 export default function StrategicFlows({ language = 'fr', initialCountry = null }) {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language || language).startsWith('en') ? 'en' : 'fr';
+  // `lang` choisit la langue des données (l'arabe reçoit le français) ;
+  // `uiLang` celle de l'affichage (nombres, noms de pays).
+  const uiLang = (i18n.language || language).startsWith('ar') ? 'ar' : lang;
 
   const [countries, setCountries] = useState([]);
   const [selected, setSelected] = useState('');
@@ -253,11 +259,14 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
       try {
         const r = await axios.get(`${API}/substitution/countries?lang=${lang}`);
         setCountries(r.data.countries || []);
-      } catch {
-        /* liste pays indisponible : le sélecteur restera vide */
+      } catch (e) {
+        /* liste pays indisponible : le sélecteur restera vide, sauf refus
+           d'abonnement (audit E1), annoncé dès l'ouverture de l'onglet */
+        const notice = reportsNoticeText(e, uiLang);
+        if (notice) setError(<SubscriptionNotice text={notice} language={uiLang} />);
       }
     })();
-  }, [lang]);
+  }, [lang, uiLang]);
 
   useEffect(() => {
     if (initialCountry?.iso3) setSelected(initialCountry.iso3);
@@ -271,12 +280,17 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
       const r = await axios.get(`${API}/strategic/flows/${iso3}?lang=${lang}&limit=40`);
       setData(r.data);
     } catch (e) {
-      setError(e?.response?.data?.detail || String(e));
+      // Refus d'abonnement (audit E1) : avis localisé. Le `detail` d'un refus
+      // est un objet, que React ne peut pas afficher tel quel.
+      const notice = reportsNoticeText(e, uiLang);
+      const detail = e?.response?.data?.detail;
+      setError(notice ? <SubscriptionNotice text={notice} language={uiLang} />
+        : (typeof detail === 'string' ? detail : String(e)));
       setData(null);
     } finally {
       setLoading(false);
     }
-  }, [lang]);
+  }, [lang, uiLang]);
 
   useEffect(() => {
     if (selected) analyze(selected);
@@ -299,7 +313,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
             <SelectTrigger data-testid="strategic-country-select"><SelectValue placeholder={t('opportunities.strategicFlows.selectCountry')} /></SelectTrigger>
             <SelectContent>
               {countries.map((c) => (
-                <SelectItem key={c.iso3} value={c.iso3}>{c.name}</SelectItem>
+                <SelectItem key={c.iso3} value={c.iso3}>{uiLang === 'ar' ? getCountryName(c.iso3, 'ar') : c.name}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -332,7 +346,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
             </div>
             <div style={{ flex: '1 1 160px', padding: 16, borderRadius: 12, background: 'var(--afcfta-card)', border: '1px solid var(--afcfta-border)' }}>
               <div style={{ fontSize: 12, color: 'var(--afcfta-muted)' }}>{t('opportunities.strategicFlows.totalPotential')}</div>
-              <div style={{ fontSize: 28, fontWeight: 900, color: 'var(--success)' }}>{fmtUsd(summary.total_potential_usd, lang)}</div>
+              <div style={{ fontSize: 28, fontWeight: 900, color: 'var(--success)' }}>{fmtUsd(summary.total_potential_usd, uiLang)}</div>
             </div>
           </div>
 
@@ -362,7 +376,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
                   <div key={p.iso3} style={{ padding: '5px 0' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 3 }}>
                       <span style={{ color: 'var(--text)', fontWeight: 600 }}>{p.name}</span>
-                      <span style={{ color: 'var(--afcfta-muted)' }}>{fmtUsd(p.potential_usd, lang)}</span>
+                      <span style={{ color: 'var(--afcfta-muted)' }}>{fmtUsd(p.potential_usd, uiLang)}</span>
                     </div>
                     <div style={{ height: 5, borderRadius: 3, background: 'var(--afcfta-bg)' }}>
                       <div style={{ height: '100%', width: `${Math.max(4, (p.potential_usd / max) * 100)}%`, borderRadius: 3, background: 'linear-gradient(90deg,var(--success),var(--info))' }} />
@@ -378,7 +392,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
             <div style={{ padding: 30, textAlign: 'center', color: 'var(--afcfta-muted)' }}>{t('opportunities.strategicFlows.noFlows')}</div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 14 }}>
-              {(data.flows || []).map((f) => <FlowCard key={f.hs_code} flow={f} lang={lang} />)}
+              {(data.flows || []).map((f) => <FlowCard key={f.hs_code} flow={f} lang={uiLang} />)}
             </div>
           )}
         </>

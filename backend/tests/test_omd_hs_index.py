@@ -84,3 +84,20 @@ def test_hs6_codes_are_digit_normalized():
     codes = res["results"][0]["hs_codes"]
     assert "530521" in codes
     assert all(c.isdigit() for c in codes)
+
+
+def test_tokens_repetes_comptes_une_fois(monkeypatch):
+    """Constat E2 : « d d d … » ne multiplie pas le parcours de l'index par le
+    nombre de répétitions, et trouve la même chose que « d »."""
+    attendu = omd.search("d")
+    appels = []
+    original = omd._token_matches_label
+
+    def compte(tok, label_words):
+        appels.append(tok)
+        return original(tok, label_words)
+
+    monkeypatch.setattr(omd, "_token_matches_label", compte)
+    res = omd.search("d " * 100)
+    assert len(appels) <= len(omd._load()["entries"])
+    assert res["count"] == attendu["count"] and res["results"] == attendu["results"]

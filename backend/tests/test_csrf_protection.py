@@ -121,3 +121,35 @@ def test_csrf_cookie_samesite_matches_https_flag(
         # monkeypatch undoes the env var, but not an already-reloaded module.
         monkeypatch.delenv("HTTPS_ENABLED", raising=False)
         importlib.reload(csrf_protection_module)
+
+
+def _avec_hote(app, hote: bytes):
+    """httpx refuse un en-tête Host invalide : on le remplace directement dans
+    le scope ASGI, comme le ferait un client HTTP brut."""
+
+    async def asgi(scope, receive, send):
+        if scope["type"] == "http":
+            entetes = [(k, v) for k, v in scope["headers"] if k != b"host"]
+            scope = {**scope, "headers": entetes + [(b"host", hote)]}
+        await app(scope, receive, send)
+
+    return asgi
+
+
+@pytest.mark.parametrize("hote", [b"testserver/api/health?", b"testserver/api/health#"])
+def test_host_forge_n_exempte_pas_du_jeton(hote):
+    """Audit M3 : Starlette reconstruit request.url à partir de l'en-tête Host,
+    alors que le routage suit le vrai chemin. Un Host « testserver/api/health? »
+    faisait lire /api/health (exempté) pendant que /api/resource s'exécutait.
+    Le middleware lit désormais le chemin routé, scope["path"]."""
+    app = FastAPI()
+    app.add_middleware(CSRFMiddleware, exempt_paths=["/api/health"])
+
+    @app.post("/api/resource")
+    async def mutate_resource():
+        return {"status": "updated"}
+
+    response = TestClient(_avec_hote(app, hote)).post("/api/resource")
+
+    assert response.status_code == 403
+    assert response.json() == {"detail": "CSRF token missing"}

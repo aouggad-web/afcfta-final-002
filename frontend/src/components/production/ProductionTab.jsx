@@ -11,6 +11,7 @@ import ProductionMining from './ProductionMining';
 import ProductionOutlets from './ProductionOutlets';
 import { PDFExportButton } from '../common/ExportTools';
 import { TrendingUp, Wheat, Factory, Pickaxe, BarChart3, Database, Globe, PackageSearch } from 'lucide-react';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -64,7 +65,7 @@ function ProductionTab({ language = 'fr' }) {
           <div className="hidden md:flex items-center gap-2">
             <Badge className="bg-[var(--overlay)] text-[var(--text)] text-xs">
               <Globe className="w-3 h-3 mr-1" />
-              55 pays
+              {pick(language, "55 pays", "55 pays", "55 بلدًا")}
             </Badge>
             <Badge className="bg-[var(--overlay)] text-[var(--text)] text-xs">
               <Database className="w-3 h-3 mr-1" />
@@ -147,22 +148,22 @@ function ProductionTab({ language = 'fr' }) {
           <CardContent className="py-4">
             <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-[var(--afcfta-muted)]">
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--violet)_30%,transparent)] text-[var(--violet)]">Macro</Badge>
+                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--violet)_30%,transparent)] text-[var(--violet)]">{pick(language, 'Macro', 'Macro', 'اقتصاد كلي')}</Badge>
                 World Bank • IMF WEO {macroYear}
               </span>
               <span className="text-[var(--text)]">|</span>
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-[var(--success)]">Agri</Badge>
+                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-[var(--success)]">{pick(language, 'Agri', 'Agri', 'زراعة')}</Badge>
                 FAOSTAT {agriYear}
               </span>
               <span className="text-[var(--text)]">|</span>
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)]">Manuf</Badge>
+                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)]">{pick(language, 'Manuf', 'Manuf', 'تصنيع')}</Badge>
                 UNIDO {manufYear}
               </span>
               <span className="text-[var(--text)]">|</span>
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--terra)_30%,transparent)] text-[var(--terra)]">Mining</Badge>
+                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--terra)_30%,transparent)] text-[var(--terra)]">{pick(language, 'Mining', 'Mining', 'تعدين')}</Badge>
                 USGS • AfDB {miningYear}
               </span>
             </div>

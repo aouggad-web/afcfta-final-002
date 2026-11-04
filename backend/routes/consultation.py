@@ -165,7 +165,10 @@ def _textes_cherchables(iso3: str, positions: dict):
 )
 def recherche(
     iso3: str,
-    q: str = Query(..., min_length=2),
+    # Borné (constat E2) : une désignation nationale collée tient (jusqu'à
+    # ~1 200 caractères au Maroc ; au-delà, seules quelques notes de chapitre
+    # recopiées dans la désignation, à Madagascar et en Zambie).
+    q: str = Query(..., min_length=2, max_length=2000),
     limit: int = Query(25, ge=1, le=100),
     langue: str = Query("fr", pattern="^(fr|en)$"),
 ):
@@ -190,7 +193,8 @@ def recherche(
         # bornent le code.
         mots = re.findall(r"\w+", _pli(q))
         prefixe = "".join(mot for mot in mots if mot.isdigit())
-        mots = [mot for mot in mots if not mot.isdigit() and len(mot) >= 2]
+        # Un mot répété ne coûte qu'une fois (tous les mots sont exigés).
+        mots = list(dict.fromkeys(mot for mot in mots if not mot.isdigit() and len(mot) >= 2))
         # (début de mot, mot entier — pluriel en -s/-x admis) pour chaque mot.
         motifs = [(re.compile(rf"\b{re.escape(m)}"), re.compile(rf"\b{re.escape(m)}[sx]?\b")) for m in mots]
         classes = []

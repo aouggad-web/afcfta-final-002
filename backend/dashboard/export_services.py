@@ -14,6 +14,8 @@ import os
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
+from formules_tableur import neutraliser_formule
+
 logger = logging.getLogger(__name__)
 
 try:
@@ -102,7 +104,7 @@ class ExportService:
                 opp.get("recommendation", "").replace("_", " ").title(),
             ]
             for col, value in enumerate(data_row, start=1):
-                cell = ws_summary.cell(row=row + i, column=col, value=value)
+                cell = ws_summary.cell(row=row + i, column=col, value=neutraliser_formule(value))
                 cell.border = thin_border
                 if col == 4:  # Score column
                     score = float(opp.get("investment_score", 0))
@@ -252,10 +254,14 @@ class ExportService:
         """Return a CSV bytes stream when openpyxl is unavailable."""
         lines = ["Country,Sector,Score,Grade,Recommendation"]
         for opp in data.get("opportunities", []):
+            country, sector, grade, recommendation = (
+                neutraliser_formule(opp.get(champ, ""))
+                for champ in ("country", "sector", "grade", "recommendation")
+            )
             lines.append(
-                f"{opp.get('country','')},{opp.get('sector','')},"
-                f"{opp.get('investment_score',0):.3f},{opp.get('grade','')},"
-                f"{opp.get('recommendation','')}"
+                f"{country},{sector},"
+                f"{opp.get('investment_score',0):.3f},{grade},"
+                f"{recommendation}"
             )
         return "\n".join(lines).encode("utf-8")
 

@@ -11,6 +11,7 @@ follow-up phases (usage counters, route-level enforcement, team seats).
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from types import MappingProxyType
@@ -110,7 +111,10 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             # request. It is _DENIED here for free, not _capped(...), because
             # the module is withheld outright rather than rate-limited.
             "tools": _DENIED,
-            "reports": _capped(2, "day"),
+            # Module Opportunités réservé aux abonnements payants (audit E1).
+            # Un visiteur sans session reçoit lui aussi le 403, sauf clé API
+            # valide : voir entitlement_guard.require_paid_module.
+            "reports": _DENIED,
         },
     ),
     "starter": Entitlements(
@@ -254,6 +258,35 @@ def all_tier_entitlements() -> Mapping[str, Entitlements]:
     return _ALL_TIER_ENTITLEMENTS_VIEW
 
 
+# Compte admin amorcé depuis l'environnement (server.py, seul à porter le rôle
+# « admin ») : tous les modules, aucun quota, pour les démonstrations du
+# produit, si ADMIN_ACCES_ILLIMITE est activé (voir `admin_acces_illimite`).
+# Hors de la grille des formules (TIERS) : ni vendu ni affiché sur la page
+# des tarifs.
+_ADMIN_ENTITLEMENTS = Entitlements(
+    tier="admin",
+    daily_calculations=None,
+    monthly_country_profiles=None,
+    export_formats=("csv", "excel", "pdf"),
+    api_access=True,
+    api_monthly_quota=None,
+    seats_included=_TIER_ENTITLEMENTS["business"].seats_included,
+    modules={module_id: _UNLIMITED for module_id in MODULES},
+)
+
+
+def admin_acces_illimite(user: Optional[dict]) -> bool:
+    """Le compte admin a-t-il l'accès illimité (tous les modules sans quota,
+    téléchargement des tarifs) ? Réglage du déploiement, lu à chaque appel :
+    ADMIN_ACCES_ILLIMITE=true sur Emergent pendant le développement, pour les
+    présentations ; désactivé par défaut, et à décider pour la production
+    (accès de l'équipe de maintenance). Désactivé, le compte admin est traité
+    comme tout utilisateur, selon sa formule."""
+    if not user or user.get("role") != "admin":
+        return False
+    return os.environ.get("ADMIN_ACCES_ILLIMITE", "").strip().lower() in ("1", "true", "oui", "yes")
+
+
 def resolve_entitlements(user: Optional[dict], *, now: Optional[datetime] = None) -> Entitlements:
     """Resolve the effective entitlements for a user document. `user=None`
     (an unauthenticated visitor) resolves to the free tier, same as any
@@ -261,4 +294,6 @@ def resolve_entitlements(user: Optional[dict], *, now: Optional[datetime] = None
     Entitlements instance, never None. Never raises — always returns at
     least the free tier, so callers can gate features without a separate
     "no subscription" branch."""
+    if admin_acces_illimite(user):
+        return _ADMIN_ENTITLEMENTS
     return _TIER_ENTITLEMENTS[_effective_tier(user, now=now)]

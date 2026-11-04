@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   isCustomsDutyTax,
   isDisplayableZlecafResult,
+  preferentialRegimeLabel,
   zlecafTotalTaxRatePct,
 } from './zlecafAvailability';
 
@@ -47,5 +48,35 @@ describe('zlecafTotalTaxRatePct', () => {
   it('renvoie null quand aucune préférence n\'est affichable', () => {
     expect(zlecafTotalTaxRatePct({ zlecaf_status: 'NOT_AVAILABLE', total_taxes_zlecaf: 31.72 }))
       .toBeNull();
+  });
+});
+
+describe('régime de zone de libre-échange retenu à la place de la ZLECAf (GZALE)', () => {
+  const gzale = {
+    zlecaf_status: 'NOT_AVAILABLE',
+    trade_regime: 'FTA_CONDITIONAL',
+    trade_regime_code: 'GZALE',
+    preferential_regime_applied: true,
+    zlecaf_tariff_rate: 0,
+    total_taxes_zlecaf: 22.3,
+  };
+
+  it('chiffre la colonne préférentielle et ses totaux', () => {
+    expect(isDisplayableZlecafResult(gzale)).toBe(true);
+    expect(zlecafTotalTaxRatePct(gzale)).toBe(22.3);
+  });
+
+  it('la nomme GZALE, jamais ZLECAf', () => {
+    expect(preferentialRegimeLabel(gzale)).toBe('GZALE');
+    expect(preferentialRegimeLabel({ trade_regime: 'ZLECAF' })).toBeNull();
+  });
+
+  it('en arabe, la nomme منطقة التجارة الحرة العربية الكبرى', () => {
+    expect(preferentialRegimeLabel(gzale, 'ar')).toBe('منطقة التجارة الحرة العربية الكبرى');
+    expect(preferentialRegimeLabel(gzale, 'fr')).toBe('GZALE');
+  });
+
+  it("ne l'affiche pas quand aucun régime n'a été appliqué", () => {
+    expect(isDisplayableZlecafResult({ ...gzale, preferential_regime_applied: false })).toBe(false);
   });
 });

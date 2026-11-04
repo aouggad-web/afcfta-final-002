@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "objet": "Mauritanie : taxe de promotion de la culture et du sport (PSC, 1 % de la valeur c.a.f., chapitres 21 à 98), droit de douane et TVA des téléphones (loi de finances 2026, art. 3.2.5) ; adoption du SH 2022 en 2024",
+  "destination_iso3": "MRT",
+  "verified_at": "2026-11-01",
+  "etabli": true,
+  "evidence_level": "primaire pour l'existence et le taux de la PSC en 2026 et pour les téléphones (loi de finances 2026, art. 3.2.5) ; champ et assiette de la PSC par l'examen de l'OMC (WT/TPR/S/371, § 3.48), le texte qui l'institue (2011) n'ayant pas été lu",
+  "source": {
+    "url": "http://finances.gov.mr/sites/default/files/2026-01/Loi%20de%20Finances%20pour%20l%E2%80%99ann%C3%A9e%202026.pdf",
+    "institution": "Ministère des Finances — République islamique de Mauritanie ; OMC"
+  },
+  "regle": {
+    "valeur": "PSC : 1 % de la valeur c.a.f. sur les positions des chapitres 21 à 98, sauf médicaments (30.03, 30.04), outils et équipements agricoles (82.01, 84.32, 84.33, 84.34, 84.36, 8424.41, 8424.49, 8424.82, 8716.20) et minibus (87.02, sous-groupes nationaux 11 et 21 : « Comportant 10 à 22 places assises ») : 5 004 positions. Sans taux sur 17 positions de tracteurs (8701.10, 8701.91 à 8701.95), agricoles ou non. Téléphones (85.17.12 du tarif servi, SH 2017) : DD 10 % ; TVA sans taux (16 % sur les smartphones, 0 % sur les téléphones utilitaires).",
+    "verbatim": "3.48.  Une taxe de la promotion de la culture et du sport (PCS) de 1% est prélevée depuis 2011 sur la valeur c.a.f. des importations de produit s du SH21 à SH98 à l'exclusion des minibus, des médicaments et outils et équipements agricoles.",
+    "verbatim_lf2026": "a) Pour la position 85.17.13.00.00 Téléphones Smartphones DD 10% RS. 1% PC. 0,5% PSC 1% TVA 16% IMF. 0% b) Pour la position 85.17.14.00.00 téléphones utilitaires DD 10% RS. 1% PC. 0,5% PSC 1% TVA 0% IMF. 0%",
+    "reference": "OMC, Examen des politiques commerciales — Mauritanie, WT/TPR/S/371 (2018), § 3.48 ; loi de finances pour l'année 2026, art. 3.2.5",
+    "portee": "scripts/build_socle.py, _psc_mauritanie et _telephones_mauritanie : la PSC est placée avant la TVA, dont l'assiette (valeur en douane et droits d'entrée, fiche MRT_assiette_TVA_2026-09-17.json) la comprend.",
+    "texte_archive": "sources/MRT_psc_telephones_sh2022.texte-extrait.txt",
+    "sha256": "f4228ebee84a7133b064d796a0196f379033a49bc32ae70346083d04baf9c055"
+  },
+  "decisions": [
+    "« PSC » de la loi de finances 2026 = « PCS » de l'OMC : même taux (1 %), même nom développé dans le rapport de l'OMC, et la position 85.17 que vise la loi relève des chapitres 21 à 98. Le code « PSC » de la loi est retenu ; « PCS » désigne déjà dans le socle le prélèvement communautaire de solidarité de l'UEMOA.",
+    "Minibus : le tarif 2021 subdivise la position 87.02 par nombre de places ; « Comportant 10 à 22 places assises » (sous-groupes 11 pour les véhicules neufs et 21 pour les usagés) désigne les minibus.",
+    "Outils et équipements agricoles : seules les positions dont l'usage agricole tient au libellé (outils agricoles à main 82.01, machines agricoles 84.32 à 84.34 et 84.36, pulvérisateurs agricoles, remorques autochargeuses agricoles 8716.20). Les tracteurs (8701.10, 8701.91 à 8701.95) peuvent servir ailleurs : sans taux.",
+    "Téléphones : la loi de finances 2026 vise 85.17.13 et 85.17.14, sous-positions du SH 2022 que le tarif servi (SH 2017) réunit sous 85.17.12. Le DD (10 % pour les deux) s'y applique ; la TVA (16 % ou 0 %) y reste sans taux."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Tarif SH 2022 : la loi de finances 2025 (exposé des motifs) dit qu'« en 2024 la version 2022 a été adoptée ». Ce tarif n'est pas publié en ligne (douanes.mr ne sert que l'édition 2021) ; le socle reste sur le tarif 2021 (SH 2017).",
+    "IMF : devenu « Acomptes en Douanes (ex IMF douanes) » au taux de 2 % de la valeur en douane, avance déductible de l'IBAP ou de l'IS (loi de finances 2026, tableau des recettes) : un acompte d'impôt, pas un coût définitif ; non porté.",
+    "Fiscalité saisonnière de certains légumes (loi de finances 2026, art. 3.2.4 : 39,23 % ou 13,73 % selon la période) : taux globaux sans ventilation par prélèvement ; non portée.",
+    "Texte instituant la PSC (loi de finances 2011) non lu : le champ et l'assiette viennent de l'OMC."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/MRT_psc_telephones_sh2022.texte-extrait.txt",
+      "sha256": "f4228ebee84a7133b064d796a0196f379033a49bc32ae70346083d04baf9c055"
+    },
+    {
+      "texte_archive": "sources/MRT_redevance_statistique.texte-extrait.txt",
+      "sha256": "e8b00f7f3c787fa71052887e1e2a3f95c98b31fdddae961210a80fd040011301"
+    },
+    {
+      "document_non_archive": "Loi de finances pour l'année 2026 (Mauritanie), http://finances.gov.mr/sites/default/files/2026-01/Loi%20de%20Finances%20pour%20l%E2%80%99ann%C3%A9e%202026.pdf",
+      "pdf_sha256": "81deb4bef7b582121c1d59b5d1b7e2b0bddf954995c7719bbdaba9b9a3692c79"
+    },
+    {
+      "document_non_archive": "Loi de finances pour l'année 2025 (Mauritanie), http://finances.gov.mr/sites/default/files/2025-01/LOI%20DE%20FINANCES%20POUR%20L%27ANNEE%202025.pdf",
+      "pdf_sha256": "995f596f617f4b5301db360fb4d75a653c5d6277c014bbcbfe82a88f8444e053"
+    }
+  ]
+}

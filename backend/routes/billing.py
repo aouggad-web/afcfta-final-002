@@ -113,7 +113,8 @@ async def geo_diagnostic(request: Request):
     le backend voit réellement. Ne révèle que des informations sur la requête de
     l'appelant lui-même.
     """
-    xff = request.headers.get("x-forwarded-for", "")
+    # Toutes les lignes, comme `geo_service.client_ip`.
+    xff = ",".join(request.headers.getlist("x-forwarded-for"))
 
     # L'adresse vue par la couche ASGI est une IP d'infrastructure (pod, ingress).
     # Seul son *caractère* privé/public a une valeur de diagnostic — savoir si la
@@ -133,6 +134,10 @@ async def geo_diagnostic(request: Request):
         "cloudflare_trusted": geo_service.cloudflare_is_trusted(request),
         "geoip_db_configured": bool(os.environ.get("GEOIP_DB_PATH")),
         "ipinfo_configured": bool(os.environ.get("IPINFO_TOKEN")),
+        # Le pair direct est-il un relais approuvé (TRUSTED_PROXY_CIDRS) ? Sinon
+        # X-Forwarded-For est ignoré. Derrière un ingress, il doit valoir true :
+        # à défaut, renseignez TRUSTED_PROXY_CIDRS avec la plage de l'ingress.
+        "proxy_peer_trusted": geo_service.peer_is_trusted_proxy(request),
         # Relais de confiance pris en compte pour extraire l'IP du visiteur.
         # Si `client_ip` ci-dessus ne correspond pas à votre adresse publique
         # réelle, ajustez TRUSTED_PROXY_HOPS et rappelez cette route.

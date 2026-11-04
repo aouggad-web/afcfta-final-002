@@ -15,7 +15,8 @@ import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ReferenceLine, CartesianGrid,
 } from 'recharts';
 import { Award, RefreshCw } from 'lucide-react';
-import { getCountryFlag } from '../../utils/countryCodes';
+import { getCountryFlag, AFRICAN_COUNTRIES } from '../../utils/countryCodes';
+import { pick } from '../../i18n/lang';
 import { CSVExportButton } from '../common/ExportTools';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -70,6 +71,29 @@ const TEXTS = {
     no: 'No',
     methodology: 'RCA = (product share in the country exports) ÷ (product share in world exports). RCA > 1 indicates relative specialisation (revealed comparative advantage).',
     levelHint: { HS2: 'Chapters', HS4: 'Positions', HS6: 'Sub-positions' },
+  },
+  ar: {
+    title: 'الميزة النسبية الظاهرة (RCA)',
+    subtitle: 'مؤشر بالاسا حسب المنتج — بيانات OEC/BACI مباشرة',
+    country: 'البلد',
+    selectCountry: 'اختر بلدًا',
+    year: 'السنة',
+    level: 'مستوى SH',
+    loading: 'جارٍ حساب RCA…',
+    error: 'تعذّر حساب RCA لهذا الاختيار.',
+    noData: 'لا توجد بيانات متاحة.',
+    summary: (n, total) => `المنتجات ذات الميزة الظاهرة (RCA ≥ 1): ${n} من أصل ${total} تم تحليلها`,
+    chartTitle: 'أبرز المنتجات حسب RCA',
+    product: 'المنتج',
+    code: 'الرمز',
+    rca: 'RCA',
+    countryShare: 'الحصة الوطنية',
+    worldShare: 'الحصة العالمية',
+    advantage: 'الميزة',
+    yes: 'نعم',
+    no: 'لا',
+    methodology: 'RCA = (حصة المنتج في صادرات البلد) ÷ (حصة المنتج في الصادرات العالمية). يشير RCA > 1 إلى تخصص نسبي (ميزة نسبية ظاهرة).',
+    levelHint: { HS2: 'الفصول', HS4: 'البنود', HS6: 'البنود الفرعية' },
   },
 };
 
@@ -180,7 +204,7 @@ export default function RcaAnalysis({ language = 'fr' }) {
                   <SelectItem key={c.iso3} value={c.iso3}>
                     <span className="flex items-center gap-2">
                       <span>{getCountryFlag(c.iso3)}</span>
-                      <span>{c.name}</span>
+                      <span>{pick(language, c.name, c.name, AFRICAN_COUNTRIES[c.iso3]?.name_ar || c.name)}</span>
                     </span>
                   </SelectItem>
                 ))}

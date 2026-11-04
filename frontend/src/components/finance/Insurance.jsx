@@ -4,18 +4,29 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { montant, montantUnite } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 const PRODUCT_TYPES = [
-  { value: 'export_credit', fr: 'Crédit export', en: 'Export credit' },
-  { value: 'political_risk', fr: 'Risque politique', en: 'Political risk' },
-  { value: 'performance_guarantee', fr: 'Garantie de performance', en: 'Performance guarantee' },
-  { value: 'advance_payment', fr: 'Garantie de restitution', en: 'Advance payment' },
-  { value: 'tender', fr: "Garantie d'appel d'offres", en: 'Tender guarantee' },
-  { value: 'transport', fr: 'Assurance transport', en: 'Transport insurance' },
+  { value: 'export_credit', fr: 'Crédit export', en: 'Export credit', ar: 'ائتمان الصادرات' },
+  { value: 'political_risk', fr: 'Risque politique', en: 'Political risk', ar: 'المخاطر السياسية' },
+  { value: 'performance_guarantee', fr: 'Garantie de performance', en: 'Performance guarantee', ar: 'ضمان حسن التنفيذ' },
+  { value: 'advance_payment', fr: 'Garantie de restitution', en: 'Advance payment', ar: 'ضمان استرداد الدفعة المقدمة' },
+  { value: 'tender', fr: "Garantie d'appel d'offres", en: 'Tender guarantee', ar: 'ضمان المناقصة' },
+  { value: 'transport', fr: 'Assurance transport', en: 'Transport insurance', ar: 'تأمين النقل' },
 ];
+
+// Niveaux de risque renvoyés par l'API (codes anglais) → arabe.
+const RISK_LEVEL_AR = {
+  very_low: 'منخفض جدًا',
+  low: 'منخفض',
+  moderate: 'متوسط',
+  high: 'مرتفع',
+  very_high: 'مرتفع جدًا',
+};
 
 const texts = {
   fr: {
@@ -74,6 +85,34 @@ const texts = {
     country: 'Country',
     noProfile: 'No insurance profile available for this country.',
   },
+  ar: {
+    title: '🛡️ تأمين التجارة الخارجية',
+    subtitle: 'عروض أسعار الأقساط ومقارنة شركات التأمين',
+    countryLabel: 'بلد المشتري',
+    amountLabel: 'قيمة العقد (USD)',
+    productLabel: 'المنتج',
+    sectorLabel: 'القطاع (اختياري)',
+    submit: 'الحصول على عرض سعر',
+    submitBatch: 'مقارنة جميع المنتجات',
+    loading: 'جارٍ الحساب…',
+    error: 'خطأ',
+    profile: 'ملف البلد',
+    riskLevel: 'مستوى المخاطر',
+    insurers: 'شركات التأمين المتاحة',
+    products: 'المنتجات المتاحة',
+    quote: 'عرض السعر',
+    basePremium: 'القسط الأساسي',
+    finalPremium: 'القسط النهائي',
+    coverage: 'التغطية',
+    deductible: 'مبلغ التحمل',
+    adjustment: 'تعديل المخاطر',
+    notes: 'ملاحظات',
+    comparison: 'مقارنة المنتجات',
+    rating: 'التصنيف',
+    capacity: 'الطاقة الاكتتابية',
+    country: 'البلد',
+    noProfile: 'لا يتوفر ملف تأمين لهذا البلد.',
+  },
 };
 
 export default function Insurance({ language = 'en' }) {
@@ -112,6 +151,7 @@ export default function Insurance({ language = 'en' }) {
   const invalidAmountMessage = {
     fr: 'Veuillez saisir un montant valide supérieur à 0.',
     en: 'Please enter a valid amount greater than 0.',
+    ar: 'يرجى إدخال مبلغ صالح أكبر من 0.',
   };
 
   const parseAmount = () => {
@@ -222,7 +262,7 @@ export default function Insurance({ language = 'en' }) {
                   >
                     {countries.map((c) => (
                       <option key={c.country_code} value={c.country_code}>
-                        {c.country_name} ({c.country_code})
+                        {trDonnee(c.country_name, language)} ({c.country_code})
                       </option>
                     ))}
                   </select>
@@ -256,7 +296,7 @@ export default function Insurance({ language = 'en' }) {
                 >
                   {PRODUCT_TYPES.map((p) => (
                     <option key={p.value} value={p.value}>
-                      {language === 'fr' ? p.fr : p.en}
+                      {pick(language, p.fr, p.en, p.ar)}
                     </option>
                   ))}
                 </select>
@@ -302,14 +342,14 @@ export default function Insurance({ language = 'en' }) {
                 <CardTitle className="text-base flex items-center gap-2">
                   {t.profile}
                   <Badge variant="outline">
-                    {profile.country_code} — {profile.country_name}
+                    {profile.country_code} — {trDonnee(profile.country_name, language)}
                   </Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span>{t.riskLevel}:</span>
-                  <Badge className="capitalize">{profile.risk_level}</Badge>
+                  <Badge className="capitalize">{pick(language, profile.risk_level, profile.risk_level, RISK_LEVEL_AR[profile.risk_level] || profile.risk_level)}</Badge>
                 </div>
                 <div>
                   {t.insurers}: {profile.available_insurers?.length || 0}
@@ -387,7 +427,14 @@ export default function Insurance({ language = 'en' }) {
                       className={`p-2 rounded text-sm ${i === 0 ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]' : 'bg-[var(--afcfta-card2)]'}`}
                     >
                       <div className="flex justify-between">
-                        <span className="font-medium capitalize">{type.replace('_', ' ')}</span>
+                        <span className="font-medium capitalize">
+                          {pick(
+                            language,
+                            type.replace('_', ' '),
+                            type.replace('_', ' '),
+                            PRODUCT_TYPES.find((p) => p.value === type)?.ar || type.replace('_', ' ')
+                          )}
+                        </span>
                         <Badge variant={i === 0 ? 'default' : 'outline'}>
                           {usd(q.final_premium_usd)}
                         </Badge>

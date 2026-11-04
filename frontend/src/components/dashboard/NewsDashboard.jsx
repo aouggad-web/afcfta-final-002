@@ -11,6 +11,8 @@ import {
   Tag,
   Sparkles,
 } from 'lucide-react';
+import { pick, intlLocale } from '../../i18n/lang';
+import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -23,6 +25,31 @@ const REGION_ACCENTS = {
   'Afrique Australe': '#9b6ef5',
   Afrique: '#9aa7b8',
 };
+
+// Libellés arabes des régions et catégories (valeurs françaises renvoyées par l'API).
+const REGION_AR = {
+  'Afrique du Nord': 'شمال أفريقيا',
+  "Afrique de l'Ouest": 'غرب أفريقيا',
+  'Afrique Centrale': 'وسط أفريقيا',
+  "Afrique de l'Est": 'شرق أفريقيا',
+  'Afrique Australe': 'الجنوب الأفريقي',
+  Afrique: 'أفريقيا',
+};
+
+const CATEGORY_AR = {
+  Finance: 'المالية',
+  Commerce: 'التجارة',
+  Énergie: 'الطاقة',
+  Agriculture: 'الزراعة',
+  Mines: 'المناجم',
+  Télécoms: 'الاتصالات',
+  Infrastructure: 'البنية التحتية',
+  Gouvernance: 'الحوكمة',
+  Économie: 'الاقتصاد',
+};
+
+const regionLabel = (region, language) => pick(language, region, region, REGION_AR[region] || region);
+const categoryLabel = (category, language) => pick(language, category, category, CATEGORY_AR[category] || category);
 
 const CATEGORY_ACCENTS = {
   Finance: { icon: '💰', accent: '#20c997' },
@@ -37,10 +64,10 @@ const CATEGORY_ACCENTS = {
 };
 
 const CONTENT_TAG_LABELS = {
-  statistics: { fr: 'Statistiques', en: 'Statistics', icon: '📊', accent: '#38bdf8' },
-  opportunities: { fr: 'Opportunités', en: 'Opportunities', icon: '💡', accent: '#d4a017' },
-  development: { fr: 'Développement', en: 'Development', icon: '🚀', accent: '#20c997' },
-  events: { fr: 'Événement', en: 'Event', icon: '📅', accent: '#9b6ef5' },
+  statistics: { fr: 'Statistiques', en: 'Statistics', ar: 'الإحصائيات', icon: '📊', accent: '#38bdf8' },
+  opportunities: { fr: 'Opportunités', en: 'Opportunities', ar: 'الفرص', icon: '💡', accent: '#d4a017' },
+  development: { fr: 'Développement', en: 'Development', ar: 'التنمية', icon: '🚀', accent: '#20c997' },
+  events: { fr: 'Événement', en: 'Event', ar: 'حدث', icon: '📅', accent: '#9b6ef5' },
 };
 
 const translations = {
@@ -94,6 +121,31 @@ const translations = {
     footer:
       'News aggregated from Agence Ecofin, AllAfrica and related feeds. Full articles remain available on source websites.',
   },
+  ar: {
+    title: 'موجز الأخبار الاقتصادية الأفريقية',
+    subtitle: 'المصادر: وكالة إيكوفين، AllAfrica، وسائل إعلام محلية (أكثر من 20 بلدًا)، أخبار Google',
+    lastUpdate: 'آخر تحديث',
+    refresh: 'تحديث',
+    refreshing: 'جارٍ التحديث…',
+    byRegion: 'حسب المنطقة',
+    byCategory: 'حسب الفئة',
+    allNews: 'جميع الأخبار',
+    readMore: 'قراءة المقال',
+    articles: 'مقالات',
+    noArticles: 'لا توجد مقالات متاحة',
+    loading: 'جارٍ تحميل الأخبار…',
+    error: 'خطأ في التحميل',
+    source: 'المصدر',
+    today: 'اليوم',
+    yesterday: 'أمس',
+    daysAgo: 'منذ {days} أيام',
+    strategicHeadline: 'قراءة استراتيجية لموجز الأخبار الاقتصادية الأفريقية',
+    strategicLead: 'رصد إشارات التجارة والمالية والطاقة والبنية التحتية وسلاسل الإمداد.',
+    countryOfWeek: 'بلد الأسبوع',
+    countryOfWeekLead: 'نقاط القوة والآفاق',
+    footer:
+      'أخبار مجمَّعة من وكالة إيكوفين وAllAfrica ومصادر مرتبطة. تبقى المقالات الكاملة متاحة على مواقع المصادر.',
+  },
 };
 
 const formatRelativeDate = (dateString, t) => {
@@ -130,7 +182,7 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
             borderColor: `${categoryStyle.accent}40`,
           }}
         >
-          {categoryStyle.icon} {article.category}
+          {categoryStyle.icon} {categoryLabel(article.category, language)}
         </Badge>
 
         <Badge
@@ -143,7 +195,7 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
           }}
         >
           <MapPin className="w-3 h-3 mr-1" />
-          {article.region}
+          {regionLabel(article.region, language)}
         </Badge>
 
         {contentTags.map((tag) => {
@@ -227,7 +279,7 @@ const RegionSection = ({ region, articles, t, language }) => {
           }}
         >
           <Globe className="w-4 h-4" />
-          {region}
+          {regionLabel(region, language)}
         </div>
 
         <span className="text-xs text-[var(--afcfta-muted)]">
@@ -259,7 +311,7 @@ const CategorySection = ({ category, articles, t, language }) => {
           }}
         >
           <span>{categoryStyle.icon}</span>
-          {category}
+          {categoryLabel(category, language)}
         </div>
 
         <span className="text-xs text-[var(--afcfta-muted)]">
@@ -278,8 +330,8 @@ const CategorySection = ({ category, articles, t, language }) => {
 
 const CountrySpotlight = ({ spotlight, t, language }) => {
   if (!spotlight || !spotlight.country) return null;
-  const countryName = language === 'fr' ? spotlight.country_name_fr : spotlight.country_name_en;
-  const profile = language === 'fr' ? spotlight.profile_fr : spotlight.profile_en;
+  const countryName = pick(language, spotlight.country_name_fr, spotlight.country_name_en, AFRICAN_COUNTRIES[spotlight.country]?.name_ar || spotlight.country_name_fr);
+  const profile = pick(language, spotlight.profile_fr, spotlight.profile_en, spotlight.profile_ar || spotlight.profile_fr);
 
   return (
     <section
@@ -437,7 +489,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 text-xs font-bold text-[var(--gold)] mb-3">
                 <Sparkles className="w-4 h-4" />
-                intelligence feed
+                {pick(language, 'intelligence feed', 'intelligence feed', 'موجز الرصد')}
               </div>
 
               <h3 className="text-2xl md:text-3xl font-bold text-[var(--text)]">
@@ -461,7 +513,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
               {lastUpdate && (
                 <div className="text-xs md:text-sm text-[var(--afcfta-muted)] inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-[var(--overlay)]">
                   <Clock className="w-4 h-4" />
-                  {t.lastUpdate}: {new Date(lastUpdate).toLocaleString(language === 'fr' ? 'fr-FR' : 'en-US')}
+                  {t.lastUpdate}: {new Date(lastUpdate).toLocaleString(intlLocale(language))}
                 </div>
               )}
 

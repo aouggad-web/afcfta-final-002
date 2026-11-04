@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { montant, montantCompact } from "../../utils/nombres";
+import { pick } from "../../i18n/lang";
+import { reportsNoticeText } from "../tools/entitlementNotice";
+import SubscriptionNotice from "../tools/SubscriptionNotice";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
 
@@ -20,16 +23,16 @@ const dash = (v, suffix = "") =>
   v === null || v === undefined || v === "" ? "—" : `${v}${suffix}`;
 
 /* « 12 345 $ » en français, « $12,345 » en anglais. */
-const money = (v, fr) =>
-  v === null || v === undefined ? "—" : montant(v, fr ? "fr" : "en");
+const money = (v, lang) =>
+  v === null || v === undefined ? "—" : montant(v, lang);
 
 /* Compact USD (e.g. $3.3B, $46B, $120M ; « 3,3 Md $ » en français) for large
    industrial aggregates. */
-const moneyShort = (v, fr) => {
+const moneyShort = (v, lang) => {
   if (v === null || v === undefined) return "—";
   const n = Number(v);
-  if (Math.abs(n) >= 1e6) return montantCompact(n, fr ? "fr" : "en", { B: 1, M: 0 });
-  return money(n, fr);
+  if (Math.abs(n) >= 1e6) return montantCompact(n, lang, { B: 1, M: 0 });
+  return money(n, lang);
 };
 
 const intFmt = (v) =>
@@ -45,17 +48,17 @@ const srcText = (s) =>
 
 /* Provenance micro-badge: IDSB values are UNIDO DERIVED ESTIMATES, INDSTAT values
    are OFFICIAL statistics. Never conflate the two — show each metric's real nature. */
-const provMeta = (nature, t) => {
+const provMeta = (nature, t, lang) => {
   if (nature === "official")
     return {
-      t: "off.",
+      t: pick(lang, "off.", "off.", "رسمي"),
       title: t("opportunities.sectoralAnalysis.indstatUnidoOfficialStatistic"),
       fg: "var(--success)",
       bg: "rgba(26,127,55,0.12)",
     };
   if (nature === "derived_estimate")
     return {
-      t: "est.",
+      t: pick(lang, "est.", "est.", "تقديري"),
       title: t("opportunities.sectoralAnalysis.idsbUnidoDerivedEstimate"),
       fg: "var(--gold)",
       bg: "rgba(154,103,0,0.12)",
@@ -71,8 +74,8 @@ const provMeta = (nature, t) => {
 };
 
 function Prov({ nature }) {
-  const { t } = useTranslation();
-  const m = provMeta(nature, t);
+  const { t, i18n } = useTranslation();
+  const m = provMeta(nature, t, i18n.language);
   if (!m) return null;
   return (
     <sup
@@ -125,8 +128,13 @@ function Chip({ ok, children }) {
   );
 }
 
-function SectoralAnalysis({ hsCode, origin, destination, fr }) {
-  const { t } = useTranslation();
+function SectoralAnalysis({ hsCode, origin, destination, fr, language }) {
+  const { t, i18n } = useTranslation();
+  // `language` ('fr' | 'en' | 'ar') prime ; sans lui, `fr` ne distingue que
+  // français/anglais et l'arabe se lit sur i18n.
+  const lang = language
+    ? pick(language, "fr", "en", "ar")
+    : String(i18n.language || "").startsWith("ar") ? "ar" : fr ? "fr" : "en";
   const [analysis, setAnalysis] = useState(null);
   const [error, setError] = useState(false);
 
@@ -150,14 +158,15 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
           hs_code: hsCode,
           origin,
           destination,
-          lang: fr ? "fr" : "en",
+          lang,
         });
         const res = await axios.get(`${API}/reports/sectoral-analysis?${params.toString()}`);
         if (!cancelled) setAnalysis(res.data);
       } catch (e) {
         // Distinguish a real request failure from the loading / no-section case,
         // so users don't mistake an unavailable service for "no sectoral data".
-        if (!cancelled) setError(true);
+        // Un refus d'abonnement (audit E1) garde son propre avis.
+        if (!cancelled) setError(reportsNoticeText(e, lang) || true);
       }
     };
 
@@ -165,7 +174,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
     return () => {
       cancelled = true;
     };
-  }, [hsCode, origin, destination, fr]);
+  }, [hsCode, origin, destination, lang]);
 
   // Request failed — surface it instead of silently vanishing like loading does.
   if (error) {
@@ -174,7 +183,9 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
         <div style={{ ...label, marginBottom: 4, fontWeight: 700 }}>
           {t("opportunities.sectoralAnalysis.sectoralAnalysisIsic4Idsb")}
         </div>
-        {t("opportunities.sectoralAnalysis.serviceTemporarilyUnavailableSectoral")}
+        {error === true
+          ? t("opportunities.sectoralAnalysis.serviceTemporarilyUnavailableSectoral")
+          : <SubscriptionNotice text={error} language={lang} />}
       </div>
     );
   }
@@ -296,7 +307,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
             )}
             {bal.hs_import_demand?.value != null && (
               <Chip ok>
-                {t("opportunities.sectoralAnalysis.oecImportsExactHs")} · {money(bal.hs_import_demand.value, fr)}
+                {t("opportunities.sectoralAnalysis.oecImportsExactHs")} · {money(bal.hs_import_demand.value, lang)}
                 {bal.hs_import_demand.year ? ` (${bal.hs_import_demand.year})` : ""}
               </Chip>
             )}
@@ -327,21 +338,21 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
                 <div>
                   <div style={label}>{t("opportunities.sectoralAnalysis.output2")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
-                    {moneyShort(industrial_base.output_usd, fr)}
+                    {moneyShort(industrial_base.output_usd, lang)}
                     <Prov nature={industrial_base.provenance?.output_usd} />
                   </div>
                 </div>
                 <div>
                   <div style={label}>{t("opportunities.sectoralAnalysis.valueAdded")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
-                    {moneyShort(industrial_base.value_added_usd, fr)}
+                    {moneyShort(industrial_base.value_added_usd, lang)}
                     <Prov nature={industrial_base.provenance?.value_added_usd} />
                   </div>
                 </div>
                 <div>
                   <div style={label}>{t("opportunities.sectoralAnalysis.worldExports")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
-                    {moneyShort(industrial_base.exports_world_usd, fr)}
+                    {moneyShort(industrial_base.exports_world_usd, lang)}
                     <Prov nature={industrial_base.provenance?.exports_world_usd} />
                   </div>
                 </div>
@@ -381,7 +392,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
                         <tr key={sub.isic4} style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                           <td style={{ ...td, fontWeight: 600, whiteSpace: "nowrap" }}>{sub.isic4}</td>
                           <td style={td}>{sub.label}</td>
-                          <td style={{ ...td, textAlign: "right", fontWeight: 600 }}>{moneyShort(sub.output_usd, fr)}</td>
+                          <td style={{ ...td, textAlign: "right", fontWeight: 600 }}>{moneyShort(sub.output_usd, lang)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -416,14 +427,14 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
                 <div>
                   <div style={label}>{t("opportunities.sectoralAnalysis.apparentConsumption")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
-                    {moneyShort(market_demand.apparent_consumption_usd, fr)}
+                    {moneyShort(market_demand.apparent_consumption_usd, lang)}
                     <Prov nature={market_demand.provenance?.apparent_consumption_usd} />
                   </div>
                 </div>
                 <div>
                   <div style={label}>{t("opportunities.sectoralAnalysis.worldImports")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
-                    {moneyShort(market_demand.imports_world_usd, fr)}
+                    {moneyShort(market_demand.imports_world_usd, lang)}
                     <Prov nature={market_demand.provenance?.imports_world_usd} />
                   </div>
                 </div>

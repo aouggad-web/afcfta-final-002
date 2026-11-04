@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "objet": "Cap-Vert : montant par litre de la taxe spécifique sur l'alcool importé (Pauta aduaneira modifiée par la Lei n.º 45/X/2024, Orçamento do Estado 2025, art. 77 et annexe I)",
+  "destination_iso3": "CPV",
+  "verified_at": "2026-11-02",
+  "etabli": true,
+  "evidence_level": "primaire : Lei n.º 45/X/2024, Boletim Oficial, I série, n.º 125, supl., 30/12/2024 (copie publiée par l'Assemblée nationale, camara.cv) ; Lei n.º 69/X/2025, art. 91 ; Lei n.º 51/X/2025",
+  "source": {
+    "url": "https://www.camara.cv/wp-content/uploads/2025/01/OE2025-BO.pdf",
+    "institution": "Assembleia Nacional de Cabo Verde — Boletim Oficial"
+  },
+  "regle": {
+    "valeur": "Taxe spécifique en CVE par litre, à l'importation, en sus de l'ICE : bières de malt (22.03) 60 ; vins, moûts, vermouths et autres boissons fermentées (22.04 à 22.06) 90 ; alcool éthylique (2207.10.90 et 2207.20) 90 ; eaux-de-vie, whiskies, rhum, gin, vodka, liqueurs et autres boissons spiritueuses (22.08) 300.",
+    "verbatim": "é alterada a Pauta Aduaneira […] no que se refere à taxa específica em CVE/litro, devida nas importações, relativamente às bebidas alcoólicas, conforme quadro anexo I ao presente diploma e que dele é parte integrante.",
+    "reference": "Lei n.º 45/X/2024 (OE 2025), art. 77.º, n.º 1, et annexe I ; Lei n.º 69/X/2025 (OE 2026), art. 91.º",
+    "portee": "scripts/build_socle.py, _taxe_alcool_cap_vert : montant par litre sur la ligne TEA (2203 à 2206, 2208) et ligne TEA ajoutée à 2207.10.90 et 2207.20, que le tarif collecté n'en dotait pas. La TEA entre dans les assiettes de l'ICE et de l'IVA (fiche CPV_pauta_IVA_ICE_2026-10-12.json).",
+    "texte_archive": "sources/CPV_taxe_alcool.texte-extrait.txt",
+    "sha256": "97bd7b4872b2986f6187eb0085986dc20c3b1927158a34e7a193b80bdb5fa348"
+  },
+  "decisions": [
+    "Barème en vigueur : celui de la Lei n.º 45/X/2024 (OE 2025). L'art. 77 modifie la Pauta elle-même (« é alterada a Pauta Aduaneira ») : la mesure n'est pas annuelle. Il remplace celui de la Lei n.º 16/X/2022 (OE 2023, art. 79, annexe II : bière 20, vins 35, whisky 180, autres spiritueux 130 CVE/litro).",
+    "La Lei n.º 69/X/2025 (OE 2026), art. 91, ne fixe pas de montant : elle affecte le produit de la taxe « conforme disposto na Pauta Aduaneira ». La Lei n.º 51/X/2025 (septième amendement du SH) ne porte pas de colonne en CVE par litre : elle ne touche pas le barème.",
+    "Unité : le litre de boisson (« U.C. lt »), et non le litre d'alcool pur.",
+    "La colonne « % » de l'annexe I (30) n'est pas reprise : l'ICE ad valorem des boissons est celui de l'annexe III de la Lei n.º 69/X/2025, postérieure, déjà servi par le socle.",
+    "Alcool éthylique : l'annexe vise 2207.10.90 (« Outros ») et 2207.20, pas 2207.10.10 ; la ligne TEA n'est ajoutée qu'à ces deux positions."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Lei do Orçamento 2024 (Boletim Oficial n.º 134 du 31/12/2023) non lue : sans effet sur le barème en vigueur, que l'OE 2025 a fixé ensuite.",
+    "Taxe spécifique sur les « produtos doces » (CVE par kg, Lei n.º 69/X/2025, art. 92) : barème toujours non trouvé."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/CPV_taxe_alcool.texte-extrait.txt",
+      "sha256": "97bd7b4872b2986f6187eb0085986dc20c3b1927158a34e7a193b80bdb5fa348"
+    },
+    {
+      "document_non_archive": "Lei n.º 45/X/2024 (OE 2025), B.O. I série n.º 125, supl., 30/12/2024 (data/cpv/reference/CPV_boe_125_sup_2024-12-30_lei45X2024_OE2025.pdf)",
+      "pdf_sha256": "5da4ad9858b2513d77acea05091740f7e1e7e61e682b759bdac16cfbb019126a"
+    }
+  ]
+}

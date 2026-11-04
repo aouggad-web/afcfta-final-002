@@ -9,6 +9,8 @@ import hashlib
 import json
 import os
 import re
+import threading
+import time
 from datetime import datetime, timedelta
 from functools import lru_cache
 from pathlib import Path
@@ -16,7 +18,9 @@ from typing import Dict, List, Optional
 
 import aiohttp
 import feedparser
+from constants import AFRICAN_COUNTRIES
 from country_data import REAL_COUNTRY_DATA
+from translations import COUNTRY_TRANSLATIONS
 
 # Décodeur Google News (base64 → URL source réelle). Sans lui, les entrées de
 # `news.google.com/rss/articles/...` renvoient "refused to connect" quand un
@@ -967,6 +971,23 @@ SECTOR_NAME_TRANSLATIONS = {
     "Services": "services",
 }
 
+# Traduction (FR -> AR) des mêmes secteurs, pour la variante arabe du profil.
+SECTOR_NAME_TRANSLATIONS_AR = {
+    "Agriculture": "الزراعة",
+    "Diamants": "الماس",
+    "Hydrocarbures": "المحروقات",
+    "Industrie": "الصناعة",
+    "Mines": "التعدين",
+    "Pétrole": "النفط",
+    "Services": "الخدمات",
+}
+
+
+def _country_name_ar(iso3: str, fallback: str) -> str:
+    """Nom arabe d'un pays (ISO3) d'après translations.COUNTRY_TRANSLATIONS."""
+    iso2 = next((c["code"] for c in AFRICAN_COUNTRIES if c.get("iso3") == iso3), None)
+    return COUNTRY_TRANSLATIONS.get(iso2, {}).get("ar", fallback)
+
 
 def _format_millions(value: float) -> str:
     """Formate un nombre de millions sans décimale superflue (45.6 -> « 45.6 »,
@@ -996,7 +1017,7 @@ def build_country_profile(country: str) -> Dict[str, str]:
     data = REAL_COUNTRY_DATA.get(country)
     name_fr, name_en, _flag = COUNTRY_DISPLAY_NAMES.get(country, (country, country, "🌍"))
     if not data:
-        return {"fr": "", "en": ""}
+        return {"fr": "", "en": "", "ar": ""}
 
     sectors = sorted(
         data.get("key_sectors") or [], key=lambda s: s.get("pib_share", 0), reverse=True
@@ -1048,7 +1069,27 @@ def build_country_profile(country: str) -> Dict[str, str]:
     else:
         en += " Its outlook is anchored in intra-African trade and regional integration under the AfCFTA."
 
-    return {"fr": fr, "en": en}
+    name_ar = _country_name_ar(country, name_fr)
+    top_sectors_ar = [
+        SECTOR_NAME_TRANSLATIONS_AR.get(s["name"], s["name"]) for s in sectors[:2] if s.get("name")
+    ]
+    sectors_ar = " و".join(top_sectors_ar) if top_sectors_ar else "قاعدة متنوعة"
+    ar = f"يرتكز اقتصاد {name_ar}"
+    if rank:
+        ar += f" (المرتبة {rank} أفريقيًا من حيث الناتج المحلي الإجمالي)"
+    ar += f" على {sectors_ar}"
+    if population_m:
+        ar += f"، ويبلغ عدد سكان البلد نحو {_format_millions(population_m)} مليون نسمة"
+    ar += "."
+    if growth_2025:
+        ar += f" وتُقدَّر آفاق النمو بنحو {growth_2025}"
+        if growth_2026 and growth_2026 != growth_2025:
+            ar += f" في 2025 و{growth_2026} في 2026"
+        ar += "، بدعم من التجارة البينية الأفريقية والتكامل الإقليمي في إطار منطقة التجارة الحرة القارية الأفريقية."
+    else:
+        ar += " وترتكز آفاق البلد على التجارة البينية الأفريقية والتكامل الإقليمي في إطار منطقة التجارة الحرة القارية الأفريقية."
+
+    return {"fr": fr, "en": en, "ar": ar}
 
 
 def region_from_country(country: str, text: str) -> str:
@@ -1316,6 +1357,7 @@ def get_country_of_the_week(articles: List[Dict], week_number: Optional[int] = N
         "week_number": week_number,
         "profile_fr": profile["fr"],
         "profile_en": profile["en"],
+        "profile_ar": profile["ar"],
         "highlights": highlights[:5],
     }
 
@@ -1339,8 +1381,13 @@ def save_cache(articles: List[Dict]):
     NEWS_CACHE = {"last_update": datetime.now().isoformat(), "articles": articles}
     try:
         os.makedirs(os.path.dirname(NEWS_CACHE_FILE), exist_ok=True)
-        with open(NEWS_CACHE_FILE, "w", encoding="utf-8") as f:
+        # Écriture atomique : le rafraîchissement tourne dans un thread à part
+        # pendant que les requêtes lisent le fichier ; un remplacement en une
+        # fois évite qu'une lecture tombe sur un JSON à moitié écrit.
+        tmp = f"{NEWS_CACHE_FILE}.tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
             json.dump(NEWS_CACHE, f, ensure_ascii=False, indent=2)
+        os.replace(tmp, NEWS_CACHE_FILE)
     except Exception as e:
         print(f"Erreur sauvegarde cache: {e}")
 
@@ -1355,20 +1402,69 @@ def should_refresh_cache() -> bool:
     return datetime.now() - last_update > timedelta(hours=24)
 
 
-async def get_news(force_refresh: bool = False) -> Dict:
-    """Obtenir les actualités (depuis cache ou fetch)"""
-    if force_refresh or should_refresh_cache():
-        print("Rafraîchissement des actualités...")
-        articles = await fetch_all_news()
+_background_refresh_thread: Optional["threading.Thread"] = None
+
+# « Actualiser » (constat E2) : un force_refresh reçu moins de 10 min après la
+# dernière collecte réussie rend le cache sans relancer de collecte, et l'attente
+# d'une collecte en cours est plafonnée (sous le délai de lecture de l'ingress).
+_FENETRE_FRAICHEUR_S = 10 * 60
+_ATTENTE_ACTUALISER_MAX_S = 30
+
+
+def _refresh_cache_in_background() -> None:
+    """Exécuté dans un thread dédié avec sa propre boucle asyncio, pour ne
+    jamais bloquer la boucle événementielle principale du serveur."""
+    try:
+        print("Rafraîchissement des actualités (arrière-plan)...")
+        articles = asyncio.run(fetch_all_news())
         save_cache(articles)
-        return {"last_update": datetime.now().isoformat(), "articles": articles, "source": "fresh"}
-    else:
+    except Exception as e:
+        print(f"Erreur rafraîchissement actualités en arrière-plan: {e}")
+
+
+async def get_news(force_refresh: bool = False) -> Dict:
+    """Obtenir les actualités (depuis cache ou fetch).
+
+    Toute collecte tourne dans un thread à part, unique (les requêtes
+    simultanées partagent la même), sans jamais bloquer la boucle
+    événementielle — les sources externes peuvent être lentes ou
+    injoignables. Sans force_refresh, le cache (même périmé) est servi
+    immédiatement. Avec force_refresh (bouton « Actualiser »), on attend la
+    collecte sans bloquer la boucle, au plus _ATTENTE_ACTUALISER_MAX_S, puis
+    on rend le cache ; source vaut « fresh » seulement si la collecte l'a
+    renouvelé pendant l'attente. Si la dernière collecte réussie date de
+    moins de _FENETRE_FRAICHEUR_S, le cache est rendu sans nouvelle collecte.
+    """
+    global _background_refresh_thread
+
+    cache = load_cache()
+    avant = cache.get("last_update")
+    recente = bool(avant) and datetime.now() - datetime.fromisoformat(avant) < timedelta(
+        seconds=_FENETRE_FRAICHEUR_S
+    )
+    attendre = force_refresh and not recente
+
+    if attendre or should_refresh_cache():
+        if _background_refresh_thread is None or not _background_refresh_thread.is_alive():
+            _background_refresh_thread = threading.Thread(
+                target=_refresh_cache_in_background,
+                name="news-cache-refresh",
+                daemon=True,
+            )
+            _background_refresh_thread.start()
+
+    if attendre:
+        fil = _background_refresh_thread
+        echeance = time.monotonic() + _ATTENTE_ACTUALISER_MAX_S
+        while fil.is_alive() and time.monotonic() < echeance:
+            await asyncio.sleep(0.25)
         cache = load_cache()
-        return {
-            "last_update": cache.get("last_update"),
-            "articles": cache.get("articles", []),
-            "source": "cache",
-        }
+
+    return {
+        "last_update": cache.get("last_update"),
+        "articles": cache.get("articles", []),
+        "source": "fresh" if cache.get("last_update") != avant else "cache",
+    }
 
 
 def get_news_by_region(articles: List[Dict]) -> Dict[str, List[Dict]]:

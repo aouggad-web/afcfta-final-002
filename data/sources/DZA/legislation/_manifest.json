@@ -114,6 +114,20 @@
       "source_url": "https://www.joradp.dz/FTP/JO-FRANCAIS/2020/F2020080.pdf",
       "referencing_page": "JORADP (SGG)",
       "sha256": "15ca950833395b2ab598f36d392eda3b9ab033150d914bb0a40137f4b882d3e4"
+    },
+    {
+      "file": "JO_2019-06_arrete_daps_2019-01-26.pdf",
+      "title": "Arrêté du 26 janvier 2019 fixant la liste des marchandises soumises au droit additionnel provisoire de sauvegarde et les taux correspondants — JO n° 06 du 27/01/2019, page 10 et annexe",
+      "source_url": "https://www.joradp.dz/FTP/JO-FRANCAIS/2019/F2019006.pdf",
+      "referencing_page": "JORADP (SGG)",
+      "sha256": "5953ae05b15e6de17fcf7bd01f2cee08c452297ebfac42db93c5d3e0ce6f4ace"
+    },
+    {
+      "file": "JO_2019-26_arrete_daps_2019-04-08.pdf",
+      "title": "Arrêté du 8 avril 2019 modifiant l'arrêté du 26 janvier 2019 (liste DAPS remplacée) — JO n° 26 du 21/04/2019, page 9 et annexe",
+      "source_url": "https://www.joradp.dz/FTP/JO-FRANCAIS/2019/F2019026.pdf",
+      "referencing_page": "JORADP (SGG)",
+      "sha256": "7837a30741b9b35c7912a96752e1d45f81eec8a738320ddc50b97add267fe9df"
     }
   ],
   "extraction_json_files": [

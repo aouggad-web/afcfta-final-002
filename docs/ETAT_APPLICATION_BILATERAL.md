@@ -1,7 +1,7 @@
 # État d'application de la ZLECAf entre pays
 
 > Généré par `scripts/build_bilateral_application_matrix.py` — ne pas éditer à la main.
-> Données : `reports/ETAT_APPLICATION_BILATERAL.json`, générées le 2026-09-29.
+> Données : `reports/ETAT_APPLICATION_BILATERAL.json`, générées le 2026-11-03.
 
 ## Ce que ce tableau répond
 
@@ -56,7 +56,7 @@ accorderait une préférence que personne n'a constatée.
 | **Tunisie** (TUN) | 8 | Tarif Web 2026, douane.gov.tn | primaire — portail tarifaire officiel scellé dans le dépôt |
 | **Afrique du Sud** (ZAF) | 13 | « Update on the AfCFTA », the dtic / SARS, newsletter mars 2026 | officielle — publication gouvernementale, non un acte réglementaire |
 
-**Réserve — Tunisie** : Les origines sont établies, mais le SENS du taux préférentiel publié ne l'est pas (40 % affiché contre 36 % de NPF). Une case ACCORDEE dit ici que la Tunisie sert cette origine sous régime ZLECAf, pas quel droit en résulte.
+**Réserve — Tunisie** : Le taux publié est un coefficient du texte TA n°016/2023 : le droit servi est ce coefficient appliqué au droit de base 2019, plafonné au NPF (TUN_droit_de_base_2019_2026-10-03.json).
 
 **Réserve — Afrique du Sud** : Les membres de la SACU et de la SADC sont volontairement absents : l'Afrique du Sud échange avec eux sous ces régimes, pas sous la ZLECAf. Leur absence n'est donc pas un refus de préférence.
 

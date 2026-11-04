@@ -9,6 +9,7 @@ import RegulatoryQAPanel from './RegulatoryQAPanel';
 import { regulatoryApi } from '../../services/api-v2';
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { toast } from '../../hooks/use-toast';
+import { pick } from '../../i18n/lang';
 
 // Mirrors backend _ACTIVE_MANDATE_STATUSES (regulatory_compliance_service.py):
 // only these mandate_status values are a confirmed, currently active mandate.
@@ -53,6 +54,13 @@ const TRANSPORT_MODE_LABELS = {
     ROUTIER: 'Road',
     FERROVIAIRE: 'Rail',
     MULTIMODAL: 'Multimodal',
+  },
+  ar: {
+    MARITIME: 'بحري',
+    AERIEN: 'جوي',
+    ROUTIER: 'بري (طرقي)',
+    FERROVIAIRE: 'سككي',
+    MULTIMODAL: 'متعدد الوسائط',
   },
 };
 
@@ -161,12 +169,64 @@ const TEXTS = {
       transport: 'Transport',
     },
   },
+  ar: {
+    title: 'الإجراءات الخاصة ومقدّمو الخدمات المفوَّضون',
+    description:
+      'الرقابة الإلزامية عند الاستيراد ومقدّمو الخدمات المفوَّضون رسميًا، حسب البلد — بمعزل عن حساب التعريفة لمنطقة التجارة الحرة القارية الأفريقية/الدولة الأولى بالرعاية (NPF).',
+    disclaimer:
+      'محاكاة إعلامية — غير ملزمة للإدارة الجمركية. لا يُعرض مقدّم الخدمة الخاص إلا بصفته جهة تنفيذ في حدود تفويض موثّق.',
+    selectPlaceholder: '🔍 اختر بلدًا',
+    selectAriaLabel: 'اختر بلدًا',
+    unavailableCountries: (n) =>
+      `بلدان إضافية عددها ${n} يتابعها السجل الرئيسي دون نشر مجموعة بيانات بعد (NOT_AVAILABLE).`,
+    loadError: 'تعذّر تحميل البيانات التنظيمية',
+    searchLabel: 'تصفية الإجراءات المعروضة',
+    searchPlaceholder: 'الإجراء، مقدّم الخدمة، الوثيقة، رمز SH…',
+    transportFilterLabel: 'وسيلة النقل',
+    allTransportModes: 'جميع الوسائل',
+    noMeasures: 'لا يوجد إجراء مطابق لمعيار التصفية هذا.',
+    selectCountryFirst: 'اختر بلدًا لعرض إجراءاته.',
+    authority: 'الجهة المختصة',
+    platform: 'المنصة',
+    legalReference: 'المرجع القانوني',
+    documents: 'الوثائق',
+    fees: 'الرسوم التنظيمية',
+    feesNotAvailable: 'غير متاح (لا تُختلق البيانات)',
+    mandatedActors: 'مقدّمو الخدمات المفوَّضون',
+    historicalActors: 'تفويضات غير سارية — منتهية أو غير مؤكَّدة (السجل)',
+    mandatingAuthority: 'الجهة المانحة للتفويض',
+    mandateStatus: 'حالة التفويض',
+    mandateDuration: 'المدة',
+    deliveredDocument: 'الوثيقة المسلَّمة',
+    evidence: 'أدلة مؤرَّخة',
+    exportCsv: 'تصدير CSV',
+    exportJson: 'تصدير JSON',
+    asOf: 'الوضع بتاريخ',
+    scope: 'النطاق',
+    products: 'المنتجات',
+    transport: 'النقل',
+    mandatedActorStatus: 'مقدّم الخدمة المفوَّض',
+    mandatedActorStatusNotApplicable:
+      'لا يوجد مقدّم خدمة مفوَّض حتى الآن: يؤكد المصدر أن الإدارة تتولى هذا الإجراء مباشرة.',
+    mandatedActorStatusNotAvailable:
+      'لا يوجد مقدّم خدمة نشط حاليًا مؤكَّد بمصدر — ولا يعني ذلك ثبوت عدم وجوده.',
+    csvColumns: {
+      country: 'البلد',
+      record_id: 'المعرّف',
+      measure_name: 'الإجراء',
+      scope_type: 'نوع النطاق',
+      verification_status: 'الحالة',
+      mandated_actor_status: 'مقدّم الخدمة المفوَّض',
+      authority: 'الجهة المختصة',
+      transport: 'النقل',
+    },
+  },
 };
 
 function countryLabel(iso3, language) {
   const entry = AFRICAN_COUNTRIES[iso3];
   if (!entry) return iso3;
-  return `${entry.flag} ${language === 'fr' ? entry.name_fr : entry.name_en}`;
+  return `${entry.flag} ${pick(language, entry.name_fr, entry.name_en, entry.name_ar)}`;
 }
 
 // N'autorise que http(s) pour tout lien externe rendu depuis des données
@@ -306,7 +366,7 @@ export default function RegulatoryComplianceTab({ language = 'fr' }) {
         </CardHeader>
         <CardContent className="space-y-4">
           <Alert>
-            <AlertTitle>{language === 'fr' ? 'Avertissement' : 'Disclaimer'}</AlertTitle>
+            <AlertTitle>{pick(language, 'Avertissement', 'Disclaimer', 'تنبيه')}</AlertTitle>
             <AlertDescription>{t.disclaimer}</AlertDescription>
           </Alert>
 

@@ -2,6 +2,10 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
+import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
+
+const CORRIDOR_TYPE_AR = { road: 'طريق بري', rail: 'سكك حديدية', multimodal: 'متعدد الوسائط' };
 
 const formatNumber = (num) => {
   if (num === null || num === undefined) return 'N/A';
@@ -57,6 +61,19 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
       priority: "Priority",
       tonsYear: "tons/year",
       hours: "hours"
+    },
+    ar: {
+      length: "الطول",
+      status: "الحالة",
+      annualFreight: "الشحن السنوي",
+      transitTime: "مدة العبور",
+      nodes: "العُقد",
+      operators: "المشغلون",
+      infrastructure: "البنية التحتية",
+      viewDetails: "عرض التفاصيل الكاملة",
+      priority: "ذو أولوية",
+      tonsYear: "طن/سنة",
+      hours: "ساعة"
     }
   };
 
@@ -74,7 +91,7 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
           <div className="flex-1">
             <CardTitle className="text-lg font-bold text-[var(--text)] flex items-center gap-2">
               <span>{getTypeIcon(corridor.corridor_type)}</span>
-              <span>{corridor.corridor_name}</span>
+              <span>{trDonnee(corridor.corridor_name, language)}</span>
             </CardTitle>
             <CardDescription className="text-sm mt-1">
               {corridor.countries_spanned?.join(' → ')}
@@ -82,7 +99,7 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
           </div>
           <div className="flex flex-col gap-1 items-end">
             <Badge className={getTypeColor(corridor.corridor_type)}>
-              {corridor.corridor_type}
+              {pick(language, corridor.corridor_type, corridor.corridor_type, CORRIDOR_TYPE_AR[corridor.corridor_type] || corridor.corridor_type)}
             </Badge>
             {corridor.importance === 'high' && (
               <Badge className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]">⭐ {t.priority}</Badge>
@@ -101,7 +118,7 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
           <div className="bg-[var(--afcfta-card2)] p-2 rounded">
             <p className="text-xs font-semibold text-[var(--text)]">🚦 {t.status}</p>
             <Badge className={getStatusColor(corridor.status)} variant="outline">
-              {corridor.status}
+              {trDonnee(corridor.status, language)}
             </Badge>
           </div>
         </div>
@@ -147,7 +164,7 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
           <div className="bg-[var(--afcfta-card2)] p-2 rounded mb-4">
             <p className="text-xs text-[var(--text)]">
               <span className="font-semibold">🔧 {t.infrastructure}: </span>
-              {corridor.infra_details.substring(0, 80)}{corridor.infra_details.length > 80 ? '...' : ''}
+              {trDonnee(corridor.infra_details, language).substring(0, 80)}{trDonnee(corridor.infra_details, language).length > 80 ? '...' : ''}
             </p>
           </div>
         )}

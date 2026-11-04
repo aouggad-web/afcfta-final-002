@@ -4,6 +4,8 @@ import { Badge } from '../ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { intlLocale } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 export default function AirportDetailsModal({ airport, open, onClose, language = 'fr' }) {
   const texts = {
@@ -74,6 +76,40 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
       noHistorical: "No historical data available",
       dataSource: "Data source",
       sourceText: "IATA Cargo Database 2023 | ACI World Airport Traffic Report | National Civil Aviation Authorities"
+    },
+    ar: {
+      cargoFreight: "شحن البضائع",
+      mail: "البريد",
+      movements: "الحركات",
+      cargoAircraft: "طائرة شحن",
+      annualCapacity: "الطاقة السنوية",
+      tonsYear: "طن/سنة",
+      tons: "طن",
+      cargoInfrastructure: "البنية التحتية للشحن",
+      cargoTerminalArea: "مساحة محطة الشحن",
+      gpsCoordinates: "إحداثيات GPS",
+      notes: "ملاحظات",
+      cargoActors: "فاعلو الشحن",
+      routes: "الخطوط",
+      historicalStats: "الإحصائيات التاريخية",
+      airCargoActors: "فاعلو الشحن الجوي",
+      cargoAirlines: "شركات الشحن الجوي",
+      handlersGround: "المناولة والخدمات الأرضية",
+      forwarders: "وكلاء العبور والشحن",
+      noActors: "لا يوجد فاعلون مسجلون",
+      regularCargoRoutes: "خطوط الشحن المنتظمة",
+      destination: "الوجهة",
+      carrier: "المشغّل",
+      frequency: "التواتر",
+      aircraftType: "نوع الطائرة",
+      noRoutes: "لا توجد خطوط منتظمة مسجلة",
+      cargoEvolution: "تطور شحن البضائع",
+      tonsPerYear: "طن في السنة",
+      mailEvolution: "تطور البريد",
+      movementsEvolution: "حركات الشحن في السنة",
+      noHistorical: "لا توجد بيانات تاريخية",
+      dataSource: "مصدر البيانات",
+      sourceText: "قاعدة بيانات الشحن لـ IATA 2023 | تقرير حركة المطارات العالمية لـ ACI | الهيئات الوطنية للطيران المدني"
     }
   };
 
@@ -81,9 +117,7 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
 
   const formatNumber = (num) => {
     if (num === null || num === undefined) return 'N/A';
-    return language === 'en' 
-      ? new Intl.NumberFormat('en-US').format(num)
-      : new Intl.NumberFormat('fr-FR').format(num);
+    return new Intl.NumberFormat(intlLocale(language)).format(num);
   };
 
   if (!airport) return null;
@@ -97,13 +131,13 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-[var(--info)] flex items-center gap-2">
             <span>✈️</span>
-            {airport.airport_name}
+            {trDonnee(airport.airport_name, language)}
             {airport.iata_code && (
               <Badge variant="outline" className="ml-2 text-sm">{airport.iata_code}</Badge>
             )}
           </DialogTitle>
           <DialogDescription className="flex gap-2 mt-2">
-            <Badge className="bg-sky-600">{airport.country_name}</Badge>
+            <Badge className="bg-sky-600">{trDonnee(airport.country_name, language)}</Badge>
             <Badge variant="outline">{airport.icao_code}</Badge>
           </DialogDescription>
         </DialogHeader>
@@ -172,7 +206,7 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
               <div className="mt-4 p-3 bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] rounded-lg">
                 <p className="text-sm text-[var(--text)]">
                   <span className="font-semibold">💡 {t.notes}: </span>
-                  {airport.cargo_infra_notes}
+                  {trDonnee(airport.cargo_infra_notes, language)}
                 </p>
               </div>
             )}
@@ -207,7 +241,7 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
                             <span className="text-lg">✈️</span>
                             <div className="flex-1">
                               <p className="font-semibold text-sm">{actor.actor_name}</p>
-                              <p className="text-xs text-[var(--afcfta-muted)]">{actor.group}</p>
+                              <p className="text-xs text-[var(--afcfta-muted)]">{trDonnee(actor.group, language)}</p>
                             </div>
                           </div>
                         ))}
@@ -226,7 +260,7 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
                               <span className="text-lg">🔧</span>
                               <div className="flex-1">
                                 <p className="font-semibold text-sm">{actor.actor_name}</p>
-                                <p className="text-xs text-[var(--afcfta-muted)]">{actor.group}</p>
+                                <p className="text-xs text-[var(--afcfta-muted)]">{trDonnee(actor.group, language)}</p>
                               </div>
                             </div>
                           ))}
@@ -246,7 +280,7 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
                               <span className="text-lg">📦</span>
                               <div className="flex-1">
                                 <p className="font-semibold text-sm">{actor.actor_name}</p>
-                                <p className="text-xs text-[var(--afcfta-muted)]">{actor.group}</p>
+                                <p className="text-xs text-[var(--afcfta-muted)]">{trDonnee(actor.group, language)}</p>
                               </div>
                             </div>
                           ))}
@@ -284,7 +318,7 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
                           <tr key={idx} className="border-b hover:bg-[var(--afcfta-card2)]">
                             <td className="p-3 font-semibold">{route.destination_airport}</td>
                             <td className="p-3">{route.airline}</td>
-                            <td className="p-3">{route.frequency}</td>
+                            <td className="p-3">{trDonnee(route.frequency, language)}</td>
                             <td className="p-3">{route.aircraft_type}</td>
                           </tr>
                         ))}

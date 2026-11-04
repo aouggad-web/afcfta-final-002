@@ -11,6 +11,9 @@ import {
 import { Search, Loader2, TrendingUp, TrendingDown, Minus, FileDown, Moon } from 'lucide-react';
 import { buildTradeReportPdf, tradeReportFilename } from '../../utils/tradeReportPdf';
 import { montantCompact, nombreCompact, chiffres } from '../../utils/nombres';
+import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
+import { pick, isRtl } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -31,6 +34,7 @@ const fmtTonnes = (v, language) => {
 const MATCH_LEVEL_LABEL = {
   fr: { hs6: 'SH6 exact', hs4: 'Aggrégat SH4', hs2: 'Chapitre SH2', none: 'Aucune correspondance' },
   en: { hs6: 'Exact HS6', hs4: 'HS4 aggregate', hs2: 'HS2 chapter', none: 'No match' },
+  ar: { hs6: 'SH6 مطابق', hs4: 'تجميع SH4', hs2: 'الفصل SH2', none: 'لا توجد مطابقة' },
 };
 
 const LEVEL_LEN = { hs2: 2, hs4: 4, hs6: 6 };
@@ -103,6 +107,39 @@ const TXT = {
     hintByLevel: { hs2: '2 digits (e.g. 27)', hs4: '4 digits (e.g. 2710)', hs6: '6 digits (e.g. 270900)' },
     selectCodePrompt: 'Select a code in an HS2 / HS4 / HS6 tab to view its title.',
   },
+  ar: {
+    title: 'التجارة حسب البلد ورمز SH6 — آخر 5 سنوات',
+    subtitle: 'المصدر: OEC / BACI (HS Rev. 2017). بيانات جمركية رسمية (USD)',
+    country: 'البلد',
+    hsCode: 'رمز SH6',
+    hsPlaceholder: 'مثال: 271019، 870321، 760900',
+    years: 'السنوات',
+    fetch: 'بحث',
+    loading: 'جارٍ تحميل بيانات OEC…',
+    selectCountry: 'اختر بلدًا',
+    year: 'السنة',
+    exports: 'الصادرات',
+    imports: 'الواردات',
+    balance: 'الميزان التجاري',
+    totalExports: 'الصادرات التراكمية',
+    totalImports: 'الواردات التراكمية',
+    cumulativeBalance: 'الميزان التراكمي',
+    avgGrowth: 'متوسط النمو',
+    qtyExports: 'حجم الصادرات',
+    qtyImports: 'حجم الواردات',
+    qtyNote: 'الأحجام: الوزن الصافي (بالأطنان) — المصدر BACI',
+    noData: 'لا توجد بيانات OEC لهذا الرمز في هذا البلد.',
+    error: 'خطأ في الاسترجاع',
+    inputError: 'أدخل رمز SH صالحًا ثم انقر على بحث.',
+    hs4Label: 'SH4',
+    hs6Label: 'SH6',
+    productsFound: 'بنود فرعية تم العثور عليها',
+    tabHs2: 'الفصل (SH2)', tabHs4: 'البند (SH4)', tabHs6: 'البند الفرعي (SH6)', tabLabel: 'التسمية',
+    labelTitle: 'تسمية رمز SH المحدد', chapterLbl: 'الفصل', headingLbl: 'البند', subheadingLbl: 'البند الفرعي',
+    categoryLbl: 'الفئة', sensitivityLbl: 'الحساسية', noLabel: 'لم يتم العثور على تسمية لهذا الرمز.', enOnly: 'EN',
+    hintByLevel: { hs2: 'رقمان (مثال: 27)', hs4: '4 أرقام (مثال: 2710)', hs6: '6 أرقام (مثال: 270900)' },
+    selectCodePrompt: 'اختر رمزًا في أحد تبويبات SH2 / SH4 / SH6 لعرض تسميته.',
+  },
 };
 
 export default function CountryHS6History({ language = 'fr' }) {
@@ -130,14 +167,14 @@ export default function CountryHS6History({ language = 'fr' }) {
           .filter((c) => c.iso3_code || c.iso3)
           .map((c) => ({
             iso3: c.iso3_code || c.iso3,
-            name: c.name || c.country_name || c.iso3_code,
+            name: pick(language, null, null, AFRICAN_COUNTRIES[c.iso3_code || c.iso3]?.name_ar) || c.name || c.country_name || c.iso3_code,
           }))
           .sort((a, b) => a.name.localeCompare(b.name));
         setCountries(list);
       })
       .catch(() => setCountries([]));
     return () => { cancelled = true; };
-  }, []);
+  }, [language]);
 
   const runQuery = async (lvl = searchLevel, codeStr = hsCode) => {
     const need = LEVEL_LEN[lvl];
@@ -215,14 +252,16 @@ export default function CountryHS6History({ language = 'fr' }) {
     if (!data || !data.chart_rows || data.chart_rows.length === 0) return;
     setExportingTheme(themeName);
     try {
+      // jsPDF n'a pas de police arabe : en arabe, le rapport sort en français.
+      const pdfLang = isRtl(language) ? 'fr' : language;
       const doc = buildTradeReportPdf({
         data,
         totals,
-        language,
+        language: pdfLang,
         levelLen: LEVEL_LEN[searchLevel],
-        matchLevelLabel: (MATCH_LEVEL_LABEL[language] || MATCH_LEVEL_LABEL.fr)[data.match_level] || '',
-        fmtUSD: (v) => fmtUSD(v, language),
-        fmtTonnes: (v) => fmtTonnes(v, language),
+        matchLevelLabel: (MATCH_LEVEL_LABEL[pdfLang] || MATCH_LEVEL_LABEL.fr)[data.match_level] || '',
+        fmtUSD: (v) => fmtUSD(v, pdfLang),
+        fmtTonnes: (v) => fmtTonnes(v, pdfLang),
         theme: themeName,
       });
       doc.save(`${tradeReportFilename(data)}_${themeName}.pdf`);
@@ -300,7 +339,7 @@ export default function CountryHS6History({ language = 'fr' }) {
         </label>
         <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontWeight: 700, letterSpacing: 0.4 }}>
-            {`Code SH${LEVEL_LEN[searchLevel]}`}
+            {pick(language, `Code SH${LEVEL_LEN[searchLevel]}`, `Code SH${LEVEL_LEN[searchLevel]}`, `رمز SH${LEVEL_LEN[searchLevel]}`)}
           </span>
           <input
             data-testid="hs6-code-input"
@@ -390,7 +429,7 @@ export default function CountryHS6History({ language = 'fr' }) {
                 </div>
               )}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 16px', paddingTop: 10, borderTop: '1px solid var(--goldSoft)', marginTop: 8 }}>
-                <LabelMeta k={t.chapterLbl} v={`${labelData.chapter} — ${language === 'fr' ? labelData.chapter_name_fr : labelData.chapter_name_en}`} />
+                <LabelMeta k={t.chapterLbl} v={`${labelData.chapter} — ${pick(language, labelData.chapter_name_fr, labelData.chapter_name_en, labelData.chapter_name_fr)}`} />
                 {labelData.heading && <LabelMeta k={t.headingLbl} v={`${labelData.heading}${labelData.heading_name_en ? ' — ' + labelData.heading_name_en : ''}`} />}
                 {labelData.category && <LabelMeta k={t.categoryLbl} v={labelData.category} />}
                 {labelData.sensitivity && <LabelMeta k={t.sensitivityLbl} v={labelData.sensitivity} />}
@@ -549,13 +588,13 @@ export default function CountryHS6History({ language = 'fr' }) {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', padding: '0 16px 14px' }}>
             <p className="stats-source-note" style={{ margin: 0, flex: '1 1 auto' }}>
-              {data.source} · {data.country_name} · HS {data.hs_code} · {data.currency}
+              {data.source} · {trDonnee(data.country_name, language)} · HS {data.hs_code} · {data.currency}
             </p>
             <button
               data-testid="hs6-export-pdf-light"
               onClick={() => exportToPDF('light')}
               disabled={exportingTheme != null}
-              title={language === 'fr' ? 'Fiche PDF claire — optimisée impression' : 'Light PDF sheet — optimized for printing'}
+              title={pick(language, 'Fiche PDF claire — optimisée impression', 'Light PDF sheet — optimized for printing', 'ملف PDF فاتح — مُحسَّن للطباعة')}
               style={{
                 padding: '7px 14px',
                 borderRadius: 8,
@@ -573,13 +612,13 @@ export default function CountryHS6History({ language = 'fr' }) {
               }}
             >
               {exportingTheme === 'light' ? <Loader2 size={14} className="animate-spin" /> : <FileDown size={14} />}
-              {language === 'fr' ? 'PDF · Clair' : 'PDF · Light'}
+              {pick(language, 'PDF · Clair', 'PDF · Light', 'PDF · فاتح')}
             </button>
             <button
               data-testid="hs6-export-pdf-dark"
               onClick={() => exportToPDF('dark')}
               disabled={exportingTheme != null}
-              title={language === 'fr' ? 'Fiche PDF sombre — aligné sur le rendu à l’écran' : 'Dark PDF sheet — matches the on-screen look'}
+              title={pick(language, 'Fiche PDF sombre — aligné sur le rendu à l’écran', 'Dark PDF sheet — matches the on-screen look', 'ملف PDF داكن — مطابق للعرض على الشاشة')}
               style={{
                 padding: '7px 14px',
                 borderRadius: 8,
@@ -597,7 +636,7 @@ export default function CountryHS6History({ language = 'fr' }) {
               }}
             >
               {exportingTheme === 'dark' ? <Loader2 size={14} className="animate-spin" /> : <Moon size={14} />}
-              {language === 'fr' ? 'PDF · Sombre' : 'PDF · Dark'}
+              {pick(language, 'PDF · Sombre', 'PDF · Dark', 'PDF · داكن')}
             </button>
             <button
               data-testid="hs6-to-opportunities"
@@ -614,7 +653,7 @@ export default function CountryHS6History({ language = 'fr' }) {
                 flexShrink: 0,
               }}
             >
-              {language === 'fr' ? 'Analyser dans Opportunités ▸' : 'Analyze in Opportunities ▸'}
+              {pick(language, 'Analyser dans Opportunités ▸', 'Analyze in Opportunities ▸', 'تحليل في قسم الفرص ◂')}
             </button>
           </div>
         </>

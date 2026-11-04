@@ -13,9 +13,9 @@ Lignes servies par position (fiche CPV_pauta_IVA_ICE_2026-10-12.json) :
   taxes sauf l'ICE lui-même) ;
 - ICE spécifique en CVE par unité des véhicules de l'annexe II de la Lei 69/X/2025 ;
 - taxe spécifique de 180$00 par paquet de cigarettes (Lei 69/X/2025, art. 90) ;
-- taxe spécifique en CVE par litre sur les boissons alcooliques (art. 91), dont
-  le barème n'est pas dans les textes déposés : ligne sans montant, total déclaré
-  incomplet ;
+- taxe spécifique en CVE par litre sur les boissons alcooliques (art. 91), ligne
+  sans montant ici : scripts/build_socle.py y pose le barème de la Lei n.º
+  45/X/2024 (fiche CPV_taxe_alcool_2026-11-02.json) ;
 - IVA 15 % ou 0 (« Is ») sur la valeur en douane + tous les droits et taxes
   sauf l'IVA (Regulamento do IVA, art. 16).
 

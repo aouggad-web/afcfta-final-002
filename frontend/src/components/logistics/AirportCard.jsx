@@ -1,6 +1,8 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
+import { pick, intlLocale } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 export default function AirportCard({ airport, onOpenDetails, language = 'fr' }) {
   const texts = {
@@ -27,6 +29,18 @@ export default function AirportCard({ airport, onOpenDetails, language = 'fr' })
       cargoAirlines: "Cargo Airlines",
       regularRoutes: "Regular Routes",
       viewDetails: "View full details"
+    },
+    ar: {
+      freightCargo: "الشحن (البضائع)",
+      mail: "البريد",
+      movements: "الحركات",
+      tonsYear: "طن/سنة",
+      aircraftYear: "طائرة/سنة",
+      annualCapacity: "الطاقة السنوية",
+      cargoTerminal: "محطة الشحن",
+      cargoAirlines: "شركات الشحن الجوي",
+      regularRoutes: "الخطوط المنتظمة",
+      viewDetails: "عرض التفاصيل الكاملة"
     }
   };
 
@@ -34,9 +48,7 @@ export default function AirportCard({ airport, onOpenDetails, language = 'fr' })
 
   const formatNumber = (num) => {
     if (num === null || num === undefined) return 'N/A';
-    return language === 'en'
-      ? new Intl.NumberFormat('en-US').format(num)
-      : new Intl.NumberFormat('fr-FR').format(num);
+    return new Intl.NumberFormat(intlLocale(language)).format(num);
   };
 
   const stats = airport?.historical_stats?.[0] || {};
@@ -46,13 +58,13 @@ export default function AirportCard({ airport, onOpenDetails, language = 'fr' })
       <CardHeader className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] border-b">
         <CardTitle className="text-xl font-bold text-[var(--info)] flex items-center gap-2">
           <span>✈️</span>
-          <span>{airport.airport_name}</span>
+          <span>{trDonnee(airport.airport_name, language)}</span>
           {airport.iata_code && (
             <span className="text-sm font-normal text-[var(--afcfta-muted)]">({airport.iata_code})</span>
           )}
         </CardTitle>
         <CardDescription className="text-sm">
-          <span className="font-semibold">{airport.country_name}</span> • 
+          <span className="font-semibold">{trDonnee(airport.country_name, language)}</span> • 
           <span className="ml-2 text-[var(--info)]">{airport.icao_code}</span>
         </CardDescription>
       </CardHeader>
@@ -94,7 +106,7 @@ export default function AirportCard({ airport, onOpenDetails, language = 'fr' })
           <div className="bg-[var(--afcfta-card2)] p-2 rounded">
             <p className="text-xs font-semibold text-[var(--text)]">📊 {t.annualCapacity}</p>
             <p className="text-sm font-bold text-[var(--text)]">
-              {formatNumber(airport.annual_capacity_tons)} t/{language === 'en' ? 'yr' : 'an'}
+              {formatNumber(airport.annual_capacity_tons)} {pick(language, 't/an', 't/yr', 'طن/سنة')}
             </p>
           </div>
           <div className="bg-[var(--afcfta-card2)] p-2 rounded">

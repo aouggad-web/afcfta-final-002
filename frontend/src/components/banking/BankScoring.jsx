@@ -40,6 +40,22 @@ const texts = {
     services: 'Services',
     correspondents: 'Correspondents',
   },
+  ar: {
+    title: '🏦 تقييم مصرفي متقدم',
+    subtitle: 'تقييم المصارف وترتيبها لمعاملتك (الخيار 2)',
+    countryLabel: 'البلد',
+    amountLabel: 'المبلغ (USD)',
+    typeLabel: 'النوع',
+    submit: 'تقييم',
+    loading: 'جارٍ التقييم…',
+    error: 'خطأ',
+    banks: 'المصارف المصنفة',
+    score: 'الدرجة',
+    suitability: 'الملاءمة',
+    strengths: 'نقاط القوة',
+    services: 'الخدمات',
+    correspondents: 'المصارف المراسلة',
+  },
 };
 
 export default function BankScoring({ language = 'en' }) {

@@ -7,6 +7,7 @@
 
 import React, { useState } from 'react';
 import { useInvestmentRecommendations, useInvestmentScore } from '../../hooks/useInvestmentRecommendations';
+import { pick } from '../../i18n/lang';
 
 // Colour helpers
 const gradeColor = (grade) => {
@@ -31,7 +32,7 @@ const scoreBar = (score) => (
 // ---------------------------------------------------------------------------
 // Recommendation Card
 // ---------------------------------------------------------------------------
-function RecommendationCard({ rec, rank }) {
+function RecommendationCard({ rec, rank, language }) {
   const [expanded, setExpanded] = useState(false);
   const score = rec.score || {};
 
@@ -107,7 +108,7 @@ function RecommendationCard({ rec, rank }) {
           {(rec.key_advantages || []).length > 0 && (
             <div style={{ marginBottom: '0.75rem' }}>
               <strong style={{ fontSize: '0.75rem', color: '#1A365D', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Key Advantages
+                {pick(language, 'Key Advantages', 'Key Advantages', 'المزايا الرئيسية')}
               </strong>
               <ul style={{ margin: '0.4rem 0 0', paddingLeft: '1.2rem', fontSize: '0.8rem', color: '#4A5568' }}>
                 {rec.key_advantages.map((adv, i) => <li key={i}>{adv}</li>)}
@@ -118,7 +119,7 @@ function RecommendationCard({ rec, rank }) {
           {(score.risk_factors || []).length > 0 && (
             <div>
               <strong style={{ fontSize: '0.75rem', color: '#EF4444', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Risk Factors
+                {pick(language, 'Risk Factors', 'Risk Factors', 'عوامل المخاطر')}
               </strong>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginTop: '0.4rem' }}>
                 {score.risk_factors.map((r, i) => (
@@ -145,17 +146,17 @@ function RecommendationCard({ rec, rank }) {
 // ---------------------------------------------------------------------------
 // Sector Score Widget
 // ---------------------------------------------------------------------------
-function SectorScoreWidget({ country, sector }) {
+function SectorScoreWidget({ country, sector, language }) {
   const { score, loading, error } = useInvestmentScore(country, sector);
 
-  if (loading) return <div style={{ color: '#94A3B8', fontSize: '0.85rem' }}>Calculating…</div>;
-  if (error)   return <div style={{ color: '#EF4444', fontSize: '0.85rem' }}>Score unavailable</div>;
+  if (loading) return <div style={{ color: '#94A3B8', fontSize: '0.85rem' }}>{pick(language, 'Calculating…', 'Calculating…', 'جارٍ الحساب…')}</div>;
+  if (error)   return <div style={{ color: '#EF4444', fontSize: '0.85rem' }}>{pick(language, 'Score unavailable', 'Score unavailable', 'الدرجة غير متاحة')}</div>;
   if (!score)  return null;
 
   return (
     <div style={{ background: '#F8FAFC', borderRadius: '10px', padding: '0.75rem 1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
-        <span style={{ fontWeight: 600, color: '#1A365D', textTransform: 'capitalize' }}>{sector}</span>
+        <span style={{ fontWeight: 600, color: '#1A365D', textTransform: 'capitalize' }}>{pick(language, sector, sector, SECTOR_AR[sector] || sector)}</span>
         <span style={{
           color: gradeColor(score.grade),
           fontWeight: 700,
@@ -177,6 +178,15 @@ function SectorScoreWidget({ country, sector }) {
 // ---------------------------------------------------------------------------
 
 const SECTORS = ['general', 'agriculture', 'manufacturing', 'ict', 'energy', 'logistics', 'textiles'];
+const SECTOR_AR = {
+  general: 'عام',
+  agriculture: 'الزراعة',
+  manufacturing: 'الصناعة التحويلية',
+  ict: 'تكنولوجيا المعلومات والاتصالات',
+  energy: 'الطاقة',
+  logistics: 'اللوجستيك',
+  textiles: 'المنسوجات',
+};
 
 export default function AIInvestmentDashboard({ language = 'fr' }) {
   const [userProfile, setUserProfile] = useState({
@@ -216,6 +226,18 @@ export default function AIInvestmentDashboard({ language = 'fr' }) {
       noRecs: 'No recommendations available',
       lastUpdated: 'Last updated:',
     },
+    ar: {
+      title: 'تحليلات الاستثمار بالذكاء الاصطناعي',
+      sector: 'القطاع',
+      risk: 'تحمّل المخاطر',
+      apply: 'تطبيق',
+      refresh: 'تحديث',
+      recs: 'توصيات مخصصة',
+      preview: 'معاينة البلد',
+      loading: 'جارٍ التحليل…',
+      noRecs: 'لا توجد توصيات متاحة',
+      lastUpdated: 'آخر تحديث:',
+    },
   };
   const t = labels[language] || labels.en;
 
@@ -244,7 +266,7 @@ export default function AIInvestmentDashboard({ language = 'fr' }) {
             onChange={e => setProfileDraft(p => ({ ...p, sector: e.target.value }))}
             style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid #E2E8F0' }}
           >
-            {SECTORS.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
+            {SECTORS.map(s => <option key={s} value={s}>{pick(language, s.charAt(0).toUpperCase() + s.slice(1), s.charAt(0).toUpperCase() + s.slice(1), SECTOR_AR[s])}</option>)}
           </select>
         </div>
 
@@ -257,9 +279,9 @@ export default function AIInvestmentDashboard({ language = 'fr' }) {
             onChange={e => setProfileDraft(p => ({ ...p, riskTolerance: e.target.value }))}
             style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid #E2E8F0' }}
           >
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
+            <option value="low">{pick(language, 'Low', 'Low', 'منخفض')}</option>
+            <option value="medium">{pick(language, 'Medium', 'Medium', 'متوسط')}</option>
+            <option value="high">{pick(language, 'High', 'High', 'مرتفع')}</option>
           </select>
         </div>
 
@@ -314,6 +336,7 @@ export default function AIInvestmentDashboard({ language = 'fr' }) {
                 key={`${rec.country}-${rec.sector}`}
                 rec={rec}
                 rank={rec.rank || i + 1}
+                language={language}
               />
             ))}
           </div>
@@ -331,7 +354,7 @@ export default function AIInvestmentDashboard({ language = 'fr' }) {
             <input
               value={previewCountry}
               onChange={e => setPreviewCountry(e.target.value.toUpperCase().slice(0, 3))}
-              placeholder="Country code (e.g. MAR)"
+              placeholder={pick(language, 'Country code (e.g. MAR)', 'Country code (e.g. MAR)', 'رمز البلد (مثال: MAR)')}
               style={{
                 width: '100%',
                 padding: '0.6rem',
@@ -345,7 +368,7 @@ export default function AIInvestmentDashboard({ language = 'fr' }) {
             />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {SECTORS.slice(0, 5).map(s => (
-                <SectorScoreWidget key={s} country={previewCountry} sector={s} />
+                <SectorScoreWidget key={s} country={previewCountry} sector={s} language={language} />
               ))}
             </div>
           </div>
@@ -359,7 +382,7 @@ export default function AIInvestmentDashboard({ language = 'fr' }) {
             onClick={() => setLimit(l => l + 8)}
             style={{ background: '#F1F5F9', color: '#1A365D', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '0.6rem 1.5rem', cursor: 'pointer', fontWeight: 600 }}
           >
-            Load More
+            {pick(language, 'Load More', 'Load More', 'تحميل المزيد')}
           </button>
         </div>
       )}

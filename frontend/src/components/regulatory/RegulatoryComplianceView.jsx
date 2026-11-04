@@ -4,6 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Badge } from '../ui/badge';
 import { Input } from '../ui/input';
 import { Alert, AlertTitle, AlertDescription } from '../ui/alert';
+import { pick } from '../../i18n/lang';
 
 // Composant PRÉSENTIEL réutilisable : rend un objet `compliance` déjà chargé
 // (formalités d'importation + prestataires/mandataires + frais) sans effectuer
@@ -59,6 +60,7 @@ const STATUS_STYLES = {
 const TRANSPORT_MODE_LABELS = {
   fr: { MARITIME: 'Maritime', AERIEN: 'Aérien', ROUTIER: 'Routier', FERROVIAIRE: 'Ferroviaire', MULTIMODAL: 'Multimodal' },
   en: { MARITIME: 'Maritime', AERIEN: 'Air', ROUTIER: 'Road', FERROVIAIRE: 'Rail', MULTIMODAL: 'Multimodal' },
+  ar: { MARITIME: 'بحري', AERIEN: 'جوي', ROUTIER: 'بري (طرقي)', FERROVIAIRE: 'سككي', MULTIMODAL: 'متعدد الوسائط' },
 };
 
 const TEXTS = {
@@ -123,6 +125,37 @@ const TEXTS = {
       'No mandated provider to date: the source confirms the administration operates this formality directly.',
     mandatedActorStatusNotAvailable:
       "No currently active provider confirmed by a source — the absence of a provider isn't established either.",
+  },
+  ar: {
+    disclaimer:
+      'محاكاة إعلامية — غير ملزمة للإدارة الجمركية. لا يُعرض مقدّم الخدمة الخاص إلا بصفته جهة تنفيذ في حدود تفويض موثّق.',
+    searchPlaceholder: 'الإجراء، مقدّم الخدمة، الوثيقة، رمز SH…',
+    searchLabel: 'تصفية الإجراءات المعروضة',
+    transportFilterLabel: 'وسيلة النقل',
+    allTransportModes: 'جميع الوسائل',
+    noMeasures: 'لا يوجد إجراء مطابق لهذا الفلتر.',
+    noData: 'لم يُنشر بعد أي إجراء تنظيمي موثّق المصدر لهذا البلد (NOT_AVAILABLE — لا تُختلق البيانات أبدًا).',
+    authority: 'الجهة المختصة',
+    platform: 'المنصة',
+    legalReference: 'المرجع القانوني',
+    documents: 'الوثائق',
+    fees: 'الرسوم التنظيمية',
+    feesNotAvailable: 'غير متاح (لا تُختلق البيانات)',
+    mandatedActors: 'مقدّمو الخدمات المفوَّضون',
+    historicalActors: 'تفويضات غير سارية — منتهية أو غير مؤكَّدة (السجل)',
+    mandatingAuthority: 'الجهة المانحة للتفويض',
+    mandateDuration: 'المدة',
+    deliveredDocument: 'الوثيقة المسلَّمة',
+    evidence: 'أدلة مؤرَّخة',
+    asOf: 'الوضع في',
+    products: 'المنتجات',
+    transport: 'النقل',
+    mandatedActorStatus: 'مقدّم الخدمة المفوَّض',
+    authorizedFees: 'الرسوم المرخَّص بها لمقدّم الخدمة',
+    mandatedActorStatusNotApplicable:
+      'لا يوجد مقدّم خدمة مفوَّض حتى الآن: يؤكد المصدر أن الإدارة تتولى هذا الإجراء مباشرة.',
+    mandatedActorStatusNotAvailable:
+      'لا يوجد مقدّم خدمة نشط حاليًا مؤكَّد بمصدر — ولا يعني ذلك ثبوت عدم وجوده.',
   },
 };
 
@@ -349,7 +382,7 @@ export default function RegulatoryComplianceView({ compliance, language = 'fr', 
   return (
     <div className="space-y-4">
       <Alert>
-        <AlertTitle>{language === 'fr' ? 'Avertissement' : 'Disclaimer'}</AlertTitle>
+        <AlertTitle>{pick(language, 'Avertissement', 'Disclaimer', 'تنبيه')}</AlertTitle>
         <AlertDescription>{compliance.disclaimer || t.disclaimer}</AlertDescription>
       </Alert>
 

@@ -5,6 +5,8 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Ship, DollarSign, Clock, Anchor, BarChart3, Info, ExternalLink } from 'lucide-react';
 import { montant } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -31,10 +33,22 @@ function groupByRegion(list) {
   return groups;
 }
 
+// Régions renvoyées par l'API (en français) → arabe.
+const REGION_AR = {
+  'Afrique du Nord': 'شمال أفريقيا',
+  "Afrique de l'Ouest": 'غرب أفريقيا',
+  "Afrique de l'Est": 'شرق أفريقيا',
+  'Afrique Centrale': 'وسط أفريقيا',
+  'Afrique centrale': 'وسط أفريقيا',
+  'Afrique Australe': 'الجنوب الأفريقي',
+  'Afrique australe': 'الجنوب الأفريقي',
+  'Ports': 'الموانئ',
+};
+
 const CONTAINER_TYPES = [
-  { value: 'teu', label: '20\' Standard (TEU)', labelEn: "20' Standard (TEU)" },
-  { value: 'feu', label: '40\' Standard (FEU)', labelEn: "40' Standard (FEU)" },
-  { value: 'feu_hc', label: '40\' High Cube (FEU HC)', labelEn: "40' High Cube (FEU HC)" },
+  { value: 'teu', label: '20\' Standard (TEU)', labelEn: "20' Standard (TEU)", labelAr: "20 قدمًا قياسية (TEU)" },
+  { value: 'feu', label: '40\' Standard (FEU)', labelEn: "40' Standard (FEU)", labelAr: "40 قدمًا قياسية (FEU)" },
+  { value: 'feu_hc', label: '40\' High Cube (FEU HC)', labelEn: "40' High Cube (FEU HC)", labelAr: "40 قدمًا مرتفعة (FEU HC)" },
 ];
 
 const texts = {
@@ -107,6 +121,41 @@ const texts = {
     hideAllRoutes: 'Hide routes',
     selectOriginFirst: 'Select an origin port first',
     availableFrom: 'Routes available from',
+  },
+  ar: {
+    title: 'حاسبة الرسوم المينائية',
+    subtitle: 'بيانات فعلية 2024 — تعريفات منشورة من شركات الملاحة والسلطات المينائية',
+    origin: 'ميناء المنشأ',
+    destination: 'ميناء المقصد',
+    containerType: 'نوع الحاوية',
+    calculate: 'احسب الرسوم',
+    loading: 'جارٍ الحساب…',
+    result: 'تفصيل التكاليف',
+    oceanFreight: 'الشحن البحري',
+    originTHC: 'THC عند المغادرة',
+    destinationTHC: 'THC عند الوصول',
+    totalCost: 'التكلفة الإجمالية التقديرية',
+    distance: 'المسافة',
+    transitTime: 'مدة العبور',
+    carriers: 'شركات الملاحة',
+    frequency: 'التواتر',
+    days: 'يوم',
+    nm: 'ميل بحري',
+    source: 'المصدر',
+    notes: 'ملاحظات',
+    disclaimer: 'تنبيه',
+    noRoute: 'لم يُعثر على خط مباشر بين هذين الميناءين. يرجى اختيار زوج آخر.',
+    selectPorts: 'اختر ميناء المنشأ وميناء المقصد لحساب الرسوم.',
+    samePorts: 'يجب أن يختلف ميناء المنشأ عن ميناء المقصد.',
+    thcTitle: 'THC (رسوم مناولة المحطة)',
+    thcDesc: 'رسوم مناولة المحطة التي يفرضها الميناء، إضافة إلى الشحن البحري.',
+    dataYear: 'سنة البيانات',
+    allRoutes: 'جميع الخطوط المتاحة',
+    routesCount: 'خطًا مسجلًا',
+    viewAllRoutes: 'عرض جميع الخطوط',
+    hideAllRoutes: 'إخفاء الخطوط',
+    selectOriginFirst: 'اختر ميناء المنشأ أولًا',
+    availableFrom: 'الخطوط المتاحة من',
   },
 };
 
@@ -205,7 +254,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
 
   const containerLabel = (type) => {
     const ct = CONTAINER_TYPES.find(c => c.value === type);
-    return ct ? (language === 'fr' ? ct.label : ct.labelEn) : type;
+    return ct ? pick(language, ct.label, ct.labelEn, ct.labelAr) : type;
   };
 
   return (
@@ -237,10 +286,10 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
               >
                 <option value="">— {t.origin} —</option>
                 {Object.entries(groupByRegion(ports)).map(([region, list]) => (
-                  <optgroup key={region} label={region}>
+                  <optgroup key={region} label={pick(language, region, region, REGION_AR[region] || region)}>
                     {list.map(p => (
                       <option key={p.locode} value={p.locode}>
-                        {p.flag} {p.name} ({p.country})
+                        {p.flag} {trDonnee(p.name, language)} ({trDonnee(p.country, language)})
                       </option>
                     ))}
                   </optgroup>
@@ -262,10 +311,10 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                   {origin ? `— ${t.destination} —` : t.selectOriginFirst}
                 </option>
                 {Object.entries(groupByRegion(availableDestinations)).map(([region, list]) => (
-                  <optgroup key={region} label={region}>
+                  <optgroup key={region} label={pick(language, region, region, REGION_AR[region] || region)}>
                     {list.map(p => (
                       <option key={p.locode} value={p.locode}>
-                        {p.flag} {p.name} ({p.country})
+                        {p.flag} {trDonnee(p.name, language)} ({trDonnee(p.country, language)})
                       </option>
                     ))}
                   </optgroup>
@@ -283,7 +332,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
               >
                 {CONTAINER_TYPES.map(ct => (
                   <option key={ct.value} value={ct.value}>
-                    {language === 'fr' ? ct.label : ct.labelEn}
+                    {pick(language, ct.label, ct.labelEn, ct.labelAr)}
                   </option>
                 ))}
               </select>
@@ -322,7 +371,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
             <div className="flex flex-wrap gap-2 mt-1">
               <Badge variant="outline" className="text-xs">
                 <Anchor className="w-3 h-3 mr-1" />
-                {result.origin_port} → {result.destination_port}
+                {trDonnee(result.origin_port, language)}{pick(language, ' → ', ' → ', ' ← ')}{trDonnee(result.destination_port, language)}
               </Badge>
               <Badge variant="outline" className="text-xs">
                 {containerLabel(containerType)}
@@ -358,7 +407,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
               />
               {result.origin_thc_usd > 0 && (
                 <CostBar
-                  label={`${t.originTHC} (${result.origin_port})`}
+                  label={`${t.originTHC} (${trDonnee(result.origin_port, language)})`}
                   value={result.origin_thc_usd}
                   total={result.total_cost_usd}
                   color="bg-orange-400"
@@ -367,7 +416,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
               )}
               {result.destination_thc_usd > 0 && (
                 <CostBar
-                  label={`${t.destinationTHC} (${result.destination_port})`}
+                  label={`${t.destinationTHC} (${trDonnee(result.destination_port, language)})`}
                   value={result.destination_thc_usd}
                   total={result.total_cost_usd}
                   color="bg-purple-400"
@@ -404,7 +453,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
               </div>
               <div className="p-3 bg-[var(--afcfta-card)] rounded-lg border border-[var(--afcfta-border)]">
                 <p className="text-xs font-semibold text-[var(--afcfta-muted)] mb-1">{t.frequency}</p>
-                <p className="text-sm font-medium text-[var(--text)]">{result.frequency}</p>
+                <p className="text-sm font-medium text-[var(--text)]">{trDonnee(result.frequency, language)}</p>
               </div>
             </div>
 
@@ -451,21 +500,21 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
               <table className="w-full text-xs">
                 <thead>
                   <tr className="border-b bg-[var(--afcfta-card2)]">
-                    <th className="text-left p-2 font-semibold text-[var(--afcfta-muted)]">Origine</th>
-                    <th className="text-left p-2 font-semibold text-[var(--afcfta-muted)]">Destination</th>
+                    <th className="text-left p-2 font-semibold text-[var(--afcfta-muted)]">{pick(language, 'Origine', 'Origine', 'المنشأ')}</th>
+                    <th className="text-left p-2 font-semibold text-[var(--afcfta-muted)]">{pick(language, 'Destination', 'Destination', 'المقصد')}</th>
                     <th className="text-right p-2 font-semibold text-[var(--afcfta-muted)]">TEU (USD)</th>
                     <th className="text-right p-2 font-semibold text-[var(--afcfta-muted)]">FEU (USD)</th>
-                    <th className="text-right p-2 font-semibold text-[var(--afcfta-muted)]">Distance (nm)</th>
-                    <th className="text-right p-2 font-semibold text-[var(--afcfta-muted)]">Transit</th>
-                    <th className="text-left p-2 font-semibold text-[var(--afcfta-muted)]">Type</th>
-                    <th className="text-left p-2 font-semibold text-[var(--afcfta-muted)]">Armateurs</th>
+                    <th className="text-right p-2 font-semibold text-[var(--afcfta-muted)]">{pick(language, 'Distance (nm)', 'Distance (nm)', 'المسافة (ميل بحري)')}</th>
+                    <th className="text-right p-2 font-semibold text-[var(--afcfta-muted)]">{pick(language, 'Transit', 'Transit', 'العبور')}</th>
+                    <th className="text-left p-2 font-semibold text-[var(--afcfta-muted)]">{pick(language, 'Type', 'Type', 'النوع')}</th>
+                    <th className="text-left p-2 font-semibold text-[var(--afcfta-muted)]">{pick(language, 'Armateurs', 'Armateurs', 'شركات الملاحة')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {allRoutes.slice(0, MAX_TABLE_ROWS).map(r => (
                     <tr key={r.route_id} className="border-b hover:bg-[var(--afcfta-card2)] transition-colors">
-                      <td className="p-2 font-medium text-[var(--text)]">{r.origin_port}</td>
-                      <td className="p-2 text-[var(--text)]">{r.destination_port}</td>
+                      <td className="p-2 font-medium text-[var(--text)]">{trDonnee(r.origin_port, language)}</td>
+                      <td className="p-2 text-[var(--text)]">{trDonnee(r.destination_port, language)}</td>
                       <td className="p-2 text-right font-semibold text-[var(--info)]">
                         {montant(r.teu_usd, language, 3)}
                       </td>
@@ -476,14 +525,14 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                         {r.distance_nm.toLocaleString()}
                       </td>
                       <td className="p-2 text-right text-[var(--afcfta-muted)]">
-                        {r.transit_days_min}–{r.transit_days_max}j
+                        {r.transit_days_min}–{r.transit_days_max}{pick(language, 'j', 'j', ' يوم')}
                       </td>
                       <td className="p-2">
                         <Badge
                           variant="outline"
                           className={`text-[11px] py-0 ${r.is_modeled ? 'text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]' : 'text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]'}`}
                         >
-                          {r.is_modeled ? (language === 'fr' ? 'Estimé' : 'Modeled') : (language === 'fr' ? 'Publié' : 'Published')}
+                          {r.is_modeled ? pick(language, 'Estimé', 'Modeled', 'تقديري') : pick(language, 'Publié', 'Published', 'منشور')}
                         </Badge>
                       </td>
                       <td className="p-2">
@@ -504,14 +553,20 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
             <p className="mt-3 text-xs text-[var(--afcfta-muted)] italic">
               {allRoutes.length > MAX_TABLE_ROWS && (
                 <span className="block not-italic text-[var(--afcfta-muted)] mb-1">
-                  {language === 'fr'
-                    ? `Affichage des ${MAX_TABLE_ROWS} premières routes sur ${allRoutes.length}. Utilisez le calculateur ci-dessus pour une paire précise.`
-                    : `Showing first ${MAX_TABLE_ROWS} of ${allRoutes.length} routes. Use the calculator above for a specific pair.`}
+                  {pick(
+                    language,
+                    `Affichage des ${MAX_TABLE_ROWS} premières routes sur ${allRoutes.length}. Utilisez le calculateur ci-dessus pour une paire précise.`,
+                    `Showing first ${MAX_TABLE_ROWS} of ${allRoutes.length} routes. Use the calculator above for a specific pair.`,
+                    `عرض أول ${MAX_TABLE_ROWS} خطًا من أصل ${allRoutes.length}. استخدم الحاسبة أعلاه لزوج محدد.`
+                  )}
                 </span>
               )}
-              {language === 'fr'
-                ? 'Sources : Drewry Maritime Research 2024, UNCTAD MRTS 2024, tarifs publiés CMA CGM / Maersk / MSC / Hapag-Lloyd. « Publié » = tarif armateur publié ; « Estimé » = modèle distance-coût calibré.'
-                : 'Sources: Drewry Maritime Research 2024, UNCTAD MRTS 2024, published CMA CGM / Maersk / MSC / Hapag-Lloyd tariffs. "Published" = carrier-published rate; "Modeled" = calibrated distance-cost model.'}
+              {pick(
+                language,
+                'Sources : Drewry Maritime Research 2024, UNCTAD MRTS 2024, tarifs publiés CMA CGM / Maersk / MSC / Hapag-Lloyd. « Publié » = tarif armateur publié ; « Estimé » = modèle distance-coût calibré.',
+                'Sources: Drewry Maritime Research 2024, UNCTAD MRTS 2024, published CMA CGM / Maersk / MSC / Hapag-Lloyd tariffs. "Published" = carrier-published rate; "Modeled" = calibrated distance-cost model.',
+                'المصادر: Drewry Maritime Research 2024، والأونكتاد MRTS 2024، والتعريفات المنشورة لـ CMA CGM / Maersk / MSC / Hapag-Lloyd. «منشور» = تعريفة منشورة من شركة الملاحة؛ «تقديري» = نموذج معاير للتكلفة حسب المسافة.'
+              )}
             </p>
           </CardContent>
         )}

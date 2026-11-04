@@ -5,6 +5,8 @@ import { Badge } from './ui/badge';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, Area, AreaChart } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, BarChart3, Globe, Users, ArrowUpRight } from 'lucide-react';
 import { montantUnite } from '../utils/nombres';
+import { pick } from '../i18n/lang';
+import { trDonnee } from '../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API_URL = BACKEND_URL || '';
@@ -82,6 +84,38 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
       exportsIntraAfr: "Intra-Afr. Exports",
       importsWorld: "World Imports",
       importsIntraAfr: "Intra-Afr. Imports"
+    },
+    ar: {
+      loading: "جارٍ تحميل الإحصائيات…",
+      noData: "لا توجد بيانات",
+      analysisTitle: "تحليل التجارة الأفريقية - زليكاف 2024",
+      totalTradeValue: "القيمة الإجمالية للتجارة",
+      combinedGDP: "الناتج المحلي الإجمالي المجمَّع",
+      totalExports: "إجمالي الصادرات",
+      totalImports: "إجمالي الواردات",
+      estimated2024: "2024 (تقديري)",
+      memberCountries: "البلدان الأعضاء",
+      top10Exporters: "أكبر 10 مصدِّرين",
+      top10Importers: "أكبر 10 مستوردين",
+      ofTotal: "من المجموع",
+      intraAfricanEvolution: "تطور التجارة البينية الأفريقية",
+      trend2023_2030: "اتجاه 2023-2024 مع توقعات 2025-2030",
+      billionUSD: "مليار USD",
+      intraAfricanTrade: "التجارة البينية الأفريقية",
+      top5GDP: "أكبر 5 اقتصادات أفريقية - مقارنة التجارة",
+      worldVsIntraAfrican: "التجارة العالمية مقابل التجارة البينية الأفريقية (2024)",
+      detailByCountry: "التفاصيل حسب البلد (مليار USD)",
+      expWorld: "صادرات عالمية",
+      expIntraAfr: "صادرات بينية أفريقية",
+      impWorld: "واردات عالمية",
+      impIntraAfr: "واردات بينية أفريقية",
+      sectorPerformance: "الأداء حسب القطاع",
+      sectorDistribution: "توزيع الصادرات حسب القطاع الاقتصادي",
+      sectorDetails: "تفاصيل القطاعات",
+      exportsWorld: "الصادرات العالمية",
+      exportsIntraAfr: "الصادرات البينية الأفريقية",
+      importsWorld: "الواردات العالمية",
+      importsIntraAfr: "الواردات البينية الأفريقية"
     }
   };
 
@@ -120,14 +154,35 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
       "RD Congo": "DR Congo",
       "Cameroun": "Cameroon",
       "Ouganda": "Uganda"
+    },
+    // Noms français ou anglais (selon l'API) → arabe
+    ar: {
+      "South Africa": "جنوب أفريقيا", "Afrique du Sud": "جنوب أفريقيا",
+      "Egypt": "مصر", "Égypte": "مصر",
+      "Nigeria": "نيجيريا", "Nigéria": "نيجيريا",
+      "Algeria": "الجزائر", "Algérie": "الجزائر",
+      "Morocco": "المغرب", "Maroc": "المغرب",
+      "Ethiopia": "إثيوبيا", "Éthiopie": "إثيوبيا",
+      "Kenya": "كينيا",
+      "Angola": "أنغولا",
+      "Ghana": "غانا",
+      "Tanzania": "تنزانيا", "Tanzanie": "تنزانيا",
+      "Côte d'Ivoire": "كوت ديفوار",
+      "Tunisia": "تونس", "Tunisie": "تونس",
+      "DR Congo": "جمهورية الكونغو الديمقراطية", "RD Congo": "جمهورية الكونغو الديمقراطية",
+      "Cameroon": "الكاميرون", "Cameroun": "الكاميرون",
+      "Uganda": "أوغندا", "Ouganda": "أوغندا"
     }
   };
 
-  const t = texts[language];
+  const t = texts[language] || texts.fr;
 
   const translateCountry = (name) => {
     if (language === 'en' && countryNames.en[name]) {
       return countryNames.en[name];
+    }
+    if (language === 'ar') {
+      return countryNames.ar[name] || trDonnee(name, language);
     }
     return name;
   };
@@ -290,7 +345,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
             </p>
             <p className="stats-kpi-footer">
               <Globe style={{ width: 12, height: 12 }} />
-              AfCFTA
+              {pick(language, 'AfCFTA', 'AfCFTA', 'زليكاف')}
             </p>
           </div>
         </div>
@@ -370,12 +425,10 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
         <div className="stats-chart-header gold">
           <div className="stats-chart-title gold">
             <DollarSign style={{ width: 18, height: 18 }} />
-            {language === 'fr' ? 'Top 10 PIB Africains 2024' : 'Top 10 African GDP 2024'}
+            {pick(language, 'Top 10 PIB Africains 2024', 'Top 10 African GDP 2024', 'أكبر 10 اقتصادات أفريقية حسب الناتج المحلي الإجمالي 2024')}
           </div>
           <div className="stats-chart-subtitle">
-            {language === 'fr'
-              ? 'Avec projections de croissance 2025 — Source: FMI, Banque Mondiale'
-              : 'With 2025 growth projections — Source: IMF, World Bank'}
+            {pick(language, 'Avec projections de croissance 2025 — Source: FMI, Banque Mondiale', 'With 2025 growth projections — Source: IMF, World Bank', 'مع توقعات النمو لعام 2025 — المصدر: صندوق النقد الدولي، البنك الدولي')}
           </div>
         </div>
         <div style={{ padding: '0 0 16px', overflowX: 'auto' }}>
@@ -383,10 +436,10 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
             <thead>
               <tr>
                 <th style={{ textAlign: 'left' }}>#</th>
-                <th style={{ textAlign: 'left' }}>{language === 'fr' ? 'Pays' : 'Country'}</th>
-                <th style={{ textAlign: 'right' }}>{language === 'fr' ? 'PIB 2024' : 'GDP 2024'}</th>
-                <th style={{ textAlign: 'right' }}>{language === 'fr' ? 'Croissance' : 'Growth'}</th>
-                <th style={{ textAlign: 'right' }}>{language === 'fr' ? 'Proj. 2025' : 'Proj. 2025'}</th>
+                <th style={{ textAlign: 'left' }}>{pick(language, 'Pays', 'Country', 'البلد')}</th>
+                <th style={{ textAlign: 'right' }}>{pick(language, 'PIB 2024', 'GDP 2024', 'الناتج المحلي الإجمالي 2024')}</th>
+                <th style={{ textAlign: 'right' }}>{pick(language, 'Croissance', 'Growth', 'النمو')}</th>
+                <th style={{ textAlign: 'right' }}>{pick(language, 'Proj. 2025', 'Proj. 2025', 'توقعات 2025')}</th>
               </tr>
             </thead>
             <tbody>
@@ -414,9 +467,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
             </tbody>
           </table>
           <p className="stats-source-note">
-            {language === 'fr'
-              ? 'Données officielles FMI WEO Octobre 2025, Banque Mondiale.'
-              : 'Official IMF WEO October 2025, World Bank data.'}
+            {pick(language, 'Données officielles FMI WEO Octobre 2025, Banque Mondiale.', 'Official IMF WEO October 2025, World Bank data.', 'بيانات رسمية: صندوق النقد الدولي WEO أكتوبر 2025، البنك الدولي.')}
           </p>
         </div>
       </div>
@@ -549,7 +600,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                       <div className="flex justify-between items-center mb-2">
                         <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text)' }}>{translateCountry(country.country)}</span>
                         <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: 'rgba(155,110,245,0.18)', color: 'var(--violet)', border: '1px solid rgba(155,110,245,0.25)' }}>
-                          {language === 'en' ? 'GDP' : 'PIB'}: {montantUnite(country.gdp_2024, 'B', language)}
+                          {pick(language, 'PIB', 'GDP', 'الناتج المحلي الإجمالي')}: {montantUnite(country.gdp_2024, 'B', language)}
                         </span>
                       </div>
                       <div className="grid grid-cols-2 gap-2">
@@ -598,7 +649,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                       const shareValue = typeof value === 'object' && value.share ? value.share
                                        : typeof value === 'object' && value.value_2024 ? value.value_2024
                                        : parseFloat(value) || 10;
-                      return { name: key.replace(/_/g, ' '), value: parseFloat(shareValue) };
+                      return { name: trDonnee(key.replace(/_/g, ' '), language), value: parseFloat(shareValue) };
                     })}
                     cx="50%" cy="50%"
                     outerRadius={100}
@@ -634,7 +685,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                       <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 0' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                           <div style={{ width: 10, height: 10, borderRadius: 2, background: COLORS[index % COLORS.length], flexShrink: 0 }} />
-                          <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text)' }}>{displayName}</span>
+                          <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text)' }}>{trDonnee(displayName, language)}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="stats-progress-bar" style={{ width: 60 }}>
@@ -654,9 +705,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
 
       {/* ── Source Footer ──────────────────────────────────────── */}
       <div className="stats-source-note" style={{ background: 'var(--afcfta-card2)', borderRadius: 10, border: '1px solid var(--overlay)' }}>
-        {language === 'en'
-          ? 'Sources: IMF World Economic Outlook 2024 · World Bank WDI · UNCTAD COMTRADE · AfCFTA Secretariat · African Development Bank'
-          : 'Sources: FMI World Economic Outlook 2024 · Banque Mondiale WDI · UNCTAD COMTRADE · Secrétariat ZLECAf · Banque Africaine de Développement'}
+        {pick(language, 'Sources: FMI World Economic Outlook 2024 · Banque Mondiale WDI · UNCTAD COMTRADE · Secrétariat ZLECAf · Banque Africaine de Développement', 'Sources: IMF World Economic Outlook 2024 · World Bank WDI · UNCTAD COMTRADE · AfCFTA Secretariat · African Development Bank', 'المصادر: صندوق النقد الدولي، آفاق الاقتصاد العالمي 2024 · البنك الدولي WDI · الأونكتاد COMTRADE · أمانة منطقة التجارة الحرة القارية الأفريقية · البنك الأفريقي للتنمية')}
       </div>
     </div>
   );

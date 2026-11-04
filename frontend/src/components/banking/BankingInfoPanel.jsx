@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { montantUnite } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -283,11 +284,148 @@ const texts = {
     regSummary: 'Summary by level',
     countries: 'countries',
   },
+  ar: {
+    title: '🏦 النظام المصرفي الأفريقي – زليكاف',
+    subtitle: 'أنظمة الصرف والتوطين المصرفي وتمويل التجارة',
+    selectCountry: 'اختر بلدًا',
+    selectCountryPrompt: 'اختر بلدًا لعرض المعلومات المصرفية والتنظيمية ومعلومات المخاطر.',
+    banks: 'المصارف',
+    centralBank: 'المصرف المركزي',
+    commercialBanks: 'المصارف التجارية',
+    regionalBanks: 'المصارف الإقليمية',
+    forex: 'الصرف',
+    domiciliationRequired: 'التوطين المصرفي إلزامي',
+    domiciliationConditional: 'توطين مصرفي مشروط',
+    domiciliationFree: 'غير مطلوب',
+    threshold: 'العتبة',
+    allOperations: 'جميع العمليات',
+    timeline: 'مهلة إعادة الأموال إلى الوطن',
+    days: 'يومًا',
+    regulation: 'التنظيم',
+    importFormalities: '📥 إجراءات الاستيراد',
+    importFormalitiesDesc: 'دفع فواتير المورّدين، مهلة التحويل',
+    exportFormalities: '📤 إجراءات التصدير',
+    exportFormalitiesDesc: 'إعادة العملات الأجنبية إلى الوطن',
+    transferDeadline: 'مهلة التحويل (الاستيراد)',
+    repatriationDeadline: 'مهلة إعادة الأموال (التصدير)',
+    standardDeadline: 'المهلة العادية',
+    conditionalDeadline: 'تمديد مشروط',
+    paymentDueDeadline: 'أقصى أجل للدفع',
+    postDueDeadline: 'إعادة الأموال بعد الأجل',
+    month: 'شهر',
+    noTransferDeadline: 'لا يحدد المصدر مهلة مستقلة للاستيراد',
+    paymentFormalitiesNotes: 'إجراءات الدفع',
+    repatriationFormalitiesNotes: 'إجراءات إعادة الأموال',
+    strict: 'صارم',
+    moderate: 'معتدل',
+    liberal: 'متحرر',
+    risk: 'مخاطر البلد',
+    riskRating: 'التصنيف',
+    forexRisk: 'مخاطر الصرف',
+    politicalRisk: 'المخاطر السياسية',
+    transferRisk: 'مخاطر التحويل',
+    alertLevel: 'مستوى الإنذار',
+    riskScore: 'الدرجة',
+    maxExposure: 'أقصى تعرض موصى به',
+    exposureWarning: '⚠ المبلغ يتجاوز التعرض الموصى به',
+    priorAuthRequired: '⚠ يلزم ترخيص مسبق',
+    penalties: 'العقوبات',
+    instruments: 'الأدوات',
+    coverage: 'التغطية',
+    paymentSystems: 'المدفوعات',
+    compliance: 'الامتثال',
+    amlFramework: 'إطار مكافحة غسل الأموال (AML)',
+    kycRequired: 'التحقق من هوية العميل (KYC) مطلوب',
+    sanctionsScreening: 'فحص العقوبات',
+    reportingRequirements: 'التزامات الإبلاغ',
+    fiuLabel: 'وحدة الاستخبارات المالية',
+    loading: 'جارٍ التحميل…',
+    error: 'خطأ في التحميل',
+    noData: 'البيانات غير متاحة',
+    notDocumented: 'غير معروف / غير موثق',
+    documents: 'المستندات المطلوبة',
+    currency: 'العملة',
+    swiftCode: 'رمز SWIFT',
+    tradeFinance: 'تمويل التجارة',
+    services: 'الخدمات',
+    yes: 'نعم',
+    no: 'لا',
+    website: 'الموقع الإلكتروني',
+    mandatory_documents: 'المستندات الإلزامية',
+    notes: 'ملاحظات',
+    address: 'العنوان',
+    phone: 'الهاتف',
+    email: 'البريد الإلكتروني',
+    established: 'تأسس عام',
+    bankingAct: 'القانون المصرفي',
+    licenseType: 'الترخيص',
+    correspondents: 'المصارف المراسلة',
+    register: 'السجل',
+    regulations: 'الأنظمة',
+    registerTitle: 'سجل المصارف الأفريقية',
+    registerSubtitle: 'دليل قابل للبحث – المصارف المركزية والتجارية والإقليمية',
+    searchPlaceholder: 'بحث (الاسم، الرمز، البلد…)',
+    filterType: 'نوع المصرف',
+    allTypes: 'جميع الأنواع',
+    centralType: 'المصارف المركزية',
+    commercialType: 'المصارف التجارية',
+    regionalType: 'المصارف الإقليمية',
+    tradeFinanceOnly: 'تمويل التجارة فقط',
+    allCountries: 'جميع البلدان',
+    resultCount: 'نتيجة',
+    regulationsTitle: 'أنظمة الصرف – عرض مقارن',
+    regulationsSubtitle: 'ملخص الرقابة على الصرف في البلدان الأفريقية الأعضاء في زليكاف',
+    filterRegulation: 'مستوى التنظيم',
+    allLevels: 'جميع المستويات',
+    domiciliation: 'التوطين المصرفي',
+    priorAuth: 'الترخيص',
+    repatriation: 'إعادة الأموال',
+    countryCol: 'البلد',
+    bankCol: 'المصرف المركزي',
+    currencyCol: 'العملة',
+    regulationCol: 'التنظيم',
+    domiciliationCol: 'التوطين المصرفي',
+    priorAuthCol: 'ترخيص مسبق',
+    repatriationCol: 'إعادة الأموال',
+    bankingActCol: 'القانون المصرفي',
+    contactCol: 'الاتصال',
+    required: 'إلزامي',
+    conditional: 'مشروط',
+    free: 'حر',
+    notRequired: 'غير مطلوب',
+    memberCountries: 'البلدان الأعضاء',
+    focusAreas: 'مجالات التركيز',
+    contact: 'الاتصال',
+    converterTitle: 'محوّل العملات',
+    amount: 'المبلغ',
+    from: 'من',
+    to: 'إلى',
+    convert: 'تحويل',
+    result: 'النتيجة',
+    rate: 'السعر',
+    simulatorTitle: 'محاكي الأدوات',
+    txAmount: 'مبلغ المعاملة (USD)',
+    txType: 'النوع',
+    txImport: 'استيراد',
+    txExport: 'تصدير',
+    simulate: 'توصية',
+    recommendedFor: 'الأداة الموصى بها لـ',
+    regSummary: 'ملخص حسب المستوى',
+    countries: 'بلدًا',
+  },
 };
 
 // ── Small helpers ────────────────────────────────────────────────────────────
 
-function AlertBadge({ level }) {
+// Libellés arabes des niveaux renvoyés par l'API (fr/en affichent le code en majuscules).
+const LEVEL_AR = {
+  green: 'أخضر', orange: 'برتقالي', red: 'أحمر',
+  low: 'منخفض', moderate: 'معتدل', high: 'مرتفع', very_high: 'مرتفع جدًا',
+  strict: 'صارم', liberal: 'متحرر',
+};
+const levelLabel = (language, level, upper) => pick(language, upper, upper, LEVEL_AR[level] || upper);
+
+function AlertBadge({ level, language }) {
   const colorMap = {
     green: 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]',
     orange: 'bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)]',
@@ -295,12 +433,12 @@ function AlertBadge({ level }) {
   };
   return (
     <span className={`px-2 py-1 rounded text-xs font-semibold ${colorMap[level] || 'bg-[var(--afcfta-card2)] text-[var(--text)]'}`}>
-      {level?.toUpperCase()}
+      {levelLabel(language, level, level?.toUpperCase())}
     </span>
   );
 }
 
-function RiskBadge({ level }) {
+function RiskBadge({ level, language }) {
   const colorMap = {
     low: 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]',
     moderate: 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]',
@@ -309,12 +447,12 @@ function RiskBadge({ level }) {
   };
   return (
     <span className={`px-2 py-0.5 rounded text-xs font-medium ${colorMap[level] || 'bg-[var(--afcfta-card2)] text-[var(--text)]'}`}>
-      {level?.replace('_', ' ').toUpperCase()}
+      {levelLabel(language, level, level?.replace('_', ' ').toUpperCase())}
     </span>
   );
 }
 
-function RegulationBadge({ level }) {
+function RegulationBadge({ level, language }) {
   const colorMap = {
     strict: 'bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] text-[var(--danger)]',
     moderate: 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]',
@@ -322,7 +460,7 @@ function RegulationBadge({ level }) {
   };
   return (
     <span className={`px-2 py-0.5 rounded text-xs font-medium ${colorMap[level] || 'bg-[var(--afcfta-card2)] text-[var(--text)]'}`}>
-      {level?.toUpperCase()}
+      {levelLabel(language, level, level?.toUpperCase())}
     </span>
   );
 }
@@ -354,7 +492,7 @@ function ContactBlock({ contact, t }) {
 
 // ── Searchable Country Selector ───────────────────────────────────────────────
 
-function CountrySearch({ countries, value, onChange, placeholder }) {
+function CountrySearch({ countries, value, onChange, placeholder, language }) {
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
   const wrapRef = useRef(null);
@@ -424,7 +562,7 @@ function CountrySearch({ countries, value, onChange, placeholder }) {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="🔍 Rechercher un pays, devise…"
+              placeholder={pick(language, '🔍 Rechercher un pays, devise…', '🔍 Rechercher un pays, devise…', '🔍 ابحث عن بلد أو عملة…')}
               className="w-full px-3 py-1.5 text-sm border rounded-md bg-[var(--afcfta-card2)] focus:outline-none focus:ring-1 focus:ring-blue-400"
             />
           </div>
@@ -436,11 +574,11 @@ function CountrySearch({ countries, value, onChange, placeholder }) {
                 className="w-full text-left px-3 py-2 text-xs text-[var(--afcfta-muted)] hover:bg-[var(--afcfta-card2)] border-b"
                 onClick={() => selectCountry('')}
               >
-                ✕ Effacer la sélection
+                {pick(language, '✕ Effacer la sélection', '✕ Effacer la sélection', '✕ مسح الاختيار')}
               </button>
             )}
             {filtered.length === 0 && (
-              <div className="px-3 py-4 text-center text-sm text-[var(--afcfta-muted)]">Aucun résultat</div>
+              <div className="px-3 py-4 text-center text-sm text-[var(--afcfta-muted)]">{pick(language, 'Aucun résultat', 'Aucun résultat', 'لا توجد نتائج')}</div>
             )}
             {filtered.map((c) => (
               <button
@@ -460,7 +598,7 @@ function CountrySearch({ countries, value, onChange, placeholder }) {
 
           {/* Footer count */}
           <div className="px-3 py-1.5 border-t text-xs text-[var(--afcfta-muted)] bg-[var(--afcfta-card2)]">
-            {filtered.length} / {sorted.length} pays AfCFTA
+            {filtered.length} / {sorted.length} {pick(language, 'pays AfCFTA', 'pays AfCFTA', 'بلدًا في زليكاف')}
           </div>
         </div>
       )}
@@ -470,7 +608,7 @@ function CountrySearch({ countries, value, onChange, placeholder }) {
 
 // ── Quick Stats Bar (shown when a country is selected) ────────────────────────
 
-function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
+function QuickStatsBar({ bankData, riskData, forexData, countryCode, language }) {
   const flag = COUNTRY_FLAGS[countryCode] || '🌍';
   const cb = bankData?.central_bank;
   const regLevel = cb?.forex_regulation || forexData?.forex_regulation?.regulation_level;
@@ -493,7 +631,7 @@ function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
       {/* Currency */}
       {cb?.currency_code && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-[var(--afcfta-muted)]">Devise</span>
+          <span className="text-xs text-[var(--afcfta-muted)]">{pick(language, 'Devise', 'Devise', 'العملة')}</span>
           <span className="font-mono font-bold text-[var(--text)]">{cb.currency_code}</span>
         </div>
       )}
@@ -501,9 +639,9 @@ function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
       {/* Regulation */}
       {regLevel && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-[var(--afcfta-muted)]">Réglementation</span>
+          <span className="text-xs text-[var(--afcfta-muted)]">{pick(language, 'Réglementation', 'Réglementation', 'التنظيم')}</span>
           <span className={`text-xs font-semibold px-2 py-0.5 rounded mt-0.5 ${regColors[regLevel] || 'bg-[var(--afcfta-card2)] text-[var(--text)]'}`}>
-            {regLevel.toUpperCase()}
+            {levelLabel(language, regLevel, regLevel.toUpperCase())}
           </span>
         </div>
       )}
@@ -511,7 +649,7 @@ function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
       {/* Risk rating */}
       {riskData?.overall_risk_rating && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-[var(--afcfta-muted)]">Note risque</span>
+          <span className="text-xs text-[var(--afcfta-muted)]">{pick(language, 'Note risque', 'Note risque', 'تصنيف المخاطر')}</span>
           <span className="font-bold text-lg text-[var(--text)]">{riskData.overall_risk_rating}</span>
         </div>
       )}
@@ -519,9 +657,9 @@ function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
       {/* Alert level */}
       {riskData?.alert_level && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-[var(--afcfta-muted)]">Alerte</span>
+          <span className="text-xs text-[var(--afcfta-muted)]">{pick(language, 'Alerte', 'Alerte', 'الإنذار')}</span>
           <span className={`text-xs font-semibold px-2 py-0.5 rounded mt-0.5 ${alertColors[riskData.alert_level] || 'bg-[var(--afcfta-card2)] text-[var(--text)]'}`}>
-            {riskData.alert_level.toUpperCase()}
+            {levelLabel(language, riskData.alert_level, riskData.alert_level.toUpperCase())}
           </span>
         </div>
       )}
@@ -529,9 +667,13 @@ function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
       {/* Domiciliation required */}
       {forexData?.domiciliation && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-[var(--afcfta-muted)]">Domiciliation</span>
+          <span className="text-xs text-[var(--afcfta-muted)]">{pick(language, 'Domiciliation', 'Domiciliation', 'التوطين المصرفي')}</span>
           <span className={`text-xs font-semibold mt-0.5 ${forexData.domiciliation.required ? 'text-[var(--danger)]' : forexData.domiciliation.conditional ? 'text-[var(--gold)]' : 'text-[var(--success)]'}`}>
-            {forexData.domiciliation.required ? 'OBLIGATOIRE' : forexData.domiciliation.conditional ? 'CONDITIONNELLE' : 'LIBRE'}
+            {forexData.domiciliation.required
+              ? pick(language, 'OBLIGATOIRE', 'OBLIGATOIRE', 'إلزامي')
+              : forexData.domiciliation.conditional
+              ? pick(language, 'CONDITIONNELLE', 'CONDITIONNELLE', 'مشروط')
+              : pick(language, 'LIBRE', 'LIBRE', 'حر')}
           </span>
         </div>
       )}
@@ -556,11 +698,11 @@ const TAB_ICONS = {
   regulations: '📊',
 };
 
-function TabBar({ activeTab, onChange, t }) {
+function TabBar({ activeTab, onChange, t, language }) {
   return (
     <div className="flex gap-1 flex-wrap border-b mb-4">
       <div className="flex gap-1 flex-wrap">
-        <span className="text-xs text-[var(--afcfta-muted)] self-center pr-1 border-r mr-1">Par pays</span>
+        <span className="text-xs text-[var(--afcfta-muted)] self-center pr-1 border-r mr-1">{pick(language, 'Par pays', 'Par pays', 'حسب البلد')}</span>
         {COUNTRY_TABS.map((tab) => (
           <button
             key={tab}
@@ -577,7 +719,7 @@ function TabBar({ activeTab, onChange, t }) {
         ))}
       </div>
       <div className="flex gap-1 flex-wrap ml-2">
-        <span className="text-xs text-[var(--afcfta-muted)] self-center pr-1 border-r mr-1">Global</span>
+        <span className="text-xs text-[var(--afcfta-muted)] self-center pr-1 border-r mr-1">{pick(language, 'Global', 'Global', 'عام')}</span>
         {GLOBAL_TABS.map((tab) => (
           <button
             key={tab}
@@ -639,7 +781,7 @@ function BanksTab({ data, t, language }) {
                   </span>
                 )}
                 {central_bank?.forex_regulation && (
-                  <RegulationBadge level={central_bank.forex_regulation} />
+                  <RegulationBadge level={central_bank.forex_regulation} language={language} />
                 )}
               </div>
             </div>
@@ -659,13 +801,13 @@ function BanksTab({ data, t, language }) {
               )}
               {central_bank?.total_assets_usd_bn && (
                 <div>
-                  <span className="text-[var(--afcfta-muted)] text-[11px]">Actifs totaux</span>
+                  <span className="text-[var(--afcfta-muted)] text-[11px]">{pick(language, 'Actifs totaux', 'Actifs totaux', 'إجمالي الأصول')}</span>
                   <div className="font-semibold text-[var(--text)]">{montantUnite(central_bank.total_assets_usd_bn, 'B', language)}</div>
                 </div>
               )}
               {central_bank?.currency_name && (
                 <div className="col-span-2">
-                  <span className="text-[var(--afcfta-muted)] text-[11px]">Devise</span>
+                  <span className="text-[var(--afcfta-muted)] text-[11px]">{pick(language, 'Devise', 'Devise', 'العملة')}</span>
                   <div className="font-semibold text-[var(--text)]">{central_bank.currency_code} – {central_bank.currency_name}</div>
                 </div>
               )}
@@ -675,7 +817,7 @@ function BanksTab({ data, t, language }) {
               <p className="text-xs text-[var(--afcfta-muted)] italic border-l-2 border-[var(--afcfta-border)] pl-2">{t.bankingAct}: {central_bank.banking_act}</p>
             )}
             {central_bank?.imf_article_status && (
-              <p className="text-xs text-[var(--violet)] bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] px-2 py-1 rounded">FMI: {central_bank.imf_article_status}</p>
+              <p className="text-xs text-[var(--violet)] bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] px-2 py-1 rounded">{pick(language, 'FMI', 'FMI', 'صندوق النقد الدولي')}: {central_bank.imf_article_status}</p>
             )}
             {central_bank?.contact && <ContactBlock contact={central_bank.contact} t={t} />}
           </CardContent>
@@ -711,7 +853,7 @@ function BanksTab({ data, t, language }) {
                           <span className="bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)] text-xs px-1.5 py-0.5 rounded shrink-0">{bank.license_type}</span>
                         )}
                         {bank.trade_finance && (
-                          <span className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] text-xs px-2 py-0.5 rounded font-medium shrink-0">Trade ✓</span>
+                          <span className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] text-xs px-2 py-0.5 rounded font-medium shrink-0">{pick(language, 'Trade ✓', 'Trade ✓', 'تمويل التجارة ✓')}</span>
                         )}
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
@@ -798,7 +940,7 @@ function BanksTab({ data, t, language }) {
 
 const SOURCE_CURRENCIES = ['USD', 'EUR', 'GBP', 'CNY', 'AED', 'SAR', 'CHF', 'JPY'];
 
-function ForexConverter({ countryCode, countryCurrencyCode, countryName, t }) {
+function ForexConverter({ countryCode, countryCurrencyCode, countryName, t, language }) {
   const [amount, setAmount] = useState('1000');
   const [fromCurrency, setFromCurrency] = useState('USD');
   const [result, setResult] = useState(null);
@@ -829,9 +971,14 @@ function ForexConverter({ countryCode, countryCurrencyCode, countryName, t }) {
     } catch (e) {
       const detail = e.response?.data?.detail;
       if (typeof detail === 'string' && detail.includes('indisponible')) {
-        setError(`Taux non disponible pour ${countryCurrencyCode || 'cette devise'} (non cotée sur les marchés internationaux accessibles)`);
+        setError(pick(
+          language,
+          `Taux non disponible pour ${countryCurrencyCode || 'cette devise'} (non cotée sur les marchés internationaux accessibles)`,
+          `Taux non disponible pour ${countryCurrencyCode || 'cette devise'} (non cotée sur les marchés internationaux accessibles)`,
+          `السعر غير متاح لـ ${countryCurrencyCode || 'هذه العملة'} (غير مدرجة في الأسواق الدولية المتاحة)`
+        ));
       } else {
-        setError('Conversion indisponible pour cette paire de devises');
+        setError(pick(language, 'Conversion indisponible pour cette paire de devises', 'Conversion indisponible pour cette paire de devises', 'التحويل غير متاح لزوج العملات هذا'));
       }
     } finally {
       setLoading(false);
@@ -906,7 +1053,7 @@ function ForexConverter({ countryCode, countryCurrencyCode, countryName, t }) {
             </div>
             <div className="text-xs text-[var(--afcfta-muted)] text-right space-y-0.5">
               {result.rate_display && <div className="font-medium text-[var(--text)]">{result.rate_display}</div>}
-              {result.source && <div className="text-[var(--afcfta-muted)]">Source : {result.source}</div>}
+              {result.source && <div className="text-[var(--afcfta-muted)]">{pick(language, 'Source :', 'Source :', 'المصدر:')} {result.source}</div>}
               {result.disclaimer && <div className="text-[var(--afcfta-muted)] max-w-[180px] italic">{result.disclaimer}</div>}
             </div>
           </div>
@@ -918,7 +1065,7 @@ function ForexConverter({ countryCode, countryCurrencyCode, countryName, t }) {
 
 // ── Forex Tab ─────────────────────────────────────────────────────────────────
 
-function ForexTab({ data, countryCode, t }) {
+function ForexTab({ data, countryCode, t, language }) {
   if (!data) return <p className="text-[var(--afcfta-muted)] text-sm">{t.noData}</p>;
   const { forex_regulation, import_formalities, export_formalities } = data;
   const currencyCode = data.currency_code || data.central_bank?.currency_code;
@@ -942,7 +1089,7 @@ function ForexTab({ data, countryCode, t }) {
   return (
     <div className="space-y-4">
       {/* Converter */}
-      <ForexConverter countryCode={countryCode} countryCurrencyCode={currencyCode} countryName={data.country_name} t={t} />
+      <ForexConverter countryCode={countryCode} countryCurrencyCode={currencyCode} countryName={data.country_name} t={t} language={language} />
 
       {/* Division IMPORT / EXPORT */}
       <div className="grid md:grid-cols-2 gap-4">
@@ -1016,7 +1163,7 @@ function ForexTab({ data, countryCode, t }) {
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
           <div className="flex items-center gap-2">
-            <RegulationBadge level={forex_regulation?.regulation_level} />
+            <RegulationBadge level={forex_regulation?.regulation_level} language={language} />
             {forex_regulation?.prior_authorization_required && (
               <span className="text-xs text-[var(--danger)]">{t.priorAuthRequired}</span>
             )}
@@ -1041,7 +1188,7 @@ function ForexTab({ data, countryCode, t }) {
 
 // ── Risk Gauge ────────────────────────────────────────────────────────────────
 
-function RiskGauge({ score, maxScore = 10 }) {
+function RiskGauge({ score, maxScore = 10, language }) {
   const pct = Math.min(100, Math.round((score / maxScore) * 100));
   const color = score <= 3 ? '#22c55e' : score <= 5 ? '#eab308' : score <= 7 ? '#f97316' : '#ef4444';
   const trackColor = score <= 3 ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]' : score <= 5 ? 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))]' : score <= 7 ? 'bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))]' : 'bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))]';
@@ -1049,7 +1196,7 @@ function RiskGauge({ score, maxScore = 10 }) {
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-between text-xs text-[var(--afcfta-muted)]">
-        <span>Score risque</span>
+        <span>{pick(language, 'Score risque', 'Score risque', 'درجة المخاطر')}</span>
         <span className="font-bold text-base" style={{ color }}>{score}/{maxScore}</span>
       </div>
       <div className={`h-3 rounded-full ${trackColor} overflow-hidden`}>
@@ -1059,8 +1206,8 @@ function RiskGauge({ score, maxScore = 10 }) {
         />
       </div>
       <div className="flex justify-between text-xs text-[var(--text)]">
-        <span>Faible</span>
-        <span>Élevé</span>
+        <span>{pick(language, 'Faible', 'Faible', 'منخفض')}</span>
+        <span>{pick(language, 'Élevé', 'Élevé', 'مرتفع')}</span>
       </div>
     </div>
   );
@@ -1068,7 +1215,7 @@ function RiskGauge({ score, maxScore = 10 }) {
 
 // ── Risk Tab ──────────────────────────────────────────────────────────────────
 
-function RiskTab({ data, t }) {
+function RiskTab({ data, t, language }) {
   if (!data) return <p className="text-[var(--afcfta-muted)] text-sm">{t.noData}</p>;
 
   const riskRows = [
@@ -1087,19 +1234,19 @@ function RiskTab({ data, t }) {
           {/* Rating + alert */}
           <div className="flex items-center gap-4 flex-wrap">
             <div className="flex flex-col items-center justify-center bg-[var(--afcfta-card2)] border rounded-lg px-6 py-3">
-              <span className="text-xs text-[var(--afcfta-muted)] mb-1">Notation</span>
+              <span className="text-xs text-[var(--afcfta-muted)] mb-1">{pick(language, 'Notation', 'Notation', 'التصنيف')}</span>
               <span className="font-bold text-3xl text-[var(--text)]">{data.overall_risk_rating}</span>
             </div>
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
-                <span className="text-[var(--afcfta-muted)] text-xs">Alerte :</span>
-                <AlertBadge level={data.alert_level} />
+                <span className="text-[var(--afcfta-muted)] text-xs">{pick(language, 'Alerte :', 'Alerte :', 'الإنذار:')}</span>
+                <AlertBadge level={data.alert_level} language={language} />
               </div>
               {data.credit_insurance_available !== undefined && (
                 <div className="text-xs text-[var(--afcfta-muted)]">
-                  Assurance crédit : {data.credit_insurance_available
-                    ? <span className="text-[var(--success)] font-medium">Disponible ✓</span>
-                    : <span className="text-[var(--danger)] font-medium">Non disponible</span>}
+                  {pick(language, 'Assurance crédit :', 'Assurance crédit :', 'تأمين الائتمان:')} {data.credit_insurance_available
+                    ? <span className="text-[var(--success)] font-medium">{pick(language, 'Disponible ✓', 'Disponible ✓', 'متاح ✓')}</span>
+                    : <span className="text-[var(--danger)] font-medium">{pick(language, 'Non disponible', 'Non disponible', 'غير متاح')}</span>}
                 </div>
               )}
             </div>
@@ -1108,7 +1255,7 @@ function RiskTab({ data, t }) {
           {/* Gauge */}
           {data.risk_score != null && (
             <div className="bg-[var(--afcfta-card2)] rounded-lg p-3">
-              <RiskGauge score={data.risk_score} />
+              <RiskGauge score={data.risk_score} language={language} />
             </div>
           )}
 
@@ -1117,7 +1264,7 @@ function RiskTab({ data, t }) {
             {riskRows.map(({ label, value }) => value && (
               <div key={label} className="flex items-center justify-between py-1 border-b last:border-b-0">
                 <span className="text-[var(--afcfta-muted)] text-xs">{label}</span>
-                <RiskBadge level={value} />
+                <RiskBadge level={value} language={language} />
               </div>
             ))}
           </div>
@@ -1149,7 +1296,7 @@ function RiskTab({ data, t }) {
 
 // ── Instrument Simulator ──────────────────────────────────────────────────────
 
-function InstrumentSimulator({ countryCode, t }) {
+function InstrumentSimulator({ countryCode, t, language }) {
   const [txAmount, setTxAmount] = useState('50000');
   const [txType, setTxType] = useState('import');
   const [result, setResult] = useState(null);
@@ -1209,7 +1356,7 @@ function InstrumentSimulator({ countryCode, t }) {
         {result?.recommended_instruments?.length > 0 && (
           <div className="space-y-2">
             <p className="text-xs font-medium text-[var(--afcfta-muted)]">
-              {t.recommendedFor} {parseFloat(txAmount).toLocaleString()} USD ({txType}) :
+              {t.recommendedFor} {parseFloat(txAmount).toLocaleString()} USD ({pick(language, txType, txType, txType === 'import' ? t.txImport : t.txExport)}) :
             </p>
             <div className="flex flex-wrap gap-1">
               {result.recommended_instruments.map((inst) => (
@@ -1228,13 +1375,13 @@ function InstrumentSimulator({ countryCode, t }) {
 
 // ── Instruments Tab ───────────────────────────────────────────────────────────
 
-function InstrumentsTab({ instruments, countryCode, t }) {
+function InstrumentsTab({ instruments, countryCode, t, language }) {
   if (!instruments?.length) return <p className="text-[var(--afcfta-muted)] text-sm">{t.noData}</p>;
 
   return (
     <div className="space-y-4">
       {/* Simulator */}
-      <InstrumentSimulator countryCode={countryCode} t={t} />
+      <InstrumentSimulator countryCode={countryCode} t={t} language={language} />
 
       <div className="space-y-3">
         {instruments.map((inst) => (
@@ -1247,7 +1394,7 @@ function InstrumentsTab({ instruments, countryCode, t }) {
                   : inst.risk_coverage === 'partial' ? 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]'
                   : 'bg-[var(--afcfta-card2)] text-[var(--text)]'
                 }`}>
-                  {t.coverage} : {inst.risk_coverage}
+                  {t.coverage} : {pick(language, inst.risk_coverage, inst.risk_coverage, { full: 'كاملة', partial: 'جزئية' }[inst.risk_coverage] || inst.risk_coverage)}
                 </span>
                 {inst.typical_cost_pct != null && (
                   <span className="text-xs text-[var(--afcfta-muted)] bg-[var(--afcfta-card2)] px-2 py-0.5 rounded border">~{inst.typical_cost_pct}%</span>
@@ -1266,8 +1413,9 @@ function InstrumentsTab({ instruments, countryCode, t }) {
 
 const PAYMENT_TYPE_ICONS = { swift: '🌐', regional: '🏛️', mobile_money: '📱', digital: '💻' };
 const PAYMENT_TYPE_LABELS = { swift: 'SWIFT', regional: 'Régional', mobile_money: 'Mobile Money', digital: 'Digital' };
+const PAYMENT_TYPE_LABELS_AR = { swift: 'SWIFT', regional: 'إقليمي', mobile_money: 'الدفع عبر الهاتف المحمول', digital: 'رقمي' };
 
-function PaymentSystemsTab({ systems, t }) {
+function PaymentSystemsTab({ systems, t, language }) {
   if (!systems?.length) return <p className="text-[var(--afcfta-muted)] text-sm">{t.noData}</p>;
 
   const grouped = systems.reduce((acc, ps) => {
@@ -1282,7 +1430,7 @@ function PaymentSystemsTab({ systems, t }) {
       {Object.entries(grouped).map(([type, list]) => (
         <div key={type}>
           <h4 className="text-sm font-semibold text-[var(--text)] mb-2">
-            {PAYMENT_TYPE_ICONS[type]} {PAYMENT_TYPE_LABELS[type] || type}
+            {PAYMENT_TYPE_ICONS[type]} {pick(language, PAYMENT_TYPE_LABELS[type], PAYMENT_TYPE_LABELS[type], PAYMENT_TYPE_LABELS_AR[type]) || type}
           </h4>
           <div className="space-y-2">
             {list.map((ps) => (
@@ -1364,7 +1512,7 @@ const TYPE_COLORS = {
 
 const TYPE_ICONS = { central: '🏛️', commercial: '🏦', regional: '🌍' };
 
-function RegisterTab({ t, countries }) {
+function RegisterTab({ t, countries, language }) {
   const [search, setSearch] = useState('');
   const [filterType, setFilterType] = useState('');
   const [filterCountry, setFilterCountry] = useState('');
@@ -1475,7 +1623,7 @@ function RegisterTab({ t, countries }) {
                       {bank.country_code ? `${COUNTRY_FLAGS[bank.country_code] || ''} ${bank.country_name} · ${bank.country_code}` : bank.country_name}
                     </span>
                     {bank.trade_finance && (
-                      <span className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] text-xs px-1.5 py-0.5 rounded">Trade ✓</span>
+                      <span className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] text-xs px-1.5 py-0.5 rounded">{pick(language, 'Trade ✓', 'Trade ✓', 'تمويل التجارة ✓')}</span>
                     )}
                   </div>
                   <span className="text-[var(--afcfta-muted)] text-sm shrink-0 ml-2">{isOpen ? '▲' : '▼'}</span>
@@ -1491,7 +1639,7 @@ function RegisterTab({ t, countries }) {
                         <div><span className="text-[var(--afcfta-muted)]">{t.currency}: </span><strong>{bank.currency_code} – {bank.currency_name}</strong></div>
                       )}
                       {bank.forex_regulation && (
-                        <div><span className="text-[var(--afcfta-muted)]">{t.regulation}: </span><RegulationBadge level={bank.forex_regulation} /></div>
+                        <div><span className="text-[var(--afcfta-muted)]">{t.regulation}: </span><RegulationBadge level={bank.forex_regulation} language={language} /></div>
                       )}
                       {bank.established_year && (
                         <div><span className="text-[var(--afcfta-muted)]">{t.established}: </span>{bank.established_year}</div>
@@ -1575,7 +1723,7 @@ function RegisterTab({ t, countries }) {
 
 // ── Regulations Summary Bar ────────────────────────────────────────────────────
 
-function RegSummaryBar({ data, t }) {
+function RegSummaryBar({ data, t, language }) {
   if (!data.length) return null;
   const counts = data.reduce((acc, r) => {
     const k = r.regulation_level || 'unknown';
@@ -1594,10 +1742,10 @@ function RegSummaryBar({ data, t }) {
       <p className="text-xs font-medium text-[var(--afcfta-muted)]">{t.regSummary}</p>
       {/* Bar */}
       <div className="h-4 rounded-full overflow-hidden flex">
-        {levels.map(({ key, color }) => {
+        {levels.map(({ key, label, color }) => {
           const pct = Math.round(((counts[key] || 0) / total) * 100);
           return pct > 0 ? (
-            <div key={key} className={`${color} h-full`} style={{ width: `${pct}%` }} title={`${key}: ${counts[key] || 0}`} />
+            <div key={key} className={`${color} h-full`} style={{ width: `${pct}%` }} title={`${pick(language, key, key, label)}: ${counts[key] || 0}`} />
           ) : null;
         })}
       </div>
@@ -1625,7 +1773,7 @@ const DOM_COLORS = {
   unknown: 'text-[var(--afcfta-muted)]',
 };
 
-function RegulationsTab({ t }) {
+function RegulationsTab({ t, language }) {
   const [data, setData] = useState([]);
   const [filterLevel, setFilterLevel] = useState('');
   const [loading, setLoading] = useState(false);
@@ -1649,7 +1797,7 @@ function RegulationsTab({ t }) {
       </div>
 
       {/* Summary bar */}
-      {data.length > 0 && <RegSummaryBar data={data} t={t} />}
+      {data.length > 0 && <RegSummaryBar data={data} t={t} language={language} />}
 
       <div className="flex flex-wrap gap-2 items-center">
         <select
@@ -1699,12 +1847,13 @@ function RegulationsTab({ t }) {
                   : row.domiciliation_conditional
                   ? 'conditional'
                   : 'free';
+                const d = pick(language, 'j', 'j', ' يوم');
                 const repatriationText = row.repatriation_days != null
                   ? row.conditional_repatriation_days != null
-                    ? `${row.repatriation_days}j / ${row.conditional_repatriation_days}j*`
-                    : `${row.repatriation_days}j`
+                    ? `${row.repatriation_days}${d} / ${row.conditional_repatriation_days}${d}*`
+                    : `${row.repatriation_days}${d}`
                   : row.export_payment_due_days != null
-                    ? `≤${row.export_payment_due_days}j${row.repatriation_after_due_months != null ? ` + ${row.repatriation_after_due_months} ${t.month}` : ''}`
+                    ? `≤${row.export_payment_due_days}${d}${row.repatriation_after_due_months != null ? ` + ${row.repatriation_after_due_months} ${t.month}` : ''}`
                     : '—';
                 const flag = COUNTRY_FLAGS[row.country_code] || '';
 
@@ -1724,7 +1873,7 @@ function RegulationsTab({ t }) {
                       <td className="border px-2 py-1.5 text-center font-mono">{row.currency_code}</td>
                       <td className="border px-2 py-1.5 text-center">
                         <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${REG_COLORS[row.regulation_level] || 'bg-[var(--afcfta-card2)]'}`}>
-                          {row.regulation_level?.toUpperCase()}
+                          {levelLabel(language, row.regulation_level, row.regulation_level?.toUpperCase())}
                         </span>
                       </td>
                       <td className={`border px-2 py-1.5 text-center ${DOM_COLORS[domKey]}`}>{domText}</td>
@@ -1783,12 +1932,12 @@ function RegulationsTab({ t }) {
                                 </div>
                               )}
                               {row.authorization_threshold_usd && (
-                                <div><span className="text-[var(--afcfta-muted)]">Seuil autorisation: </span>
+                                <div><span className="text-[var(--afcfta-muted)]">{pick(language, 'Seuil autorisation: ', 'Seuil autorisation: ', 'عتبة الترخيص: ')}</span>
                                   <strong>{row.authorization_threshold_usd.toLocaleString()} USD</strong>
                                 </div>
                               )}
                               {row.declaration_threshold_usd && (
-                                <div><span className="text-[var(--afcfta-muted)]">Seuil déclaration: </span>
+                                <div><span className="text-[var(--afcfta-muted)]">{pick(language, 'Seuil déclaration: ', 'Seuil déclaration: ', 'عتبة التصريح: ')}</span>
                                   <strong>{row.declaration_threshold_usd.toLocaleString()} USD</strong>
                                 </div>
                               )}
@@ -1914,6 +2063,7 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
             if (!GLOBAL_TABS.includes(activeTab)) setActiveTab('banks');
           }}
           placeholder={t.selectCountry}
+          language={language}
         />
       </div>
 
@@ -1924,15 +2074,16 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
           riskData={riskData}
           forexData={forexData}
           countryCode={selectedCountry}
+          language={language}
         />
       )}
 
       {/* Tab bar - always visible */}
-      <TabBar activeTab={activeTab} onChange={setActiveTab} t={t} />
+      <TabBar activeTab={activeTab} onChange={setActiveTab} t={t} language={language} />
 
       {/* Global tabs - no country needed */}
-      {activeTab === 'register' && <RegisterTab t={t} countries={countries} />}
-      {activeTab === 'regulations' && <RegulationsTab t={t} />}
+      {activeTab === 'register' && <RegisterTab t={t} countries={countries} language={language} />}
+      {activeTab === 'regulations' && <RegulationsTab t={t} language={language} />}
 
       {/* Country-specific tabs */}
       {!isGlobalTab && (
@@ -1954,12 +2105,12 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
           {selectedCountry && !loading && (
             <>
               {activeTab === 'banks' && <BanksTab data={bankData} t={t} language={language} />}
-              {activeTab === 'forex' && <ForexTab data={forexData} countryCode={selectedCountry} t={t} />}
-              {activeTab === 'risk' && <RiskTab data={riskData} t={t} />}
+              {activeTab === 'forex' && <ForexTab data={forexData} countryCode={selectedCountry} t={t} language={language} />}
+              {activeTab === 'risk' && <RiskTab data={riskData} t={t} language={language} />}
               {activeTab === 'instruments' && (
-                <InstrumentsTab instruments={instruments} countryCode={selectedCountry} t={t} />
+                <InstrumentsTab instruments={instruments} countryCode={selectedCountry} t={t} language={language} />
               )}
-              {activeTab === 'paymentSystems' && <PaymentSystemsTab systems={paymentSystems} t={t} />}
+              {activeTab === 'paymentSystems' && <PaymentSystemsTab systems={paymentSystems} t={t} language={language} />}
               {activeTab === 'compliance' && <ComplianceTab data={complianceData} t={t} />}
             </>
           )}

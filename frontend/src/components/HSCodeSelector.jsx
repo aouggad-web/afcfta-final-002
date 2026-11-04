@@ -44,7 +44,9 @@ const texts = {
     chapter: "Chapitre",
     position: "Position",
     subPosition: "Sous-position",
-    unit: "Unité"
+    unit: "Unité",
+    chAbbr: "Ch.",
+    hs6Codes: "codes SH6"
   },
   en: {
     title: "HS6 Codes - Harmonized System",
@@ -74,7 +76,41 @@ const texts = {
     chapter: "Chapter",
     position: "Position",
     subPosition: "Sub-position",
-    unit: "Unit"
+    unit: "Unit",
+    chAbbr: "Ch.",
+    hs6Codes: "codes SH6"
+  },
+  ar: {
+    title: "رموز SH6 - النظام المنسق",
+    searchPlaceholder: "ابحث عن منتج أو رمز SH…",
+    chapters: "الفصول",
+    allChapters: "جميع الفصول",
+    results: "نتيجة",
+    noResults: "لا توجد نتائج لـ",
+    loading: "جارٍ التحميل…",
+    selectCode: "اختيار",
+    selectedCode: "الرمز المختار",
+    clearSelection: "مسح",
+    browseByChapter: "التصفّح حسب الفصل",
+    topChapters: "الفصول الرئيسية",
+    recentSearches: "عمليات البحث الأخيرة",
+    searchTab: "بحث",
+    browseTab: "تصفّح",
+    hierarchyTab: "التسلسل الهرمي",
+    codesInChapter: "رمزًا في هذا الفصل",
+    selectChapter: "اختر فصلًا",
+    rulesOfOrigin: "قواعد المنشأ",
+    ruleType: "نوع القاعدة",
+    requirement: "الشرط",
+    regionalContent: "المحتوى الإقليمي",
+    viewRules: "عرض القواعد",
+    section: "القسم",
+    chapter: "الفصل",
+    position: "البند",
+    subPosition: "البند الفرعي",
+    unit: "الوحدة",
+    chAbbr: "الفصل",
+    hs6Codes: "رمزًا SH6"
   }
 };
 
@@ -142,6 +178,29 @@ const HS_SECTIONS = {
     { id: 'XIX', chapters: ['93'], name: "Arms and ammunition" },
     { id: 'XX', chapters: ['94', '95', '96'], name: "Miscellaneous manufactured articles" },
     { id: 'XXI', chapters: ['97', '99'], name: "Works of art, collectors' pieces" }
+  ],
+  ar: [
+    { id: 'I', chapters: ['01', '02', '03', '04', '05'], name: "الحيوانات الحية والمنتجات الحيوانية" },
+    { id: 'II', chapters: ['06', '07', '08', '09', '10', '11', '12', '13', '14'], name: "المنتجات النباتية" },
+    { id: 'III', chapters: ['15'], name: "الشحوم والزيوت" },
+    { id: 'IV', chapters: ['16', '17', '18', '19', '20', '21', '22', '23', '24'], name: "المنتجات الغذائية" },
+    { id: 'V', chapters: ['25', '26', '27'], name: "المنتجات المعدنية" },
+    { id: 'VI', chapters: ['28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38'], name: "المنتجات الكيميائية" },
+    { id: 'VII', chapters: ['39', '40'], name: "اللدائن والمطاط" },
+    { id: 'VIII', chapters: ['41', '42', '43'], name: "الجلود الخام والجلود المدبوغة والفراء" },
+    { id: 'IX', chapters: ['44', '45', '46'], name: "الخشب ومصنوعاته" },
+    { id: 'X', chapters: ['47', '48', '49'], name: "عجائن الخشب والورق" },
+    { id: 'XI', chapters: ['50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63'], name: "المواد النسيجية" },
+    { id: 'XII', chapters: ['64', '65', '66', '67'], name: "الأحذية وأغطية الرأس" },
+    { id: 'XIII', chapters: ['68', '69', '70'], name: "مصنوعات الحجر والخزف والزجاج" },
+    { id: 'XIV', chapters: ['71'], name: "اللؤلؤ والأحجار والمعادن الثمينة" },
+    { id: 'XV', chapters: ['72', '73', '74', '75', '76', '78', '79', '80', '81', '82', '83'], name: "المعادن العادية" },
+    { id: 'XVI', chapters: ['84', '85'], name: "الآلات والأجهزة" },
+    { id: 'XVII', chapters: ['86', '87', '88', '89'], name: "معدات النقل" },
+    { id: 'XVIII', chapters: ['90', '91', '92'], name: "الأدوات والأجهزة" },
+    { id: 'XIX', chapters: ['93'], name: "الأسلحة والذخائر" },
+    { id: 'XX', chapters: ['94', '95', '96'], name: "سلع ومنتجات متنوعة" },
+    { id: 'XXI', chapters: ['97', '99'], name: "التحف الفنية وقطع المجموعات" }
   ]
 };
 
@@ -278,7 +337,7 @@ export function HSCodeSearch({ value, onChange, language = 'fr', placeholder, sh
               <SupplementaryUnitBadge item={selectedDetails} />
             </div>
             <Badge variant="outline" className="text-xs">
-              Ch. {selectedDetails.chapter} - {selectedDetails.chapter_name}
+              {t.chAbbr} {selectedDetails.chapter} - {selectedDetails.chapter_name}
             </Badge>
           </div>
         </div>
@@ -324,7 +383,7 @@ export function HSCodeSearch({ value, onChange, language = 'fr', placeholder, sh
                     <p className="text-xs text-gray-500 mt-1 flex items-center gap-2 flex-wrap">
                       <span className="inline-flex items-center gap-1">
                         <Globe className="w-3 h-3" />
-                        Ch. {item.chapter} - {item.chapter_name}
+                        {t.chAbbr} {item.chapter} - {item.chapter_name}
                       </span>
                       <SupplementaryUnitBadge item={item} />
                     </p>
@@ -485,7 +544,7 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
         </CardTitle>
         {stats && (
           <p className="text-blue-100 text-sm">
-            {stats.total_chapters} {t.chapters} • {stats.total_codes} codes SH6
+            {stats.total_chapters} {t.chapters} • {stats.total_codes} {t.hs6Codes}
           </p>
         )}
       </CardHeader>
@@ -539,7 +598,7 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-800">{item.label}</p>
                         <p className="text-xs text-gray-500 flex items-center gap-2 flex-wrap">
-                          <span>Ch. {item.chapter} - {item.chapter_name}</span>
+                          <span>{t.chAbbr} {item.chapter} - {item.chapter_name}</span>
                           <SupplementaryUnitBadge item={item} />
                         </p>
                       </div>
@@ -658,7 +717,7 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
                       {section.name}
                     </span>
                     <span className="text-xs text-gray-500">
-                      Ch. {section.chapters[0]}-{section.chapters[section.chapters.length - 1]}
+                      {t.chAbbr} {section.chapters[0]}-{section.chapters[section.chapters.length - 1]}
                     </span>
                   </button>
                   

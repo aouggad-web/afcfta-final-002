@@ -105,6 +105,40 @@ describe('CSVExportButton', () => {
     expect(csvContent).toContain('2026-07-24T12:00:00Z');
   });
 
+  it('neutralise les cellules texte commençant par = + - @ (injection de formules)', async () => {
+    const rows = [
+      { country: '=1+1', exports: -5 },
+      { country: '+cmd', exports: '@SUM(A1)' },
+      { country: '-', exports: '- Autres' },
+    ];
+    render(<CSVExportButton rows={rows} columns={columns} />);
+    await userEvent.click(screen.getByRole('button'));
+
+    const lines = csvContent.replace(/^﻿/, '').split('\n');
+    // Le nombre négatif reste un nombre, le tiret seul reste tel quel.
+    expect(lines[1]).toBe("'=1+1,-5");
+    expect(lines[2]).toBe("'+cmd,'@SUM(A1)");
+    expect(lines[3]).toBe("-,'- Autres");
+  });
+
+  it('neutralise aussi une valeur tableau dont le texte commence par =', async () => {
+    render(<CSVExportButton rows={[{ country: ['=1+1'], exports: -5 }]} columns={columns} />);
+    await userEvent.click(screen.getByRole('button'));
+
+    expect(csvContent.replace(/^﻿/, '').split('\n')[1]).toBe("'=1+1,-5");
+  });
+
+  it('neutralise aussi les métadonnées d’export', async () => {
+    render(<CSVExportButton
+      rows={[{ country: 'KEN' }]}
+      columns={[{ key: 'country', label: 'Pays' }]}
+      exportMetadata={{ exporter_country: '@SUM(1)' }}
+    />);
+    await userEvent.click(screen.getByRole('button'));
+
+    expect(csvContent).toContain("Pays exportateur,'@SUM(1)");
+  });
+
 });
 
 describe('JSONExportButton', () => {

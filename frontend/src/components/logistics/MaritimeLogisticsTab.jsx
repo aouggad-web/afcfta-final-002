@@ -18,6 +18,8 @@ import {
   FilterDivider 
 } from '../common/FilterComponents';
 import { Anchor, Ship, MapPin, BarChart3, DollarSign } from 'lucide-react';
+import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -67,6 +69,24 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
         avgDwell: "Avg. dwell time",
         topRegion: "Top region"
       }
+    },
+    ar: {
+      title: "اللوجستيك البحري",
+      subtitle: "68 ميناءً أفريقيًا مع إحصائيات TRS والربط البحري",
+      filterByCountry: "البلد",
+      allCountries: "جميع البلدان",
+      search: "ابحث عن ميناء…",
+      portsLabel: "ميناء",
+      loading: "جارٍ التحميل…",
+      errorTitle: "خطأ",
+      errorLoad: "تعذّر تحميل البيانات",
+      noResults: "لم يُعثر على أي ميناء",
+      stats: {
+        totalPorts: "إجمالي الموانئ",
+        withTRS: "مع بيانات TRS",
+        avgDwell: "متوسط مدة البقاء",
+        topRegion: "المنطقة الرئيسية"
+      }
     }
   };
 
@@ -75,19 +95,19 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
   // Country options for filter
   const countryOptions = [
     { value: 'ALL', label: t.allCountries, icon: '🌍' },
-    { value: 'DZA', label: language === 'fr' ? 'Algérie' : 'Algeria', icon: '🇩🇿' },
-    { value: 'MAR', label: language === 'fr' ? 'Maroc' : 'Morocco', icon: '🇲🇦' },
-    { value: 'EGY', label: language === 'fr' ? 'Égypte' : 'Egypt', icon: '🇪🇬' },
-    { value: 'ZAF', label: language === 'fr' ? 'Afrique du Sud' : 'South Africa', icon: '🇿🇦' },
-    { value: 'NGA', label: language === 'fr' ? 'Nigéria' : 'Nigeria', icon: '🇳🇬' },
-    { value: 'KEN', label: 'Kenya', icon: '🇰🇪' },
-    { value: 'TZA', label: language === 'fr' ? 'Tanzanie' : 'Tanzania', icon: '🇹🇿' },
-    { value: 'CIV', label: language === 'fr' ? "Côte d'Ivoire" : 'Ivory Coast', icon: '🇨🇮' },
-    { value: 'GHA', label: 'Ghana', icon: '🇬🇭' },
-    { value: 'SEN', label: language === 'fr' ? 'Sénégal' : 'Senegal', icon: '🇸🇳' },
-    { value: 'AGO', label: 'Angola', icon: '🇦🇴' },
-    { value: 'CMR', label: language === 'fr' ? 'Cameroun' : 'Cameroon', icon: '🇨🇲' },
-    { value: 'DJI', label: 'Djibouti', icon: '🇩🇯' }
+    { value: 'DZA', label: pick(language, 'Algérie', 'Algeria', 'الجزائر'), icon: '🇩🇿' },
+    { value: 'MAR', label: pick(language, 'Maroc', 'Morocco', 'المغرب'), icon: '🇲🇦' },
+    { value: 'EGY', label: pick(language, 'Égypte', 'Egypt', 'مصر'), icon: '🇪🇬' },
+    { value: 'ZAF', label: pick(language, 'Afrique du Sud', 'South Africa', 'جنوب أفريقيا'), icon: '🇿🇦' },
+    { value: 'NGA', label: pick(language, 'Nigéria', 'Nigeria', 'نيجيريا'), icon: '🇳🇬' },
+    { value: 'KEN', label: pick(language, 'Kenya', 'Kenya', 'كينيا'), icon: '🇰🇪' },
+    { value: 'TZA', label: pick(language, 'Tanzanie', 'Tanzania', 'تنزانيا'), icon: '🇹🇿' },
+    { value: 'CIV', label: pick(language, "Côte d'Ivoire", 'Ivory Coast', 'كوت ديفوار'), icon: '🇨🇮' },
+    { value: 'GHA', label: pick(language, 'Ghana', 'Ghana', 'غانا'), icon: '🇬🇭' },
+    { value: 'SEN', label: pick(language, 'Sénégal', 'Senegal', 'السنغال'), icon: '🇸🇳' },
+    { value: 'AGO', label: pick(language, 'Angola', 'Angola', 'أنغولا'), icon: '🇦🇴' },
+    { value: 'CMR', label: pick(language, 'Cameroun', 'Cameroon', 'الكاميرون'), icon: '🇨🇲' },
+    { value: 'DJI', label: pick(language, 'Djibouti', 'Djibouti', 'جيبوتي'), icon: '🇩🇯' }
   ];
 
   useEffect(() => {
@@ -237,7 +257,7 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
             <CardHeader className="py-3 border-b">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
-                {language === 'fr' ? 'Liste des ports' : 'Port list'}
+                {pick(language, 'Liste des ports', 'Port list', 'قائمة الموانئ')}
               </CardTitle>
             </CardHeader>
             <div className="scroll-container" style={{ maxHeight: '450px' }}>
@@ -250,13 +270,13 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-sm">{port.port_name}</p>
-                        <p className="text-xs text-[var(--afcfta-muted)]">{port.country_name}</p>
+                        <p className="font-medium text-sm">{trDonnee(port.port_name, language)}</p>
+                        <p className="text-xs text-[var(--afcfta-muted)]">{trDonnee(port.country_name, language)}</p>
                       </div>
                       {port.trs_analysis?.container_dwell_time_days && 
                        port.trs_analysis.container_dwell_time_days !== 'NA' && (
                         <Badge variant="secondary" className="text-xs">
-                          {port.trs_analysis.container_dwell_time_days}j
+                          {port.trs_analysis.container_dwell_time_days}{pick(language, 'j', 'j', ' يوم')}
                         </Badge>
                       )}
                     </div>

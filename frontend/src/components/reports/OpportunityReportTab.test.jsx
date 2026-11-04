@@ -117,3 +117,32 @@ describe('OpportunityReportTab — S6 · Strategic flows mode', () => {
     );
   });
 });
+
+describe('BilateralView — module réservé aux abonnements payants (audit E1)', () => {
+  const refus = {
+    response: {
+      status: 403,
+      data: { detail: { error: 'upgrade_required', tier: 'anonymous', module: 'reports', message: 'Ce module est réservé aux abonnements payants.' } },
+    },
+  };
+
+  it('affiche un avis localisé avec un lien vers les formules', async () => {
+    axios.get.mockRejectedValueOnce(refus);
+    render(<BilateralView countries={countries} fr={false} language="en" prefill={null} />);
+    await userEvent.click(screen.getByTestId('report-run'));
+
+    const avis = await screen.findByTestId('subscription-notice');
+    expect(avis).toHaveTextContent('The Opportunities module is reserved for paid subscriptions.');
+    expect(screen.getByRole('link', { name: 'See the plans' })).toHaveAttribute('href', '/pricing.html');
+    expect(screen.queryByText('Could not generate report.')).not.toBeInTheDocument();
+  });
+
+  it('garde le message générique pour une vraie panne', async () => {
+    axios.get.mockRejectedValueOnce({ response: { status: 500, data: {} } });
+    render(<BilateralView countries={countries} fr={true} prefill={null} />);
+    await userEvent.click(screen.getByTestId('report-run'));
+
+    expect(await screen.findByText('Impossible de générer le rapport.')).toBeInTheDocument();
+    expect(screen.queryByTestId('subscription-notice')).not.toBeInTheDocument();
+  });
+});

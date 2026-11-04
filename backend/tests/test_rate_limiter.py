@@ -25,7 +25,19 @@ if str(backend_path) not in sys.path:
 from middlewares.rate_limiter import RateLimitMiddleware  # noqa: E402
 
 
-def _make_app(**kwargs) -> TestClient:
+def _avec_pair(app, hote):
+    """TestClient fixe le pair à « testclient » : on le remplace par `hote`,
+    par exemple l'adresse privée de l'ingress."""
+
+    async def asgi(scope, receive, send):
+        if scope["type"] == "http":
+            scope = {**scope, "client": (hote, 50000)}
+        await app(scope, receive, send)
+
+    return asgi
+
+
+def _make_app(pair=None, **kwargs) -> TestClient:
     app = FastAPI()
     app.add_middleware(RateLimitMiddleware, **kwargs)
 
@@ -49,7 +61,7 @@ def _make_app(**kwargs) -> TestClient:
     async def me():
         return {"ok": True}
 
-    return TestClient(app)
+    return TestClient(_avec_pair(app, pair) if pair else app)
 
 
 def test_ordinary_route_is_actually_limited():
@@ -143,7 +155,9 @@ def test_multi_hop_buckets_are_per_visitor_not_shared(monkeypatch):
     """Derrière 3 relais, deux visiteurs distincts ne doivent PAS partager le
     même compteur — sinon un seul utilisateur actif bloque tout le monde."""
     monkeypatch.setenv("TRUSTED_PROXY_HOPS", "3")
-    client = _make_app(requests_per_minute=2, burst_limit=100)
+    monkeypatch.delenv("TRUSTED_PROXY_CIDRS", raising=False)
+    # Requêtes reçues de l'ingress, sur le réseau privé.
+    client = _make_app(pair="10.0.0.3", requests_per_minute=2, burst_limit=100)
 
     # Chaîne réaliste : <visiteur>, <relais1>, <relais2>
     def call(visitor_ip):
@@ -156,3 +170,49 @@ def test_multi_hop_buckets_are_per_visitor_not_shared(monkeypatch):
     assert call("41.100.0.9") == 200
     assert call("41.100.0.9") == 429  # quota du premier visiteur épuisé
     assert call("81.200.5.4") == 200  # un autre visiteur reste servi
+
+
+# ── X-Forwarded-For n'est cru que d'un relais approuvé (constat E5) ─────────
+
+
+@pytest.mark.parametrize("valeur", ["1.0.0.{i}", "nimporte-quoi-{i}"])
+def test_xff_tournant_ne_contourne_pas_le_quota(monkeypatch, valeur):
+    """Origine jointe en direct : changer X-Forwarded-For à chaque requête ne
+    donne pas un nouveau compteur, la clé reste le pair direct."""
+    monkeypatch.delenv("TRUSTED_PROXY_CIDRS", raising=False)
+    client = _make_app(pair="41.100.0.9", requests_per_minute=3, burst_limit=100)
+    codes = [
+        client.get("/api/countries", headers={"X-Forwarded-For": valeur.format(i=i)}).status_code
+        for i in range(6)
+    ]
+    assert codes == [200, 200, 200, 429, 429, 429]
+
+
+def test_les_adresses_d_un_meme_slash64_partagent_le_quota(monkeypatch):
+    monkeypatch.setenv("TRUSTED_PROXY_HOPS", "1")
+    monkeypatch.delenv("TRUSTED_PROXY_CIDRS", raising=False)
+    client = _make_app(pair="10.0.0.3", requests_per_minute=3, burst_limit=100)
+    codes = [
+        client.get(
+            "/api/countries", headers={"X-Forwarded-For": f"2a01:e0a:1:2::{i + 1}"}
+        ).status_code
+        for i in range(5)
+    ]
+    assert codes == [200, 200, 200, 429, 429]
+
+
+@pytest.mark.parametrize("hote", [b"testserver/api/health?", b"testserver/api/health#"])
+def test_host_forge_ne_contourne_pas_le_quota_de_connexion(hote):
+    """Audit M3 : avec request.url, un Host « testserver/api/health? » faisait
+    passer la connexion pour /api/health, exemptée, donc sans aucun quota."""
+    client = _make_app(requests_per_minute=50, auth_requests_per_minute=2, burst_limit=100)
+
+    async def asgi(scope, receive, send):
+        if scope["type"] == "http":
+            entetes = [(k, v) for k, v in scope["headers"] if k != b"host"]
+            scope = {**scope, "headers": entetes + [(b"host", hote)]}
+        await client.app(scope, receive, send)
+
+    forge = TestClient(asgi)
+    codes = [forge.post("/api/auth/login").status_code for _ in range(4)]
+    assert codes == [200, 200, 429, 429]

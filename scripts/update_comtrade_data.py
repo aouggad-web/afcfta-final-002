@@ -139,12 +139,13 @@ class ComtradeUpdater:
                     "reporterCode": reporter_code,
                     "partnerCode": "0",  # World total
                     "period": str(year),
-                    "subscription-key": api_key,
                 }
                 try:
+                    # Clé en en-tête, jamais dans l'URL (journaux, proxys).
                     response = requests.get(
                         COMTRADE_BASE_URL,
                         params=params,
+                        headers={"Ocp-Apim-Subscription-Key": api_key},
                         timeout=30,
                     )
                     self.calls_made += 1
@@ -219,10 +220,14 @@ class ComtradeUpdater:
             "p": "000",
             "ps": "2022,2023",
             "fmt": "json",
-            "subscription-key": self.wto_key,
         }
         try:
-            response = requests.get(WTO_BASE_URL, params=params, timeout=20)
+            response = requests.get(
+                WTO_BASE_URL,
+                params=params,
+                headers={"Ocp-Apim-Subscription-Key": self.wto_key},
+                timeout=20,
+            )
             if response.status_code == 401:
                 print(
                     f"⚠️ Unauthorized (401) for URL: {WTO_BASE_URL}. Check API credentials. Skipping..."

@@ -18,6 +18,9 @@ import { Search, Globe, TrendingDown, CheckCircle, AlertCircle, Loader2 } from '
 import { normalizeTaxesDetail } from './taxesDetail';
 import { buildCalculRequestBody, mapCalculToLegacyResult } from './unifiedCalculator';
 import { montant, montantUnite } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
+import { anonymousCalculationNoticeText } from '../tools/entitlementNotice';
+import SubscriptionNotice from '../tools/SubscriptionNotice';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
@@ -44,60 +47,60 @@ const ISO3_TO_ISO2 = {
 
 // Country names
 const COUNTRY_NAMES = {
-  'DZA': { fr: 'Algérie', en: 'Algeria' },
-  'AGO': { fr: 'Angola', en: 'Angola' },
-  'BEN': { fr: 'Bénin', en: 'Benin' },
-  'BWA': { fr: 'Botswana', en: 'Botswana' },
-  'BFA': { fr: 'Burkina Faso', en: 'Burkina Faso' },
-  'BDI': { fr: 'Burundi', en: 'Burundi' },
-  'CMR': { fr: 'Cameroun', en: 'Cameroon' },
-  'CPV': { fr: 'Cap-Vert', en: 'Cabo Verde' },
-  'CAF': { fr: 'Centrafrique', en: 'Central African Rep.' },
-  'TCD': { fr: 'Tchad', en: 'Chad' },
-  'COM': { fr: 'Comores', en: 'Comoros' },
-  'COG': { fr: 'Congo', en: 'Congo' },
-  'COD': { fr: 'RD Congo', en: 'DR Congo' },
-  'CIV': { fr: 'Côte d\'Ivoire', en: 'Côte d\'Ivoire' },
-  'DJI': { fr: 'Djibouti', en: 'Djibouti' },
-  'EGY': { fr: 'Égypte', en: 'Egypt' },
-  'GNQ': { fr: 'Guinée Équat.', en: 'Equatorial Guinea' },
-  'ERI': { fr: 'Érythrée', en: 'Eritrea' },
-  'SWZ': { fr: 'Eswatini', en: 'Eswatini' },
-  'ETH': { fr: 'Éthiopie', en: 'Ethiopia' },
-  'GAB': { fr: 'Gabon', en: 'Gabon' },
-  'GMB': { fr: 'Gambie', en: 'Gambia' },
-  'GHA': { fr: 'Ghana', en: 'Ghana' },
-  'GIN': { fr: 'Guinée', en: 'Guinea' },
-  'GNB': { fr: 'Guinée-Bissau', en: 'Guinea-Bissau' },
-  'KEN': { fr: 'Kenya', en: 'Kenya' },
-  'LSO': { fr: 'Lesotho', en: 'Lesotho' },
-  'LBR': { fr: 'Liberia', en: 'Liberia' },
-  'LBY': { fr: 'Libye', en: 'Libya' },
-  'MDG': { fr: 'Madagascar', en: 'Madagascar' },
-  'MWI': { fr: 'Malawi', en: 'Malawi' },
-  'MLI': { fr: 'Mali', en: 'Mali' },
-  'MRT': { fr: 'Mauritanie', en: 'Mauritania' },
-  'MUS': { fr: 'Maurice', en: 'Mauritius' },
-  'MAR': { fr: 'Maroc', en: 'Morocco' },
-  'MOZ': { fr: 'Mozambique', en: 'Mozambique' },
-  'NAM': { fr: 'Namibie', en: 'Namibia' },
-  'NER': { fr: 'Niger', en: 'Niger' },
-  'NGA': { fr: 'Nigeria', en: 'Nigeria' },
-  'RWA': { fr: 'Rwanda', en: 'Rwanda' },
-  'STP': { fr: 'São Tomé', en: 'São Tomé' },
-  'SEN': { fr: 'Sénégal', en: 'Senegal' },
-  'SYC': { fr: 'Seychelles', en: 'Seychelles' },
-  'SLE': { fr: 'Sierra Leone', en: 'Sierra Leone' },
-  'SOM': { fr: 'Somalie', en: 'Somalia' },
-  'ZAF': { fr: 'Afrique du Sud', en: 'South Africa' },
-  'SSD': { fr: 'Soudan du Sud', en: 'South Sudan' },
-  'SDN': { fr: 'Soudan', en: 'Sudan' },
-  'TZA': { fr: 'Tanzanie', en: 'Tanzania' },
-  'TGO': { fr: 'Togo', en: 'Togo' },
-  'TUN': { fr: 'Tunisie', en: 'Tunisia' },
-  'UGA': { fr: 'Ouganda', en: 'Uganda' },
-  'ZMB': { fr: 'Zambie', en: 'Zambia' },
-  'ZWE': { fr: 'Zimbabwe', en: 'Zimbabwe' }
+  'DZA': { fr: 'Algérie', en: 'Algeria', ar: 'الجزائر' },
+  'AGO': { fr: 'Angola', en: 'Angola', ar: 'أنغولا' },
+  'BEN': { fr: 'Bénin', en: 'Benin', ar: 'بنين' },
+  'BWA': { fr: 'Botswana', en: 'Botswana', ar: 'بوتسوانا' },
+  'BFA': { fr: 'Burkina Faso', en: 'Burkina Faso', ar: 'بوركينا فاسو' },
+  'BDI': { fr: 'Burundi', en: 'Burundi', ar: 'بوروندي' },
+  'CMR': { fr: 'Cameroun', en: 'Cameroon', ar: 'الكاميرون' },
+  'CPV': { fr: 'Cap-Vert', en: 'Cabo Verde', ar: 'الرأس الأخضر' },
+  'CAF': { fr: 'Centrafrique', en: 'Central African Rep.', ar: 'جمهورية أفريقيا الوسطى' },
+  'TCD': { fr: 'Tchad', en: 'Chad', ar: 'تشاد' },
+  'COM': { fr: 'Comores', en: 'Comoros', ar: 'جزر القمر' },
+  'COG': { fr: 'Congo', en: 'Congo', ar: 'الكونغو' },
+  'COD': { fr: 'RD Congo', en: 'DR Congo', ar: 'جمهورية الكونغو الديمقراطية' },
+  'CIV': { fr: 'Côte d\'Ivoire', en: 'Côte d\'Ivoire', ar: 'كوت ديفوار' },
+  'DJI': { fr: 'Djibouti', en: 'Djibouti', ar: 'جيبوتي' },
+  'EGY': { fr: 'Égypte', en: 'Egypt', ar: 'مصر' },
+  'GNQ': { fr: 'Guinée Équat.', en: 'Equatorial Guinea', ar: 'غينيا الاستوائية' },
+  'ERI': { fr: 'Érythrée', en: 'Eritrea', ar: 'إريتريا' },
+  'SWZ': { fr: 'Eswatini', en: 'Eswatini', ar: 'إسواتيني' },
+  'ETH': { fr: 'Éthiopie', en: 'Ethiopia', ar: 'إثيوبيا' },
+  'GAB': { fr: 'Gabon', en: 'Gabon', ar: 'الغابون' },
+  'GMB': { fr: 'Gambie', en: 'Gambia', ar: 'غامبيا' },
+  'GHA': { fr: 'Ghana', en: 'Ghana', ar: 'غانا' },
+  'GIN': { fr: 'Guinée', en: 'Guinea', ar: 'غينيا' },
+  'GNB': { fr: 'Guinée-Bissau', en: 'Guinea-Bissau', ar: 'غينيا بيساو' },
+  'KEN': { fr: 'Kenya', en: 'Kenya', ar: 'كينيا' },
+  'LSO': { fr: 'Lesotho', en: 'Lesotho', ar: 'ليسوتو' },
+  'LBR': { fr: 'Liberia', en: 'Liberia', ar: 'ليبيريا' },
+  'LBY': { fr: 'Libye', en: 'Libya', ar: 'ليبيا' },
+  'MDG': { fr: 'Madagascar', en: 'Madagascar', ar: 'مدغشقر' },
+  'MWI': { fr: 'Malawi', en: 'Malawi', ar: 'ملاوي' },
+  'MLI': { fr: 'Mali', en: 'Mali', ar: 'مالي' },
+  'MRT': { fr: 'Mauritanie', en: 'Mauritania', ar: 'موريتانيا' },
+  'MUS': { fr: 'Maurice', en: 'Mauritius', ar: 'موريشيوس' },
+  'MAR': { fr: 'Maroc', en: 'Morocco', ar: 'المغرب' },
+  'MOZ': { fr: 'Mozambique', en: 'Mozambique', ar: 'موزمبيق' },
+  'NAM': { fr: 'Namibie', en: 'Namibia', ar: 'ناميبيا' },
+  'NER': { fr: 'Niger', en: 'Niger', ar: 'النيجر' },
+  'NGA': { fr: 'Nigeria', en: 'Nigeria', ar: 'نيجيريا' },
+  'RWA': { fr: 'Rwanda', en: 'Rwanda', ar: 'رواندا' },
+  'STP': { fr: 'São Tomé', en: 'São Tomé', ar: 'ساو تومي وبرينسيب' },
+  'SEN': { fr: 'Sénégal', en: 'Senegal', ar: 'السنغال' },
+  'SYC': { fr: 'Seychelles', en: 'Seychelles', ar: 'سيشل' },
+  'SLE': { fr: 'Sierra Leone', en: 'Sierra Leone', ar: 'سيراليون' },
+  'SOM': { fr: 'Somalie', en: 'Somalia', ar: 'الصومال' },
+  'ZAF': { fr: 'Afrique du Sud', en: 'South Africa', ar: 'جنوب أفريقيا' },
+  'SSD': { fr: 'Soudan du Sud', en: 'South Sudan', ar: 'جنوب السودان' },
+  'SDN': { fr: 'Soudan', en: 'Sudan', ar: 'السودان' },
+  'TZA': { fr: 'Tanzanie', en: 'Tanzania', ar: 'تنزانيا' },
+  'TGO': { fr: 'Togo', en: 'Togo', ar: 'توغو' },
+  'TUN': { fr: 'Tunisie', en: 'Tunisia', ar: 'تونس' },
+  'UGA': { fr: 'Ouganda', en: 'Uganda', ar: 'أوغندا' },
+  'ZMB': { fr: 'Zambie', en: 'Zambia', ar: 'زامبيا' },
+  'ZWE': { fr: 'Zimbabwe', en: 'Zimbabwe', ar: 'زيمبابوي' }
 };
 
 // Format currency
@@ -195,6 +198,38 @@ export default function MultiCountryComparison({ language = 'fr' }) {
         east: 'East Africa',
         south: 'Southern Africa'
       }
+    },
+    ar: {
+      title: 'مقارنة متعددة البلدان',
+      subtitle: 'قارن التعريفات الجمركية لمنتج واحد في عدة بلدان',
+      hsCode: 'رمز SH (من 6 إلى 12 رقمًا)',
+      value: 'القيمة (USD)',
+      selectCountries: 'اختر البلدان المراد مقارنتها',
+      origin: 'بلد المنشأ (يتوقف عليه التفضيل في إطار زليكاف)',
+      noOrigin: 'دون منشأ — النظام العام وحده',
+      notCalculated: 'غير محسوبة',
+      compare: 'مقارنة',
+      comparing: 'جارٍ المقارنة…',
+      results: 'نتائج المقارنة',
+      country: 'البلد',
+      ddRate: 'DD%',
+      vatRate: 'TVA%',
+      totalTaxes: 'مجموع الضرائب',
+      npfTotal: 'مجموع NPF',
+      zlecafTotal: 'مجموع زليكاف',
+      savings: 'الوفورات',
+      bestChoice: 'الخيار الأفضل',
+      allTaxes: 'جميع الضرائب',
+      noResults: 'لا توجد نتائج',
+      selectAtLeast2: 'اختر بلدين على الأقل',
+      regions: {
+        north: 'شمال أفريقيا',
+        west: 'غرب أفريقيا',
+        cemac: 'سيماك (وسط أفريقيا)',
+        central: 'وسط أفريقيا (أخرى)',
+        east: 'شرق أفريقيا',
+        south: 'الجنوب الأفريقي'
+      }
     }
   };
   
@@ -264,6 +299,10 @@ export default function MultiCountryComparison({ language = 'fr' }) {
           .then((res) => ({ iso3, calcul: res.data }))
           .catch((err) => {
             const detail = err.response?.data?.detail;
+            // Calculs sans abonnement épuisés (audit E1) : l'avis s'affiche
+            // une fois sous la liste, pas à chaque pays.
+            const limite = anonymousCalculationNoticeText(err, language);
+            if (limite) return { iso3, limite, erreur: pick(language, 'limite atteinte', 'limit reached', 'تم بلوغ الحدّ') };
             return { iso3, erreur: typeof detail === 'string' ? detail : (detail?.message || err.message) };
           })));
 
@@ -445,7 +484,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
             ) : (
               <>
                 <Search className="mr-2 h-4 w-4" />
-                {t.compare} ({selectedCountries.length} {language === 'fr' ? 'pays' : 'countries'})
+                {t.compare} ({selectedCountries.length} {pick(language, 'pays', 'countries', 'بلدان')})
               </>
             )}
           </Button>
@@ -457,6 +496,11 @@ export default function MultiCountryComparison({ language = 'fr' }) {
           <CardContent className="py-4 text-sm text-[var(--afcfta-muted)]" data-testid="compare-echecs">
             <span className="font-medium text-[var(--text)]">{t.notCalculated} :</span>{' '}
             {echecs.map((e) => `${COUNTRY_NAMES[e.iso3]?.[language] || e.iso3} (${e.erreur})`).join(' · ')}
+            {echecs.some((e) => e.limite) && (
+              <p className="mt-2 text-[var(--text)]">
+                <SubscriptionNotice text={echecs.find((e) => e.limite).limite} language={language} />
+              </p>
+            )}
           </CardContent>
         </Card>
       )}
@@ -593,7 +637,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">
-                  {language === 'fr' ? '📊 Comparaison des Taxes' : '📊 Tax Comparison'}
+                  {pick(language, '📊 Comparaison des Taxes', '📊 Tax Comparison', '📊 مقارنة الضرائب')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -607,8 +651,8 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                       labelFormatter={(label) => label}
                     />
                     <Legend />
-                    <Bar dataKey="NPF" fill="#3b82f6" name={language === 'fr' ? 'Taxes NPF' : 'MFN Taxes'} />
-                    <Bar dataKey="ZLECAf" fill="#10b981" name={language === 'fr' ? 'Taxes ZLECAf' : 'AfCFTA Taxes'} />
+                    <Bar dataKey="NPF" fill="#3b82f6" name={pick(language, 'Taxes NPF', 'MFN Taxes', 'ضرائب NPF')} />
+                    <Bar dataKey="ZLECAf" fill="#10b981" name={pick(language, 'Taxes ZLECAf', 'AfCFTA Taxes', 'ضرائب زليكاف')} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -618,7 +662,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">
-                  {language === 'fr' ? '🎯 Taux Comparés' : '🎯 Rate Comparison'}
+                  {pick(language, '🎯 Taux Comparés', '🎯 Rate Comparison', '🎯 مقارنة المعدلات')}
                 </CardTitle>
               </CardHeader>
               <CardContent>

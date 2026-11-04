@@ -83,7 +83,7 @@ def test_vehicules_electriques_exoneres(positions):
 
 
 def test_alcool_declare_incomplet(positions):
-    """Taxe par litre de l'art. 91 : barème non publié dans les textes déposés."""
+    """Taxe par litre (Lei 45/X/2024, art. 77) : sans quantité en litres, total incomplet."""
     etat, _ = _calcul(positions["2208300000"])
     assert etat != "COMPLET"
 

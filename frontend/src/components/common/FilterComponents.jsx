@@ -6,6 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Search, Filter, X, LayoutGrid, List, Map } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { pick } from '../../i18n/lang';
 
 /**
  * Unified Filter Bar Component
@@ -123,6 +125,8 @@ export function ViewModeToggle({
   modes = ['grid', 'list'],
   className = ""
 }) {
+  const { i18n } = useTranslation();
+  const language = i18n?.language;
   const modeIcons = {
     grid: <LayoutGrid className="h-4 w-4" />,
     list: <List className="h-4 w-4" />,
@@ -130,9 +134,9 @@ export function ViewModeToggle({
   };
 
   const modeLabels = {
-    grid: 'Grille',
-    list: 'Liste',
-    map: 'Carte'
+    grid: pick(language, 'Grille', 'Grille', 'شبكة'),
+    list: pick(language, 'Liste', 'Liste', 'قائمة'),
+    map: pick(language, 'Carte', 'Carte', 'خريطة')
   };
 
   return (

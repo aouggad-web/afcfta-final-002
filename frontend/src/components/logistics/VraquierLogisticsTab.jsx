@@ -8,16 +8,20 @@ import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Ship, Anchor, Waves, Loader2, Leaf, AlertTriangle, Package, TrendingUp } from 'lucide-react';
 import { montant } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 const fmtUsd = (v, language) => (v == null ? '—' : montant(v, language));
 const fmtNum = (v, u = '') => (v == null ? '—' : Number(v).toLocaleString('fr-FR') + (u ? ' ' + u : ''));
-const fmtDays = (min, max) => (min == null && max == null ? '—' : min === max || max == null ? `${min} j` : `${min}–${max} j`);
+const fmtDays = (min, max, language) => {
+  const d = pick(language, 'j', 'j', 'يوم');
+  return min == null && max == null ? '—' : min === max || max == null ? `${min} ${d}` : `${min}–${max} ${d}`;
+};
 
 export default function VraquierLogisticsTab({ language = 'fr' }) {
-  const fr = language !== 'en';
   const [ports, setPorts] = useState([]);
   const [classes, setClasses] = useState([]);
   const [market, setMarket] = useState(null);
@@ -41,8 +45,8 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
   }, []);
 
   const portOptions = useMemo(
-    () => ports.map((p) => ({ value: p.locode, label: `${p.name} (${p.locode})${p.max_draft_m ? ` · ${p.max_draft_m} m` : ''}` })),
-    [ports]
+    () => ports.map((p) => ({ value: p.locode, label: `${trDonnee(p.name, language)} (${p.locode})${p.max_draft_m ? ` · ${p.max_draft_m} m` : ''}` })),
+    [ports, language]
   );
 
   const run = async () => {
@@ -55,7 +59,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
       const r = await axios.get(`${API}/logistics/bulk/cost?${params.toString()}`);
       setResult(r.data);
     } catch (e) {
-      setError(e?.response?.data?.detail || (fr ? 'Calcul indisponible.' : 'Calculation unavailable.'));
+      setError(e?.response?.data?.detail || pick(language, 'Calcul indisponible.', 'Calculation unavailable.', 'الحساب غير متاح.'));
     } finally {
       setLoading(false);
     }
@@ -77,12 +81,15 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
               </div>
               <div>
                 <CardTitle className="text-[var(--text)] text-base">
-                  {fr ? 'Fret vraquier (bulk carrier)' : 'Bulk carrier freight'}
+                  {pick(language, 'Fret vraquier (bulk carrier)', 'Bulk carrier freight', 'شحن سفن الصب (Bulk carrier)')}
                 </CardTitle>
                 <CardDescription className="text-[var(--afcfta-muted)] text-xs">
-                  {fr
-                    ? 'Cargaison homogène en vrac sec — coût USD/t par classe de navire, contraintes portuaires et voyages multiples.'
-                    : 'Homogeneous dry-bulk cargo — USD/t cost per vessel class, port constraints and multiple voyages.'}
+                  {pick(
+                    language,
+                    'Cargaison homogène en vrac sec — coût USD/t par classe de navire, contraintes portuaires et voyages multiples.',
+                    'Homogeneous dry-bulk cargo — USD/t cost per vessel class, port constraints and multiple voyages.',
+                    'شحنة متجانسة من البضائع السائبة الجافة — التكلفة بـ USD/طن حسب فئة السفينة والقيود المينائية والرحلات المتعددة.'
+                  )}
                 </CardDescription>
               </div>
             </div>
@@ -97,10 +104,8 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
               >
                 <TrendingUp className="w-3 h-3 mr-1" />
                 {market.is_live
-                  ? `${fr ? 'Marché' : 'Live'} · ${market.as_of}`
-                  : fr
-                  ? 'Calibré 2024'
-                  : 'Calibrated 2024'}
+                  ? `${pick(language, 'Marché', 'Live', 'السوق')} · ${market.as_of}`
+                  : pick(language, 'Calibré 2024', 'Calibrated 2024', 'معايَر 2024')}
               </Badge>
             )}
           </div>
@@ -112,7 +117,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
         <CardContent className="py-4">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
             <div>
-              <Label className="text-[var(--text)] text-xs">{fr ? 'Port de départ' : 'Origin port'}</Label>
+              <Label className="text-[var(--text)] text-xs">{pick(language, 'Port de départ', 'Origin port', 'ميناء المغادرة')}</Label>
               <Select value={origin} onValueChange={setOrigin}>
                 <SelectTrigger data-testid="vraquier-origin"><SelectValue /></SelectTrigger>
                 <SelectContent className="max-h-72">
@@ -121,7 +126,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
               </Select>
             </div>
             <div>
-              <Label className="text-[var(--text)] text-xs">{fr ? "Port d'arrivée" : 'Destination port'}</Label>
+              <Label className="text-[var(--text)] text-xs">{pick(language, "Port d'arrivée", 'Destination port', 'ميناء الوصول')}</Label>
               <Select value={destination} onValueChange={setDestination}>
                 <SelectTrigger data-testid="vraquier-destination"><SelectValue /></SelectTrigger>
                 <SelectContent className="max-h-72">
@@ -130,7 +135,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
               </Select>
             </div>
             <div>
-              <Label className="text-[var(--text)] text-xs">{fr ? 'Tonnage (t)' : 'Tonnage (t)'}</Label>
+              <Label className="text-[var(--text)] text-xs">{pick(language, 'Tonnage (t)', 'Tonnage (t)', 'الحمولة (طن)')}</Label>
               <Input
                 type="number"
                 value={tonnes}
@@ -140,7 +145,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
               />
             </div>
             <div>
-              <Label className="text-[var(--text)] text-xs">{fr ? 'Code SH (optionnel)' : 'HS code (optional)'}</Label>
+              <Label className="text-[var(--text)] text-xs">{pick(language, 'Code SH (optionnel)', 'HS code (optional)', 'رمز SH (اختياري)')}</Label>
               <Input
                 value={hsCode}
                 onChange={(e) => setHsCode(e.target.value)}
@@ -150,7 +155,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
             </div>
             <Button onClick={run} disabled={loading} data-testid="vraquier-run" className="w-full">
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Anchor className="w-4 h-4 mr-1" />}
-              {fr ? 'Calculer' : 'Compute'}
+              {pick(language, 'Calculer', 'Compute', 'احسب')}
             </Button>
           </div>
         </CardContent>
@@ -172,8 +177,8 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
             <div>
               <div className="font-semibold mb-1">
                 {result.reason === 'liquid_bulk'
-                  ? fr ? 'Vrac liquide — marché tanker' : 'Liquid bulk — tanker market'
-                  : fr ? 'Sous le seuil vraquier' : 'Below bulk threshold'}
+                  ? pick(language, 'Vrac liquide — marché tanker', 'Liquid bulk — tanker market', 'بضائع سائبة سائلة — سوق الناقلات')
+                  : pick(language, 'Sous le seuil vraquier', 'Below bulk threshold', 'دون عتبة الشحن السائب')}
               </div>
               {result.note}
             </div>
@@ -192,29 +197,29 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
                 </Badge>
                 {cost.is_modeled && (
                   <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
-                    {fr ? 'Modélisé' : 'Modeled'}
+                    {pick(language, 'Modélisé', 'Modeled', 'مُنمذَج')}
                   </Badge>
                 )}
                 <Badge
                   className={isLive ? 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]' : 'bg-gray-500/15 text-[var(--text)] border-[var(--afcfta-border)]'}
                   title={override?.source || ''}
                 >
-                  {isLive ? `${fr ? 'Marché' : 'Live'} · ${override.as_of}` : fr ? 'Calibré 2024' : 'Calibrated 2024'}
+                  {isLive ? `${pick(language, 'Marché', 'Live', 'السوق')} · ${override.as_of}` : pick(language, 'Calibré 2024', 'Calibrated 2024', 'معايَر 2024')}
                 </Badge>
               </div>
               <div className="text-right">
                 <div className="text-2xl font-bold text-[var(--text)]">{fmtUsd(cost.total_cost_usd, language)}</div>
-                <div className="text-xs text-[var(--afcfta-muted)]">{fmtNum(cost.total_usd_per_t)} USD/t</div>
+                <div className="text-xs text-[var(--afcfta-muted)]">{fmtNum(cost.total_usd_per_t)} {pick(language, 'USD/t', 'USD/t', 'USD/طن')}</div>
               </div>
             </div>
 
             {/* Cost breakdown */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
               {[
-                { label: fr ? 'Fret océanique' : 'Ocean freight', v: cost.ocean_freight_usd_per_t, icon: Waves },
-                { label: fr ? 'Chargement' : 'Loading', v: cost.port_load_usd_per_t, icon: Anchor },
-                { label: fr ? 'Déchargement' : 'Discharge', v: cost.port_discharge_usd_per_t, icon: Anchor },
-                { label: 'Total USD/t', v: cost.total_usd_per_t, icon: TrendingUp },
+                { label: pick(language, 'Fret océanique', 'Ocean freight', 'الشحن البحري'), v: cost.ocean_freight_usd_per_t, icon: Waves },
+                { label: pick(language, 'Chargement', 'Loading', 'التحميل'), v: cost.port_load_usd_per_t, icon: Anchor },
+                { label: pick(language, 'Déchargement', 'Discharge', 'التفريغ'), v: cost.port_discharge_usd_per_t, icon: Anchor },
+                { label: pick(language, 'Total USD/t', 'Total USD/t', 'الإجمالي USD/طن'), v: cost.total_usd_per_t, icon: TrendingUp },
               ].map((b, i) => (
                 <div key={i} className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.03)' }}>
                   <div className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1">
@@ -228,20 +233,20 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
             {/* Meta row */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
               <div>
-                <div className="text-[11px] text-[var(--afcfta-muted)]">{fr ? 'Voyages' : 'Voyages'}</div>
+                <div className="text-[11px] text-[var(--afcfta-muted)]">{pick(language, 'Voyages', 'Voyages', 'الرحلات')}</div>
                 <div className="text-[var(--text)] font-medium">{cost.voyages_needed}</div>
               </div>
               <div>
-                <div className="text-[11px] text-[var(--afcfta-muted)]">{fr ? 'Délai' : 'Transit'}</div>
-                <div className="text-[var(--text)] font-medium">{fmtDays(cost.transit_days_min, cost.transit_days_max)}</div>
+                <div className="text-[11px] text-[var(--afcfta-muted)]">{pick(language, 'Délai', 'Transit', 'المدة')}</div>
+                <div className="text-[var(--text)] font-medium">{fmtDays(cost.transit_days_min, cost.transit_days_max, language)}</div>
               </div>
               <div>
                 <div className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1"><Leaf className="w-3 h-3" /> CO₂</div>
                 <div className="text-[var(--text)] font-medium">{fmtNum(cost.co2_g_per_tkm)} g/t·km</div>
               </div>
               <div>
-                <div className="text-[11px] text-[var(--afcfta-muted)]">{fr ? 'Distance' : 'Distance'}</div>
-                <div className="text-[var(--text)] font-medium">{fmtNum(cost.distance_nm)} nm</div>
+                <div className="text-[11px] text-[var(--afcfta-muted)]">{pick(language, 'Distance', 'Distance', 'المسافة')}</div>
+                <div className="text-[var(--text)] font-medium">{fmtNum(cost.distance_nm)} {pick(language, 'nm', 'nm', 'ميل بحري')}</div>
               </div>
             </div>
 
@@ -257,8 +262,8 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
             )}
 
             <div className="mt-4 text-[11px] text-[var(--afcfta-muted)]">
-              {result.commodity?.label && <span>{result.commodity.label} · </span>}
-              {override?.source || cost.disclaimer}
+              {result.commodity?.label && <span>{trDonnee(result.commodity.label, language)} · </span>}
+              {override?.source || trDonnee(cost.disclaimer, language)}
             </div>
           </CardContent>
         </Card>
@@ -268,16 +273,16 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
       {classes.length > 0 && (
         <Card className="border-0 shadow-sm" style={{ background: 'var(--afcfta-card2)' }}>
           <CardHeader className="pb-2">
-            <CardTitle className="text-[var(--text)] text-sm">{fr ? 'Classes de navires vraquiers' : 'Bulk vessel classes'}</CardTitle>
+            <CardTitle className="text-[var(--text)] text-sm">{pick(language, 'Classes de navires vraquiers', 'Bulk vessel classes', 'فئات سفن الصب')}</CardTitle>
           </CardHeader>
           <CardContent className="py-2 overflow-x-auto">
             <table className="w-full text-xs text-[var(--text)]">
               <thead>
                 <tr className="text-[var(--afcfta-muted)] text-left">
-                  <th className="py-1 pr-3">Classe</th>
+                  <th className="py-1 pr-3">{pick(language, 'Classe', 'Classe', 'الفئة')}</th>
                   <th className="py-1 pr-3">DWT</th>
-                  <th className="py-1 pr-3">{fr ? 'Emport max' : 'Max parcel'}</th>
-                  <th className="py-1 pr-3">{fr ? 'Tirant (chargé)' : 'Draft (loaded)'}</th>
+                  <th className="py-1 pr-3">{pick(language, 'Emport max', 'Max parcel', 'أقصى حمولة')}</th>
+                  <th className="py-1 pr-3">{pick(language, 'Tirant (chargé)', 'Draft (loaded)', 'الغاطس (محمّلة)')}</th>
                   <th className="py-1 pr-3">CO₂</th>
                 </tr>
               </thead>
@@ -286,7 +291,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
                   <tr key={c.id} className="border-t border-[var(--overlay-border)]">
                     <td className="py-1 pr-3 font-medium text-[var(--text)]">{c.label}</td>
                     <td className="py-1 pr-3">{fmtNum(c.min_dwt)}–{fmtNum(c.max_dwt)}</td>
-                    <td className="py-1 pr-3">{fmtNum(c.max_parcel_t)} t</td>
+                    <td className="py-1 pr-3">{fmtNum(c.max_parcel_t)} {pick(language, 't', 't', 'طن')}</td>
                     <td className="py-1 pr-3">{c.loaded_draft_m} m</td>
                     <td className="py-1 pr-3">{c.co2_g_per_tkm} g/t·km</td>
                   </tr>

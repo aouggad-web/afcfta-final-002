@@ -5,6 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Badge } from '../ui/badge';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import EnhancedCountrySelector from './EnhancedCountrySelector';
+import { trDonnee } from '../../i18n/donnees';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -67,6 +69,20 @@ function ProductionMining({ language = 'fr' }) {
       
       return dataPoint;
     });
+  };
+
+  // Intitulé de table USGS : « Copper production 2024 » ou
+  // « Perlite — Mine production, estimated 2024 ». En arabe, chaque partie est
+  // traduite ; ailleurs, l'intitulé reste celui de la source.
+  const nomTable = (nom) => {
+    if (typeof nom !== 'string') return nom;
+    const mesure = nom.match(/^(.+) — (.+) (\d{4})$/);
+    if (mesure) {
+      return pick(language, nom, nom, `${trDonnee(mesure[1], language)} — ${trDonnee(mesure[2], language)} ${mesure[3]}`);
+    }
+    const simple = nom.match(/^(.+) production (\d{4})$/);
+    if (simple) return pick(language, nom, nom, `إنتاج ${trDonnee(simple[1], language)} ${simple[2]}`);
+    return trDonnee(nom, language);
   };
 
   const formatNumber = (num) => {
@@ -145,7 +161,7 @@ function ProductionMining({ language = 'fr' }) {
                   <Tooltip 
                     formatter={(value, name, props) => {
                       const unit = Object.values(miningData.data_by_commodity)[0]?.[0]?.unit || '';
-                      return `${value.toLocaleString()} ${unit}`;
+                      return `${value.toLocaleString()} ${trDonnee(unit, language)}`;
                     }}
                     labelFormatter={(label) => `${t('production.mining.panel.year')} ${label}`}
                   />
@@ -155,6 +171,7 @@ function ProductionMining({ language = 'fr' }) {
                       key={commodity}
                       type="monotone" 
                       dataKey={commodity} 
+                      name={trDonnee(commodity, language)}
                       stroke={['#f59e0b', '#ea580c', '#dc2626'][index % 3]}
                       strokeWidth={2}
                       dot={{ r: 5 }}
@@ -184,7 +201,7 @@ function ProductionMining({ language = 'fr' }) {
                   <Tooltip 
                     formatter={(value, name, props) => {
                       const unit = Object.values(miningData.data_by_commodity)[0]?.[0]?.unit || '';
-                      return `${value.toLocaleString()} ${unit}`;
+                      return `${value.toLocaleString()} ${trDonnee(unit, language)}`;
                     }}
                     labelFormatter={(label) => `${t('production.mining.panel.year')} ${label}`}
                   />
@@ -193,6 +210,7 @@ function ProductionMining({ language = 'fr' }) {
                     <Bar 
                       key={commodity}
                       dataKey={commodity} 
+                      name={trDonnee(commodity, language)}
                       fill={['#f59e0b', '#ea580c', '#dc2626'][index % 3]}
                     />
                   ))}
@@ -213,7 +231,7 @@ function ProductionMining({ language = 'fr' }) {
                 {Object.entries(miningData.data_by_commodity).map(([commodity, records]) => (
                   <div key={commodity} className="border-l-4 border-[color-mix(in_srgb,var(--gold)_30%,transparent)] pl-4 py-3 bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] rounded-lg">
                     <h4 className="font-bold text-[var(--gold)] text-lg mb-3 flex items-center gap-2">
-                      💎 {commodity}
+                      💎 {trDonnee(commodity, language)}
                     </h4>
                     <div className="space-y-2">
                       {records.map(record => (
@@ -221,7 +239,7 @@ function ProductionMining({ language = 'fr' }) {
                           <div>
                             <p className="text-sm text-[var(--afcfta-muted)]">{t('production.mining.panel.year')} {record.year}</p>
                             <p className="text-xs text-[var(--afcfta-muted)]">
-                              {record.commodity_code} - {record.usgs_table_name}
+                              {record.commodity_code} - {nomTable(record.usgs_table_name)}
                             </p>
                             <Badge variant="outline" className="text-xs mt-1">
                               {record.source_dataset}
@@ -231,7 +249,7 @@ function ProductionMining({ language = 'fr' }) {
                             <p className="text-xl font-bold text-[var(--gold)]">
                               {record.value.toLocaleString()}
                             </p>
-                            <p className="text-xs text-[var(--afcfta-muted)]">{record.unit}</p>
+                            <p className="text-xs text-[var(--afcfta-muted)]">{trDonnee(record.unit, language)}</p>
                           </div>
                         </div>
                       ))}
@@ -255,14 +273,14 @@ function ProductionMining({ language = 'fr' }) {
                 : t('production.mining.panel.noProductionTitle')}
             </p>
             <p className="mt-2 text-sm text-[var(--afcfta-muted)] max-w-3xl">
-              {miningData.coverage.note}
+              {trDonnee(miningData.coverage.note, language)}
             </p>
             {miningData.coverage.sources_consulted?.length > 0 && (
               <div className="mt-4 text-xs text-[var(--afcfta-muted)]">
                 <p className=" mb-1">{t('production.mining.panel.sourcesConsulted')}</p>
                 <ul className="list-disc list-inside space-y-0.5">
                   {miningData.coverage.sources_consulted.map((src) => (
-                    <li key={src}>{src}</li>
+                    <li key={src}>{trDonnee(src, language)}</li>
                   ))}
                 </ul>
                 {miningData.coverage.usgs_source_url && (
@@ -272,7 +290,7 @@ function ProductionMining({ language = 'fr' }) {
                     rel="noopener noreferrer"
                     className="inline-block mt-2 underline text-[var(--gold)]"
                   >
-                    {miningData.coverage.usgs_edition}
+                    {trDonnee(miningData.coverage.usgs_edition, language)}
                   </a>
                 )}
               </div>

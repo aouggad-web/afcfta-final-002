@@ -16,7 +16,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         csp = "; ".join(
             [
                 "default-src 'self'",
-                f"script-src 'self' 'nonce-{nonce}' https://cdn.jsdelivr.net",
+                f"script-src 'self' 'nonce-{nonce}'",
                 f"style-src 'self' 'nonce-{nonce}' https://fonts.googleapis.com",
                 "img-src 'self' data: https: blob:",
                 "font-src 'self' https://fonts.gstatic.com",

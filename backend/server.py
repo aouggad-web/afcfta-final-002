@@ -46,29 +46,11 @@ from starlette.middleware.cors import CORSMiddleware
 _ROOT_DIR_FOR_DOTENV = Path(__file__).parent
 load_dotenv(_ROOT_DIR_FOR_DOTENV / ".env")
 
-# Configure structured logging
-logging.config.dictConfig(
-    {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "default": {
-                "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-                "datefmt": "%Y-%m-%dT%H:%M:%S",
-            },
-        },
-        "handlers": {
-            "console": {
-                "class": "logging.StreamHandler",
-                "formatter": "default",
-            },
-        },
-        "root": {
-            "level": os.environ.get("LOG_LEVEL", "INFO"),
-            "handlers": ["console"],
-        },
-    }
-)
+# Configure structured logging — secrets passés en URL (jeton OEC, clé
+# Comtrade...) masqués dans tous les journaux : voir log_redaction.py.
+from log_redaction import build_logging_config
+
+logging.config.dictConfig(build_logging_config(os.environ.get("LOG_LEVEL", "INFO")))
 
 logger = logging.getLogger(__name__)
 
@@ -80,7 +62,6 @@ from entitlement_guard import set_database as set_entitlement_guard_db
 from routes import register_routes
 from routes.admin_keys import router as admin_keys_router
 from routes.contact import set_database as set_contact_db
-from routes.substitution import register_routes as register_substitution_routes
 from routes.user_auth import set_database as set_user_auth_db
 
 # Billing en défaut mou UNIQUEMENT quand la dépendance externe `stripe` manque
@@ -94,6 +75,7 @@ except ModuleNotFoundError as e:
         raise
     set_billing_db = None
 from services.crawled_data_service import crawled_service
+from security_config import imposer_jwt_secret, probleme_mot_de_passe_admin
 from services.user_auth_service import hash_password, verify_password
 
 # =============================================================================
@@ -102,6 +84,10 @@ from services.user_auth_service import hash_password, verify_password
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
+
+# En production, un JWT_SECRET d'exemple ou trop court arrête le démarrage :
+# il permettrait de fabriquer une session au nom de n'importe quel compte.
+imposer_jwt_secret(os.environ)
 
 # MongoDB Connection
 mongo_url = os.environ.get("MONGO_URL", "")
@@ -170,31 +156,30 @@ app = FastAPI(
 _cors_origins = resolve_cors_origins(os.environ)
 _allow_origin_regex = resolve_cors_origin_regex(os.environ)
 
-# Security middlewares (optional)
-try:
-    from middlewares import CSRFMiddleware, RateLimitMiddleware, SecurityHeadersMiddleware
+# Middlewares de sécurité (CSP, CSRF, limitation de débit) : import obligatoire.
+# Un déploiement partiel doit échouer au démarrage plutôt que servir l'API sans
+# protection (constat M10 de l'audit de sécurité).
+from middlewares import CSRFMiddleware, RateLimitMiddleware, SecurityHeadersMiddleware
 
-    app.add_middleware(SecurityHeadersMiddleware)
-    app.add_middleware(
-        CSRFMiddleware,
-        exempt_paths=[
-            "/api/docs",
-            "/api/openapi.json",
-            "/api/redoc",
-            "/api/health",
-            "/api/",
-            # Webhooks paiement : appels serveur-à-serveur signés, sans cookie
-            # ni jeton CSRF — authentifiés par leur propre signature.
-            "/api/billing/webhook",
-            "/api/billing/chargily/webhook",
-        ],
-    )
-    # Quotas et liste d'exemptions : voir backend/middlewares/rate_limiter.py.
-    # Pilotables par RATE_LIMIT_* (dont RATE_LIMIT_ENABLED pour couper vite).
-    app.add_middleware(RateLimitMiddleware)
-    logger.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
-except ImportError as e:
-    logger.warning(f"Security middlewares not loaded: {e}")
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(
+    CSRFMiddleware,
+    exempt_paths=[
+        "/api/docs",
+        "/api/openapi.json",
+        "/api/redoc",
+        "/api/health",
+        "/api/",
+        # Webhooks paiement : appels serveur-à-serveur signés, sans cookie
+        # ni jeton CSRF — authentifiés par leur propre signature.
+        "/api/billing/webhook",
+        "/api/billing/chargily/webhook",
+    ],
+)
+# Quotas et liste d'exemptions : voir backend/middlewares/rate_limiter.py.
+# Pilotables par RATE_LIMIT_* (dont RATE_LIMIT_ENABLED pour couper vite).
+app.add_middleware(RateLimitMiddleware)
+logger.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
 
 app.add_middleware(
     CORSMiddleware,
@@ -288,10 +273,34 @@ async def _seed_admin_account():
     # normalize the same way here so a stray uppercase letter or surrounding
     # whitespace in ADMIN_EMAIL doesn't seed an account login can never find.
     admin_email = admin_email.strip().lower()
+    probleme = probleme_mot_de_passe_admin(admin_password)
     try:
         from datetime import datetime, timezone
 
         existing = await db["users"].find_one({"email": admin_email})
+        if probleme:
+            # Mot de passe d'exemple ou trop court : jamais appliqué. S'il est
+            # déjà celui du compte (amorcé par une version antérieure), le compte
+            # est verrouillé — un hachage invalide ne valide aucun mot de passe —
+            # jusqu'à ce qu'un ADMIN_PASSWORD solide le resynchronise au démarrage.
+            if existing is not None and verify_password(
+                admin_password, existing.get("password_hash", "")
+            ):
+                await db["users"].update_one(
+                    {"email": admin_email}, {"$set": {"password_hash": "!verrouille"}}
+                )
+                logger.critical(
+                    "Compte admin %s VERROUILLÉ : ADMIN_PASSWORD %s. Définissez un mot de "
+                    "passe solide puis redémarrez.",
+                    admin_email,
+                    probleme,
+                )
+            else:
+                logger.critical(
+                    "ADMIN_PASSWORD refusé (%s) : compte admin ni créé ni resynchronisé.",
+                    probleme,
+                )
+            return
         if existing is None:
             await db["users"].insert_one(
                 {
@@ -412,8 +421,9 @@ async def startup_load_tariff_data():
 # REGISTER ALL ROUTES
 # =============================================================================
 
+# Le routeur de substitution est inclus par register_routes, avec le contrôle
+# d'abonnement de l'onglet Opportunités : ne pas le réinclure ici.
 register_routes(api_router)
-register_substitution_routes(api_router)
 api_router.include_router(admin_keys_router, tags=["Admin: API Keys"])
 
 # Include the router in the main app
