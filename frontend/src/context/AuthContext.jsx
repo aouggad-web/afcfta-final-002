@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { supabase, TERMS_VERSION } from '../lib/supabase';
+import { toast } from '../hooks/use-toast';
 import i18n from '../i18n';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -18,6 +19,7 @@ const SUPABASE_ERRORS = {
   over_email_send_rate_limit: 'Trop de demandes. Réessayez dans quelques minutes.',
   over_request_rate_limit: 'Trop de demandes. Réessayez dans quelques minutes.',
   same_password: 'Le nouveau mot de passe doit être différent de l\'ancien.',
+  otp_expired: 'Ce lien a expiré ou a déjà servi. Demandez-en un nouveau.',
 };
 
 // Mêmes messages pour l'interface en arabe ; le français reste servi en
@@ -30,11 +32,30 @@ const SUPABASE_ERRORS_AR = {
   over_email_send_rate_limit: 'طلبات كثيرة جدًا. أعد المحاولة بعد بضع دقائق.',
   over_request_rate_limit: 'طلبات كثيرة جدًا. أعد المحاولة بعد بضع دقائق.',
   same_password: 'يجب أن تختلف كلمة المرور الجديدة عن القديمة.',
+  otp_expired: 'انتهت صلاحية هذا الرابط أو سبق استخدامه. اطلب رابطًا جديدًا.',
 };
 
 function supabaseError(error) {
   const arabe = i18n.language === 'ar' && SUPABASE_ERRORS_AR[error.code];
   return { response: { data: { detail: arabe || SUPABASE_ERRORS[error.code] || error.message } } };
+}
+
+// Liens envoyés par e-mail (confirmation d'adresse, mot de passe oublié,
+// changement d'adresse) : /?token_hash=…&type=…, vérifiés par verifyOtp.
+// Contrairement au code PKCE, ce jeton ne dépend pas du navigateur qui a fait
+// la demande : le lien marche ouvert sur un autre appareil.
+const TYPES_LIEN_EMAIL = new Set(['email', 'signup', 'recovery', 'email_change']);
+
+export function lireLienEmail() {
+  const url = new URL(window.location.href);
+  const tokenHash = url.searchParams.get('token_hash');
+  const type = url.searchParams.get('type');
+  if (!tokenHash || !TYPES_LIEN_EMAIL.has(type)) return null;
+  // Le jeton ne doit rester ni dans la barre d'adresse ni dans l'historique.
+  url.searchParams.delete('token_hash');
+  url.searchParams.delete('type');
+  window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+  return { tokenHash, type };
 }
 
 export function AuthProvider({ children }) {
@@ -74,15 +95,30 @@ export function AuthProvider({ children }) {
       return undefined;
     }
     let active = true;
-    supabase.auth.getSession().then(({ data }) => {
-      if (!active) return;
-      if (data.session) {
-        syncSupabaseSession(data.session).catch(() => setUser(null));
-      } else {
-        // Session de l'ancien système encore valide pendant la transition.
-        refreshUser();
-      }
-    });
+    const lien = lireLienEmail();
+    const verification = lien
+      ? supabase.auth
+          .verifyOtp({ token_hash: lien.tokenHash, type: lien.type })
+          .then(({ error }) => {
+            if (error) {
+              toast({ variant: 'destructive', description: supabaseError(error).response.data.detail });
+            } else if (lien.type === 'recovery') {
+              setRecovery(true);
+            }
+          })
+          .catch(() => {})
+      : Promise.resolve();
+    verification
+      .then(() => supabase.auth.getSession())
+      .then(({ data }) => {
+        if (!active) return;
+        if (data.session) {
+          syncSupabaseSession(data.session).catch(() => setUser(null));
+        } else {
+          // Session de l'ancien système encore valide pendant la transition.
+          refreshUser();
+        }
+      });
     const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') setRecovery(true);
       if (event === 'TOKEN_REFRESHED') syncSupabaseSession(session).catch(() => {});
