@@ -61,7 +61,7 @@ jobs:
         if: steps.check_changes.outputs.changes == 'true'
         uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7.0.11
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.DATA_BOT_TOKEN || secrets.GITHUB_TOKEN }}  # CI sur la PR si DATA_BOT_TOKEN existe
           commit-message: "chore(data): facteur de marché fret vraquier du jour (update_bulk_freight #${{ github.run_number }})"
           committer: afcfta-data-bot <afcfta-data-bot@users.noreply.github.com>
           author: afcfta-data-bot <afcfta-data-bot@users.noreply.github.com>

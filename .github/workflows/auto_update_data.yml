@@ -117,8 +117,9 @@ jobs:
           # n'exécute donc jamais ci.yml : elle reste sans aucun check, donc
           # « unstable », et personne ne la fusionne — c'est ce qui a laissé
           # une trentaine de PR de données s'accumuler.
-          # Renseignez le secret DATA_BOT_TOKEN (PAT à portée `repo`, ou jeton
-          # d'application GitHub) pour que la CI s'exécute normalement.
+          # Renseignez le secret DATA_BOT_TOKEN (jeton fine-grained limité à ce
+          # dépôt : Contents et Pull requests en écriture) pour que la CI
+          # s'exécute normalement.
           token: ${{ secrets.DATA_BOT_TOKEN || secrets.GITHUB_TOKEN }}
           commit-message: "chore(data): automated data update - ${{ github.run_number }}"
           committer: afcfta-data-bot <afcfta-data-bot@users.noreply.github.com>
@@ -153,7 +154,7 @@ jobs:
 
             > **Checks absents ?** GitHub n'exécute aucun workflow sur les
             > événements produits par `GITHUB_TOKEN`. Renseignez le secret
-            > `DATA_BOT_TOKEN` (PAT à portée `repo`) pour que la CI s'exécute
+            > `DATA_BOT_TOKEN` (jeton fine-grained limité au dépôt) pour que la CI s'exécute
             > sur cette PR.
             >
             > **PR non créée ?** Settings > Actions > General > activez
