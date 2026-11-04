@@ -9,7 +9,7 @@ from __future__ import annotations
 
 #: Origines de développement local, servies seulement hors production quand
 #: ALLOWED_ORIGINS n'est pas défini. La liste comptait aussi afcfta.trade et
-#: www.afcfta.trade, un domaine qui ne sert pas l'application : toute page
+#: www.afcfta.trade, un domaine tiers qui ne sert pas l'application : toute page
 #: publiée sur ce domaine (ou un script tiers qui y serait chargé) pouvait
 #: lire les réponses de l'API avec la session du visiteur et son jeton CSRF.
 #: Seules les origines qui servent réellement le frontend doivent figurer
