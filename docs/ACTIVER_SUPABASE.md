@@ -128,16 +128,28 @@ plus de nouveaux.
 ## 4. Vérifier
 
 1. Une inscription avec une nouvelle adresse envoie un e-mail depuis l'adresse
-   Zoho. Le lien ouvre l'application, connecté.
-2. Le même lien, rouvert, affiche « Ce lien a expiré ou a déjà servi ».
-3. « Mot de passe oublié » envoie un lien qui ouvre la saisie du nouveau mot de
-   passe, aussi depuis un autre appareil.
-4. Le compte admin se connecte avec son mot de passe actuel, et garde son accès
+   Zoho. Ouvert dans le même navigateur, le lien connecte directement et
+   affiche « Connecté en tant que … ».
+2. Ouvert sur un autre appareil, le même type de lien demande d'abord
+   « Continuer » ; après le clic, la personne est connectée.
+3. Un lien déjà utilisé, rouvert, demande « Continuer », puis affiche « Ce lien
+   a expiré ou a déjà servi ».
+4. « Mot de passe oublié » envoie un lien qui ouvre la saisie du nouveau mot de
+   passe, avec l'adresse du compte ; depuis un autre appareil, après
+   « Continuer ».
+5. Le compte admin se connecte avec son mot de passe actuel, et garde son accès
    illimité (`ADMIN_ACCES_ILLIMITE`).
-5. L'ancienne route de connexion est fermée : `POST /api/auth/login` répond 410
-   quand la requête porte le jeton CSRF. Sans lui, la protection CSRF répond
-   d'abord par 403 : faire d'abord un `GET /api/health`, puis envoyer le cookie
-   `csrf_token` et l'en-tête `X-CSRF-Token` reçus.
+6. L'ancienne route de connexion est fermée : elle répond 410. La protection
+   CSRF et la validation du corps passent d'abord, d'où la commande en deux
+   temps (403 sans jeton CSRF, 422 sans corps JSON) :
+
+   ```bash
+   SITE=https://git-sync-41.preview.emergentagent.com
+   JETON=$(curl -s -c /tmp/cookies.txt -D - -o /dev/null "$SITE/api/health" | awk -F': ' 'tolower($1)=="x-csrf-token" {print $2}' | tr -d '\r')
+   curl -s -o /dev/null -w "%{http_code}\n" -b /tmp/cookies.txt -H "X-CSRF-Token: $JETON" \
+     -H "Content-Type: application/json" -d '{"email":"test@example.com","password":"x"}' \
+     "$SITE/api/auth/login"
+   ```
 
 ## Revenir en arrière
 
@@ -151,5 +163,5 @@ Les fiches MongoDB n'ont pas été modifiées, en dehors de leur lien
   c'est l'ancien qui redevient valable ;
 - les comptes **créés** pendant l'activation n'ont pas de mot de passe dans
   MongoDB : ils ne peuvent plus se connecter du tout. Les compter avant de
-  revenir en arrière :
-  `db.users.count_documents({"supabase_id": {"$exists": True}, "password_hash": {"$exists": False}})`.
+  revenir en arrière, dans `mongosh` (après `use <DB_NAME>`) :
+  `db.users.countDocuments({supabase_id: {$exists: true}, password_hash: {$exists: false}})`.
