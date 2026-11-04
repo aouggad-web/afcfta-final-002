@@ -17,6 +17,5 @@ exclude:
   - pyproject.toml
   - requirements.txt
   - requests.http
-  - replit.md
   - start.sh
   - sync_emergent.sh

@@ -33,28 +33,24 @@ Quand `supervisorctl` est présent, le script :
 
 Ne lancez donc PAS `start.sh` sous Emergent : supervisord s'en charge.
 
-## Cutover depuis Replit — le `.env` est le seul vrai sujet
+## Le `.env` du pod
 
 Emergent n'utilise **ni Docker ni image GHCR** : il exécute le code directement
-depuis GitHub (mode source ci-dessus). Quitter Replit ne demande donc **aucune
-modification de code** — les variables `REPLIT_*` que lit `server.py` ne servent
-qu'à ajouter des origines CORS *si* elles existent, et sont ignorées sur Emergent.
+depuis GitHub (mode source ci-dessus). Replit, utilisé auparavant pour le
+développement et les crawls, est abandonné : sa configuration a été retirée du
+dépôt le 04/11/2026, et aucun secret ne doit y rester.
 
-Le seul travail de rapatriement, c'est de **déplacer les secrets** de Replit vers
-le pod Emergent :
-
-1. Récupérez les valeurs actuelles dans les **Secrets Replit**.
-2. Créez `/app/backend/.env` sur le pod Emergent à partir du template fourni :
+1. Créez `/app/backend/.env` sur le pod Emergent à partir du template fourni :
    **[`docs/emergent.env.template`](./emergent.env.template)** (liste complète et
    commentée de toutes les variables runtime, e-mail SaaS Zoho inclus).
-3. Ce `.env` est préservé par `sync_emergent.sh` (`git clean -e .env`) : il
+2. Ce `.env` est préservé par `sync_emergent.sh` (`git clean -e .env`) : il
    survit aux redéploiements et n'est jamais committé.
-4. Redéployez : `BRANCH=main bash sync_emergent.sh`.
+3. Redéployez : `BRANCH=main bash sync_emergent.sh`.
 
 > **Secrets de build (GitHub Actions)** vs **secrets runtime (pod Emergent)** :
 > les workflows CI/ETL lisent leurs clés depuis **GitHub Secrets** ; l'app en
 > production lit les siennes depuis `/app/backend/.env`. Ne mélangez pas les deux
-> et ne laissez plus aucun secret sur Replit une fois le cutover fait.
+> et ne laissez aucun secret dans un ancien environnement (Replit compris).
 
 ### Variables d'environnement à fixer UNE FOIS (profil supervisord)
 
