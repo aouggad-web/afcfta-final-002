@@ -18,7 +18,7 @@ if str(_backend_dir) not in sys.path:
 # Ensure the repository root is on sys.path as well: backend services import the
 # top-level ``engine`` package (legal overrides, customs calculation), which is a
 # sibling of ``backend/`` and therefore invisible when the server is started with
-# ``cd backend && uvicorn server:app`` (start.sh, scripts/start.sh, .replit).
+# ``cd backend && uvicorn server:app`` (start.sh, scripts/start.sh).
 #
 # Appended rather than inserted, deliberately. Position is irrelevant to
 # resolving ``engine``: neither ``engine/`` nor ``backend/engine/`` carries an
@@ -55,7 +55,7 @@ logging.config.dictConfig(build_logging_config(os.environ.get("LOG_LEVEL", "INFO
 logger = logging.getLogger(__name__)
 
 import auth as _auth_module
-from cors_config import resolve_cors_origin_regex, resolve_cors_origins
+from cors_config import resolve_cors_origins
 from entitlement_guard import set_database as set_entitlement_guard_db
 
 # Import routes module for modular endpoint registration
@@ -130,7 +130,7 @@ app = FastAPI(
     ),
     contact={
         "name": "AfCFTA Trade Calculator Support",
-        "url": "https://afcfta.trade",
+        "url": "https://www.afcfta-zlecaf.com",
     },
     license_info={
         "name": "MIT",
@@ -151,10 +151,9 @@ app = FastAPI(
     ],
 )
 
-# CORS middleware — origins controlled via ALLOWED_ORIGINS env variable, plus
-# a regex covering Emergent preview subdomains (see cors_config.py for why).
+# CORS middleware — origines exactes : ALLOWED_ORIGINS, FRONTEND_URL et la
+# seule URL de préversion de ce pod (voir cors_config.py).
 _cors_origins = resolve_cors_origins(os.environ)
-_allow_origin_regex = resolve_cors_origin_regex(os.environ)
 
 # Middlewares de sécurité (CSP, CSRF, limitation de débit) : import obligatoire.
 # Un déploiement partiel doit échouer au démarrage plutôt que servir l'API sans
@@ -184,7 +183,6 @@ logger.info("Security middlewares loaded: CSP headers, CSRF protection, Rate lim
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_cors_origins,
-    allow_origin_regex=_allow_origin_regex,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization", "X-CSRF-Token", "X-Requested-With"],

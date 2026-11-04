@@ -7,14 +7,17 @@ unit-tested in isolation.
 
 from __future__ import annotations
 
-import re
-
+#: Origines de développement local, servies seulement hors production quand
+#: ALLOWED_ORIGINS n'est pas défini. La liste comptait aussi afcfta.trade et
+#: www.afcfta.trade, un domaine qui ne sert pas l'application : toute page
+#: publiée sur ce domaine (ou un script tiers qui y serait chargé) pouvait
+#: lire les réponses de l'API avec la session du visiteur et son jeton CSRF.
+#: Seules les origines qui servent réellement le frontend doivent figurer
+#: dans ALLOWED_ORIGINS.
 DEFAULT_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:5000",
     "http://localhost:8000",
-    "https://afcfta.trade",
-    "https://www.afcfta.trade",
 ]
 
 # Env var names Emergent has been observed to expose with this pod's own
@@ -23,8 +26,10 @@ _EMERGENT_PREVIEW_ENV_VARS = ("PREVIEW_ENDPOINT", "preview_endpoint")
 
 
 def resolve_cors_origins(env: dict) -> list[str]:
-    """Static origin allowlist from ALLOWED_ORIGINS / FRONTEND_URL / Replit /
-    Emergent env vars.
+    """Static origin allowlist from ALLOWED_ORIGINS / FRONTEND_URL / Emergent
+    env vars. Without ALLOWED_ORIGINS, production (APP_ENV=production) starts
+    from an empty list: the app is served from its own origin and needs CORS
+    only for origins declared explicitly.
 
     Deliberately an exact-origin allowlist, not a subdomain-family pattern:
     *.preview.emergentagent.com is a multi-tenant domain — reflecting
@@ -35,21 +40,16 @@ def resolve_cors_origins(env: dict) -> list[str]:
     this pod's own resolved origin is safe to add automatically.
     """
     env_origins = env.get("ALLOWED_ORIGINS", "")
-    origins = (
-        [o.strip() for o in env_origins.split(",") if o.strip()]
-        if env_origins
-        else list(DEFAULT_ORIGINS)
-    )
+    if env_origins:
+        origins = [o.strip() for o in env_origins.split(",") if o.strip()]
+    elif env.get("APP_ENV", "development") == "production":
+        origins = []
+    else:
+        origins = list(DEFAULT_ORIGINS)
 
     frontend_url = env.get("FRONTEND_URL", "")
     if frontend_url and frontend_url not in origins:
         origins.append(frontend_url)
-
-    replit_dev_domain = env.get("REPLIT_DEV_DOMAIN", "")
-    if replit_dev_domain:
-        replit_origin = f"https://{replit_dev_domain}"
-        if replit_origin not in origins:
-            origins.append(replit_origin)
 
     # Emergent's preview URL is a random subdomain assigned on every pod
     # restart/redeploy (multiple different ones have been observed within a
@@ -66,15 +66,3 @@ def resolve_cors_origins(env: dict) -> list[str]:
             break
 
     return origins
-
-
-def resolve_cors_origin_regex(env: dict) -> str | None:
-    """Regex for the Replit app domain, when configured. Starlette's
-    CORSMiddleware applies this with re.fullmatch, so no anchors are needed
-    here. Returns None (no regex) when no such domain is configured — origin
-    matching then relies entirely on the exact-origin allowlist above."""
-    replit_app_domain = env.get("REPLIT_APP_DOMAIN", "")
-    if not replit_app_domain:
-        return None
-
-    return rf"https://{re.escape(replit_app_domain)}"
