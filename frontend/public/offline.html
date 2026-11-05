@@ -145,7 +145,7 @@
       Vous êtes actuellement hors ligne. Certaines fonctionnalités restent
       disponibles grâce au cache de l'application.
     </p>
-    <button class="btn" onclick="window.location.reload()">
+    <button class="btn" id="reessayer">
       🔄 Réessayer
     </button>
 
@@ -165,20 +165,6 @@
     AfCFTA Intelligence Platform v3.0 &mdash; PWA Mode
   </footer>
 
-  <script>
-    // Auto-reload when connectivity is restored
-    window.addEventListener('online', () => {
-      window.location.reload();
-    });
-
-    // Show current connectivity status
-    function updateStatus() {
-      document.querySelector('.status-dot').style.background =
-        navigator.onLine ? '#10b981' : '#ef4444';
-    }
-    window.addEventListener('online',  updateStatus);
-    window.addEventListener('offline', updateStatus);
-    updateStatus();
-  </script>
+  <script src="/offline.js"></script>
 </body>
 </html>
