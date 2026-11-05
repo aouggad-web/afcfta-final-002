@@ -68,14 +68,8 @@ if (_resolvedBackendUrl) {
 // browser bundle), so it keeps its own localhost default independently.
 const backendUrl = _resolvedBackendUrl || 'http://localhost:8000';
 
-// Origine Supabase, autorisée dans la CSP de la page servie par vite preview.
-// Lue comme le reste de la configuration : la CSP (calculée au démarrage de
-// preview) et l'URL compilée dans l'interface (au build) viennent du même
-// .env, et la synchronisation Emergent recompile avant de redémarrer.
-const supabaseUrl = process.env.VITE_SUPABASE_URL || _fileEnv.VITE_SUPABASE_URL || '';
-
 export default defineConfig({
-  plugins: [react(), entetesSecurite({ supabaseUrl, backendUrl: _resolvedBackendUrl })],
+  plugins: [react(), entetesSecurite()],
   esbuild: {
     loader: 'jsx',
     include: /src\/.*\.[jt]sx?$/,

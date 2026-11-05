@@ -2,9 +2,9 @@
  * En-têtes de sécurité de `vite preview` (audit INFO-3) : CSP par page,
  * décidée au départ de la réponse d'après son type et son adresse finale.
  */
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
 
-import { middlewareEntetes, origine, politiquePour } from '../securite/entetes.js';
+import { erreurSansDetails, middlewareEntetes, origine, politiquePour } from '../securite/entetes.js';
 
 const SUPABASE = 'https://projet.supabase.co';
 
@@ -122,4 +122,33 @@ it('un nonce neuf à chaque réponse', () => {
     vus.add(/'nonce-([^']+)'/.exec(res.entetes['content-security-policy'])[1]);
   }
   expect(vus.size).toBe(5);
+});
+
+it('adresse mal encodée : 400 en texte simple, sans passer aux middlewares de Vite', () => {
+  for (const url of ['/%', '/%E0%A4%A', '/tools/%ZZ', '/pricing.html%']) {
+    const res = reponse();
+    res.end = vi.fn();
+    const next = vi.fn();
+    middlewareEntetes()({ url }, res, next);
+    expect(next).not.toHaveBeenCalled();
+    expect(res.statusCode).toBe(400);
+    expect(res.entetes['content-type']).toBe('text/plain; charset=utf-8');
+    expect(res.end).toHaveBeenCalledWith('Adresse invalide.');
+  }
+  const next = vi.fn();
+  middlewareEntetes()({ url: '/pricing.html?q=%ZZ' }, reponse(), next);
+  expect(next).toHaveBeenCalled(); // seul le chemin compte, comme pour sirv
+});
+
+it("erreur d'un middleware : 500 générique, pile d'appels au journal seulement", () => {
+  const journal = { error: vi.fn() };
+  const gestionnaire = erreurSansDetails(journal);
+  expect(gestionnaire.length).toBe(4); // reconnu comme gestionnaire d'erreurs par connect
+  const res = reponse();
+  res.end = vi.fn();
+  const erreur = new URIError('URI malformed');
+  gestionnaire(erreur, { url: '/x' }, res, vi.fn());
+  expect(res.statusCode).toBe(500);
+  expect(res.end).toHaveBeenCalledWith('Erreur interne du serveur.');
+  expect(journal.error).toHaveBeenCalledWith(erreur.stack);
 });

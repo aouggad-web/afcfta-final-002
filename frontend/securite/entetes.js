@@ -152,6 +152,15 @@ function typeDeContenu(res, args) {
 export function middlewareEntetes({ supabaseUrl, backendUrl, tirerNonce = () => randomBytes(16).toString('base64') } = {}) {
   return function entetesSecurite(req, res, next) {
     for (const [nom, valeur] of Object.entries(ENTETES_COMMUNS)) res.setHeader(nom, valeur);
+    // Adresse mal encodée (« /% », « /%E0%A4%A ») : le repli SPA de Vite
+    // lèverait une URIError, affichée avec la pile d'appels et les chemins du
+    // serveur. Refusée ici, avant lui.
+    try {
+      decodeURIComponent(String(req.url).split('?')[0]);
+    } catch {
+      repondreTexte(res, 400, 'Adresse invalide.');
+      return;
+    }
     const writeHead = res.writeHead;
     res.writeHead = function (...args) {
       // Une CSP déjà posée (réponse du backend par le proxy /api, page
@@ -166,11 +175,41 @@ export function middlewareEntetes({ supabaseUrl, backendUrl, tirerNonce = () => 
   };
 }
 
-export function entetesSecurite(options) {
+function repondreTexte(res, statut, texte) {
+  res.statusCode = statut;
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.end(texte);
+}
+
+// Dernier recours pour les erreurs des middlewares de preview : le
+// gestionnaire de connect afficherait la pile d'appels (il lit NODE_ENV avant
+// que Vite ne le fixe). L'erreur reste écrite dans le journal du serveur.
+export function erreurSansDetails(journal = console) {
+  // Quatre paramètres : connect le traite comme un gestionnaire d'erreurs.
+  return function erreurSansDetails(err, req, res, next) {
+    journal.error(err && err.stack ? err.stack : String(err));
+    if (res.headersSent) {
+      res.end();
+      return;
+    }
+    repondreTexte(res, 500, 'Erreur interne du serveur.');
+  };
+}
+
+// Les origines viennent de l'environnement que Vite a résolu pour ce mode
+// (fichiers .env du mode et variables du shell) : le même que celui compilé
+// dans l'interface, y compris avec --mode. La synchronisation Emergent
+// recompile avant de redémarrer preview.
+export function entetesSecurite() {
   return {
     name: 'entetes-securite',
     configurePreviewServer(server) {
-      server.middlewares.use(middlewareEntetes(options));
+      const env = server.config.env;
+      server.middlewares.use(
+        middlewareEntetes({ supabaseUrl: env.VITE_SUPABASE_URL, backendUrl: env.VITE_BACKEND_URL })
+      );
+      // Après les middlewares de preview (repli SPA compris).
+      return () => server.middlewares.use(erreurSansDetails(server.config.logger));
     },
   };
 }
