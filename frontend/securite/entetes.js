@@ -166,11 +166,18 @@ export function middlewareEntetes({ supabaseUrl, backendUrl, tirerNonce = () => 
   };
 }
 
-export function entetesSecurite(options) {
+// Les origines viennent de l'environnement que Vite a résolu pour ce mode
+// (fichiers .env du mode et variables du shell) : le même que celui compilé
+// dans l'interface, y compris avec --mode. La synchronisation Emergent
+// recompile avant de redémarrer preview.
+export function entetesSecurite() {
   return {
     name: 'entetes-securite',
     configurePreviewServer(server) {
-      server.middlewares.use(middlewareEntetes(options));
+      const env = server.config.env;
+      server.middlewares.use(
+        middlewareEntetes({ supabaseUrl: env.VITE_SUPABASE_URL, backendUrl: env.VITE_BACKEND_URL })
+      );
     },
   };
 }
