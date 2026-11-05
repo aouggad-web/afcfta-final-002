@@ -122,9 +122,13 @@ export const ENTETES_COMMUNS = {
   'Permissions-Policy': 'geolocation=(), camera=(), microphone=()',
 };
 
+// Chemin comme le lit sirv : coupé au « ? », décodé, sans autre
+// normalisation. Une adresse non canonique (« # », « .. », « // »), qu'un
+// navigateur n'envoie jamais, ne correspond donc à aucune page compatible et
+// reçoit la politique stricte.
 function cheminDe(url) {
   try {
-    return decodeURIComponent(new URL(url, 'http://local').pathname);
+    return decodeURIComponent(String(url).split('?')[0]);
   } catch {
     return '';
   }
@@ -150,7 +154,9 @@ export function middlewareEntetes({ supabaseUrl, backendUrl, tirerNonce = () => 
     for (const [nom, valeur] of Object.entries(ENTETES_COMMUNS)) res.setHeader(nom, valeur);
     const writeHead = res.writeHead;
     res.writeHead = function (...args) {
-      if (typeDeContenu(res, args.slice(1)).startsWith('text/html')) {
+      // Une CSP déjà posée (réponse du backend par le proxy /api, page
+      // d'erreur de Vite) correspond à son propre contenu : elle reste.
+      if (!res.hasHeader('Content-Security-Policy') && typeDeContenu(res, args.slice(1)).startsWith('text/html')) {
         const csp = politiquePour(cheminDe(req.url), { nonce: tirerNonce(), supabaseUrl, backendUrl });
         res.setHeader('Content-Security-Policy', csp);
       }

@@ -53,11 +53,12 @@ function reponse() {
     entetes,
     setHeader: (nom, valeur) => { entetes[nom.toLowerCase()] = valeur; },
     getHeader: (nom) => entetes[nom.toLowerCase()],
+    hasHeader: (nom) => nom.toLowerCase() in entetes,
     writeHead() { this.ecrit = true; return this; },
   };
 }
 
-function servir(url, typeDansWriteHead, typeAvant) {
+function servir(url, typeAvant) {
   let n = 0;
   const mw = middlewareEntetes({ supabaseUrl: SUPABASE, tirerNonce: () => `n${++n}` });
   const req = { url };
@@ -75,23 +76,40 @@ it('documents HTML seulement : pas de CSP sur les scripts, ni sur le service wor
   expect(res.entetes['referrer-policy']).toBe('strict-origin-when-cross-origin');
 });
 
-it('type passé à writeHead (sirv) ou posé avant (repli SPA de Vite)', () => {
-  const a = servir('/pricing.html');
-  a.res.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
+it('type lu dans les en-têtes posés (chaîne de vite preview) ou passé à writeHead', () => {
+  const a = servir('/pricing.html', 'text/html;charset=utf-8');
+  a.res.writeHead(200);
   expect(a.res.entetes['content-security-policy']).toContain("script-src 'self' 'unsafe-inline'");
 
-  const b = servir('/x', null, 'text/html');
-  b.req.url = '/index.html'; // réécriture du repli SPA
-  b.res.writeHead(200);
-  expect(b.res.entetes['content-security-policy']).toContain("script-src 'self' 'nonce-n1'");
+  const b = servir('/pricing.html');
+  b.res.writeHead(200, { 'Content-Type': 'text/html' });
+  expect(b.res.entetes['content-security-policy']).toContain("script-src 'self' 'unsafe-inline'");
 });
 
-it("adresse demandée qui imite une page compatible mais finit sur l'application", () => {
-  const { req, res } = servir('/pricing.html/../nexiste', null, 'text/html');
-  req.url = '/index.html';
+it("politique décidée sur l'adresse finale : page compatible demandée, application servie", () => {
+  const { req, res } = servir('/pricing.html', 'text/html');
+  req.url = '/index.html'; // réécriture par le repli SPA avant l'envoi
   res.writeHead(200);
-  expect(res.entetes['content-security-policy']).not.toContain("'unsafe-inline'; style-src");
-  expect(res.entetes['content-security-policy']).toContain("'nonce-");
+  expect(res.entetes['content-security-policy']).toContain("script-src 'self' 'nonce-n1'");
+});
+
+it("adresses non canoniques (« # » brut, « .. ») : politique stricte, même si sirv sert l'application", () => {
+  for (const url of ['/pricing.html#/../index.html', '/tools/afcfta_business_atlas.html#/../../index.html', '/x/../pricing.html']) {
+    const { res } = servir(url, 'text/html');
+    res.writeHead(200);
+    expect(res.entetes['content-security-policy']).toContain("'nonce-n1'");
+    expect(res.entetes['content-security-policy']).not.toContain("script-src 'self' 'unsafe-inline'");
+  }
+  const { res } = servir('/pricing.html?checkout=success', 'text/html');
+  res.writeHead(200);
+  expect(res.entetes['content-security-policy']).toContain("script-src 'self' 'unsafe-inline'");
+});
+
+it('une CSP déjà posée (backend par le proxy, page d’erreur) est conservée', () => {
+  const { res } = servir('/api/inconnue', 'text/html');
+  res.setHeader('Content-Security-Policy', "default-src 'none'");
+  res.writeHead(500);
+  expect(res.entetes['content-security-policy']).toBe("default-src 'none'");
 });
 
 it('un nonce neuf à chaque réponse', () => {
