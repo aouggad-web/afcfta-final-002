@@ -2,6 +2,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { entetesSecurite } from './securite/entetes.js';
 
 // Configuration HMR (Hot Module Replacement) — CAUSE DU BUG « l'app revient au
 // dashboard / la page se recharge toute seule chaque minute ».
@@ -67,8 +68,14 @@ if (_resolvedBackendUrl) {
 // browser bundle), so it keeps its own localhost default independently.
 const backendUrl = _resolvedBackendUrl || 'http://localhost:8000';
 
+// Origine Supabase, autorisée dans la CSP de la page servie par vite preview.
+// Lue comme le reste de la configuration : la CSP (calculée au démarrage de
+// preview) et l'URL compilée dans l'interface (au build) viennent du même
+// .env, et la synchronisation Emergent recompile avant de redémarrer.
+const supabaseUrl = process.env.VITE_SUPABASE_URL || _fileEnv.VITE_SUPABASE_URL || '';
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), entetesSecurite({ supabaseUrl, backendUrl: _resolvedBackendUrl })],
   esbuild: {
     loader: 'jsx',
     include: /src\/.*\.[jt]sx?$/,
