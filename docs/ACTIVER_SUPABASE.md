@@ -40,21 +40,41 @@ Toutes ces étapes se font dans le tableau de bord du projet. Aucune clé ne doi
 - **Secure email change** : activé.
 - Longueur minimale du mot de passe : 8 caractères, lettres et chiffres.
 
-### Envoi des e-mails (SMTP Zoho)
+### Envoi des e-mails (SMTP Resend)
 
-**Authentication → Emails → SMTP Settings**, puis **Enable custom SMTP** :
+Les e-mails partent par Resend. L'offre gratuite de Zoho Mail n'autorise pas
+l'envoi par SMTP : Zoho répond toujours `535 Authentication Failed`, quel que
+soit le mot de passe. Le courrier reçu reste chez Zoho : Resend n'utilise que le
+sous-domaine `send.afcfta-zlecaf.com`, sans toucher aux MX ni au SPF de la
+racine.
+
+1. **Resend → Domains** : `afcfta-zlecaf.com`, région Irlande (eu-west-1). Les
+   enregistrements DNS (`resend._domainkey` et `send`) s'ajoutent chez
+   Cloudflare par « Auto configure ». Le domaine doit être marqué « Verified ».
+2. **Resend → API Keys** : une clé `supabase-smtp`, permission **Sending
+   access**, limitée à ce domaine. Supprimer la clé « Onboarding » créée à
+   l'inscription : elle a tous les droits.
+3. **Supabase → Authentication → Emails → SMTP Settings**, **Enable custom
+   SMTP** activé :
 
 | Champ | Valeur |
 |---|---|
-| Sender email | l'adresse d'envoi Zoho, par exemple `no-reply@afcfta-zlecaf.com` |
+| Sender email | `noreply@afcfta-zlecaf.com` (une adresse du domaine vérifié) |
 | Sender name | `AF Trade Intelligence` (le nom de la société, pas celui de l'institution ZLECAf) |
-| Host | `smtp.zoho.eu` (ou `smtp.zoho.com`, selon le centre de données du compte Zoho) |
+| Host | `smtp.resend.com` |
 | Port | `465` |
-| Username | l'adresse d'envoi |
-| Password | un **mot de passe d'application** Zoho, pas le mot de passe du compte |
+| Username | `resend`, exactement : le navigateur a tendance à le remplacer par une adresse enregistrée |
+| Password | la clé `re_…` de Resend |
 
-Le SMTP intégré de Supabase n'envoie que quelques e-mails par heure : il ne
-suffit pas pour des testeurs.
+Messages de Resend en cas d'erreur, dans les journaux d'Auth de Supabase :
+`535 Invalid username` (Username autre que `resend`) ; `550 This API key is not
+authorized to send emails from …` (Sender email hors du domaine vérifié, ou mal
+orthographié). Côté site, toute erreur d'envoi s'affiche comme « Connexion au
+service d'authentification impossible ».
+
+Le SMTP intégré de Supabase n'envoie qu'aux membres de l'équipe du projet, et
+quelques e-mails par heure : il ne suffit pas pour des testeurs. L'offre
+gratuite de Resend permet 3 000 e-mails par mois, 100 par jour.
 
 ### Modèles d'e-mail : liens par `token_hash`
 
@@ -117,6 +137,9 @@ toucher au `.env` :
 2. Transfert réel : `python scripts/migrate_users_to_supabase.py --apply`
 
 Variables lues : `MONGO_URL`, `DB_NAME`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`.
+Sur Emergent, une clé saisie par la carte sécurisée n'est pas écrite dans
+`backend/.env` : la plateforme l'injecte dans l'environnement du backend. Le
+script doit alors la recevoir de cet environnement.
 Les comptes transférés sont considérés comme confirmés. L'option
 `--require-confirmation` leur demande de confirmer leur adresse.
 
@@ -140,8 +163,8 @@ plus de nouveaux.
 
 ## 4. Vérifier
 
-1. Une inscription avec une nouvelle adresse envoie un e-mail depuis l'adresse
-   Zoho. Ouvert dans le même navigateur, le lien connecte directement et
+1. Une inscription avec une nouvelle adresse envoie un e-mail depuis
+   `noreply@afcfta-zlecaf.com`. Ouvert dans le même navigateur, le lien connecte directement et
    affiche « Connecté en tant que … ».
 2. Ouvert sur un autre appareil, le même type de lien demande d'abord
    « Continuer » ; après le clic, la personne est connectée.
