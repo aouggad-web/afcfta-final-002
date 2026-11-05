@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { supabase, TERMS_VERSION, creerClientVerification } from '../lib/supabase';
 import { toast } from '../hooks/use-toast';
@@ -20,6 +20,7 @@ const SUPABASE_ERRORS = {
   over_request_rate_limit: 'Trop de demandes. Réessayez dans quelques minutes.',
   same_password: 'Le nouveau mot de passe doit être différent de l\'ancien.',
   otp_expired: 'Ce lien a expiré ou a déjà servi. Demandez-en un nouveau.',
+  service_indisponible: "Connexion au service d'authentification impossible, réessayez.",
 };
 
 // Mêmes messages pour l'interface en arabe ; le français reste servi en
@@ -33,11 +34,16 @@ const SUPABASE_ERRORS_AR = {
   over_request_rate_limit: 'طلبات كثيرة جدًا. أعد المحاولة بعد بضع دقائق.',
   same_password: 'يجب أن تختلف كلمة المرور الجديدة عن القديمة.',
   otp_expired: 'انتهت صلاحية هذا الرابط أو سبق استخدامه. اطلب رابطًا جديدًا.',
+  service_indisponible: 'تعذّر الاتصال بخدمة المصادقة، أعد المحاولة.',
 };
 
 function supabaseError(error) {
-  const arabe = i18n.language === 'ar' && SUPABASE_ERRORS_AR[error.code];
-  return { response: { data: { detail: arabe || SUPABASE_ERRORS[error.code] || error.message } } };
+  // Coupure réseau ou erreur 5xx : auth-js renvoie le texte brut du
+  // navigateur (« Failed to fetch », en anglais) ou « {} ».
+  const indisponible = error.name === 'AuthRetryableFetchError' || !error.message || error.message === '{}';
+  const code = indisponible ? 'service_indisponible' : error.code;
+  const arabe = i18n.language === 'ar' && SUPABASE_ERRORS_AR[code];
+  return { response: { data: { detail: arabe || SUPABASE_ERRORS[code] || error.message } } };
 }
 
 // Liens envoyés par e-mail (confirmation d'adresse, mot de passe oublié,
@@ -90,25 +96,28 @@ function oublierLienAttendu() {
 
 const MESSAGES_LIEN = {
   connecte: { fr: 'Connecté en tant que {email}.', ar: 'تم تسجيل الدخول بالحساب {email}.' },
+  // Un lien vérifié est consommé : les messages ne proposent jamais de le
+  // rouvrir.
   autreCompte: {
-    fr: "Ce lien concerne un autre compte que celui demandé dans ce navigateur : il a été refusé. Ouvrez-le sur l'appareil qui l'a demandé, ou demandez-en un nouveau.",
-    ar: 'يخص هذا الرابط حسابًا غير الحساب المطلوب في هذا المتصفح، فتم رفضه. افتحه على الجهاز الذي طلبه، أو اطلب رابطًا جديدًا.',
+    fr: "Ce lien concerne un autre compte que celui demandé dans ce navigateur : par sécurité, aucune session n'a été ouverte. Le lien ne peut plus servir : pour ce compte, connectez-vous avec son mot de passe ou demandez un nouveau lien.",
+    ar: 'يخص هذا الرابط حسابًا غير الحساب المطلوب في هذا المتصفح، فلم تُفتح أي جلسة حفاظًا على الأمان. لا يمكن استخدام الرابط مرة أخرى: لهذا الحساب، سجّل الدخول بكلمة مروره أو اطلب رابطًا جديدًا.',
+  },
+  // {detail} : raison donnée par le backend, en français seulement.
+  sessionNonOuverte: {
+    fr: "Ce lien a servi, mais la session n'a pas pu s'ouvrir{detail}. Connectez-vous avec votre mot de passe, ou demandez un nouveau lien.",
+    ar: 'تم استخدام هذا الرابط، لكن تعذّر فتح الجلسة. سجّل الدخول بكلمة المرور، أو اطلب رابطًا جديدًا.',
   },
   confirmationEnregistree: {
     fr: "Confirmation enregistrée. Ouvrez aussi le lien envoyé à l'autre adresse.",
     ar: 'تم تسجيل التأكيد. افتح أيضًا الرابط المرسل إلى العنوان الآخر.',
   },
-  serviceIndisponible: {
-    fr: "Connexion au service d'authentification impossible, réessayez.",
-    ar: 'تعذّر الاتصال بخدمة المصادقة، أعد المحاولة.',
-  },
 };
 
 const attendre = (ms) => new Promise((fin) => setTimeout(fin, ms));
 
-function messageLien(cle, email = '') {
+function messageLien(cle, email = '', detail = '') {
   const m = MESSAGES_LIEN[cle];
-  return (i18n.language === 'ar' ? m.ar : m.fr).replace('{email}', email);
+  return (i18n.language === 'ar' ? m.ar : m.fr).replace('{email}', email).replace('{detail}', detail);
 }
 
 export function lireLienEmail() {
@@ -133,6 +142,9 @@ export function AuthProvider({ children }) {
   // Lien d'e-mail que ce navigateur n'attendait pas : vérifié seulement si la
   // personne clique sur « Continuer » (voir lireLienEmail).
   const [lienEnAttente, setLienEnAttente] = useState(null);
+  // Compte affiché, lu par l'écouteur Supabase (voir SIGNED_IN plus bas).
+  const compteRef = useRef(user);
+  compteRef.current = user;
 
   const refreshUser = useCallback(async () => {
     try {
@@ -155,6 +167,7 @@ export function AuthProvider({ children }) {
       {},
       { withCredentials: true, headers: { Authorization: `Bearer ${session.access_token}` } }
     );
+    compteRef.current = data;
     setUser(data);
     return data;
   }, []);
@@ -171,8 +184,7 @@ export function AuthProvider({ children }) {
       type: lien.type,
     });
     if (error) {
-      const detail = error.message && error.message !== '{}' ? supabaseError(error).response.data.detail : messageLien('serviceIndisponible');
-      toast({ variant: 'destructive', description: detail });
+      toast({ variant: 'destructive', description: supabaseError(error).response.data.detail });
       return null;
     }
     if (!data?.session) {
@@ -195,38 +207,65 @@ export function AuthProvider({ children }) {
     return { email, session: data.session, verification, type: lien.type };
   }, []);
 
+  // Après l'échec d'un lien : l'onglet revient au compte que détient encore
+  // le client principal, sinon à celui du cookie (ancien système), sinon à
+  // personne. Ne rejette jamais.
+  const retablirSession = useCallback(async () => {
+    try {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) await syncSupabaseSession(data.session);
+      else await refreshUser();
+    } catch {
+      setUser(null);
+    }
+  }, [refreshUser, syncSupabaseSession]);
+
   // Ouvre la session du site pour un lien accepté, puis seulement la confie au
-  // client principal (renouvellement, changement de mot de passe). Si le site
-  // refuse, la session est révoquée et le client principal reste intact :
-  // rien ne peut s'ouvrir plus tard sans prévenir.
+  // client principal (renouvellement, changement de mot de passe). En cas
+  // d'échec, la session du lien est révoquée, l'onglet revient à son état
+  // précédent, et l'erreur levée porte un seul message : la notification
+  // d'erreur n'est jamais remplacée par « Connecté en tant que ».
   const ouvrirSessionLien = useCallback(
     async (accepte) => {
+      const abandonner = async (detail) => {
+        await accepte.verification.auth.signOut({ scope: 'local' }).catch(() => {});
+        await retablirSession();
+        return { response: { data: { detail } } };
+      };
       let compte;
       try {
         compte = await syncSupabaseSession(accepte.session);
       } catch (err) {
-        await accepte.verification.auth.signOut({ scope: 'local' }).catch(() => {});
-        throw err;
+        const detail = err?.response?.data?.detail;
+        const raison = detail ? ` (${formatApiErrorDetail(detail).replace(/[\s.]+$/, '')})` : '';
+        throw await abandonner(messageLien('sessionNonOuverte', '', raison));
       }
       let erreur = null;
       // Une coupure brève ne doit pas perdre un lien déjà consommé.
       for (const delai of [0, 500, 1500]) {
         if (delai) await attendre(delai);
-        ({ error: erreur } = await supabase.auth.setSession({
-          access_token: accepte.session.access_token,
-          refresh_token: accepte.session.refresh_token,
-        }));
+        try {
+          ({ error: erreur } = await supabase.auth.setSession({
+            access_token: accepte.session.access_token,
+            refresh_token: accepte.session.refresh_token,
+          }));
+        } catch (e) {
+          erreur = e;
+        }
         if (!erreur) break;
       }
       if (erreur) {
-        toast({ variant: 'destructive', description: messageLien('serviceIndisponible') });
-      } else if (accepte.type === 'recovery') {
-        setRecovery(true);
+        // Le cookie du site appartient déjà au compte du lien, mais le client
+        // principal ne pourrait ni le renouveler (il expirerait sans
+        // prévenir dans l'heure) ni changer le mot de passe : on le retire.
+        await axios.post(`${API}/auth/logout`, {}, { withCredentials: true }).catch(() => {});
+        throw await abandonner(messageLien('sessionNonOuverte'));
       }
+      if (accepte.type === 'recovery') setRecovery(true);
       toast({ description: messageLien('connecte', accepte.email) });
       return compte;
     },
-    [syncSupabaseSession]
+    [syncSupabaseSession, retablirSession]
   );
 
   useEffect(() => {
@@ -248,8 +287,8 @@ export function AuthProvider({ children }) {
         try {
           await ouvrirSessionLien(accepte);
         } catch (err) {
+          // L'onglet est déjà revenu à son état précédent (retablirSession).
           toast({ variant: 'destructive', description: formatApiErrorDetail(err?.response?.data?.detail) });
-          setUser(null);
         }
         return;
       }
@@ -266,6 +305,21 @@ export function AuthProvider({ children }) {
       if (event === 'PASSWORD_RECOVERY') setRecovery(true);
       if (event === 'TOKEN_REFRESHED') syncSupabaseSession(session).catch(() => {});
       if (event === 'SIGNED_OUT') setUser(null);
+      // Connexion faite dans un autre onglet (Supabase la diffuse à tous) : le
+      // cookie du site, commun aux onglets, appartient désormais à ce compte.
+      // L'onglet l'affiche au lieu de garder l'ancien. Seulement quand un
+      // compte est affiché : pendant le chargement de la page, Supabase émet
+      // aussi SIGNED_IN en relisant sa session, et l'effet ci-dessus s'en
+      // charge ; un onglet déconnecté ne doit pas se reconnecter tout seul (par
+      // exemple après une déconnexion dont l'appel à Supabase a échoué, qui
+      // laisse la session dans le stockage). Un second appel pendant une
+      // connexion faite ici est sans effet : même jeton, même compte, et le
+      // backend tolère deux premiers passages simultanés.
+      const email = String(session?.user?.email || '').toLowerCase();
+      const affiche = compteRef.current;
+      if (event === 'SIGNED_IN' && email && affiche && email !== String(affiche.email || '').toLowerCase()) {
+        syncSupabaseSession(session).catch(() => {});
+      }
     });
     return () => {
       active = false;

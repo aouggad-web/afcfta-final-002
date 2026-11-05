@@ -136,7 +136,9 @@ it("lien d'un autre compte : jamais confié au client principal, même si la dé
   expect(axios.post).not.toHaveBeenCalled();
   expect(localStorage.getItem(CLE)).toBeNull();
   expect(toast.mock.calls[0][0].variant).toBe('destructive');
-  expect(messages()).toMatch(/autre compte.*refusé/);
+  expect(messages()).toMatch(/autre compte.*aucune session n'a été ouverte/);
+  // Le lien est consommé : le message ne propose pas de le rouvrir.
+  expect(messages()).not.toMatch(/Ouvrez-le/);
 });
 
 it('PASSWORD_RECOVERY du client principal ne précède plus le contrôle : aucun formulaire après un refus', async () => {
@@ -252,4 +254,115 @@ it("ignore une adresse sans lien d'e-mail", async () => {
   await waitFor(() => expect(auth.getSession).toHaveBeenCalled());
   expect(verif.verifyOtp).not.toHaveBeenCalled();
   expect(window.location.search).toBe('?type=recovery');
+});
+
+it('échec définitif de setSession : un seul message, cookie du lien retiré, pas de faux « Connecté »', async () => {
+  marquer('alice@example.com');
+  auth.setSession.mockResolvedValue({ data: {}, error: { name: 'AuthRetryableFetchError', message: 'Failed to fetch' } });
+  window.history.replaceState(null, '', '/?token_hash=abc&type=recovery');
+  rendre();
+
+  await waitFor(() => expect(verif.signOut).toHaveBeenCalledWith({ scope: 'local' }), { timeout: 4000 });
+  await waitFor(() => expect(etat()).toBe('false|anonyme|-'));
+  expect(auth.setSession).toHaveBeenCalledTimes(3);
+  expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/auth/logout'), {}, expect.anything());
+  // TOAST_LIMIT = 1 : un second message effacerait le premier.
+  expect(toast).toHaveBeenCalledTimes(1);
+  expect(toast.mock.calls[0][0].variant).toBe('destructive');
+  expect(messages()).toMatch(/la session n'a pas pu s'ouvrir/);
+  expect(messages()).not.toMatch(/Connecté en tant que/);
+});
+
+it('connecté en A, « Continuer » sur un lien de B puis échec de setSession : retour au compte A', async () => {
+  const sessionA = { access_token: 'jeton-a', refresh_token: 'r-a', user: { email: 'a@example.com' } };
+  auth.getSession.mockResolvedValue({ data: { session: sessionA } });
+  auth.setSession.mockResolvedValue({ data: {}, error: { message: 'session_not_found' } });
+  axios.post.mockImplementation(async (url, corps, options) => {
+    if (url.endsWith('/auth/logout')) return { data: {} };
+    const jeton = options.headers.Authorization;
+    return { data: { email: jeton === 'Bearer jeton-a' ? 'a@example.com' : 'alice@example.com' } };
+  });
+  window.history.replaceState(null, '', '/?token_hash=lien-b&type=email');
+  rendre();
+  await waitFor(() => expect(etat()).toBe('false|a@example.com|email'));
+
+  await act(async () => {
+    await expect(contexte.confirmerLienEmail()).resolves.toBeNull();
+  });
+  expect(etat()).toBe('false|a@example.com|-');
+  expect(verif.signOut).toHaveBeenCalledWith({ scope: 'local' });
+  const urls = axios.post.mock.calls.map(([url, , o]) => `${url.split('/api')[1]} ${o.headers?.Authorization || ''}`.trim());
+  expect(urls).toEqual(['/auth/session Bearer jeton-a', '/auth/session Bearer jeton-alice', '/auth/logout', '/auth/session Bearer jeton-a']);
+  expect(messages()).not.toMatch(/Connecté en tant que/);
+}, 8000);
+
+it("échec du site après « Continuer » : le message dit que le lien a servi", async () => {
+  axios.post.mockRejectedValue({ response: { data: { detail: 'Session invalide ou expirée' } } });
+  window.history.replaceState(null, '', '/?token_hash=lien&type=email');
+  rendre();
+  await waitFor(() => expect(etat()).toBe('false|anonyme|email'));
+
+  await act(async () => {
+    await contexte.confirmerLienEmail();
+  });
+  expect(messages()).toBe(
+    "Ce lien a servi, mais la session n'a pas pu s'ouvrir (Session invalide ou expirée). Connectez-vous avec votre mot de passe, ou demandez un nouveau lien."
+  );
+  expect(toast).toHaveBeenCalledTimes(1);
+});
+
+it('coupure réseau pendant la vérification : message traduit, pas « Failed to fetch »', async () => {
+  marquer('alice@example.com');
+  verif.verifyOtp.mockResolvedValue({ data: {}, error: { name: 'AuthRetryableFetchError', message: 'Failed to fetch', status: 0 } });
+  window.history.replaceState(null, '', '/?token_hash=x&type=email');
+  rendre();
+
+  await waitFor(() => expect(messages()).toMatch(/service d'authentification impossible/));
+  expect(messages()).not.toMatch(/Failed to fetch/);
+});
+
+it('connexion dans un autre onglet : cet onglet affiche le nouveau compte', async () => {
+  axios.get.mockResolvedValue({ data: { email: 'a@example.com' } });
+  axios.post.mockResolvedValue({ data: { email: 'b@example.com' } });
+  rendre();
+  await waitFor(() => expect(etat()).toBe('false|a@example.com|-'));
+
+  // Même compte (relecture de la session au retour sur l'onglet) : rien.
+  await act(async () => {
+    ecouteur('SIGNED_IN', { access_token: 'jeton-a', user: { email: 'A@example.com' } });
+  });
+  expect(axios.post).not.toHaveBeenCalled();
+
+  // Autre compte, diffusé par l'onglet où la personne s'est connectée.
+  await act(async () => {
+    ecouteur('SIGNED_IN', { access_token: 'jeton-b', user: { email: 'b@example.com' } });
+  });
+  await waitFor(() => expect(etat()).toBe('false|b@example.com|-'));
+  expect(axios.post).toHaveBeenCalledWith(
+    expect.stringContaining('/auth/session'),
+    {},
+    expect.objectContaining({ headers: { Authorization: 'Bearer jeton-b' } })
+  );
+});
+
+it('onglet déconnecté : un SIGNED_IN (session restée dans le stockage) ne le reconnecte pas', async () => {
+  rendre();
+  await waitFor(() => expect(etat()).toBe('false|anonyme|-'));
+  await act(async () => {
+    ecouteur('SIGNED_IN', { access_token: 'jeton-a', user: { email: 'a@example.com' } });
+  });
+  expect(axios.post).not.toHaveBeenCalled();
+  expect(etat()).toBe('false|anonyme|-');
+});
+
+it('SIGNED_IN émis au démarrage, avant que la page ait fixé le compte : ignoré', async () => {
+  let finir;
+  axios.get.mockReturnValue(new Promise((ok) => { finir = ok; }));
+  rendre();
+  await act(async () => {
+    ecouteur('SIGNED_IN', { access_token: 'jeton-b', user: { email: 'b@example.com' } });
+  });
+  expect(axios.post).not.toHaveBeenCalled();
+  await act(async () => finir({ data: { email: 'a@example.com' } }));
+  expect(etat()).toBe('false|a@example.com|-');
 });
