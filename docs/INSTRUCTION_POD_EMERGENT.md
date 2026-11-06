@@ -271,15 +271,29 @@ effacer `/app/.afcfta-crons-anomalie` et ne pas corriger les crons à la main.
 2. **Fausse alerte avérée** (cas le plus probable : Emergent a mis à jour ses
    scripts de `.emergent/cron/`, dont l'empreinte ne correspond plus au
    manifeste) :
-   1. mettre à jour `scripts/crons_emergent_sha256.txt` dans une PR, après
-      relecture du changement d'Emergent, puis la fusionner ;
+   1. corriger dans une PR ce qui déclenche l'alerte, le plus souvent
+      `scripts/crons_emergent_sha256.txt` après relecture du changement
+      d'Emergent, puis la fusionner ;
    2. message à coller dans Emergent :
 
       ```text
-      Fausse alerte confirmée. Exécute seulement : rm -f /app/.afcfta-crons-anomalie && supervisorctl restart backend
-      Ne synchronise pas.
+      Fausse alerte confirmée et corrigée sur main. Exécute, dans cet ordre :
+      rm -f /app/.afcfta-crons-anomalie
+      cd /app && BRANCH=main bash sync_emergent.sh
+      Renvoie-moi la ligne de l'étape « 1bis/6 » et celle qui la suit.
       ```
 
+      La synchronisation est indispensable : le contrôle lit le manifeste du
+      pod (`/app/scripts/crons_emergent_sha256.txt`), que la fusion ne change
+      pas. Sans elle, le contrôle relancé au redémarrage relirait l'ancien
+      manifeste et recréerait l'anomalie. L'effacement passe avant : la
+      synchronisation redémarre le backend, dont le premier contrôle doit
+      alors donner « ok ». Si l'étape 1bis affiche encore « ⚠ », s'arrêter
+      là : la correction ne couvre pas tout.
+
+      Si rien n'est à corriger dans le dépôt (cause disparue et comprise), le
+      message se réduit à
+      `rm -f /app/.afcfta-crons-anomalie && supervisorctl restart backend`.
    3. vérifier que `components.crons` de `/api/health/status` est repassé à
       « ok », puis relancer la tâche GitHub.
 
