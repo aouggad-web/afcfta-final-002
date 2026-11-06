@@ -1,11 +1,15 @@
 """Contrôle horaire des crons par le backend (point 17 de l'audit de sécurité)."""
 
+import subprocess
 import threading
 
 import pytest
 import surveillance_crons
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+
+# Chemin réel du verrou, lu avant que la fixture le remplace.
+VERROU_POD = surveillance_crons.VERROU_ANOMALIE
 
 
 def _script(tmp_path, code, sortie="sortie"):
@@ -124,3 +128,17 @@ def test_l_exploitant_efface_l_anomalie_retenue(monkeypatch):
 
     surveillance_crons._passage()
     assert surveillance_crons.etat == {"status": "ok", "a": surveillance_crons.etat["a"]}
+
+
+def test_un_controle_incomplet_ne_retient_pas_d_anomalie(monkeypatch):
+    """Un délai dépassé ne doit pas devenir une alerte de compromission durable."""
+    monkeypatch.setattr(surveillance_crons, "controler", lambda script: "non_verifie")
+    surveillance_crons._passage()
+    assert surveillance_crons.etat["status"] == "non_verifie"
+    assert not surveillance_crons.VERROU_ANOMALIE.exists()
+
+
+def test_le_verrou_du_pod_survit_au_git_clean_de_la_synchronisation():
+    """Sans sa ligne de .gitignore, le git clean -fd de sync_emergent.sh l'effacerait."""
+    resultat = subprocess.run(["git", "check-ignore", "-q", str(VERROU_POD)], cwd=VERROU_POD.parent)
+    assert resultat.returncode == 0

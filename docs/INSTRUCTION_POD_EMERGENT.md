@@ -236,8 +236,14 @@ six heures et échoue, avec un e-mail, si le verdict n'est pas « ok » ou s'il 
 plus de deux heures.
 
 Une anomalie reste affichée, même si la ligne en cause a disparu depuis, jusqu'à
-l'effacement de `/var/tmp/afcfta-crons-anomalie`. Ce fichier disparaît avec la
-reconstruction du pod. Après une fausse alerte avérée, il faut l'effacer à la main.
+l'effacement de `/app/.afcfta-crons-anomalie`. Ce fichier est sur le volume du
+pod : il survit au redémarrage du backend, à la synchronisation et à la reprise
+du pod, et ne disparaît qu'avec la reconstruction du volume. Après une fausse
+alerte avérée seulement, l'effacer à la main (`rm -f /app/.afcfta-crons-anomalie`),
+avant toute synchronisation. La page reste en « anomalie » jusqu'au contrôle
+suivant, au plus une heure, ou jusqu'à un redémarrage du backend
+(`supervisorctl restart backend`), qui refait aussitôt le contrôle. Relancer
+la tâche GitHub seulement après.
 
 **Sur alerte « ANOMALIE, compromission possible »** (verdict `anomalie`) :
 1. Lire le journal du backend : `/var/log/supervisor/backend.err.log`.

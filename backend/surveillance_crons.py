@@ -37,10 +37,12 @@ _ENV_SCRIPT = {
 
 # Une anomalie reste affichée jusqu'à ce que l'exploitant l'efface : une ligne
 # plantée puis retirée entre deux lectures de la tâche GitHub (toutes les six
-# heures) ne doit pas disparaître sans alerte. Le fichier survit au
-# redémarrage du backend (synchronisation, --reload), pas à la reconstruction
-# du pod, qui est le remède ; hors du dépôt, git clean ne l'efface pas.
-VERROU_ANOMALIE = Path("/var/tmp/afcfta-crons-anomalie")
+# heures) ne doit pas disparaître sans alerte. /app est le volume persistant
+# du pod (le reste repart de l'image à chaque reprise) : le fichier survit au
+# redémarrage du backend, à la synchronisation (ignoré par git, donc épargné
+# par git clean) et à la reprise du pod ; seule la reconstruction du volume,
+# qui est le remède, l'efface.
+VERROU_ANOMALIE = Path(__file__).resolve().parents[1] / ".afcfta-crons-anomalie"
 
 # Dernier verdict : None hors du pod ; sinon {"status": ..., "a": horodatage
 # UTC}, plus « depuis » (première détection) tant qu'une anomalie est retenue.
