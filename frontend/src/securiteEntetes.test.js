@@ -1,10 +1,13 @@
 /**
- * En-têtes de sécurité de `vite preview` (audit INFO-3) : CSP par page,
- * décidée au départ de la réponse d'après son type et son adresse finale.
+ * En-têtes de sécurité de `vite preview` (audit INFO-3) : une seule CSP
+ * stricte pour tous les documents HTML, posée au départ de la réponse.
  */
+import { readdirSync, readFileSync } from 'node:fs';
+import path from 'node:path';
+
 import { expect, it, vi } from 'vitest';
 
-import { erreurSansDetails, middlewareEntetes, origine, politiquePour } from '../securite/entetes.js';
+import { erreurSansDetails, middlewareEntetes, origine, politique } from '../securite/entetes.js';
 
 const SUPABASE = 'https://projet.supabase.co';
 
@@ -13,38 +16,48 @@ function directive(csp, nom) {
   return d ? d.slice(nom.length + 1).split(' ') : null;
 }
 
-it("l'application : aucun script inline ni CDN, nonce pour le script de Cloudflare", () => {
-  const csp = politiquePour('/index.html', { nonce: 'abc', supabaseUrl: SUPABASE });
+it('aucun script inline ni CDN, nonce pour le script de Cloudflare', () => {
+  const csp = politique({ nonce: 'abc', supabaseUrl: SUPABASE });
   expect(directive(csp, 'script-src')).toEqual(["'self'", "'nonce-abc'"]);
   expect(directive(csp, 'connect-src')).toEqual(["'self'", SUPABASE]);
   expect(directive(csp, 'object-src')).toEqual(["'none'"]);
   expect(directive(csp, 'frame-ancestors')).toEqual(["'self'", 'https://app.emergent.sh']);
   expect(directive(csp, 'img-src')).not.toContain('https:');
-});
-
-it('toute autre page HTML reçoit la politique de l’application', () => {
-  for (const chemin of ['/', '/inconnue.html', '/tools/autre.html', '/PRICING.html']) {
-    expect(directive(politiquePour(chemin, { nonce: 'n' }), 'script-src')).toEqual(["'self'", "'nonce-n'"]);
-  }
-});
-
-it('pages encore à scripts inline : compatibles, sans nonce (il annulerait unsafe-inline)', () => {
-  expect(directive(politiquePour('/pricing.html', { nonce: 'n' }), 'script-src')).toEqual(["'self'", "'unsafe-inline'"]);
-  expect(directive(politiquePour('/tools/afcfta_business_atlas.html', { nonce: 'n' }), 'script-src')).toEqual([
-    "'self'",
-    "'unsafe-inline'",
-    'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js',
-  ]);
-  expect(directive(politiquePour('/cgu.html', { nonce: 'n' }), 'script-src')).toEqual(["'self'", "'nonce-n'"]);
+  expect(csp).not.toContain("'unsafe-eval'");
 });
 
 it("connect-src : seulement l'origine, jamais un chemin ni un schéma non http(s)", () => {
-  const csp = politiquePour('/', { nonce: 'n', supabaseUrl: `${SUPABASE}/auth/v1`, backendUrl: SUPABASE });
+  const csp = politique({ nonce: 'n', supabaseUrl: `${SUPABASE}/auth/v1`, backendUrl: SUPABASE });
   expect(directive(csp, 'connect-src')).toEqual(["'self'", SUPABASE]);
   expect(origine('javascript:alert(1)')).toBeNull();
   expect(origine('pas une url')).toBeNull();
   expect(origine('')).toBeNull();
   expect(origine('http://localhost:8000/api')).toBe('http://localhost:8000');
+});
+
+// La CSP n'autorise ni script inline ni gestionnaire onclick="…" : une page de
+// public/ qui en contiendrait cesserait de fonctionner. public/index.html,
+// gabarit de l'ancien Create React App, n'est jamais servi : Vite écrit
+// l'index généré par-dessus lors du build.
+it('les pages de public/ ne contiennent ni script inline ni gestionnaire on*', () => {
+  const racine = path.resolve(__dirname, '../public');
+  const pages = [];
+  const parcourir = (dossier) => {
+    for (const nom of readdirSync(dossier, { withFileTypes: true })) {
+      const chemin = path.join(dossier, nom.name);
+      if (nom.isDirectory()) parcourir(chemin);
+      else if (nom.name.endsWith('.html') && chemin !== path.join(racine, 'index.html')) pages.push(chemin);
+    }
+  };
+  parcourir(racine);
+  expect(pages.length).toBeGreaterThanOrEqual(6);
+  for (const page of pages) {
+    const html = readFileSync(page, 'utf8');
+    const nom = path.relative(racine, page);
+    expect([nom, html.match(/<script(?![^>]*\ssrc=)[^>]*>/gi)]).toEqual([nom, null]);
+    expect([nom, html.match(/\son[a-z]+\s*=/gi)]).toEqual([nom, null]);
+    expect([nom, html.match(/<script[^>]*src="https?:/gi)]).toEqual([nom, null]);
+  }
 });
 
 function reponse() {
@@ -79,30 +92,19 @@ it('documents HTML seulement : pas de CSP sur les scripts, ni sur le service wor
 it('type lu dans les en-têtes posés (chaîne de vite preview) ou passé à writeHead', () => {
   const a = servir('/pricing.html', 'text/html;charset=utf-8');
   a.res.writeHead(200);
-  expect(a.res.entetes['content-security-policy']).toContain("script-src 'self' 'unsafe-inline'");
+  expect(a.res.entetes['content-security-policy']).toContain("script-src 'self' 'nonce-n1'");
 
-  const b = servir('/pricing.html');
+  const b = servir('/tools/afcfta_business_atlas.html');
   b.res.writeHead(200, { 'Content-Type': 'text/html' });
-  expect(b.res.entetes['content-security-policy']).toContain("script-src 'self' 'unsafe-inline'");
+  expect(b.res.entetes['content-security-policy']).toContain("script-src 'self' 'nonce-n1'");
 });
 
-it("politique décidée sur l'adresse finale : page compatible demandée, application servie", () => {
-  const { req, res } = servir('/pricing.html', 'text/html');
-  req.url = '/index.html'; // réécriture par le repli SPA avant l'envoi
-  res.writeHead(200);
-  expect(res.entetes['content-security-policy']).toContain("script-src 'self' 'nonce-n1'");
-});
-
-it("adresses non canoniques (« # » brut, « .. ») : politique stricte, même si sirv sert l'application", () => {
-  for (const url of ['/pricing.html#/../index.html', '/tools/afcfta_business_atlas.html#/../../index.html', '/x/../pricing.html']) {
+it('même politique stricte quelle que soit l’adresse (repli SPA, adresses non canoniques)', () => {
+  for (const url of ['/', '/inconnue', '/pricing.html#/../index.html', '/x/../pricing.html', '/offline.html']) {
     const { res } = servir(url, 'text/html');
     res.writeHead(200);
-    expect(res.entetes['content-security-policy']).toContain("'nonce-n1'");
-    expect(res.entetes['content-security-policy']).not.toContain("script-src 'self' 'unsafe-inline'");
+    expect(directive(res.entetes['content-security-policy'], 'script-src')).toEqual(["'self'", "'nonce-n1'"]);
   }
-  const { res } = servir('/pricing.html?checkout=success', 'text/html');
-  res.writeHead(200);
-  expect(res.entetes['content-security-policy']).toContain("script-src 'self' 'unsafe-inline'");
 });
 
 it('une CSP déjà posée (backend par le proxy, page d’erreur) est conservée', () => {

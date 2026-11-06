@@ -39,6 +39,7 @@ const IS_DEV_PREVIEW =
 const PRECACHE_ASSETS = [
   '/',
   '/offline.html',
+  '/offline.js',
   '/manifest.json',
   // Logo et favicon : la page hors ligne les affiche sans réseau.
   '/brand/logo.svg',
