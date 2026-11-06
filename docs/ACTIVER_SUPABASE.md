@@ -48,6 +48,12 @@ soit le mot de passe. Le courrier reçu reste chez Zoho : Resend n'utilise que l
 sous-domaines `send` et `rsend` de `afcfta-zlecaf.com`, sans toucher aux MX ni au
 SPF de la racine.
 
+Le backend, lui, envoie toujours ses propres e-mails par Zoho (`SAAS_SMTP_*` dans
+`backend/.env`) : bienvenue, abonnement et paiement, livraison des achats,
+transmission des messages du formulaire de contact. Relevé du pod du 06/11/2026 :
+17 envois réussis, aucun échec. Le refus `535` ne concernait que la
+configuration SMTP essayée pour Supabase.
+
 1. **Resend → Domains** : `afcfta-zlecaf.com`, région Irlande (eu-west-1). Les
    enregistrements DNS (`resend._domainkey` et `send`) s'ajoutent chez
    Cloudflare par « Auto configure ». Le domaine doit être marqué « Verified ».
