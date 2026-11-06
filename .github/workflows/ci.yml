@@ -79,9 +79,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest feedparser aiohttp pandas numpy
 
       # backend/data/crawled_normalized/ est la source primaire lue par
       # crawled_data_service, mais c'est une sortie dérivée : 2 Go, dont
@@ -143,7 +141,7 @@ jobs:
           node-version: '20'
 
       - name: Install frontend dependencies
-        run: yarn install --frozen-lockfile || yarn install
+        run: yarn install --frozen-lockfile --ignore-scripts
 
       - name: Run frontend tests
         run: yarn test
