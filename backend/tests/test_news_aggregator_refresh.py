@@ -63,7 +63,7 @@ def test_actualiser_attend_la_collecte(tmp_path, monkeypatch):
 
 
 def _collecte_bloquante(monkeypatch, appels, duree=0.3):
-    """Collecte factice qui bloque comme les appels `requests` de googlenewsdecoder."""
+    """Collecte factice qui bloque sa boucle d'événements (appel synchrone)."""
 
     async def collecte():
         appels.append(1)
