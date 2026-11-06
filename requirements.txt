@@ -20,7 +20,7 @@ requests==2.34.2
 # Data processing and export
 pandas==2.3.3
 numpy==2.3.3
-openpyxl==3.1.2
+openpyxl==3.1.5
 xlrd==2.0.2
 pymupdf==1.28.2
 

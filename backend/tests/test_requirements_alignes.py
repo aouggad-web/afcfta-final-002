@@ -4,7 +4,8 @@ import re
 from pathlib import Path
 
 _DEPOT = Path(__file__).resolve().parents[2]
-# Absents d'Emergent à dessein : aucun code servi ne les importe.
+# Absents d'Emergent à dessein : aucun code servi n'en a besoin (aiosmtplib n'y est
+# qu'un import facultatif de notifications/email_notifier.py, qui n'envoie rien).
 _RACINE_SEULEMENT = {"aiosmtplib", "apscheduler", "pytest-cov"}
 
 
