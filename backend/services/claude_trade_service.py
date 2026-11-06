@@ -1655,9 +1655,11 @@ Wrap ALL 15 in this envelope:
                 payload = await self.factual_opportunities(country_name, mode=mode, lang=lang)
             except Exception as fallback_error:  # pragma: no cover - dernier recours
                 logger.error(f"Factual fallback also failed: {fallback_error}")
-                return {"error": str(e), "opportunities": []}
-            payload["error"] = str(e)
-            payload["degraded_reason"] = f"analysis_failed: {e}"
+                return {"error": "Internal server error", "opportunities": []}
+            # Le texte de l'exception reste au journal (ci-dessus) : il peut
+            # porter l'URL d'un fournisseur ou un message d'erreur interne.
+            payload["error"] = "Internal server error"
+            payload["degraded_reason"] = "analysis_failed"
             return payload
 
     # ── Country Economic Profile ───────────────────────────────────────────────
@@ -1748,7 +1750,7 @@ Return this EXACT JSON structure:
 
         except Exception as e:
             logger.error(f"Error in country profile: {e}", exc_info=True)
-            return {"error": str(e)}
+            return {"error": "Internal server error"}
 
     # ── Product Analysis ──────────────────────────────────────────────────────
 
@@ -1929,7 +1931,7 @@ Return this EXACT JSON structure with one entry per year, deduplicated:
 
         except Exception as e:
             logger.error(f"Error in trade balance: {e}", exc_info=True)
-            return {"error": str(e)}
+            return {"error": "Internal server error"}
 
     # ── Value Chains ──────────────────────────────────────────────────────────
 
@@ -2232,7 +2234,7 @@ This keeps the payload compact and parseable."""
 
         except Exception as e:
             logger.error(f"Error in value chains: {e}", exc_info=True)
-            return {"error": str(e)}
+            return {"error": "Internal server error"}
 
     @staticmethod
     def _filter_unverified_raw_producers(result: Dict, real_raw_material_iso3: set) -> int:

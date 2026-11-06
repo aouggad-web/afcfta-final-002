@@ -3,6 +3,7 @@ Logistics routes - Ports, Airports, Land corridors, Free Zones
 Multimodal logistics platform for African trade infrastructure
 """
 
+import logging
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException
@@ -83,6 +84,8 @@ try:
 except ImportError:
     CACHE_AVAILABLE = False
 
+logger = logging.getLogger(__name__)
+
 router = APIRouter(prefix="/logistics")
 
 # ==========================================
@@ -110,7 +113,8 @@ async def get_ports(country_iso: Optional[str] = None):
             cache_set(cache_key, result, "countries")
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading ports data: {str(e)}")
+        logger.error(f"Error loading ports data: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/ports/search")
@@ -220,7 +224,8 @@ async def get_airports(country_iso: Optional[str] = None):
         airports = get_all_airports(country_iso=country_iso)
         return {"count": len(airports), "airports": airports}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading airports data: {str(e)}")
+        logger.error(f"Error loading airports data: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/air/airports/top/cargo")
@@ -365,7 +370,8 @@ async def get_free_zones(country_iso: Optional[str] = None):
         zones = get_free_zones_by_country(country_iso)
         return {"count": len(zones), "zones": zones}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading free zones data: {str(e)}")
+        logger.error(f"Error loading free zones data: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 # ==========================================
@@ -550,7 +556,8 @@ async def get_shipping_routes(origin: Optional[str] = None):
             "source": "Drewry Maritime Research, UNCTAD MRTS 2024, Maersk/CMA CGM/MSC published tariffs",
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading shipping fees data: {str(e)}")
+        logger.error(f"Error loading shipping fees data: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/fees/route")

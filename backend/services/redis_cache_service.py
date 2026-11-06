@@ -175,7 +175,8 @@ class JsonFileCacheService:
                 "expired_entries": expired,
             }
         except Exception as e:
-            return {"status": "error", "backend": "json_file", "error": str(e)}
+            logger.error(f"JsonFileCache stats error: {e}", exc_info=True)
+            return {"status": "error", "backend": "json_file", "error": "Internal server error"}
 
     def clear_all(self) -> int:
         return self.invalidate_pattern("*")
@@ -325,8 +326,8 @@ class RedisCacheService:
                 ),
             }
         except Exception as e:
-            logger.error(f"Cache stats error: {e}")
-            return {"status": "error", "error": str(e)}
+            logger.error(f"Cache stats error: {e}", exc_info=True)
+            return {"status": "error", "error": "Internal server error"}
 
     def clear_all(self) -> int:
         return self.invalidate_pattern("*")

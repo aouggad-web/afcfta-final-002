@@ -386,7 +386,12 @@ async def create_product_checkout(payload: ProductCheckoutPayload, request: Requ
         try:
             amount_dzd = pricing.product_dzd_amount(payload.product)
         except pricing.InvalidPrice as exc:
-            raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc))
+            # Message bâti sur la configuration du serveur : au journal seulement (M9).
+            logger.error("Tarif Chargily mal configuré : %s", exc)
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Paiement local momentanément indisponible.",
+            ) from exc
         url = await run_in_threadpool(
             lambda: chargily_service.create_checkout(
                 amount_dzd=amount_dzd,
@@ -621,7 +626,7 @@ async def stripe_webhook(request: Request):
     try:
         event = stripe_service.construct_event(payload, sig)
     except ValueError as exc:
-        logger.warning("Webhook rejeté: %s", exc)
+        logger.warning("Webhook rejeté: %s", exc, exc_info=True)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
 
     event_id = event.get("id") if isinstance(event, dict) else event["id"]
@@ -769,7 +774,7 @@ async def chargily_webhook(request: Request):
     try:
         event = chargily_service.verify_and_parse(payload, signature)
     except ValueError as exc:
-        logger.warning("Webhook Chargily rejeté: %s", exc)
+        logger.warning("Webhook Chargily rejeté: %s", exc, exc_info=True)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
 
     event_id = event.get("id") or ""

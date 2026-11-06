@@ -299,8 +299,8 @@ async def search_hs_codes(
 
         return results
     except Exception as exc:
-        logger.error(f"HS search error: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"HS search error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.post("/investment-opportunities")
@@ -337,8 +337,8 @@ async def search_investment_opportunities(request: InvestmentSearchRequest):
         }
         return result
     except Exception as exc:
-        logger.error(f"Investment search error: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Investment search error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/autocomplete")

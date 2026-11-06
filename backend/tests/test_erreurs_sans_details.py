@@ -107,9 +107,15 @@ def _fichiers_servis():
 
     fichiers = set()
     for route in routes_api(app):
-        module = sys.modules.get(getattr(route.original_route.endpoint, "__module__", ""))
+        endpoint = route.original_route.endpoint
+        module = sys.modules.get(getattr(endpoint, "__module__", ""))
         if module is not None:
             fichiers.add(Path(inspect.getfile(module)).resolve())
+        # Fichier de la fonction elle-même : couvre aussi un module chargé sans
+        # passer par sys.modules (api/v2/endpoints.py, routes/__init__.py).
+        source = inspect.getsourcefile(inspect.unwrap(endpoint))
+        if source:
+            fichiers.add(Path(source).resolve())
     return fichiers
 
 

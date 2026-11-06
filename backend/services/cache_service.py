@@ -13,6 +13,7 @@ Cache TTLs:
 
 import hashlib
 import json
+import logging
 import os
 import time
 from datetime import timedelta
@@ -27,6 +28,8 @@ try:
 except ImportError:
     REDIS_AVAILABLE = False
     redis = None
+
+logger = logging.getLogger(__name__)
 
 # Configuration
 REDIS_URL = os.environ.get("REDIS_URL", "redis://localhost:6379/0")
@@ -358,7 +361,8 @@ def cache_stats() -> dict:
             "ttl_config": CACHE_TTL,
         }
     except Exception as e:
-        return {"status": "error", "error": str(e)}
+        logger.error(f"Cache stats error: {e}", exc_info=True)
+        return {"status": "error", "error": "Internal server error"}
 
 
 def cached(ttl_type: str = "default", key_prefix: str = None):

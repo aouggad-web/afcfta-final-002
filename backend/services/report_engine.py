@@ -170,8 +170,8 @@ def _supply_component(origin_iso3: str, hs_code: str) -> Dict:
 
         cap = get_capacity(origin_iso3, hs_code)
     except Exception as exc:
-        _log.warning("production capacity unavailable: %s", exc)
-        return {"available": False, "subscore": None, "note": str(exc)}
+        _log.warning("production capacity unavailable: %s", exc, exc_info=True)
+        return {"available": False, "subscore": None, "note": "Service temporarily unavailable"}
 
     if not cap.get("available"):
         return {"available": False, "subscore": None, "reason": cap.get("reason"), "detail": cap}
@@ -1505,8 +1505,8 @@ def _supply_side(hs_code: str) -> Dict:
 
         prod = get_continental_producers(hs_code)
     except Exception as exc:
-        _log.warning("continental producers unavailable: %s", exc)
-        return {"available": False, "producers": [], "note": str(exc)}
+        _log.warning("continental producers unavailable: %s", exc, exc_info=True)
+        return {"available": False, "producers": [], "note": "Service temporarily unavailable"}
 
     if not prod.get("available"):
         return {"available": False, "producers": [], "reason": prod.get("reason")}

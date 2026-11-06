@@ -88,8 +88,8 @@ async def get_sadc_overview():
     try:
         return _get_sadc().get_regional_overview()
     except Exception as exc:
-        logger.error(f"SADC overview failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"SADC overview failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/regions/sadc/countries")
@@ -102,8 +102,8 @@ async def get_sadc_countries():
 
         return {"countries": SADC_COUNTRIES, "total": len(SADC_COUNTRIES)}
     except Exception as exc:
-        logger.error(f"SADC countries failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"SADC countries failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/regions/sadc/trade-statistics")
@@ -112,8 +112,8 @@ async def get_sadc_trade_statistics():
     try:
         return _get_sadc().get_trade_statistics()
     except Exception as exc:
-        logger.error(f"SADC trade statistics failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"SADC trade statistics failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/regions/sadc/investment-zones")
@@ -128,8 +128,8 @@ async def get_all_sadc_investment_zones(
     try:
         return _get_sadc().get_investment_zones(country_code=country_code)
     except Exception as exc:
-        logger.error(f"SADC investment zones failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"SADC investment zones failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/regions/sadc/freshness")
@@ -141,8 +141,8 @@ async def get_sadc_data_freshness():
         report = _get_sadc().get_data_freshness()
         return report.to_dict()
     except Exception as exc:
-        logger.error(f"SADC data freshness failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"SADC data freshness failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 # ---------------------------------------------------------------------------
@@ -159,8 +159,8 @@ async def get_sacu_framework():
     try:
         return _get_sadc().get_sacu_framework()
     except Exception as exc:
-        logger.error(f"SACU framework failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"SACU framework failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/regions/sacu/revenue-sharing")
@@ -173,8 +173,8 @@ async def get_sacu_revenue_sharing():
             "country_shares": data.get("revenue_shares", {}),
         }
     except Exception as exc:
-        logger.error(f"SACU revenue sharing failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"SACU revenue sharing failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 # ---------------------------------------------------------------------------
@@ -197,8 +197,8 @@ async def get_sadc_country_tariffs(country_code: str):
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error(f"Country tariffs failed for {country_code}: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Country tariffs failed for {country_code}: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/countries/sadc/{country_code}/investment")
@@ -212,8 +212,8 @@ async def get_sadc_country_investment(country_code: str):
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error(f"Country investment failed for {country_code}: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Country investment failed for {country_code}: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/countries/sadc/{country_code}/sectors")
@@ -241,8 +241,8 @@ async def get_sadc_country_mining(country_code: str):
     try:
         return _get_mining().get_country_mining_profile(country_code.upper())
     except Exception as exc:
-        logger.error(f"Country mining profile failed for {country_code}: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Country mining profile failed for {country_code}: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 # ---------------------------------------------------------------------------
@@ -256,8 +256,8 @@ async def get_sadc_mining_overview():
     try:
         return _get_mining().intelligence
     except Exception as exc:
-        logger.error(f"Mining overview failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Mining overview failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/mining/sadc/minerals")
@@ -266,8 +266,8 @@ async def list_sadc_minerals():
     try:
         return {"minerals": _get_mining().list_minerals()}
     except Exception as exc:
-        logger.error(f"Mineral list failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Mineral list failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/mining/sadc/minerals/{mineral}")
@@ -281,8 +281,8 @@ async def get_sadc_mineral_profile(mineral: str):
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error(f"Mineral profile failed for {mineral}: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Mineral profile failed for {mineral}: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/mining/sadc/value-chain/{mineral}")
@@ -296,8 +296,8 @@ async def get_sadc_value_chain(mineral: str):
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error(f"Value chain failed for {mineral}: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Value chain failed for {mineral}: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/mining/sadc/beneficiation")
@@ -306,8 +306,8 @@ async def get_sadc_beneficiation_opportunities():
     try:
         return {"opportunities": _get_mining().get_beneficiation_opportunities()}
     except Exception as exc:
-        logger.error(f"Beneficiation opportunities failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Beneficiation opportunities failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/mining/sadc/export-routes/{country_code}")
@@ -316,8 +316,8 @@ async def get_sadc_mineral_export_routes(country_code: str):
     try:
         return _get_mining().get_mineral_export_routes(country_code.upper())
     except Exception as exc:
-        logger.error(f"Export routes failed for {country_code}: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Export routes failed for {country_code}: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 # ---------------------------------------------------------------------------
@@ -331,8 +331,8 @@ async def get_sadc_corridors():
     try:
         return _get_sadc().get_transport_corridors()
     except Exception as exc:
-        logger.error(f"SADC corridors failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"SADC corridors failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/trade-corridors/sadc/{country_code}")
@@ -341,8 +341,8 @@ async def get_sadc_country_corridors(country_code: str):
     try:
         return _get_sadc().get_transport_corridors(country_code=country_code.upper())
     except Exception as exc:
-        logger.error(f"Country corridors failed for {country_code}: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Country corridors failed for {country_code}: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 # ---------------------------------------------------------------------------
@@ -356,8 +356,8 @@ async def get_sadc_vs_eac():
     try:
         return _get_sadc().compare_sadc_eac()
     except Exception as exc:
-        logger.error(f"SADC vs EAC comparison failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"SADC vs EAC comparison failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/analysis/sadc-vs-cemac")
@@ -366,8 +366,8 @@ async def get_sadc_vs_cemac():
     try:
         return _get_sadc().compare_sadc_cemac()
     except Exception as exc:
-        logger.error(f"SADC vs CEMAC comparison failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"SADC vs CEMAC comparison failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 # ---------------------------------------------------------------------------
@@ -394,5 +394,5 @@ async def get_investment_recommendation(request: InvestmentRecommendationRequest
             "rankings": recommendations,
         }
     except Exception as exc:
-        logger.error(f"Investment recommendation failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Investment recommendation failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")

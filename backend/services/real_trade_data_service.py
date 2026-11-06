@@ -936,6 +936,9 @@ class RealTradeDataService:
             }
         except Exception as e:
             latency_ms = int((datetime.utcnow() - start).total_seconds() * 1000)
+            # Le texte de l'erreur httpx reste au journal : il peut décrire le
+            # réseau du serveur (hôte, proxy, URL de la requête).
+            logger.warning(f"OEC ping failed: {e}", exc_info=True)
             return {
                 "reachable": False,
                 "status_code": None,
@@ -943,7 +946,7 @@ class RealTradeDataService:
                 "records": 0,
                 "endpoint": OEC_BASE_URL,
                 "token_configured": bool(OEC_API_TOKEN),
-                "error": str(e),
+                "error": "Upstream service error",
             }
 
     async def get_bilateral_trade(

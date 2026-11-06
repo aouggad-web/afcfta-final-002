@@ -49,7 +49,8 @@ async def get_bloc_summary(bloc: str):
     try:
         return _analytics().get_bloc_summary(bloc.upper())
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Bloc summary failed for {bloc}: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/compare")
@@ -66,7 +67,8 @@ async def compare_regions(
         metric_list = [m.strip() for m in metrics.split(",")] if metrics else None
         return _analytics().compare_regions(blocs=bloc_list, metrics=metric_list)
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Regional comparison failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/heatmap")
@@ -78,7 +80,8 @@ async def get_investment_heatmap():
     try:
         return {"heatmap": _analytics().get_investment_heatmap()}
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Investment heatmap failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/corridors")
@@ -93,7 +96,8 @@ async def get_trade_corridors(
             )
         }
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Trade corridor analysis failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/visualization/{chart_type}")
@@ -139,8 +143,8 @@ async def get_visualization_data(
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error(f"Visualization error for {chart_type}: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Visualization error for {chart_type}: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 async def _format_d_export(

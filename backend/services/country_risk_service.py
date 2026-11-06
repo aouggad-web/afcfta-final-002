@@ -207,8 +207,8 @@ def _operational_component(iso3: str) -> Dict:
     try:
         from banking_system.risk_assessment import RISK_PROFILES
     except Exception as exc:  # pragma: no cover - defensive
-        logger.warning("risk profiles unavailable: %s", exc)
-        return {"available": False, "score": None, "explanation": str(exc)}
+        logger.warning("risk profiles unavailable: %s", exc, exc_info=True)
+        return {"available": False, "score": None, "explanation": "Service temporarily unavailable"}
 
     profile = RISK_PROFILES.get(iso2) if iso2 else None
     if profile is None:

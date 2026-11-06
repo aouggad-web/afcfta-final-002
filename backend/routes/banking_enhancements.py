@@ -127,8 +127,8 @@ async def get_intelligent_recommendations(request: TradeRecommendationRequest):
             "compliance": recommendations["compliance_requirements"],
         }
     except Exception as exc:
-        logger.error("Recommendation error: %s", exc)
-        raise HTTPException(status_code=400, detail=str(exc))
+        logger.error("Recommendation error: %s", exc, exc_info=True)
+        raise HTTPException(status_code=400, detail="Invalid request")
 
 
 # ---------------------------------------------------------------------------
@@ -203,8 +203,8 @@ async def score_banks(request: BankScoringRequest):
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error("Bank scoring error: %s", exc)
-        raise HTTPException(status_code=400, detail=str(exc))
+        logger.error("Bank scoring error: %s", exc, exc_info=True)
+        raise HTTPException(status_code=400, detail="Invalid request")
 
 
 # ---------------------------------------------------------------------------
@@ -268,8 +268,8 @@ async def get_hedging_strategy(request: FXHedgingRequest):
             "cost_comparison": cost_comparison["strategies"],
         }
     except Exception as exc:
-        logger.error("Hedging strategy error: %s", exc)
-        raise HTTPException(status_code=400, detail=str(exc))
+        logger.error("Hedging strategy error: %s", exc, exc_info=True)
+        raise HTTPException(status_code=400, detail="Invalid request")
 
 
 # ---------------------------------------------------------------------------
@@ -301,8 +301,8 @@ async def get_instruments_matrix():
             "instruments": matrix["instruments"],
         }
     except Exception as exc:
-        logger.error("Instruments matrix error: %s", exc)
-        raise HTTPException(status_code=400, detail=str(exc))
+        logger.error("Instruments matrix error: %s", exc, exc_info=True)
+        raise HTTPException(status_code=400, detail="Invalid request")
 
 
 @router.get(
@@ -327,8 +327,8 @@ async def get_risk_matrix():
             "matrix": matrix,
         }
     except Exception as exc:
-        logger.error("Risk matrix error: %s", exc)
-        raise HTTPException(status_code=400, detail=str(exc))
+        logger.error("Risk matrix error: %s", exc, exc_info=True)
+        raise HTTPException(status_code=400, detail="Invalid request")
 
 
 @router.get(
@@ -353,8 +353,8 @@ async def get_size_matrix():
             "matrix": matrix,
         }
     except Exception as exc:
-        logger.error("Size matrix error: %s", exc)
-        raise HTTPException(status_code=400, detail=str(exc))
+        logger.error("Size matrix error: %s", exc, exc_info=True)
+        raise HTTPException(status_code=400, detail="Invalid request")
 
 
 @router.get(
@@ -381,8 +381,8 @@ async def get_decision_tree():
             "decision_tree": tree,
         }
     except Exception as exc:
-        logger.error("Decision tree error: %s", exc)
-        raise HTTPException(status_code=400, detail=str(exc))
+        logger.error("Decision tree error: %s", exc, exc_info=True)
+        raise HTTPException(status_code=400, detail="Invalid request")
 
 
 @router.post(
@@ -432,5 +432,5 @@ async def get_cost_benefit_analysis(
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error("Cost-benefit error: %s", exc)
-        raise HTTPException(status_code=400, detail=str(exc))
+        logger.error("Cost-benefit error: %s", exc, exc_info=True)
+        raise HTTPException(status_code=400, detail="Invalid request")

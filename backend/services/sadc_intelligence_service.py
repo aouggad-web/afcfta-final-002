@@ -170,10 +170,11 @@ class SADCIntelligenceService:
                 with open(path, encoding="utf-8") as f:
                     data = json.load(f)
                 count = len(data.get("positions", []))
-                report.add_country(code, mtime, count, str(path))
+                # Nom du fichier seulement : pas de chemin du serveur dans la réponse.
+                report.add_country(code, mtime, count, path.name)
             except Exception as exc:
                 logger.warning(f"Could not read {path}: {exc}")
-                report.add_country(code, None, 0, str(path))
+                report.add_country(code, None, 0, path.name)
 
         return report
 
@@ -443,8 +444,8 @@ class SADCIntelligenceService:
             with open(path, encoding="utf-8") as f:
                 return json.load(f)
         except Exception as exc:
-            logger.error(f"Error reading {path}: {exc}")
-            return {"error": str(exc)}
+            logger.error(f"Error reading {path}: {exc}", exc_info=True)
+            return {"error": "Internal server error"}
 
     # ==================== Statistics ====================
 

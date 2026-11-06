@@ -28,7 +28,8 @@ async def get_cache_stats(key_doc: Annotated[dict, Depends(require_admin)] = Non
 
         return get_cache().all_stats()
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Cache stats error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.post("/cache/warm")
@@ -47,8 +48,8 @@ async def warm_cache(key_doc: Annotated[dict, Depends(require_admin)] = None):
         summary = await service.warm_all()
         return {"status": "completed", "summary": summary}
     except Exception as exc:
-        logger.error(f"Cache warming error: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Cache warming error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.delete("/cache/country/{country_code}")
@@ -65,7 +66,8 @@ async def invalidate_country_cache(
         result = get_cache().invalidate_country(country_code.upper())
         return {"invalidated": result, "country": country_code.upper()}
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Country cache invalidation error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.delete("/cache/region/{bloc}")
@@ -82,7 +84,8 @@ async def invalidate_region_cache(
         result = get_cache().invalidate_region(bloc.upper())
         return {"invalidated": result, "bloc": bloc.upper()}
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Region cache invalidation error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/metrics")
@@ -98,7 +101,8 @@ async def get_performance_metrics(key_doc: Annotated[dict, Depends(require_admin
 
         return get_metrics().summary()
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Performance metrics error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/metrics/slow-queries")
@@ -109,4 +113,5 @@ async def get_slow_queries(key_doc: Annotated[dict, Depends(require_admin)] = No
 
         return {"slow_queries": get_metrics().slow_queries()}
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Slow queries error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")

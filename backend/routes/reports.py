@@ -408,7 +408,8 @@ async def oec_health(year: int = Query(default=2022, description="Année de test
             "records": len(rows),
         }
     except Exception as e:
-        free_channel["error"] = str(e)
+        logger.error(f"OEC free channel probe error: {e}", exc_info=True)
+        free_channel["error"] = "Upstream service error"
 
     # 2) API directe historique (diagnostic complémentaire).
     direct = await real_trade_service.ping_oec(year)

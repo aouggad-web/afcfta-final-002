@@ -4,6 +4,8 @@ Cache Management API
 Endpoints for cache monitoring and management.
 """
 
+import logging
+
 from fastapi import APIRouter, HTTPException
 from services.cache_service import (
     CACHE_TTL,
@@ -13,6 +15,8 @@ from services.cache_service import (
     cache_stats,
     get_redis_client,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/cache")
 
@@ -42,7 +46,8 @@ async def cache_health():
         client.ping()
         return {"healthy": True, "message": "Redis is responding"}
     except Exception as e:
-        return {"healthy": False, "message": str(e)}
+        logger.error(f"Redis health check error: {e}", exc_info=True)
+        return {"healthy": False, "message": "Service temporarily unavailable"}
 
 
 @router.delete("/clear")

@@ -78,8 +78,8 @@ async def get_economic_news(
             "priority_country": "DZA",
         }
     except Exception as e:
-        logging.error(f"Erreur récupération actualités: {e}")
-        return {"success": False, "error": str(e), "articles": []}
+        logging.error(f"Erreur récupération actualités: {e}", exc_info=True)
+        return {"success": False, "error": "Internal server error", "articles": []}
 
 
 @router.get("/algeria/projects")
@@ -144,8 +144,8 @@ async def get_country_of_the_week_route(force_refresh: bool = Query(False)):
             **spotlight,
         }
     except Exception as e:
-        logging.error(f"Erreur récupération pays de la semaine: {e}")
-        return {"success": False, "error": str(e)}
+        logging.error(f"Erreur récupération pays de la semaine: {e}", exc_info=True)
+        return {"success": False, "error": "Internal server error"}
 
 
 @router.get("/by-region")
@@ -165,8 +165,8 @@ async def get_news_grouped_by_region(force_refresh: bool = Query(False)):
             "articles_by_region": by_region,
         }
     except Exception as e:
-        logging.error(f"Erreur récupération news par région: {e}")
-        return {"success": False, "error": str(e)}
+        logging.error(f"Erreur récupération news par région: {e}", exc_info=True)
+        return {"success": False, "error": "Internal server error"}
 
 
 @router.get("/by-category")
@@ -186,5 +186,5 @@ async def get_news_grouped_by_category(force_refresh: bool = Query(False)):
             "articles_by_category": by_category,
         }
     except Exception as e:
-        logging.error(f"Erreur récupération news par catégorie: {e}")
-        return {"success": False, "error": str(e)}
+        logging.error(f"Erreur récupération news par catégorie: {e}", exc_info=True)
+        return {"success": False, "error": "Internal server error"}
