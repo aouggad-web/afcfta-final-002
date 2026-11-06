@@ -311,9 +311,13 @@ class OECTradeService:
                 self._register_circuit_failure()
                 return _on_failure(f"OEC API error {e.response.status_code}")
             except Exception as e:
-                logger.error("OEC request failed: %s", _sanitize(str(e)))
+                # La trace passe par RedactingFormatter (log_redaction), qui
+                # masque le jeton dans l'URL.
+                logger.error("OEC request failed: %s", _sanitize(str(e)), exc_info=True)
                 self._register_circuit_failure()
-                return _on_failure(str(e))
+                # Le détail reste au journal ; l'appelant peut relayer
+                # « error » jusqu'au client.
+                return _on_failure("Upstream service error")
 
     def _register_circuit_failure(self) -> None:
         self._circuit_consecutive_failures += 1
@@ -1348,8 +1352,8 @@ class OECTradeService:
             }
 
         except Exception as e:
-            logger.error(f"Error getting Africa totals: {str(e)}")
-            return {"error": str(e)}
+            logger.error(f"Error getting Africa totals: {str(e)}", exc_info=True)
+            return {"error": "Internal server error"}
 
 
 # Instance globale du service

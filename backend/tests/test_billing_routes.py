@@ -174,6 +174,8 @@ def test_chargily_amount_invalid_env_is_503(monkeypatch):
     with pytest.raises(HTTPException) as exc:
         chargily_service.resolve_amount_dzd("starter", "monthly")
     assert exc.value.status_code == 503
+    # Ni le nom ni la valeur de la variable ne partent au client (constat M9).
+    assert "CHARGILY_PRICE" not in exc.value.detail and "pas-un-nombre" not in exc.value.detail
 
 
 def test_chargily_amount_below_minimum_is_503(monkeypatch):

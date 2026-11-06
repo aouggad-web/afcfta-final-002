@@ -334,14 +334,6 @@ except ImportError:
     INSURANCE_AVAILABLE = False
 
 try:
-    from api.websocket.handlers import router as websocket_router
-
-    WEBSOCKET_AVAILABLE = True
-except ImportError:
-    websocket_router = None
-    WEBSOCKET_AVAILABLE = False
-
-try:
     from api.mobile.lightweight_endpoints import router as mobile_router
 
     MOBILE_AVAILABLE = True
@@ -582,10 +574,11 @@ def register_routes(api_router: APIRouter):
     # du cache, des métriques internes et des messages d'erreur bruts
     # (constats E2 et E4 de l'audit de sécurité). Module conservé dans
     # api/graphql/schema.py, non monté.
-    if WEBSOCKET_AVAILABLE:
-        api_router.include_router(
-            websocket_router, tags=["WebSocket Real-time"], dependencies=_auth
-        )
+    # Les WebSocket (/api/ws/...) ne sont plus servis non plus (constat M11) :
+    # aucun écran ne s'y connecte et aucun code n'y publie, et ils prenaient la
+    # clé API dans l'adresse, s'ouvraient à tous sans base de données, ne
+    # contrôlaient pas l'origine et laissaient choisir le user_id. Module
+    # conservé dans api/websocket/handlers.py, non monté.
     if MOBILE_AVAILABLE:
         api_router.include_router(mobile_router, tags=["Mobile API"], dependencies=_auth)
     if CURRENCIES_AVAILABLE:

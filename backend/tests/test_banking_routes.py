@@ -209,7 +209,8 @@ class TestBankingRoutes:
 
         response = client.get("/banking/forex/rates")
         assert response.status_code == 503
-        assert "provider error" in response.json()["detail"]
+        # Le texte de l'exception reste au journal du serveur (constat M9).
+        assert response.json()["detail"] == "Service de taux de change indisponible."
 
     def test_convert_to_local_currency_returns_conversion_payload(
         self, client, banking_module, monkeypatch
@@ -265,7 +266,7 @@ class TestBankingRoutes:
 
         response = client.get("/banking/forex/convert?country_code=MA&amount=50")
         assert response.status_code == 503
-        assert "convert error" in response.json()["detail"]
+        assert response.json()["detail"] == "Service de conversion indisponible."
 
     def test_trade_finance_instruments_endpoint_returns_catalogue(self, client):
         response = client.get("/banking/trade-finance/instruments")

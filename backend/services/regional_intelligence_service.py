@@ -123,7 +123,8 @@ class RegionalIntelligenceService:
                 logger.warning(f"Could not read {latest}: {exc}")
                 count = 0
 
-            report.add_country(country_code, mtime, count, str(latest))
+            # Nom du fichier seulement : pas de chemin du serveur dans la réponse.
+            report.add_country(country_code, mtime, count, latest.name)
 
         return report
 
@@ -457,9 +458,12 @@ class RegionalIntelligenceService:
                 }
                 result["total_records"] += len(records)
             except Exception as exc:
+                logger.error(
+                    f"Regional dataset read failed for {country_code}: {exc}", exc_info=True
+                )
                 result["countries"][country_code] = {
                     "status": "error",
-                    "error": str(exc),
+                    "error": "Internal server error",
                     "record_count": 0,
                 }
 

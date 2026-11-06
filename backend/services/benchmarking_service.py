@@ -35,8 +35,8 @@ def get_top_producers(hs_code: str, n: int = 5) -> Dict:
 
         result = get_continental_producers(hs_code)
     except Exception as exc:
-        _log.warning("continental producers unavailable: %s", exc)
-        return {"available": False, "producers": [], "note": str(exc)}
+        _log.warning("continental producers unavailable: %s", exc, exc_info=True)
+        return {"available": False, "producers": [], "note": "Service temporarily unavailable"}
 
     if not result.get("available"):
         return {
@@ -198,8 +198,8 @@ def benchmark_infrastructure(destination_iso3: str, lang: str = "fr") -> Dict:
         gai = get_gai(destination_iso3)
         gai_score = gai.get("score") if gai else None
     except Exception as exc:
-        _log.warning("infrastructure benchmarking failed: %s", exc)
-        return {"available": False, "note": str(exc)}
+        _log.warning("infrastructure benchmarking failed: %s", exc, exc_info=True)
+        return {"available": False, "note": "Service temporarily unavailable"}
 
     # Simple infrastructure score: zones + PAPSS + GAI proxy
     score = 0.0

@@ -507,13 +507,13 @@ class OECDataService:
                 }
             }
         except Exception as e:
-            logger.warning(f"OEC lookup failed ({exporter}→{importer}): {e}")
+            logger.warning(f"OEC lookup failed ({exporter}→{importer}): {e}", exc_info=True)
             return opp | {
                 "oec_data": {
                     "verified_trade_value": None,
                     "confidence_score": 0.4,
                     "data_quality": "estimated",
-                    "reason": f"OEC error: {str(e)[:50]}",
+                    "reason": "Upstream service error",
                 }
             }
 
