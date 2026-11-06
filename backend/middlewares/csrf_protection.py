@@ -12,7 +12,13 @@ logger = logging.getLogger(__name__)
 
 SAFE_METHODS = {"GET", "HEAD", "OPTIONS"}
 CSRF_HEADER = "X-CSRF-Token"
-CSRF_COOKIE = "csrf_token"
+# Préfixe __Host- en HTTPS (audit INFO-4) : le navigateur n'accepte ce cookie
+# que Secure, sur Path=/ et sans Domain, posé par l'hôte lui-même. Un
+# sous-domaine voisin ou une réponse http injectée ne peut donc plus imposer
+# un jeton connu. Le préfixe exige Secure : en http local, le nom reste
+# csrf_token. Même règle côté navigateur : frontend/src/services/csrf.js et
+# frontend/public/pricing.js.
+CSRF_COOKIE = "__Host-csrf_token" if _HTTPS else "csrf_token"
 
 
 class CSRFMiddleware(BaseHTTPMiddleware):
@@ -96,7 +102,9 @@ class CSRFMiddleware(BaseHTTPMiddleware):
                 content={"detail": "CSRF token missing"},
             )
 
-        if not secrets.compare_digest(cookie_token, header_token):
+        # Comparaison en octets : sur deux chaînes, compare_digest lève
+        # TypeError dès qu'un caractère n'est pas ASCII (réponse 500).
+        if not secrets.compare_digest(cookie_token.encode(), header_token.encode()):
             logger.warning(f"CSRF: token mismatch for {request.method} {path}")
             return JSONResponse(
                 status_code=403,

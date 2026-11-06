@@ -208,9 +208,15 @@ document.addEventListener('DOMContentLoaded', function () {
   window.history.replaceState(null, '', clean);
 });
 
+// Nom du cookie CSRF : __Host-csrf_token en HTTPS, csrf_token en http local
+// (audit INFO-4, même règle que frontend/src/services/csrf.js).
+function csrfCookieName() {
+  return location.protocol === 'https:' ? '__Host-csrf_token' : 'csrf_token';
+}
+
 // Lecture du cookie CSRF côté JS (double-submit).
 function readCsrfCookie() {
-  const prefix = 'csrf_token=';
+  const prefix = csrfCookieName() + '=';
   const c = document.cookie.split(';').map(function (s) { return s.trim(); })
     .find(function (s) { return s.indexOf(prefix) === 0; });
   return c ? decodeURIComponent(c.slice(prefix.length)) : null;
@@ -223,7 +229,7 @@ function readCsrfCookie() {
 function persistCsrf(token) {
   const isHttps = location.protocol === 'https:';
   const attrs = isHttps ? 'SameSite=None; Secure; Partitioned' : 'SameSite=Lax';
-  document.cookie = 'csrf_token=' + encodeURIComponent(token) +
+  document.cookie = csrfCookieName() + '=' + encodeURIComponent(token) +
     '; Path=/; ' + attrs + '; Max-Age=3600';
 }
 
