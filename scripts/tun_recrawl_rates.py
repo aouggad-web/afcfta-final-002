@@ -26,9 +26,12 @@ HEADERS = {
 }
 ENUM = Path(__file__).resolve().parents[1] / "backend/data/crawled/TUN_enumeration_2026-08.json"
 OUT = Path(__file__).resolve().parents[1] / "backend/data/crawled/TUN_rates_2026-08-30.json"
+# TLS vérifié de bout en bout (audit INFO-7). Le certificat *.douane.gov.tn est
+# émis par Sectigo DV R36, le même intermédiaire que douane.gov.dz, que ces
+# serveurs n'envoient pas toujours : il est fourni par le dépôt.
+INTERMEDIAIRE = Path(__file__).resolve().parents[1] / "data/dza/sectigo_dv_r36.crt"
 CTX = ssl.create_default_context()
-CTX.check_hostname = False
-CTX.verify_mode = ssl.CERT_NONE
+CTX.load_verify_locations(cafile=str(INTERMEDIAIRE))
 OPENER = build_opener(HTTPSHandler(context=CTX))
 
 SEC_RE = re.compile(r'section-title">\s*([^<]+?)\s*</div')
