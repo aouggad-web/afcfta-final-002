@@ -91,7 +91,7 @@ echo "── 1bis/6 · Contrôle des crons Emergent (avertissement, non bloquant
 # aussi toutes les heures (point 17). Code 1 : anomalie ; 2 : incomplet.
 # Chemins réglables du script (tests) ignorés ici : ceux du pod font foi.
 CRON_ALERT=0
-env -u EMERGENT_DIR -u CRON_D -u CRON_SPOOL -u MANIFESTE \
+env -u EMERGENT_DIR -u CRON_D -u CRON_SPOOL -u MANIFESTE -u RACINE_SYSTEME \
   bash scripts/controle_crons_emergent.sh || CRON_ALERT=$?
 
 echo "── 2/6 · Vérification des modules critiques (anti copie-partielle) ──"

