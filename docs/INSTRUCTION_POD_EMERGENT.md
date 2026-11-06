@@ -246,16 +246,68 @@ suivant, au plus une heure, ou jusqu'à un redémarrage du backend
 la tâche GitHub seulement après.
 
 **Sur alerte « ANOMALIE, compromission possible »** (verdict `anomalie`) :
-1. Lire le journal du backend : `/var/log/supervisor/backend.err.log`.
-2. Ne pas resynchroniser.
-3. Faire reconstruire le pod ET son volume par Emergent.
-4. Changer ensuite les secrets de `backend/.env`.
+
+Ne pas resynchroniser : la synchronisation relancerait le pod avec les
+secrets sans retirer une ligne plantée, et effacerait des traces. Ne pas
+effacer `/app/.afcfta-crons-anomalie` et ne pas corriger les crons à la main.
+
+1. **Relevé en lecture seule.** Message à coller dans Emergent :
+
+   ```text
+   Contrôle de sécurité en LECTURE SEULE : ne modifie, n'efface, ne redémarre et ne synchronise rien. N'affiche aucune valeur de secret.
+   1. cat /app/.afcfta-crons-anomalie
+   2. grep -n "Crons du pod" /var/log/supervisor/backend.err.log | tail -5
+   3. cd /app && env -u EMERGENT_DIR -u CRON_D -u CRON_SPOOL -u MANIFESTE bash scripts/controle_crons_emergent.sh; echo "code=$?"
+   4. ls -la /etc/cron.d/ /var/spool/cron/crontabs/ 2>&1
+   5. git -C /app log --oneline -1 ; git -C /app status --short .emergent | head -20
+   Renvoie-moi toutes les sorties telles quelles.
+   ```
+
+   Le journal tient chaque contrôle sur une seule ligne (retours à la ligne
+   écrits `\n`), et le contrôle masque déjà les valeurs des lignes signalées.
+   Faire analyser la réponse (fausse alerte ou anomalie réelle) avant toute
+   autre action.
+
+2. **Fausse alerte avérée** (cas le plus probable : Emergent a mis à jour ses
+   scripts de `.emergent/cron/`, dont l'empreinte ne correspond plus au
+   manifeste) :
+   1. mettre à jour `scripts/crons_emergent_sha256.txt` dans une PR, après
+      relecture du changement d'Emergent, puis la fusionner ;
+   2. message à coller dans Emergent :
+
+      ```text
+      Fausse alerte confirmée. Exécute seulement : rm -f /app/.afcfta-crons-anomalie && supervisorctl restart backend
+      Ne synchronise pas.
+      ```
+
+   3. vérifier que `components.crons` de `/api/health/status` est repassé à
+      « ok », puis relancer la tâche GitHub.
+
+3. **Anomalie réelle, ou doute :**
+   1. demander au support d'Emergent d'exporter la base MongoDB (comptes,
+      abonnements) avant toute reconstruction, et lui demander si la
+      reconstruction la conserve ;
+   2. faire reconstruire le pod ET son volume par le support d'Emergent : une
+      ligne plantée survit sur le volume ;
+   3. changer tous les secrets : régénérer chaque valeur chez son fournisseur,
+      puis la saisir dans la carte sécurisée d'Emergent, jamais dans une
+      conversation. Sont concernés `JWT_SECRET`, `ADMIN_PASSWORD`, la clé
+      secrète Supabase (`sb_secret_…`), les clés Stripe et Chargily (secrète
+      et webhook), la clé Resend, `CLOUDFLARE_EDGE_SECRET`, les clés Anthropic
+      et Gemini, le mot de passe MongoDB et toute autre clé de `backend/.env` ;
+   4. retirer puis redonner à Emergent son accès GitHub (GitHub → Settings →
+      Applications) ;
+   5. synchroniser sur `main` : l'étape 1bis doit afficher « ✓ », puis la
+      tâche GitHub doit repasser au vert.
 
 **Sur alerte « surveillance indisponible »** (pod injoignable, réponse
 Cloudflare, verdict absent, incomplet ou trop ancien) : ce n'est pas un signe
 de compromission. Vérifier que le pod et le backend tournent, puis relancer la
 tâche. Si Cloudflare répond 403 ou 503 aux exécuteurs GitHub, demander à
-Emergent d'autoriser `/api/health/status`.
+Emergent d'autoriser `/api/health/status`. Une réponse HTTP 404 vient le plus
+souvent de la préversion en veille, quand personne n'est actif sur Emergent :
+ouvrir Emergent, attendre que l'aperçu réponde, puis relancer la tâche
+(Actions → Surveillance sécurité → Re-run jobs).
 
 **Mise en place, une fois :**
 1. Créer la variable de dépôt `URL_SANTE_STATUS`, qui vaut l'adresse
