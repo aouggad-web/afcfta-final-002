@@ -235,6 +235,10 @@ Le verdict est publié, sans détail, dans `components.crons` de
 six heures et échoue, avec un e-mail, si le verdict n'est pas « ok » ou s'il a
 plus de deux heures.
 
+Une anomalie reste affichée, même si la ligne en cause a disparu depuis, jusqu'à
+l'effacement de `/var/tmp/afcfta-crons-anomalie`. Ce fichier disparaît avec la
+reconstruction du pod. Après une fausse alerte avérée, il faut l'effacer à la main.
+
 **Sur alerte « ANOMALIE, compromission possible »** (verdict `anomalie`) :
 1. Lire le journal du backend : `/var/log/supervisor/backend.err.log`.
 2. Ne pas resynchroniser.

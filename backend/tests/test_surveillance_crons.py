@@ -15,9 +15,10 @@ def _script(tmp_path, code, sortie="sortie"):
 
 
 @pytest.fixture(autouse=True)
-def etat_neuf(monkeypatch):
+def etat_neuf(monkeypatch, tmp_path):
     monkeypatch.setattr(surveillance_crons, "etat", None)
     monkeypatch.setattr(surveillance_crons, "_fil", None)
+    monkeypatch.setattr(surveillance_crons, "VERROU_ANOMALIE", tmp_path / "verrou-anomalie")
 
 
 @pytest.mark.parametrize("code, verdict", [(0, "ok"), (1, "anomalie"), (2, "non_verifie")])
@@ -96,3 +97,30 @@ def test_le_verdict_apparait_dans_health_status_seulement_sur_le_pod(monkeypatch
     )
     composants = client.get("/health/status").json()["components"]
     assert composants["crons"] == {"status": "anomalie", "a": "2026-11-06T14:00:00+00:00"}
+
+
+def test_une_anomalie_reste_affichee_apres_un_controle_sain(tmp_path, monkeypatch):
+    """Ligne plantée puis retirée entre deux lectures de la tâche GitHub : l'alerte part."""
+    verdicts = iter(["anomalie", "ok", "ok"])
+    monkeypatch.setattr(surveillance_crons, "controler", lambda script: next(verdicts))
+
+    surveillance_crons._passage()
+    premiere = surveillance_crons.etat["depuis"]
+    surveillance_crons._passage()
+    assert surveillance_crons.etat["status"] == "anomalie"
+    assert surveillance_crons.etat["depuis"] == premiere
+
+    # Redémarrage du backend : l'anomalie est toujours retenue.
+    monkeypatch.setattr(surveillance_crons, "etat", None)
+    surveillance_crons._passage()
+    assert surveillance_crons.etat["status"] == "anomalie"
+
+
+def test_l_exploitant_efface_l_anomalie_retenue(monkeypatch):
+    verdicts = iter(["anomalie", "ok"])
+    monkeypatch.setattr(surveillance_crons, "controler", lambda script: next(verdicts))
+    surveillance_crons._passage()
+    surveillance_crons.VERROU_ANOMALIE.unlink()
+
+    surveillance_crons._passage()
+    assert surveillance_crons.etat == {"status": "ok", "a": surveillance_crons.etat["a"]}

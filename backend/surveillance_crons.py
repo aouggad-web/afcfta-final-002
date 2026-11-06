@@ -35,7 +35,15 @@ _ENV_SCRIPT = {
     "LC_ALL": "C",
 }
 
-# Dernier verdict : None hors du pod ; sinon {"status": ..., "a": horodatage UTC}.
+# Une anomalie reste affichée jusqu'à ce que l'exploitant l'efface : une ligne
+# plantée puis retirée entre deux lectures de la tâche GitHub (toutes les six
+# heures) ne doit pas disparaître sans alerte. Le fichier survit au
+# redémarrage du backend (synchronisation, --reload), pas à la reconstruction
+# du pod, qui est le remède ; hors du dépôt, git clean ne l'efface pas.
+VERROU_ANOMALIE = Path("/var/tmp/afcfta-crons-anomalie")
+
+# Dernier verdict : None hors du pod ; sinon {"status": ..., "a": horodatage
+# UTC}, plus « depuis » (première détection) tant qu'une anomalie est retenue.
 etat = None
 _fil = None
 
@@ -72,7 +80,21 @@ def _passage(script: Path = SCRIPT) -> None:
     except Exception:
         logger.exception("Contrôle des crons : erreur inattendue")
         statut = "non_verifie"
-    etat = {"status": statut, "a": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+    maintenant = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    verrou = VERROU_ANOMALIE
+    if statut == "anomalie" and not verrou.exists():
+        try:
+            verrou.write_text(maintenant + "\n")
+        except OSError as exc:
+            logger.error("Anomalie non retenue : %s (%s)", verrou, type(exc).__name__)
+    nouvel = {"status": statut, "a": maintenant}
+    if verrou.exists():
+        try:
+            depuis = verrou.read_text(errors="replace").strip()[:32]
+        except OSError:
+            depuis = ""
+        nouvel.update(status="anomalie", depuis=depuis or "?")
+    etat = nouvel
 
 
 def _boucle(arret: threading.Event, script: Path = SCRIPT) -> None:
