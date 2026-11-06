@@ -10,7 +10,8 @@ trap 'rm -f "$JAR" "$JAR.out"' EXIT
 
 # Double soumission : le cookie csrf_token posé par n'importe quel GET doit revenir en en-tête.
 curl -sf -c "$JAR" -o /dev/null "$API/api/health"
-TOKEN=$(awk '$6 == "csrf_token" {print $7}' "$JAR")
+# Nommé __Host-csrf_token quand le serveur tourne en HTTPS (HTTPS_ENABLED=true).
+TOKEN=$(awk '$6 == "csrf_token" || $6 == "__Host-csrf_token" {print $7}' "$JAR")
 
 STATUS=$(curl -s -o "$JAR.out" -w '%{http_code}' -b "$JAR" -H "X-CSRF-Token: $TOKEN" \
   -H 'Content-Type: application/json' -X POST "$API/api/calcul" \
