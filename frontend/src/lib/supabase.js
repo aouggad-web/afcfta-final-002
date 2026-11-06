@@ -46,4 +46,4 @@ export function creerClientVerification() {
 
 // Version des CGU / politique de confidentialité acceptée à l'inscription.
 // À changer à chaque nouvelle version des textes (preuve du consentement).
-export const TERMS_VERSION = '2026-09';
+export const TERMS_VERSION = '2026-11';

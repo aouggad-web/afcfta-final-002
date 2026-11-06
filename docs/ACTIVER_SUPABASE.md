@@ -44,13 +44,20 @@ Toutes ces étapes se font dans le tableau de bord du projet. Aucune clé ne doi
 
 Les e-mails partent par Resend. L'offre gratuite de Zoho Mail n'autorise pas
 l'envoi par SMTP : Zoho répond toujours `535 Authentication Failed`, quel que
-soit le mot de passe. Le courrier reçu reste chez Zoho : Resend n'utilise que le
-sous-domaine `send.afcfta-zlecaf.com`, sans toucher aux MX ni au SPF de la
-racine.
+soit le mot de passe. Le courrier reçu reste chez Zoho : Resend n'utilise que les
+sous-domaines `send` et `rsend` de `afcfta-zlecaf.com`, sans toucher aux MX ni au
+SPF de la racine.
 
 1. **Resend → Domains** : `afcfta-zlecaf.com`, région Irlande (eu-west-1). Les
    enregistrements DNS (`resend._domainkey` et `send`) s'ajoutent chez
    Cloudflare par « Auto configure ». Le domaine doit être marqué « Verified ».
+   Depuis le passage de Resend à son infrastructure Forge (relevé du
+   06/11/2026), `send` est un CNAME vers `send.forge.rmta.net`, et `rsend` un
+   CNAME vers `rsend-euw1.forge.rmta.net` (ancien moteur, Amazon SES en
+   Irlande). `rmta.net` appartient à Resend. Ces enregistrements restent en
+   **DNS only** (nuage gris) : en mode proxy, Cloudflare ne renvoie plus le
+   CNAME, donc ni le MX ni le SPF, et l'envoi casse. Forge envoie depuis les
+   États-Unis (Virginie du Nord).
 2. **Resend → API Keys** : une clé `supabase-smtp`, permission **Sending
    access**, limitée à ce domaine. Supprimer la clé « Onboarding » créée à
    l'inscription : elle a tous les droits.
