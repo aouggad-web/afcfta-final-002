@@ -7,7 +7,7 @@ echo "── Backend : dépendances Python ──"
 pip install -r backend/requirements.txt
 
 echo "── Frontend : dépendances Node (yarn, même méthode que la CI) ──"
-(cd frontend && (yarn install --frozen-lockfile || yarn install))
+(cd frontend && yarn install --frozen-lockfile --ignore-scripts)
 
 # backend/.env — chargé explicitement par backend/server.py (load_dotenv).
 # SECRET_KEY aléatoire par Codespace ; jamais committé (.env est git-ignoré).
