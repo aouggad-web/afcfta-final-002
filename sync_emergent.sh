@@ -83,84 +83,16 @@ git clean -fd \
 echo "  ✓ Arbre aligné sur origin/$BRANCH ($(git rev-parse --short HEAD))"
 
 echo "── 1bis/6 · Contrôle des crons Emergent (avertissement, non bloquant) ──"
-# Persistance (audit de sécurité, C3) : webhook_crond.sh — script de la
-# plateforme, non modifié ici — recopie à chaque démarrage du pod
-# .emergent/cron/webhook-crons (gitignoré, donc jamais supprimé par git clean)
-# dans /etc/cron.d et lance cron en root : une ligne plantée une fois survit
-# aux synchronisations. On SIGNALE toute ligne hors de la grammaire d'Emergent :
-# en-tête et ligne watch_crons relevés dans des rendus réels (historique git,
-# commits 92d07699 et f5a14932) ; ligne dispatch_webhook déduite des variables
-# lues par dispatch_webhook.sh. L'expression étant stricte, tout chaînage
-# (; | & $ ` % ( ) …) est hors grammaire.
-_check_emergent_crons() (
-  # Sous-shell sans -e/-u : ce contrôle informe, il n'interrompt jamais le
-  # déploiement. Code retour 1 en cas d'anomalie, rappelée en fin de script.
-  set +eu
-  export LC_ALL=C  # plages [A-Za-z] au sens octet, quelle que soit la locale du pod
-  local env_ok='^(SHELL=/bin/sh|PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin|JOB_ID=[0-9a-f-]{36}|WEBHOOK_ENV_FILE=/app/backend/\.env|CRON_API_URL=https://[a-z0-9.-]+\.emergentagent\.com)$'
-  # Séparateurs : espaces et tabulations seulement (un CR n'est pas un rendu Emergent).
-  local b=$'[ \t]' f n line why b64 url host dup suspects=0
-  local s="$b+" val='[A-Za-z0-9_.,:/+=@-]*'
-  local url_re='^https?://([A-Za-z0-9.-]+)(:[0-9]*)?([/?#].*)?$'
-  # Affectation lue par sh : en début de mot (pas « CRON_NAME=xENDPOINT_URL_B64=… »).
-  local ep_re="(^|${b})ENDPOINT_URL_B64=([^[:space:]]+)"
-  local job_ok="^(@(hourly|daily|weekly|monthly|yearly|annually|midnight)|[0-9A-Za-z*/,-]+(${s}[0-9A-Za-z*/,-]+){4})${s}root"
-  job_ok+="(${s}(CRON_API_URL=https://[a-z0-9.-]+\\.emergentagent\\.com|WEBHOOK_ENV_FILE=/app/backend/\\.env|(CRON_NAME|METHOD|ENDPOINT_URL_B64|JOB_ID|AT_DATE|END_DATE)=${val}))*"
-  job_ok+="(${s}/bin/sh)?${s}/app/\\.emergent/cron/(dispatch_webhook|watch_crons)\\.sh"
-  job_ok+="(${s}>>?${b}*(/var/log/webhook-cron\\.log|/dev/null)(${s}2>&1)?)?${b}*\$"
-  for f in /app/.emergent/cron/webhook-crons /etc/cron.d/webhook-crons; do
-    [ -f "$f" ] || { echo "  · $f : absent"; continue; }
-    n=0
-    while IFS= read -r line || [ -n "$line" ]; do
-      n=$((n + 1))
-      [[ $line =~ ^[[:space:]]*(#.*)?$ || $line =~ $env_ok ]] && continue
-      why=""
-      if ! [[ $line =~ $job_ok ]]; then
-        # Ligne brute affichée valeurs masquées (VAR=… et longues suites).
-        why="hors forme Emergent : $(printf '%s' "$line" \
-          | sed -E 's/([A-Za-z_][A-Za-z0-9_]*)=[^[:space:]]*/\1=***/g; s/[A-Za-z0-9+_-]{20,}=*/***/g')"
-      else
-        # Variable répétée : le contrôle lirait la première valeur, sh garde la dernière.
-        dup="$(printf '%s\n' "$line" | grep -oE "(^|${b})[A-Z_][A-Z0-9_]*=" | tr -d $' \t' | sort | uniq -d | tr '\n' ' ')"
-        if [ -n "$dup" ]; then
-          why="variable répétée sur la ligne : $dup"
-        elif [[ $line =~ $ep_re ]]; then
-          # Hôte réellement contacté par curl, lu sur la valeur décodée ENTIÈRE
-          # (jamais un préfixe) : l'autorité doit être un nom d'hôte nu (port
-          # facultatif) — « https://x.emergentagent.com@tiers/ » ou un « \ »
-          # viseraient le tiers et partent donc en « illisible ». Base64
-          # invalide, octet hors ASCII imprimable (NUL, saut de ligne…) ou
-          # valeur démesurée : « illisible » aussi.
-          b64="${BASH_REMATCH[2]}" host=""
-          if url="$(printf '%s' "$b64" | base64 -d 2>/dev/null)" \
-            && [ "$(printf '%s' "$b64" | base64 -d 2>/dev/null | tr -d '\041-\176' | wc -c)" -eq 0 ] \
-            && [ "${#url}" -le 2048 ] && [[ $url =~ $url_re ]]; then
-            host="$(printf '%s' "${BASH_REMATCH[1]}" | tr '[:upper:]' '[:lower:]')"
-            host="${host%.}"  # nom absolu « x.emergentagent.com. » : même hôte
-          fi
-          [[ $host =~ (^|\.)emergentagent\.com$ ]] \
-            || why="dispatch vers un hôte hors emergentagent.com : ${host:-illisible}"
-        fi
-      fi
-      [ -n "$why" ] || continue
-      suspects=$((suspects + 1))
-      printf '  ⚠ %s:%d : %s\n' "$f" "$n" "$(printf '%s' "$why" | tr -d '\000-\037\177' | cut -c1-220)"
-    done < "$f"
-  done
-  if [ -f /app/.emergent/cron/webhook-crons ] && [ -f /etc/cron.d/webhook-crons ] \
-    && ! cmp -s /app/.emergent/cron/webhook-crons /etc/cron.d/webhook-crons; then
-    suspects=$((suspects + 1))
-    echo "  ⚠ /etc/cron.d/webhook-crons diffère de la copie persistante d'Emergent."
-  fi
-  if [ "$suspects" -gt 0 ]; then
-    echo "  ⚠ $suspects anomalie(s) : compromission possible du pod. Ne pas se contenter"
-    echo "     de re-synchroniser : demander au support Emergent de reconstruire le pod ET son volume."
-    return 1
-  fi
-  echo "  ✓ Aucune entrée cron hors forme Emergent."
-)
+# Persistance (audit de sécurité, C3) : webhook_crond.sh, script de la
+# plateforme non modifié ici, recopie à chaque démarrage du pod
+# .emergent/cron/webhook-crons dans /etc/cron.d et lance cron en root : une
+# ligne plantée une fois survit aux synchronisations. Le contrôle, en lecture
+# seule, vit dans scripts/controle_crons_emergent.sh : le backend le relance
+# aussi toutes les heures (point 17). Code 1 : anomalie ; 2 : incomplet.
+# Chemins réglables du script (tests) ignorés ici : ceux du pod font foi.
 CRON_ALERT=0
-_check_emergent_crons || CRON_ALERT=1
+env -u EMERGENT_DIR -u CRON_D -u CRON_SPOOL -u MANIFESTE \
+  bash scripts/controle_crons_emergent.sh || CRON_ALERT=$?
 
 echo "── 2/6 · Vérification des modules critiques (anti copie-partielle) ──"
 MISSING=0
@@ -396,6 +328,8 @@ fi
 echo
 if [ "$CRON_ALERT" = "1" ]; then
   echo "⚠ RAPPEL : le contrôle des crons Emergent (étape 1bis) a relevé des anomalies — voir plus haut."
+elif [ "$CRON_ALERT" != "0" ]; then
+  echo "⚠ RAPPEL : le contrôle des crons Emergent (étape 1bis) est incomplet — voir plus haut."
 fi
 echo "✅ Synchronisation terminée — la branche main est appliquée telle quelle,"
 echo "   le frontend est reconstruit, et les services sont relancés proprement."

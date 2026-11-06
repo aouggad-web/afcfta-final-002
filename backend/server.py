@@ -418,6 +418,14 @@ async def startup_load_tariff_data():
     except Exception as e:
         logger.warning(f"Exchange rate scheduler startup failed: {e}")
 
+    # Contrôle horaire des crons, sur le pod Emergent seulement (point 17).
+    try:
+        import surveillance_crons
+
+        surveillance_crons.demarrer()
+    except Exception as e:
+        logger.warning(f"Cron monitoring startup failed: {e}")
+
 
 # =============================================================================
 # REGISTER ALL ROUTES

@@ -43,4 +43,10 @@ async def detailed_health():
         checks["notifications"] = {"status": "healthy"}
     except Exception:
         checks["notifications"] = {"status": "error"}
+    # Verdict du contrôle horaire des crons, sur le pod Emergent seulement :
+    # lu par .github/workflows/surveillance_securite.yml (point 17).
+    import surveillance_crons
+
+    if surveillance_crons.etat is not None:
+        checks["crons"] = dict(surveillance_crons.etat)
     return {"status": "healthy", "components": checks}
