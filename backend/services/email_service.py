@@ -27,9 +27,9 @@ def send_email(to: str, subject: str, body: str) -> None:
     working even without SMTP credentials configured.
     """
     if not _enabled():
-        logger.info(
-            f"Email sending disabled (SAAS_EMAIL_ENABLED != true) — skipped to {to}: {subject}"
-        )
+        # Sans le sujet : celui d'un message de contact porte le nom de son
+        # auteur. Le destinataire est réduit à son domaine par le formateur.
+        logger.info("Email sending disabled (SAAS_EMAIL_ENABLED != true) — skipped to %s", to)
         return
 
     host = os.environ["SAAS_SMTP_HOST"]
@@ -57,9 +57,9 @@ def send_email(to: str, subject: str, body: str) -> None:
             with smtplib.SMTP_SSL(host, port, timeout=20) as smtp:
                 smtp.login(user, password)
                 smtp.send_message(message)
-        logger.info(f"Email sent to {to}: {subject}")
+        logger.info("Email sent to %s", to)
     except (smtplib.SMTPException, OSError) as e:
-        logger.warning(f"SMTP delivery failed (recipient={to}, subject={subject}): {e}")
+        logger.warning("SMTP delivery failed (recipient=%s): %s", to, e)
 
 
 def send_welcome_email(recipient: str, name: str) -> None:
