@@ -156,7 +156,9 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
         if len(self._buckets[bucket_key]) >= limit:
             retry_after = int(60 - (now - self._buckets[bucket_key][0]))
-            logger.warning(f"Rate limit exceeded for {client_ip} on {path}")
+            # Sans l'adresse IP : la page Confidentialité s'engage à ne pas
+            # l'enregistrer. La ligne d'accès de même rid porte le 429.
+            logger.warning("Rate limit exceeded on %s", path)
             return JSONResponse(
                 status_code=429,
                 content={"detail": "Too many requests. Please try again later."},

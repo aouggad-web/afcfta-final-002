@@ -172,7 +172,8 @@ def get_redis_client() -> "Optional[Any]":
             )
             # Test connection
             _redis_client.ping()
-            print(f"✓ Redis cache connected: {REDIS_URL}")
+            # Sans l'URL : elle porte le mot de passe Redis (docker-compose.yml).
+            print("✓ Redis cache connected")
         except Exception as e:
             print(f"⚠ Redis connection failed: {e}")
             _redis_client = None

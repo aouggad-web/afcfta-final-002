@@ -159,6 +159,7 @@ _cors_origins = resolve_cors_origins(os.environ)
 # Un déploiement partiel doit échouer au démarrage plutôt que servir l'API sans
 # protection (constat M10 de l'audit de sécurité).
 from middlewares import CSRFMiddleware, RateLimitMiddleware, SecurityHeadersMiddleware
+from middlewares.access_log import AccessLogMiddleware
 
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(
@@ -188,6 +189,9 @@ app.add_middleware(
     allow_headers=["Content-Type", "Authorization", "X-CSRF-Token", "X-Requested-With"],
     expose_headers=["X-CSRF-Token"],
 )
+# Ajouté en dernier, donc le plus à l'extérieur : une ligne par requête, y
+# compris les réponses des middlewares ci-dessus (point 17 de l'audit).
+app.add_middleware(AccessLogMiddleware)
 
 # API Router with /api prefix
 api_router = APIRouter(prefix="/api")
