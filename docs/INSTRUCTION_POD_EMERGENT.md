@@ -217,6 +217,56 @@ n'en paraisse à l'écran, et aucune synchronisation n'y aurait rien changé.
 gardent ce câblage. **Rien à corriger dans le pod** : synchronisez sur `main`
 une fois cette PR fusionnée.
 
+## 6 bis. Alerte « contrôle des crons » (point 17 de l'audit de sécurité)
+
+Le backend relance toutes les heures `scripts/controle_crons_emergent.sh`, le
+même contrôle que l'étape 1bis de `sync_emergent.sh`. Il signale :
+- une ligne de `webhook-crons` hors de la forme rendue par Emergent ;
+- une tâche `dispatch_webhook` alors que `.emergent/crons.yml` n'existe pas, ou
+  un `crons.yml` absent du manifeste ;
+- un octet de contrôle ou non ASCII dans un fichier de cron ;
+- un fichier inattendu dans `/etc/cron.d`. Le relevé du 06/11/2026 y trouve
+  `.placeholder`, `e2scrub_all` et `webhook-crons` ;
+- une crontab d'utilisateur ;
+- un script de `.emergent/cron/` différent de `scripts/crons_emergent_sha256.txt`.
+
+Le verdict est publié, sans détail, dans `components.crons` de
+`/api/health/status`. La tâche GitHub « Surveillance sécurité » le lit toutes les
+six heures et échoue, avec un e-mail, si le verdict n'est pas « ok » ou s'il a
+plus de deux heures.
+
+Une anomalie reste affichée, même si la ligne en cause a disparu depuis, jusqu'à
+l'effacement de `/app/.afcfta-crons-anomalie`. Ce fichier est sur le volume du
+pod : il survit au redémarrage du backend, à la synchronisation et à la reprise
+du pod, et ne disparaît qu'avec la reconstruction du volume. Après une fausse
+alerte avérée seulement, l'effacer à la main (`rm -f /app/.afcfta-crons-anomalie`),
+avant toute synchronisation. La page reste en « anomalie » jusqu'au contrôle
+suivant, au plus une heure, ou jusqu'à un redémarrage du backend
+(`supervisorctl restart backend`), qui refait aussitôt le contrôle. Relancer
+la tâche GitHub seulement après.
+
+**Sur alerte « ANOMALIE, compromission possible »** (verdict `anomalie`) :
+1. Lire le journal du backend : `/var/log/supervisor/backend.err.log`.
+2. Ne pas resynchroniser.
+3. Faire reconstruire le pod ET son volume par Emergent.
+4. Changer ensuite les secrets de `backend/.env`.
+
+**Sur alerte « surveillance indisponible »** (pod injoignable, réponse
+Cloudflare, verdict absent, incomplet ou trop ancien) : ce n'est pas un signe
+de compromission. Vérifier que le pod et le backend tournent, puis relancer la
+tâche. Si Cloudflare répond 403 ou 503 aux exécuteurs GitHub, demander à
+Emergent d'autoriser `/api/health/status`.
+
+**Mise en place, une fois :**
+1. Créer la variable de dépôt `URL_SANTE_STATUS`, qui vaut l'adresse
+   `https://<pod>/api/health/status`.
+2. Lancer la tâche une première fois à la main (Actions → Surveillance
+   sécurité → Run workflow).
+
+Si Emergent met à jour ses scripts de `.emergent/cron/`, relire le changement,
+puis mettre à jour le manifeste dans la même PR : le test
+`test_le_manifeste_correspond_aux_scripts_versionnes` l'exige.
+
 ## 7. Ce qui n'est PAS concerné
 
 - **Chantier tarifaire et module Calculateur** — travaux arrêtés. Aucun

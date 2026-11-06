@@ -1,0 +1,106 @@
+name: Surveillance sécurité
+
+# Point 17 de l'audit de sécurité, toutes les six heures et à la demande.
+#
+# crons : lit /api/health/status du pod (variable de dépôt URL_SANTE_STATUS).
+#   Le backend y publie le verdict de son contrôle horaire des crons
+#   (backend/surveillance_crons.py). Tout autre verdict que « ok », ou un
+#   verdict de plus de 2 h, fait échouer l'exécution : GitHub prévient alors
+#   par e-mail. Le message distingue une anomalie (compromission possible :
+#   docs/INSTRUCTION_POD_EMERGENT.md §6 bis) d'une surveillance indisponible
+#   (pod arrêté, réponse illisible).
+#
+# artefacts : liste les artefacts conservés dans le résumé de l'exécution
+#   (support de la revue mensuelle) et échoue si un nom inconnu apparaît : un
+#   nouvel envoi d'artefact se relit, puis s'ajoute à la liste ci-dessous.
+
+on:
+  schedule:
+    - cron: '41 */6 * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  crons:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verdict du contrôle horaire des crons
+        env:
+          URL: ${{ vars.URL_SANTE_STATUS }}
+        run: |
+          set -uo pipefail
+          if [ -z "${URL:-}" ]; then
+            echo "::warning::Variable de dépôt URL_SANTE_STATUS absente : contrôle des crons non fait."
+            exit 0
+          fi
+          # Lit le verdict ; une seule relance après 90 s si le pod ne répond
+          # pas ou n'a pas encore de verdict (redémarrage, réveil du pod).
+          lire() {
+            rm -f corps.json
+            code="$(curl -sS --max-time 30 -o corps.json -w '%{http_code}' \
+              -H 'Accept: application/json' "$URL" 2>/dev/null || true)"
+            statut="$(jq -r '.components.crons.status // "absent"' corps.json 2>/dev/null \
+              | tr -cd 'a-z_' || true)"
+            a="$(jq -r '.components.crons.a // ""' corps.json 2>/dev/null \
+              | tr -cd '0-9T:+-' || true)"
+            [ -n "$code" ] || code=000
+            [ "$code" = 200 ] || statut="injoignable"
+            [ -n "$statut" ] || statut="illisible"
+          }
+          lire
+          if [ "$statut" = absent ] || [ "$statut" = injoignable ]; then
+            sleep 90
+            lire
+          fi
+          echo "Réponse HTTP $code, verdict « $statut », contrôle du ${a:-?}"
+          if [ "$statut" = anomalie ]; then
+            echo "::error::Crons du pod : ANOMALIE, compromission possible. Suivre docs/INSTRUCTION_POD_EMERGENT.md §6 bis : lire le journal du backend, ne pas resynchroniser, faire reconstruire le pod et son volume, changer les secrets."
+            exit 1
+          fi
+          if [ "$statut" != ok ]; then
+            echo "::error::Surveillance des crons indisponible (HTTP $code, « $statut ») : vérifier que le pod et le backend tournent, puis relancer la tâche. Ce n'est pas un signe de compromission."
+            exit 1
+          fi
+          # Horodatage écrit par le backend : isoformat(timespec="seconds"), UTC.
+          if ! [[ $a =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+00:00$ ]]; then
+            echo "::error::Horodatage du contrôle illisible : surveillance des crons indisponible."
+            exit 1
+          fi
+          age=$(( $(date -u +%s) - $(date -u -d "$a" +%s) ))
+          if [ "$age" -gt 7200 ] || [ "$age" -lt -300 ]; then
+            echo "::error::Dernier contrôle des crons daté de $((age / 60)) min : la surveillance du backend ne tourne plus."
+            exit 1
+          fi
+
+  artefacts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+    steps:
+      - name: Revue des artefacts conservés
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEPOT: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          gh api --paginate "repos/$DEPOT/actions/artifacts?per_page=100" \
+            --jq '.artifacts[] | select(.expired | not)
+                  | [.name, .size_in_bytes, .created_at, .expires_at, (.workflow_run.head_branch // "-")]
+                  | @tsv' > artefacts.tsv
+          {
+            echo "## Artefacts conservés ($(wc -l < artefacts.tsv))"
+            echo
+            echo "| Nom | Taille (Ko) | Créé | Expire | Branche |"
+            echo "|---|---|---|---|---|"
+            awk -F'\t' '{ printf "| %s | %d | %s | %s | %s |\n", $1, $2 / 1024, $3, $4, $5 }' artefacts.tsv
+          } >> "$GITHUB_STEP_SUMMARY"
+          inconnus="$(cut -f1 artefacts.tsv \
+            | grep -vE '^(data-update-report-[0-9]+|opportunites-.+|production_africaine|tarifs-.+|ETH_tariffs_veille|github-pages)$' \
+            | sort -u | tr '\n' ' ' || true)"
+          if [ -n "$inconnus" ]; then
+            echo "::error::Artefact au nom inconnu, à relire avant de l'ajouter à la liste : $inconnus"
+            exit 1
+          fi

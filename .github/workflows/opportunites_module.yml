@@ -121,6 +121,28 @@ jobs:
             sed -i -E 's/([?&#](token|access_token|refresh_token|api_key|apikey|key|subscription-key|token_hash|code|password|secret|client_secret|signature|license_key)=)[^&[:space:]"#]+/\1***/Ig' uvicorn.log
           fi
 
+      # Garde exacte (point 17) : un fichier où figure encore le jeton OEC (un
+      # print(), un format que le masquage ne connaît pas) n'est pas publié.
+      # « || true » et le test -s : grep sort en 2 quand un chemin manque,
+      # même après une correspondance.
+      - name: Refuse to publish files containing the OEC token
+        if: always()
+        env:
+          OEC_API_TOKEN: ${{ secrets.OEC_API_TOKEN }}
+        run: |
+          # Sans CR ni LF : un saut de ligne collé avec le secret ferait un motif
+          # vide, qui correspond à toutes les lignes.
+          jeton="$(printf '%s' "${OEC_API_TOKEN:-}" | tr -d '\r\n')"
+          if [ -n "$jeton" ]; then
+            grep -rlF -- "$jeton" uvicorn.log test_reports/smoke_opportunites \
+              data/json/wb_gdp_pc.json data/json/wb_reserves.json > fuites.txt 2>/dev/null || true
+            if [ -s fuites.txt ]; then
+              while IFS= read -r f; do rm -f -- "$f"; done < fuites.txt
+              echo "::error::Le jeton OEC figurait dans $(wc -l < fuites.txt) fichier(s), retirés de l'artefact."
+              exit 1
+            fi
+          fi
+
       - name: Upload reports and datasets as artifacts
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
