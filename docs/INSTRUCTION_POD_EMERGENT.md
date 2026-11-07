@@ -40,9 +40,12 @@ redemandez pas quand elle a réussi. Elle a réussi si :
   « ⚠ RAPPEL » juste avant (sinon, voir §6 bis).
 
 Ne collez jamais de valeur secrète (clé, jeton, mot de passe, contenu de
-`backend/.env`) dans le chat Emergent : modifiez `/app/backend/.env` dans le
-terminal, puis `supervisorctl restart backend`. Une valeur déjà collée est à
-considérer comme exposée et à changer.
+`backend/.env`) dans le chat Emergent. Saisissez-la par la carte sécurisée
+d'Emergent ; elle prime sur `backend/.env`, qui ne remplace pas une variable
+déjà présente dans l'environnement. Une clé qui n'est que dans
+`/app/backend/.env` se modifie dans le terminal, puis
+`supervisorctl restart backend`. Une valeur déjà collée est à considérer comme
+exposée et à changer.
 
 Ne lancez **pas** `start.sh` sous Emergent : supervisord gère les services, et
 `sync_emergent.sh` fait déjà `supervisorctl restart all`.
