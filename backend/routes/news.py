@@ -387,7 +387,7 @@ async def chercher_image(corps: DemandeImage, redacteur: dict = Depends(require_
         image = await images.recuperer(lien_article=lien, lien_image=corps.url)
     except images.ImageRefusee as e:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail={"error": "image_refusee", "message": str(e)},
         )
     await images.enregistrer(db, corps.id, image, redacteur)

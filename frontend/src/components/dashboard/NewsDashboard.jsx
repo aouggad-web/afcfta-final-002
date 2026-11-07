@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import { pick, intlLocale } from '../../i18n/lang';
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
+import { useAuth } from '../../context/AuthContext';
+import NewsRedaction from './NewsRedaction';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -83,6 +85,7 @@ const translations = {
     readMore: "Lire l'article",
     articles: 'articles',
     noArticles: 'Aucun article disponible',
+    pinned: 'À la une',
     loading: 'Chargement des actualités...',
     error: 'Erreur de chargement',
     source: 'Source',
@@ -108,6 +111,7 @@ const translations = {
     readMore: 'Read article',
     articles: 'articles',
     noArticles: 'No articles available',
+    pinned: 'Featured',
     loading: 'Loading news...',
     error: 'Loading error',
     source: 'Source',
@@ -133,6 +137,7 @@ const translations = {
     readMore: 'قراءة المقال',
     articles: 'مقالات',
     noArticles: 'لا توجد مقالات متاحة',
+    pinned: 'في الواجهة',
     loading: 'جارٍ تحميل الأخبار…',
     error: 'خطأ في التحميل',
     source: 'المصدر',
@@ -159,6 +164,48 @@ const formatRelativeDate = (dateString, t) => {
   return t.daysAgo.replace('{days}', diffDays);
 };
 
+// Vignette à la hauteur des 4 lignes du résumé : l'image copiée par le
+// rédacteur (servie par notre API, réduite à 320 × 240), sinon une
+// illustration maison selon la catégorie.
+export const ArticleIllustration = ({ article, categoryStyle, featured = false, t }) => {
+  const [enErreur, setEnErreur] = useState(false);
+  const taille = featured ? 'w-32 h-24' : 'w-28 h-20';
+
+  if (article.has_image && !enErreur) {
+    return (
+      <figure className={`relative shrink-0 ${taille} overflow-hidden rounded-lg`}>
+        <img
+          src={`${API}/news/images/${encodeURIComponent(article.id)}`}
+          alt=""
+          loading="lazy"
+          className="h-full w-full object-cover"
+          onError={() => setEnErreur(true)}
+        />
+        <figcaption
+          className="absolute bottom-0 inset-x-0 truncate px-1 text-[9px] leading-4 text-white"
+          style={{ background: 'rgba(0,0,0,0.55)' }}
+        >
+          © {article.source}
+        </figcaption>
+      </figure>
+    );
+  }
+
+  return (
+    <div
+      aria-hidden="true"
+      data-testid="illustration-maison"
+      className={`shrink-0 ${taille} rounded-lg flex items-center justify-center text-3xl`}
+      style={{
+        background: `linear-gradient(135deg, ${categoryStyle.accent}33, ${categoryStyle.accent}0d)`,
+        border: `1px solid ${categoryStyle.accent}33`,
+      }}
+    >
+      {categoryStyle.icon}
+    </div>
+  );
+};
+
 const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
   const regionAccent = REGION_ACCENTS[article.region] || REGION_ACCENTS.Afrique;
   const categoryStyle = CATEGORY_ACCENTS[article.category] || CATEGORY_ACCENTS.Économie;
@@ -174,6 +221,18 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
       }}
     >
       <div className="flex flex-wrap items-center gap-2 mb-3">
+        {article.pinned && (
+          <Badge
+            className="border"
+            style={{
+              background: 'color-mix(in srgb, var(--gold) 18%, transparent)',
+              color: 'var(--text)',
+              borderColor: 'color-mix(in srgb, var(--gold) 45%, transparent)',
+            }}
+          >
+            ★ {t.pinned}
+          </Badge>
+        )}
         <Badge
           className="border"
           style={{
@@ -232,9 +291,16 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
         </a>
       </h3>
 
-      <p className={`text-[var(--afcfta-muted)] mb-4 ${featured ? 'text-sm md:text-base' : 'text-sm'} line-clamp-3`}>
-        {article.summary}
-      </p>
+      <div className="flex gap-3 mb-4">
+        <ArticleIllustration article={article} categoryStyle={categoryStyle} featured={featured} t={t} />
+        <p
+          className={`min-w-0 flex-1 text-[var(--afcfta-muted)] ${
+            featured ? 'text-sm md:text-base' : 'text-sm'
+          } line-clamp-4`}
+        >
+          {article.summary}
+        </p>
+      </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-[var(--afcfta-muted)]">
         <div className="flex flex-wrap items-center gap-3">
@@ -385,10 +451,15 @@ const NewsDashboard = ({ language = 'fr' }) => {
   const featuredArticles = useMemo(() => news.articles.slice(0, 3), [news.articles]);
   const remainingArticles = useMemo(() => news.articles.slice(3, 15), [news.articles]);
 
-  const fetchNews = async (forceRefresh = false) => {
+  // Rédacteur en chef : le compte admin voit le panneau de rédaction.
+  const estRedacteur = useAuth()?.user?.role === 'admin';
+
+  // `silencieux` : après une action de rédaction, rafraîchir le fil sans
+  // remplacer la page par l'indicateur de chargement.
+  const fetchNews = async (forceRefresh = false, silencieux = false) => {
     try {
       if (forceRefresh) setRefreshing(true);
-      else setLoading(true);
+      else if (!silencieux) setLoading(true);
 
       const [allNews, byRegion, byCategory] = await Promise.all([
         fetch(`${API}/news?force_refresh=${forceRefresh}`).then((r) => r.json()),
@@ -534,6 +605,8 @@ const NewsDashboard = ({ language = 'fr' }) => {
           </div>
         </div>
       </div>
+
+      {estRedacteur && <NewsRedaction onChange={() => fetchNews(false, true)} />}
 
       <CountrySpotlight spotlight={countryOfWeek} t={t} language={language} />
 

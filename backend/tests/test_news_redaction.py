@@ -180,7 +180,10 @@ def test_la_redaction_est_reservee_au_compte_admin(app, qui):
         ("/api/news/redaction/publier-tout", None),
         ("/api/news/redaction/epingle", {"id": "a1"}),
         ("/api/news/redaction/regles", {"type": "mot", "valeur": "fraude"}),
-        ("/api/news/redaction/manuel", {"title": "Titre", "link": "https://a.b/c", "source": "Moi"}),
+        (
+            "/api/news/redaction/manuel",
+            {"title": "Titre", "link": "https://a.b/c", "source": "Moi"},
+        ),
         ("/api/news/redaction/image", {"id": "a1"}),
     ]:
         assert client.post(chemin, json=corps).status_code == 403, chemin
@@ -232,7 +235,9 @@ def test_publier_tout_vide_la_file(app):
 def test_article_inconnu_et_action_invalide(app):
     admin = _client(app, ADMIN)
     assert (
-        admin.post("/api/news/redaction/decision", json={"id": "zz", "action": "publier"}).status_code
+        admin.post(
+            "/api/news/redaction/decision", json={"id": "zz", "action": "publier"}
+        ).status_code
         == 404
     )
     assert (
@@ -399,26 +404,107 @@ def test_image_refusee_message_au_redacteur(app, monkeypatch):
         "http://169.254.169.254/latest/meta-data/",
         "http://[::1]/x.jpg",
         "https://exemple.dz:8443/x.jpg",
-        "http://0x7f000001/x.jpg",
+        "javascript:alert(1)",
     ],
 )
 def test_liens_refuses_avant_toute_connexion(lien):
     with pytest.raises(news_images.ImageRefusee):
         news_images.verifier_lien(lien)
-        # Un nom d'hôte non résolu passe la forme ; le résolveur le juge.
-        raise news_images.ImageRefusee("non résolu") if "0x7f" in lien else AssertionError(lien)
 
 
-def test_resolveur_refuse_une_adresse_privee(monkeypatch):
+def test_un_nom_d_hote_passe_la_forme_le_resolveur_le_juge():
+    assert (
+        news_images.verifier_lien("https://presse.exemple/a.jpg") == "https://presse.exemple/a.jpg"
+    )
+
+
+@pytest.mark.parametrize(
+    "adresses",
+    [["10.1.2.3"], ["127.0.0.1"], ["93.184.216.34", "192.168.1.1"], ["::1"], []],
+)
+def test_resolveur_refuse_toute_adresse_non_publique(monkeypatch, adresses):
     import asyncio
 
     async def fausse_resolution(self, host, port=0, family=0):
-        return [{"host": "10.1.2.3", "port": port, "family": family}]
+        return [{"host": a, "port": port, "family": family} for a in adresses]
 
     monkeypatch.setattr(news_images.DefaultResolver, "resolve", fausse_resolution)
-    resolveur = news_images._ResolveurPublic()
+
+    async def essai():
+        resolveur = news_images._ResolveurPublic()
+        try:
+            await resolveur.resolve("hote.exemple", 443)
+        finally:
+            await resolveur.close()
+
     with pytest.raises(OSError):
-        asyncio.run(resolveur.resolve("interne.exemple", 443))
+        asyncio.run(essai())
+
+
+def test_resolveur_accepte_une_adresse_publique(monkeypatch):
+    import asyncio
+
+    async def fausse_resolution(self, host, port=0, family=0):
+        return [{"host": "93.184.216.34", "port": port, "family": family}]
+
+    monkeypatch.setattr(news_images.DefaultResolver, "resolve", fausse_resolution)
+
+    async def essai():
+        resolveur = news_images._ResolveurPublic()
+        try:
+            return await resolveur.resolve("hote.exemple", 443)
+        finally:
+            await resolveur.close()
+
+    assert asyncio.run(essai())[0]["host"] == "93.184.216.34"
+
+
+def _jpeg(largeur, hauteur, exif=True):
+    import io
+
+    from PIL import Image
+
+    image = Image.new("RGB", (largeur, hauteur), (200, 120, 40))
+    sortie = io.BytesIO()
+    if exif:
+        donnees_exif = Image.Exif()
+        donnees_exif[0x010F] = "Fabricant secret"  # Make
+        image.save(sortie, format="JPEG", exif=donnees_exif)
+    else:
+        image.save(sortie, format="JPEG")
+    return sortie.getvalue()
+
+
+def test_vignette_reduite_reencodee_sans_metadonnees():
+    import io
+
+    from PIL import Image
+
+    original = _jpeg(2000, 1200)
+    assert b"Fabricant secret" in original
+    vignette = news_images.vignette(original)
+    assert b"Fabricant secret" not in vignette
+    with Image.open(io.BytesIO(vignette)) as image:
+        assert image.format == "WEBP"
+        assert image.size == (320, 192)
+    assert len(vignette) < len(original)
+
+
+def test_une_petite_image_n_est_pas_agrandie():
+    import io
+
+    from PIL import Image
+
+    with Image.open(io.BytesIO(news_images.vignette(_jpeg(100, 80, exif=False)))) as image:
+        assert image.size == (100, 80)
+
+
+def test_faux_jpeg_et_bombe_refuses(monkeypatch):
+    with pytest.raises(news_images.ImageRefusee):
+        news_images.vignette(b"\xff\xd8\xff" + b"pas une image")
+    monkeypatch.setattr(news_images, "PIXELS_MAX", 1000)
+    with pytest.raises(news_images.ImageRefusee):
+        news_images.vignette(_jpeg(100, 100, exif=False))
 
 
 def test_formats_acceptes():
@@ -438,4 +524,9 @@ def test_image_d_apercu_trouvee_dans_la_page():
         news_images.image_dans_la_page(page, "https://presse.exemple/article/1")
         == "https://presse.exemple/img/une.jpg?a=1&b=2"
     )
-    assert news_images.image_dans_la_page("<meta property='og:image' content='javascript:x'>", "https://a.b/") is None
+    assert (
+        news_images.image_dans_la_page(
+            "<meta property='og:image' content='javascript:x'>", "https://a.b/"
+        )
+        is None
+    )

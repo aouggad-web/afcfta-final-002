@@ -8,15 +8,20 @@ variable : il est borné contre la falsification de requête côté serveur (SSR
 - chaque adresse résolue doit être publique (`is_global`), y compris après une
   redirection (3 au plus) : le résolveur d'aiohttp refuse les autres, et la
   connexion part vers l'adresse vérifiée, sans seconde résolution ;
-- 10 s au total, 1 Mo au plus pour la page comme pour l'image ;
+- 10 s au total ; de la page, seuls les 512 premiers Ko sont lus (l'image
+  d'aperçu est déclarée dans l'en-tête) ; l'image fait 3 Mo au plus ;
 - l'image n'est gardée que si ses premiers octets sont ceux d'un JPEG, d'un
-  PNG ou d'un WebP (jamais de SVG, qui peut porter du script).
+  PNG ou d'un WebP (jamais de SVG, qui peut porter du script) ;
+- elle est ensuite réduite en vignette (320 × 240 au plus : la hauteur des
+  4 à 5 lignes du résumé, en double densité) et réencodée en WebP par Pillow,
+  ce qui retire ses métadonnées (EXIF, GPS) et tout contenu caché.
 
 Les visiteurs ne contactent aucun site tiers : l'image est servie par notre
 API, et seulement pour un article publié.
 """
 
 import html
+import io
 import ipaddress
 import re
 import socket
@@ -27,8 +32,14 @@ from urllib.parse import urljoin, urlparse
 import aiohttp
 from aiohttp.abc import AbstractResolver
 from aiohttp.resolver import DefaultResolver
+from PIL import Image
 
-TAILLE_MAX = 1024 * 1024
+TAILLE_MAX = 3 * 1024 * 1024
+TAILLE_PAGE = 512 * 1024
+VIGNETTE = (320, 240)
+# Garde contre les « bombes de décompression » : 3 Mo de PNG peuvent décrire
+# une image de plusieurs milliards de pixels.
+PIXELS_MAX = 40_000_000
 DELAI_S = 10
 REDIRECTIONS_MAX = 3
 _PORTS = {None, 80, 443}
@@ -82,8 +93,9 @@ def verifier_lien(url: str) -> str:
     return morceaux.geturl()
 
 
-async def _lire(session, url: str) -> Tuple[bytes, str, str]:
-    """GET borné, redirections suivies une à une (chacune revérifiée)."""
+async def _lire(session, url: str, tronquer: bool = False) -> Tuple[bytes, str, str]:
+    """GET borné, redirections suivies une à une (chacune revérifiée).
+    `tronquer` : garder le début (page HTML) au lieu de refuser au-delà."""
     for _ in range(REDIRECTIONS_MAX + 1):
         url = verifier_lien(url)
         async with session.get(url, allow_redirects=False) as reponse:
@@ -95,11 +107,15 @@ async def _lire(session, url: str) -> Tuple[bytes, str, str]:
                 continue
             if reponse.status != 200:
                 raise ImageRefusee(f"réponse {reponse.status}")
+            limite = TAILLE_PAGE if tronquer else TAILLE_MAX
             corps = bytearray()
             async for morceau in reponse.content.iter_chunked(65536):
                 corps.extend(morceau)
-                if len(corps) > TAILLE_MAX:
-                    raise ImageRefusee("plus de 1 Mo")
+                if len(corps) > limite:
+                    if tronquer:
+                        del corps[limite:]
+                        break
+                    raise ImageRefusee("image de plus de 3 Mo")
             return bytes(corps), reponse.headers.get("Content-Type", ""), str(reponse.url)
     raise ImageRefusee("trop de redirections")
 
@@ -152,7 +168,7 @@ async def recuperer(lien_article: Optional[str] = None, lien_image: Optional[str
     try:
         async with _session() as session:
             if not lien_image:
-                page, _, url_finale = await _lire(session, lien_article or "")
+                page, _, url_finale = await _lire(session, lien_article or "", tronquer=True)
                 lien_image = image_dans_la_page(page.decode("utf-8", "replace"), url_finale)
                 if not lien_image:
                     raise ImageRefusee("aucune image d'aperçu dans la page")
@@ -161,10 +177,28 @@ async def recuperer(lien_article: Optional[str] = None, lien_image: Optional[str
         raise
     except (aiohttp.ClientError, OSError, TimeoutError) as e:
         raise ImageRefusee(f"site injoignable ({type(e).__name__})")
-    mime = type_image(donnees)
-    if mime is None:
+    if type_image(donnees) is None:
         raise ImageRefusee("format refusé (JPEG, PNG ou WebP seulement)")
-    return {"type": mime, "donnees": donnees, "origine": lien_image}
+    return {"type": "image/webp", "donnees": vignette(donnees), "origine": lien_image}
+
+
+def vignette(donnees: bytes) -> bytes:
+    """Réduit et réencode en WebP ; lève ImageRefusee si l'image est illisible."""
+    try:
+        with Image.open(io.BytesIO(donnees), formats=["JPEG", "PNG", "WEBP"]) as image:
+            largeur, hauteur = image.size
+            if largeur * hauteur > PIXELS_MAX:
+                raise ImageRefusee("image trop grande")
+            image.draft("RGB", (VIGNETTE[0] * 2, VIGNETTE[1] * 2))
+            image = image.convert("RGB")
+            image.thumbnail(VIGNETTE)
+            sortie = io.BytesIO()
+            image.save(sortie, format="WEBP", quality=80)
+    except ImageRefusee:
+        raise
+    except (OSError, ValueError, SyntaxError, Image.DecompressionBombError):
+        raise ImageRefusee("image illisible")
+    return sortie.getvalue()
 
 
 async def enregistrer(db, article_id: str, image: Dict, redacteur: Dict) -> None:

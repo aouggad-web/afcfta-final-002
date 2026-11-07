@@ -61,6 +61,7 @@ opentelemetry-api==1.45.2
 packaging==25.0
 pandas==2.3.3
 pathspec==1.1.1
+pillow==13.0.0
 platformdirs==4.5.0
 pluggy==1.6.0
 propcache==0.4.1
