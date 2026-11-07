@@ -124,6 +124,23 @@ describe('NewsRedaction — panneau du rédacteur en chef', () => {
     expect(JSON.parse(csrfFetch.mock.calls[1][1].body)).toEqual({ id: 'q1' });
   });
 
+  it('lance la recherche des images manquantes depuis « Publiés »', async () => {
+    useAuth.mockReturnValue({ user: { role: 'admin' } });
+    csrfFetch.mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve({ ok: true, recherches: 1 }),
+    });
+    render(<NewsDashboard language="fr" />);
+    await screen.findByText('Dépêche en attente');
+
+    fireEvent.click(screen.getByRole('tab', { name: /Publiés/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Chercher les images manquantes' }));
+    await waitFor(() => expect(csrfFetch).toHaveBeenCalledTimes(1));
+    expect(csrfFetch.mock.calls[0][0]).toMatch(/\/redaction\/images-manquantes$/);
+    expect(await screen.findByRole('status')).toHaveTextContent('Recherche lancée pour 1 article(s)');
+  });
+
   it('affiche le refus du serveur au rédacteur', async () => {
     useAuth.mockReturnValue({ user: { role: 'admin' } });
     csrfFetch.mockResolvedValue({

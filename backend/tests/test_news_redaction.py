@@ -126,6 +126,12 @@ def base(monkeypatch):
         return {"last_update": "2026-11-07T08:00:00", "articles": [dict(a) for a in COLLECTE]}
 
     monkeypatch.setattr(news_routes, "get_news", fausse_collecte)
+
+    # Aucun appel réseau dans les tests : par défaut, aucune image trouvée.
+    async def aucune_image(lien_article=None, lien_image=None):
+        raise news_images.ImageRefusee("aucune image d'aperçu dans la page")
+
+    monkeypatch.setattr(news_images, "recuperer", aucune_image)
     yield db
     auth.set_database(None)
     entitlement_guard.set_database(None)
@@ -566,3 +572,59 @@ def test_image_d_apercu_trouvee_dans_la_page():
         )
         is None
     )
+
+
+# ── Recherche automatique de l'image à la publication ───────────────────────
+
+
+@pytest.fixture
+def images_trouvees(monkeypatch):
+    demandes = []
+
+    async def trouvee(lien_article=None, lien_image=None):
+        demandes.append(lien_article)
+        return {"type": "image/webp", "donnees": b"RIFF....WEBP", "origine": lien_article}
+
+    monkeypatch.setattr(news_images, "recuperer", trouvee)
+    return demandes
+
+
+def test_publier_cherche_l_image_aussitot(app, images_trouvees):
+    admin = _client(app, ADMIN)
+    admin.post("/api/news/redaction/decision", json={"id": "a1", "action": "publier"})
+    assert images_trouvees == ["https://presse.exemple/1"]
+    assert _client(app).get("/api/news").json()["articles"][0]["has_image"] is True
+    # Déjà illustré : pas de seconde recherche.
+    admin.post("/api/news/redaction/epingle", json={"id": "a1"})
+    assert images_trouvees == ["https://presse.exemple/1"]
+
+
+def test_tout_publier_cherche_toutes_les_images(app, images_trouvees):
+    _client(app, ADMIN).post("/api/news/redaction/publier-tout")
+    assert sorted(images_trouvees) == [f"https://presse.exemple/{n}" for n in (1, 2, 3)]
+
+
+def test_ecarter_ne_cherche_pas_d_image(app, images_trouvees):
+    _client(app, ADMIN).post("/api/news/redaction/decision", json={"id": "a1", "action": "ecarter"})
+    assert images_trouvees == []
+
+
+def test_sans_image_trouvee_l_article_reste_publie(app):
+    admin = _client(app, ADMIN)
+    reponse = admin.post("/api/news/redaction/decision", json={"id": "a1", "action": "publier"})
+    assert reponse.json() == {"ok": True}
+    articles = _client(app).get("/api/news").json()["articles"]
+    assert [a["id"] for a in articles] == ["a1"] and articles[0]["has_image"] is False
+
+
+def test_chercher_les_images_manquantes_des_articles_deja_publies(app, base, images_trouvees):
+    admin = _client(app, ADMIN)
+    admin.post("/api/news/redaction/publier-tout")
+    base.news_images.docs = [d for d in base.news_images.docs if d["_id"] != "a2"]
+    images_trouvees.clear()
+    assert admin.post("/api/news/redaction/images-manquantes").json() == {
+        "ok": True,
+        "recherches": 1,
+    }
+    assert images_trouvees == ["https://presse.exemple/2"]
+    assert _client(app).post("/api/news/redaction/images-manquantes").status_code == 403

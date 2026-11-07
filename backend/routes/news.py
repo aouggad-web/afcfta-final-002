@@ -19,7 +19,17 @@ from etl.news_aggregator import (
     get_news_by_category,
     get_news_by_region,
 )
-from fastapi import APIRouter, Depends, HTTPException, Path, Query, Request, Response, status
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    HTTPException,
+    Path,
+    Query,
+    Request,
+    Response,
+    status,
+)
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from services import news_images as images
 from services import news_redaction as redaction
@@ -292,22 +302,31 @@ async def lire_redaction(redacteur: dict = Depends(require_redacteur)):
 
 
 @router.post("/redaction/decision")
-async def decider_article(corps: Decision, redacteur: dict = Depends(require_redacteur)):
+async def decider_article(
+    corps: Decision, taches: BackgroundTasks, redacteur: dict = Depends(require_redacteur)
+):
     if not await redaction.decider(get_db(), corps.id, corps.action, await _collectes(), redacteur):
         _introuvable()
     logging.info("Rédaction : %s %s par %s", corps.action, corps.id, redacteur.get("email"))
+    if corps.action in ("publier", "retablir"):
+        taches.add_task(illustrer_en_arriere_plan, [corps.id], redacteur)
     return {"ok": True}
 
 
 @router.post("/redaction/publier-tout")
-async def publier_toute_la_file(redacteur: dict = Depends(require_redacteur)):
-    nombre = await redaction.publier_tout(get_db(), await _collectes(), redacteur)
-    logging.info("Rédaction : %d articles publiés par %s", nombre, redacteur.get("email"))
-    return {"ok": True, "publies": nombre}
+async def publier_toute_la_file(
+    taches: BackgroundTasks, redacteur: dict = Depends(require_redacteur)
+):
+    ids = await redaction.publier_tout(get_db(), await _collectes(), redacteur)
+    logging.info("Rédaction : %d articles publiés par %s", len(ids), redacteur.get("email"))
+    taches.add_task(illustrer_en_arriere_plan, ids, redacteur)
+    return {"ok": True, "publies": len(ids)}
 
 
 @router.post("/redaction/epingle")
-async def epingler_article(corps: Epingle, redacteur: dict = Depends(require_redacteur)):
+async def epingler_article(
+    corps: Epingle, taches: BackgroundTasks, redacteur: dict = Depends(require_redacteur)
+):
     db = get_db()
     if corps.epingler:
         fait = await redaction.epingler(db, corps.id, await _collectes(), redacteur)
@@ -315,6 +334,8 @@ async def epingler_article(corps: Epingle, redacteur: dict = Depends(require_red
         fait = await redaction.desepingler(db, corps.id)
     if not fait:
         _introuvable()
+    if corps.epingler:
+        taches.add_task(illustrer_en_arriere_plan, [corps.id], redacteur)
     return {"ok": True}
 
 
@@ -428,3 +449,45 @@ async def servir_image(
             "Cache-Control": "public, max-age=3600" if publie else "private, no-store",
         },
     )
+
+
+async def illustrer_en_arriere_plan(ids: List[str], redacteur: dict) -> None:
+    """Décision de l'exploitant (07/11/2026) : l'image d'aperçu est cherchée
+    dès la publication, après la réponse, un article après l'autre ; le
+    rédacteur la retire ou la remplace s'il ne la veut pas. Un article déjà
+    illustré, non publié ou sans image trouvée est laissé tel quel."""
+    db = get_db()
+    if db is None:
+        return
+    illustres = await images.ids_illustres(db)
+    for article_id in ids:
+        if article_id in illustres:
+            continue
+        doc = await db.news_redaction.find_one({"_id": article_id})
+        if doc is None or doc.get("statut") != "publie":
+            continue
+        try:
+            image = await images.recuperer(lien_article=(doc.get("article") or {}).get("link"))
+            await images.enregistrer(db, article_id, image, redacteur)
+        except images.ImageRefusee as e:
+            logging.info("Rédaction : pas d'image pour %s (%s)", article_id, e)
+        except Exception:
+            logging.warning(
+                "Rédaction : recherche d'image en échec pour %s", article_id, exc_info=True
+            )
+
+
+@router.post("/redaction/images-manquantes")
+async def chercher_images_manquantes(
+    taches: BackgroundTasks, redacteur: dict = Depends(require_redacteur)
+):
+    """Cherche, en arrière-plan, l'image des articles publiés qui n'en ont pas."""
+    db = get_db()
+    illustres = await images.ids_illustres(db)
+    ids = [
+        d["_id"]
+        for d in await db.news_redaction.find({"statut": "publie"}).to_list(length=None)
+        if d["_id"] not in illustres
+    ]
+    taches.add_task(illustrer_en_arriere_plan, ids, redacteur)
+    return {"ok": True, "recherches": len(ids)}
