@@ -119,7 +119,13 @@ async def etat_redaction(db, collectes: List[Dict]) -> Dict:
     decisions = await _decisions(db)
     decides = {d["_id"] for d in decisions}
     illustres = await _illustres(db)
+    # Un article écarté puis rétabli garde sa copie (statut « a_valider ») :
+    # il revient dans la file même s'il a quitté la collecte du jour.
     a_valider = [
+        _illustrer(_vue(d, maintenant), illustres)
+        for d in decisions
+        if d.get("statut") == "a_valider" and not bloque(regles, d.get("article") or {})
+    ] + [
         _illustrer(dict(a), illustres)
         for a in collectes
         if a.get("id") not in decides and not bloque(regles, a)
@@ -155,7 +161,9 @@ async def decider(db, article_id: str, action: str, collectes: List[Dict], redac
         if doc is None:
             return False
         if doc.get("statut") == "ecarte":
-            await db.news_redaction.delete_one({"_id": article_id})
+            await db.news_redaction.update_one(
+                {"_id": article_id}, {"$set": {"statut": "a_valider", **_trace(redacteur)}}
+            )
         else:
             await db.news_redaction.update_one(
                 {"_id": article_id}, {"$set": {"statut": "publie", **_trace(redacteur)}}

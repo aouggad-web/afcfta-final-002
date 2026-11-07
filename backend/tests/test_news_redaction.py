@@ -213,6 +213,42 @@ def test_un_article_ecarte_quitte_la_file_et_peut_y_revenir(app):
     assert _publics(app) == []
 
 
+def test_un_article_ecarte_retabli_revient_meme_sorti_de_la_collecte(app, monkeypatch):
+    admin = _client(app, ADMIN)
+    admin.post("/api/news/redaction/decision", json={"id": "a1", "action": "ecarter"})
+
+    async def collecte_suivante(force_refresh=False):
+        return {"last_update": None, "articles": [dict(COLLECTE[1])]}
+
+    monkeypatch.setattr(news_routes, "get_news", collecte_suivante)
+    admin.post("/api/news/redaction/decision", json={"id": "a1", "action": "retablir"})
+    file = admin.get("/api/news/redaction").json()["a_valider"]
+    assert [a["id"] for a in file] == ["a1", "a2"]
+    assert file[0]["title"] == "Titre 1 sur le commerce"
+    admin.post("/api/news/redaction/decision", json={"id": "a1", "action": "publier"})
+    assert _publics(app) == ["a1"]
+
+
+def test_les_identifiants_a_tirets_des_projets_structurants_sont_acceptes(app, monkeypatch):
+    projet = _article(4, id="dz-project-gara-djebilet")
+
+    async def collecte(force_refresh=False):
+        return {"last_update": None, "articles": [projet]}
+
+    monkeypatch.setattr(news_routes, "get_news", collecte)
+    admin = _client(app, ADMIN)
+    for action in ("publier", "masquer", "retablir"):
+        reponse = admin.post(
+            "/api/news/redaction/decision",
+            json={"id": "dz-project-gara-djebilet", "action": action},
+        )
+        assert reponse.status_code == 200, action
+    assert admin.post("/api/news/redaction/epingle", json={"id": "dz-project-gara-djebilet"}).json()
+    assert _publics(app) == ["dz-project-gara-djebilet"]
+    assert admin.get("/api/news/images/dz-project-gara-djebilet").status_code == 404
+    assert admin.get("/api/news/images/a%2F..").status_code in (404, 422)
+
+
 def test_un_article_publie_reste_affiche_apres_la_collecte_suivante(app, monkeypatch):
     _client(app, ADMIN).post("/api/news/redaction/decision", json={"id": "a1", "action": "publier"})
 

@@ -227,7 +227,7 @@ async def require_redacteur(request: Request) -> dict:
     return user
 
 
-_IdArticle = Field(min_length=1, max_length=64, pattern=r"^[A-Za-z0-9]+$")
+_IdArticle = Field(min_length=1, max_length=64, pattern=r"^[A-Za-z0-9_-]+$")
 
 
 class _Corps(BaseModel):
@@ -404,7 +404,7 @@ async def retirer_image(corps: RetraitImage, redacteur: dict = Depends(require_r
 @router.get("/images/{article_id}")
 async def servir_image(
     request: Request,
-    article_id: str = Path(min_length=1, max_length=64, pattern=r"^[A-Za-z0-9]+$"),
+    article_id: str = Path(min_length=1, max_length=64, pattern=r"^[A-Za-z0-9_-]+$"),
 ):
     """Image d'un article publié ; le rédacteur voit aussi celles de la file."""
     db = get_db()
