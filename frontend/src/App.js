@@ -29,6 +29,7 @@ import OpportunityReportTab from './components/reports/OpportunityReportTab';
 import ContactTab from './components/contact/ContactTab';
 import AuthModal from './components/auth/AuthModal';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { trierPays } from './utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -219,7 +220,7 @@ function App() {
         : Array.isArray(data?.countries)
         ? data.countries
         : [];
-      setCountries(countriesArray);
+      setCountries(trierPays(countriesArray, (c) => c.name, lang));
       setBackendOnline(true);
     } catch (error) {
       console.error('Error loading countries:', error);

@@ -7,8 +7,10 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { Factory, TrendingUp, Award, Building2, Package, Loader2, AlertTriangle, Info, DollarSign, Users, Download } from 'lucide-react';
 import { buildProductionPdf, productionPdfFilename } from '../../utils/productionPdf';
+import { chargerPoliceArabe, estArabe } from '../../utils/pdfArabe';
 import { chiffres, montant, montantCompact, montantUnite, nombre } from '../../utils/nombres';
 import { trDonnee } from '../../i18n/donnees';
+import { getCountryName } from '../../utils/translations';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -349,23 +351,30 @@ function ProductionManufacturing({ language = 'fr' }) {
           detailUnavailable = true;
         }
       }
+      // Le PDF sort dans la langue de l'écran, arabe compris.
+      const pdfLang = estArabe(language) ? 'ar' : language;
+      if (pdfLang === 'ar') await chargerPoliceArabe();
       const doc = buildProductionPdf({
         countryIso3: selectedCountry,
         // unidoData vient d'une requête distincte, sans garde contre une
         // réponse périmée : si la table ISIC4 arrive la première après un
         // changement de pays, le PDF porterait le nom du pays précédent.
         // On ne s'en sert que si la charge utile désigne bien le pays courant.
-        countryName:
-          (unidoData?.country_iso3 || unidoData?.country_code) === selectedCountry
+        countryName: pdfLang === 'ar'
+          ? getCountryName(selectedCountry, 'ar')
+          : (unidoData?.country_iso3 || unidoData?.country_code) === selectedCountry
             ? unidoData?.country_name || selectedCountry
             : selectedCountry,
-        // jsPDF n'a pas de police arabe : en arabe, le rapport sort en français.
-        language: language === 'ar' ? 'fr' : language,
+        language: pdfLang,
         dataBasis: isic4Basis,
         divisions: groupIsic4ByDivision(),
         source: isic4Method?.source,
         formatIndicatorValue,
-        indicatorLabels: ISIC4_INDICATOR_LABELS[language === 'ar' ? 'fr' : language] || ISIC4_INDICATOR_LABELS.fr,
+        // Libellés servis par i18n depuis la phase 5.3 (l'ancienne table
+        // ISIC4_INDICATOR_LABELS, retirée alors, faisait échouer l'export).
+        indicatorLabels: Object.fromEntries(ISIC4_INDICATOR_ORDER.map((f) => [
+          f, t(`production.manufacturing.isicIndicator.${f}`, { defaultValue: f }),
+        ])),
         headlineOrder: HEADLINE_INDICATORS,
         indicatorOrder: ISIC4_INDICATOR_ORDER,
         timeseries,

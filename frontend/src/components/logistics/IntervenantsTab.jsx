@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { pick } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -149,7 +150,8 @@ function ContactChip({ icon: Icon, value, href, color = 'gray' }) {
       transition-colors cursor-pointer group`}
     >
       <Icon className="w-3 h-3 flex-shrink-0 text-[var(--afcfta-muted)] group-hover:text-[var(--text)]" />
-      <span className="truncate min-w-0">{value}</span>
+      {/* Numéro ou e-mail : de gauche à droite, même dans la page en arabe. */}
+      <span className="truncate min-w-0" dir="ltr">{value}</span>
     </span>
   );
   return href ? (
@@ -184,10 +186,10 @@ function ContactRow({ icon: Icon, label, value, href, mono = false }) {
         {href ? (
           <a href={href} target="_blank" rel="noreferrer"
             className="text-[var(--text)] hover:text-[var(--text)] underline-offset-2 hover:underline">
-            {value}
+            {mono ? <bdi dir="ltr">{value}</bdi> : value}
           </a>
         ) : (
-          <span>{value}</span>
+          <span>{mono ? <bdi dir="ltr">{value}</bdi> : value}</span>
         )}
       </div>
     </div>
@@ -602,7 +604,14 @@ export default function IntervenantsTab({ language = 'fr' }) {
           className="px-3 py-2 text-sm rounded-lg bg-[var(--overlay)] border border-[var(--overlay-border)] text-[var(--text)]
             focus:outline-none focus:border-[color-mix(in_srgb,var(--gold)_40%,transparent)] cursor-pointer"
         >
-          {Object.entries(COUNTRY_LABELS).map(([iso, label]) => (
+          {[
+            ...Object.entries(COUNTRY_LABELS).filter(([iso]) => iso === 'ALL'),
+            ...trierPays(
+              Object.entries(COUNTRY_LABELS).filter(([iso]) => iso !== 'ALL'),
+              ([iso, label]) => pick(language, label, label, COUNTRY_LABELS_AR[iso]),
+              language
+            ),
+          ].map(([iso, label]) => (
             <option key={iso} value={iso} className="bg-[var(--afcfta-card)]">{pick(language, label, label, COUNTRY_LABELS_AR[iso])}</option>
           ))}
         </select>

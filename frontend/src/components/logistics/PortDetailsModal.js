@@ -296,7 +296,7 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                         <span className="text-xl">📞</span>
                         <div>
                           <p className="text-xs text-gray-500 font-medium">{t.phone}</p>
-                          <p className="text-sm text-green-700 font-semibold">{authority.contact_phone}</p>
+                          <p className="text-sm text-green-700 font-semibold"><bdi dir="ltr">{authority.contact_phone}</bdi></p>
                         </div>
                       </a>
                     )}
@@ -784,7 +784,7 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                                   href={`tel:${agent.contact.replace(/\s/g, '')}`}
                                   className="text-xs text-green-600 hover:text-green-800 flex items-center gap-1 bg-green-50 px-2 py-1 rounded"
                                 >
-                                  📞 {agent.contact}
+                                  📞 <bdi dir="ltr">{agent.contact}</bdi>
                                 </a>
                               )}
                               {agent.email && (

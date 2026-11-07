@@ -85,6 +85,43 @@ const I18N = {
       'The "Nature" column carries that distinction. A derived estimate remains an estimate, even when produced by UNIDO.',
     ],
   },
+  ar: {
+    module: 'وحدة الإنتاج',
+    title: 'البنية الصناعية — ISIC Rev.4',
+    measured: 'بيانات UNIDO المقيسة',
+    estimated: 'بنية تقديرية',
+    classes: 'فئات ISIC 4',
+    divisions: 'أقسام ISIC 2',
+    nature: 'الطبيعة',
+    method: 'المنهج والنطاق',
+    colCode: 'ISIC 4',
+    colLabel: 'التسمية',
+    colValue: 'المؤشر الرئيسي',
+    colNature: 'الطبيعة',
+    natEstimated: 'تقديري',
+    natOfficial: 'رسمي',
+    natDerived: 'مشتق',
+    division: 'القسم',
+    noValue: 'غير منشور',
+    detail: 'تفصيل الفئات — مؤشرات IDSB وINDSTAT حسب السنة',
+    detailMissing: 'تفصيل الفئات غير متاح',
+    detailMissingBody: 'تعذّر تحميل تفصيل IDSB/INDSTAT لكل فئة عند التصدير، فلا يتضمن هذا التقرير إلا النظرة العامة حسب الأقسام. أعد التصدير للحصول على التفصيل الكامل: هذا الغياب عطل تقني وليس غيابًا للبيانات.',
+    colIndicator: 'المؤشر',
+    noSeries: 'لا توجد سلسلة زمنية منشورة لهذه الفئة.',
+    summary: 'نظرة عامة',
+    methodEstimated: [
+      'لا تنشر UNIDO إحصاءات على مستوى الفئة ISIC ذات الأرقام الأربعة لهذا البلد. وتُوزَّع حصة كل قسم ISIC ذي رقمين من القيمة المضافة التحويلية، وهي حصة حقيقية، بالتساوي على فئات القسم وفق تصنيف شعبة الإحصاءات في الأمم المتحدة.',
+      'النتيجة المباشرة: تحمل كل فئات القسم الواحد القيمة نفسها. تحدّد هذه الأرقام موقع القطاع في الجهاز الإنتاجي، ولا تسمح بالمقارنة بين فئتين ولا ببناء قرار استثماري على الفارق بينهما.',
+      'تقتصر التغطية على القطاعات الرئيسية للبلد، لا على الأقسام الصناعية الأربعة والعشرين 10-33. والقسم الغائب عن هذا التقرير ليس صفرًا: إنه غير موثّق.',
+      'لا توجد أي سلسلة زمنية على هذا المستوى لهذا البلد.',
+    ],
+    methodMeasured: [
+      'بيانات UNIDO على مستوى الفئة ISIC Rev.4، للفترة 2018-2024. يتعايش مصدران يُميَّز بينهما سطرًا بسطر: توفّر INDSTAT إحصاءات رسمية (الإنتاج، القيمة المضافة، الوظائف)، وتوفّر IDSB تقديرات مشتقة من UNIDO (الواردات، الصادرات، الاستهلاك الظاهري، الإنتاج).',
+      'يحمل عمود «الطبيعة» هذا التمييز. والتقدير المشتق يبقى تقديرًا، حتى لو أصدرته UNIDO.',
+    ],
+    subtitleEstimated: 'تقدير للبنية مشتق من أقسام ISIC 2 — لا يُقرأ قياسًا',
+    subtitleMeasured: 'بيانات UNIDO على مستوى الفئة — الطبيعة مبيّنة سطرًا بسطر',
+  },
 };
 
 /**
@@ -93,7 +130,7 @@ const I18N = {
  * @param {object}   params
  * @param {string}   params.countryIso3
  * @param {string}   params.countryName
- * @param {'fr'|'en'} params.language
+ * @param {'fr'|'en'|'ar'} params.language  En arabe, attendre d'abord chargerPoliceArabe().
  * @param {string}   params.dataBasis       UNIDO_MEASURED | ESTIMATED_FROM_ISIC2
  * @param {Array}    params.divisions       [{division, label, sectors}] tel que groupé à l'écran
  * @param {string}   [params.source]
@@ -226,7 +263,9 @@ export function buildProductionPdf({
     moduleLabel: t.module,
     badge: isEstimated ? t.estimated : t.measured,
     title: `${t.title} — ${countryName || countryIso3}`,
-    subtitle: isEstimated
+    subtitle: t.subtitleEstimated && t.subtitleMeasured
+      ? (isEstimated ? t.subtitleEstimated : t.subtitleMeasured)
+      : isEstimated
       ? (language === 'fr'
         ? 'Estimation de structure dérivée des divisions ISIC 2 — ne pas lire comme une mesure'
         : 'Structural estimate derived from ISIC 2 divisions — not to be read as a measurement')

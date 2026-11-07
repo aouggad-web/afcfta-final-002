@@ -12,10 +12,12 @@
  * sur le rendu à l'écran de l'appli).
  */
 import jsPDF from 'jspdf';
+import { dessinerLogo, nomSaas } from './pdfMarque';
+import { estArabe, preparerArabe } from './pdfArabe';
 
 const THEME_LIGHT = {
   name: 'light',
-  printNote: { fr: 'Optimisé pour impression.', en: 'Optimized for printing.' },
+  printNote: { fr: 'Optimisé pour impression.', en: 'Optimized for printing.', ar: 'مُهيّأ للطباعة.' },
   page: [250, 246, 238], // --bg (light) FAF6EE
   surface: [255, 255, 255], // --surface FFFFFF
   card2: [245, 239, 227], // --afcfta-card2 F5EFE3
@@ -33,7 +35,7 @@ const THEME_LIGHT = {
 
 const THEME_DARK = {
   name: 'dark',
-  printNote: { fr: 'Optimisé pour lecture à l’écran.', en: 'Optimized for on-screen reading.' },
+  printNote: { fr: 'Optimisé pour lecture à l’écran.', en: 'Optimized for on-screen reading.', ar: 'مُهيّأ للقراءة على الشاشة.' },
   page: [12, 18, 25], // --bg 0C1219 nuit africaine
   surface: [17, 24, 32], // --surface 111820
   card2: [24, 32, 48], // --afcfta-card 182030
@@ -100,21 +102,34 @@ const I18N = {
     footerNote: 'Amounts and volumes are rounded. Both charts use separate scales.',
     volLabel: 'Volume (tonnes)', legendBalance: 'Balance', legendValue: 'Value',
   },
+  ar: {
+    tag: 'الذكاء التجاري',
+    badge: 'بطاقة بلد-منتج',
+    period: 'الفترة المحللة',
+    match: 'المطابقة',
+    exportsAcc: 'الصادرات التراكمية',
+    importsAcc: 'الواردات التراكمية',
+    balanceAcc: 'الميزان التراكمي',
+    cagrExports: 'معدل النمو السنوي المركب للصادرات',
+    cagrImports: 'معدل النمو السنوي المركب للواردات',
+    deficit: 'عجز',
+    surplus: 'فائض',
+    dynamics: 'دينامية المبادلات',
+    amountsIn: 'المبالغ بالدولار الأمريكي',
+    scaleNote: 'مقياس مستقل للحفاظ على وضوح القراءة',
+    signal: 'إشارة',
+    coverage: 'معدل التغطية (الصادرات/الواردات)',
+    detail: 'التفصيل السنوي',
+    roundedValues: 'قيم مقرّبة',
+    year: 'السنة', exports: 'الصادرات', volExp: 'الحجم المصدَّر',
+    imports: 'الواردات', volImp: 'الحجم المستورد', balance: 'الميزان التجاري',
+    source: 'المصدر', consulted: 'تاريخ الاطلاع', page: 'الصفحة',
+    footerNote: 'المبالغ والأحجام مقرّبة. يستخدم الرسمان البيانيان مقياسين مستقلين.',
+    volLabel: 'الحجم (طن)', legendBalance: 'الميزان', legendValue: 'القيمة',
+  },
 };
 
 const MM = { pageW: 210, pageH: 297, margin: 13 };
-
-function starPoints(cx, cy, outerR, innerR, points, rotationDeg) {
-  const pts = [];
-  const step = Math.PI / points;
-  const rot = (rotationDeg * Math.PI) / 180;
-  for (let i = 0; i < points * 2; i++) {
-    const r = i % 2 === 0 ? outerR : innerR;
-    const a = i * step - Math.PI / 2 + rot;
-    pts.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]);
-  }
-  return pts;
-}
 
 function cagrOf(rows, key) {
   if (!rows.length) return null;
@@ -123,29 +138,6 @@ function cagrOf(rows, key) {
   if (first <= 0 || last <= 0) return null;
   const years = Math.max(1, rows.length - 1);
   return (Math.pow(last / first, 1 / years) - 1) * 100;
-}
-
-function drawEmblem(doc, cx, cy, size, theme) {
-  // Insigne "étoile Najm" (motif zellige de Tlemcen documenté dans le design
-  // system de l'appli) plutôt qu'un clip-art de silhouette continentale —
-  // fidèle au vocabulaire visuel du projet et net en tracé vectoriel simple.
-  const r = size / 2;
-  doc.setFillColor(...theme.headerBandTo);
-  doc.setDrawColor(...theme.gold);
-  doc.setLineWidth(0.5);
-  doc.roundedRect(cx - r, cy - r, size, size, 1.5, 1.5, 'FD');
-  const pts = starPoints(cx, cy, r * 0.62, r * 0.28, 8, 0);
-  doc.setDrawColor(...theme.gold);
-  doc.setLineWidth(0.35);
-  for (let i = 0; i < pts.length; i++) {
-    const [x1, y1] = pts[i];
-    const [x2, y2] = pts[(i + 1) % pts.length];
-    doc.line(x1, y1, x2, y2);
-  }
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(5.2);
-  doc.setTextColor(...theme.gold);
-  doc.text('ZLECAf', cx, cy + r + 3.2, { align: 'center' });
 }
 
 function pillBadge(doc, x, y, text, theme) {
@@ -167,7 +159,13 @@ function pillBadge(doc, x, y, text, theme) {
  * document reçoit donc des espaces simples.
  */
 export function espacesSimples(doc) {
-  const simple = (t) => (typeof t === 'string' ? t.replace(/\u00A0/g, ' ') : Array.isArray(t) ? t.map(simple) : t);
+  // Les polices standard de jsPDF n'ont pas ces signes : sans
+  // remplacement, ils sortent en caractères illisibles.
+  const SIGNES = { '\u2192': '->', '\u2190': '<-', '\u2264': '<=', '\u2265': '>=', '\u2248': '~', '\u2212': '-' };
+  const simple = (t) => (typeof t === 'string'
+    // En arabe, l'espace insécable lie les groupes de chiffres (pdfArabe.js) : on la garde.
+    ? t.replace(doc.__arabe ? /[\u202F\u2009]/g : /[\u00A0\u202F\u2009]/g, ' ').replace(/[\u2192\u2190\u2264\u2265\u2248\u2212]/g, (c) => SIGNES[c])
+    : Array.isArray(t) ? t.map(simple) : t);
   ['text', 'getTextWidth', 'splitTextToSize'].forEach((m) => {
     const f = doc[m].bind(doc);
     doc[m] = (t, ...rest) => f(simple(t), ...rest);
@@ -253,7 +251,7 @@ function drawFlowPanel(doc, opts) {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(6.6);
     doc.setTextColor(...theme.text);
-    const valLabel = (val / divisor).toLocaleString(language === 'fr' ? 'fr-FR' : 'en-US', {
+    const valLabel = (val / divisor).toLocaleString(language === 'en' ? 'en-US' : 'fr-FR', {
       maximumFractionDigits: Math.abs(val / divisor) < 10 ? 1 : 0,
     });
     doc.text(valLabel, cx, barY - (hasQty ? 5.2 : 1.6), { align: 'center' });
@@ -361,6 +359,8 @@ export function buildTradeReportPdf(p) {
   const theme = themeName === 'dark' ? THEME_DARK : THEME_LIGHT;
   const t = I18N[language] || I18N.fr;
   const doc = espacesSimples(new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' }));
+  // En arabe : police arabe (chargée par l'appelant), même mise en page.
+  if (estArabe(language)) preparerArabe(doc);
   const rows = data.chart_rows || [];
   const years = rows.map((r) => r.year);
   const period = years.length ? `${years[0]}-${years[years.length - 1]}` : '—';
@@ -381,7 +381,7 @@ export function buildTradeReportPdf(p) {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9.5);
   doc.setTextColor(...theme.onBand);
-  const wordmark = 'AFCFTA / ZLECAf';
+  const wordmark = nomSaas(language);
   doc.text(wordmark, MM.margin, 9);
   // Largeur mesurée AVANT de changer de police : getTextWidth() lit la police
   // actuellement active, pas celle utilisée pour dessiner le texte mesuré —
@@ -398,7 +398,8 @@ export function buildTradeReportPdf(p) {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(19);
   doc.setTextColor(...theme.onBand);
-  const title = language === 'fr' ? `Commerce extérieur — ${data.country_name}` : `Foreign trade — ${data.country_name}`;
+  const title = { fr: `Commerce extérieur — ${data.country_name}`, en: `Foreign trade — ${data.country_name}`, ar: `التجارة الخارجية — ${data.country_name}` }[language]
+    || `Commerce extérieur — ${data.country_name}`;
   doc.text(title, MM.margin, 27, { maxWidth: MM.pageW - 2 * MM.margin - 24 });
 
   const productLabel = data.hs_labels?.[0]?.label || '';
@@ -411,7 +412,7 @@ export function buildTradeReportPdf(p) {
   doc.setTextColor(...theme.onBand);
   doc.text(`${t.period}: ${period}   •   ${t.match}: ${matchLevelLabel}`, MM.margin, 37.5);
 
-  drawEmblem(doc, MM.pageW - MM.margin - 8, bandH / 2, 15, theme);
+  dessinerLogo(doc, MM.pageW - MM.margin - 22, (bandH - 22) / 2, 22);
 
   // ── KPI ────────────────────────────────────────────────────────────
   const kpiY = bandH + 6;
@@ -490,9 +491,11 @@ export function buildTradeReportPdf(p) {
   const coveragePct = lastRow && lastRow.imports > 0 ? (lastRow.exports / lastRow.imports) * 100 : null;
   const signalText =
     lastRow
-      ? language === 'fr'
-        ? `En ${lastRow.year}, les importations atteignent ${fmtUSD(lastRow.imports)} contre ${fmtUSD(lastRow.exports)} d'exportations.`
-        : `In ${lastRow.year}, imports reach ${fmtUSD(lastRow.imports)} against ${fmtUSD(lastRow.exports)} of exports.`
+      ? {
+        fr: `En ${lastRow.year}, les importations atteignent ${fmtUSD(lastRow.imports)} contre ${fmtUSD(lastRow.exports)} d'exportations.`,
+        en: `In ${lastRow.year}, imports reach ${fmtUSD(lastRow.imports)} against ${fmtUSD(lastRow.exports)} of exports.`,
+        ar: `في ${lastRow.year}، بلغت الواردات ${fmtUSD(lastRow.imports)} مقابل ${fmtUSD(lastRow.exports)} من الصادرات.`,
+      }[language] || `En ${lastRow.year}, les importations atteignent ${fmtUSD(lastRow.imports)} contre ${fmtUSD(lastRow.exports)} d'exportations.`
       : '';
   doc.setFillColor(...theme.card2);
   doc.roundedRect(MM.margin, signalY, MM.pageW - 2 * MM.margin, 15, 1.6, 1.6, 'F');
@@ -555,7 +558,7 @@ export function buildTradeReportPdf(p) {
 
   const rowH = 6.4;
   y = drawTableHeader(y);
-  const consultedDate = new Date().toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US');
+  const consultedDate = new Date().toLocaleDateString(language === 'en' ? 'en-US' : 'fr-FR');
 
   rows.forEach((row, idx) => {
     if (y + rowH > MM.pageH - 18) {

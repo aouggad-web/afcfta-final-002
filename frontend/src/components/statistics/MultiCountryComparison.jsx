@@ -23,6 +23,7 @@ import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
 import { montant, montantCompact, montantUnite, nombreUnite } from '../../utils/nombres';
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { pick } from '../../i18n/lang';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -407,7 +408,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <SelectValue placeholder={txt.selectCountry} />
                 </SelectTrigger>
                 <SelectContent>
-                  {availableCountries
+                  {trierPays(availableCountries, (country) => pick(language, country.name_fr || country.name, country.name_fr || country.name, AFRICAN_COUNTRIES[country.iso3 || country.code]?.name_ar || country.name_fr || country.name), language)
                     .filter(c => !selectedCountries.includes(c.iso3 || c.code))
                     .map((country) => (
                       <SelectItem key={country.iso3 || country.code} value={country.iso3 || country.code}>

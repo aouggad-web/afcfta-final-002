@@ -13,6 +13,7 @@ import { ArrowUpRight, ArrowDownRight, Globe2, TrendingUp, Search, RefreshCw, Ba
 import { getCountryFlag, getCountryInfo, AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { montantCompact, nombreCompact } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -596,7 +597,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                       <SelectValue placeholder={t.selectCountry} />
                     </SelectTrigger>
                     <SelectContent>
-                      {countries.map((country) => (
+                      {trierPays(countries, (c) => pick(language, c.name, c.name, AFRICAN_COUNTRIES[c.iso3]?.name_ar || c.name), language).map((country) => (
                         <SelectItem key={country.iso3} value={country.iso3}>
                           <span className="flex items-center gap-2">
                             <span>{getCountryFlag(country.iso3)}</span>
@@ -1040,7 +1041,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                       <SelectValue placeholder={t.selectCountry} />
                     </SelectTrigger>
                     <SelectContent>
-                      {countries.map((country) => (
+                      {trierPays(countries, (c) => pick(language, c.name, c.name, AFRICAN_COUNTRIES[c.iso3]?.name_ar || c.name), language).map((country) => (
                         <SelectItem key={country.iso3} value={country.iso3}>
                           <span className="flex items-center gap-2">
                             <span>{getCountryFlag(country.iso3)}</span>
@@ -1059,7 +1060,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                       <SelectValue placeholder={t.selectCountry} />
                     </SelectTrigger>
                     <SelectContent>
-                      {countries.filter(c => c.iso3 !== selectedCountry).map((country) => (
+                      {trierPays(countries, (c) => pick(language, c.name, c.name, AFRICAN_COUNTRIES[c.iso3]?.name_ar || c.name), language).filter(c => c.iso3 !== selectedCountry).map((country) => (
                         <SelectItem key={country.iso3} value={country.iso3}>
                           <span className="flex items-center gap-2">
                             <span>{getCountryFlag(country.iso3)}</span>

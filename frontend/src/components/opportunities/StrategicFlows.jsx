@@ -25,6 +25,7 @@ import { montant, montantCompact } from '../../utils/nombres';
 import { getCountryName } from '../../utils/translations';
 import { reportsNoticeText } from '../tools/entitlementNotice';
 import SubscriptionNotice from '../tools/SubscriptionNotice';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -312,7 +313,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
           <Select value={selected} onValueChange={setSelected}>
             <SelectTrigger data-testid="strategic-country-select"><SelectValue placeholder={t('opportunities.strategicFlows.selectCountry')} /></SelectTrigger>
             <SelectContent>
-              {countries.map((c) => (
+              {trierPays(countries, (c) => (uiLang === 'ar' ? getCountryName(c.iso3, 'ar') : c.name), uiLang).map((c) => (
                 <SelectItem key={c.iso3} value={c.iso3}>{uiLang === 'ar' ? getCountryName(c.iso3, 'ar') : c.name}</SelectItem>
               ))}
             </SelectContent>

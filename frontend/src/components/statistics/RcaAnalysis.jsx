@@ -18,6 +18,7 @@ import { Award, RefreshCw } from 'lucide-react';
 import { getCountryFlag, AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { pick } from '../../i18n/lang';
 import { CSVExportButton } from '../common/ExportTools';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -200,7 +201,7 @@ export default function RcaAnalysis({ language = 'fr' }) {
                 <SelectValue placeholder={txt.selectCountry} />
               </SelectTrigger>
               <SelectContent>
-                {countries.map((c) => (
+                {trierPays(countries, (c) => pick(language, c.name, c.name, AFRICAN_COUNTRIES[c.iso3]?.name_ar || c.name), language).map((c) => (
                   <SelectItem key={c.iso3} value={c.iso3}>
                     <span className="flex items-center gap-2">
                       <span>{getCountryFlag(c.iso3)}</span>

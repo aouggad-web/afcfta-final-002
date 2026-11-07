@@ -21,6 +21,7 @@ import { montant, montantUnite } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
 import { anonymousCalculationNoticeText } from '../tools/entitlementNotice';
 import SubscriptionNotice from '../tools/SubscriptionNotice';
+import { trierPays } from '../../utils/triPays';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
@@ -416,7 +417,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
               data-testid="compare-origin"
             >
               <option value="">{t.noOrigin}</option>
-              {availableCountries.map((iso3) => (
+              {trierPays(availableCountries, (iso3) => COUNTRY_NAMES[iso3]?.[language] || iso3, language).map((iso3) => (
                 <option key={iso3} value={iso3}>{COUNTRY_NAMES[iso3]?.[language] || iso3}</option>
               ))}
             </select>
@@ -445,7 +446,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                     </Button>
                   </div>
                   <div className="flex flex-wrap gap-2 pl-4">
-                    {regionCountries.map(iso3 => {
+                    {trierPays(regionCountries, (iso3) => COUNTRY_NAMES[iso3]?.[language] || iso3, language).map(iso3 => {
                       const isSelected = selectedCountries.includes(iso3);
                       return (
                         <Badge

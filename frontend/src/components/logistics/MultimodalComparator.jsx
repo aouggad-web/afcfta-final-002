@@ -11,6 +11,7 @@ import { PDFExportButton } from '../common/ExportTools';
 import { montant } from '../../utils/nombres';
 import { pick, isRtl } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -277,7 +278,11 @@ export default function MultimodalComparator({ language = 'fr' }) {
     }
   };
 
-  const countryOptions = supportedCountries.all_supported || [];
+  const countryOptions = trierPays(
+    supportedCountries.all_supported,
+    (iso) => pick(language, COUNTRY_NAMES_FR[iso], COUNTRY_NAMES_FR[iso], COUNTRY_NAMES_AR[iso]) || iso,
+    language
+  );
 
   return (
     <div className="space-y-5" data-testid="multimodal-comparator">

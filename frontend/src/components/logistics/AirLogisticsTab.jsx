@@ -9,6 +9,7 @@ import AirLogisticsMap from './AirLogisticsMap';
 import AirportCard from './AirportCard';
 import AirportDetailsModal from './AirportDetailsModal';
 import AirFreightCalculator from './AirFreightCalculator';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -357,27 +358,27 @@ export default function AirLogisticsTab({ language = 'fr' }) {
               >
                 <option value="ALL">🌍 {t.allCountries}</option>
                 <optgroup label={t.northAfrica}>
-                  {countries.northAfrica.map(c => (
+                  {trierPays(countries.northAfrica, (c) => c.label, language).map(c => (
                     <option key={c.value} value={c.value}>{c.label}</option>
                   ))}
                 </optgroup>
                 <optgroup label={t.westAfrica}>
-                  {countries.westAfrica.map(c => (
+                  {trierPays(countries.westAfrica, (c) => c.label, language).map(c => (
                     <option key={c.value} value={c.value}>{c.label}</option>
                   ))}
                 </optgroup>
                 <optgroup label={t.centralAfrica}>
-                  {countries.centralAfrica.map(c => (
+                  {trierPays(countries.centralAfrica, (c) => c.label, language).map(c => (
                     <option key={c.value} value={c.value}>{c.label}</option>
                   ))}
                 </optgroup>
                 <optgroup label={t.eastAfrica}>
-                  {countries.eastAfrica.map(c => (
+                  {trierPays(countries.eastAfrica, (c) => c.label, language).map(c => (
                     <option key={c.value} value={c.value}>{c.label}</option>
                   ))}
                 </optgroup>
                 <optgroup label={t.southernAfrica}>
-                  {countries.southernAfrica.map(c => (
+                  {trierPays(countries.southernAfrica, (c) => c.label, language).map(c => (
                     <option key={c.value} value={c.value}>{c.label}</option>
                   ))}
                 </optgroup>

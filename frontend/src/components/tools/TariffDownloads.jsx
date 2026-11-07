@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { entitlementNoticeText, entitlementRefusal } from './entitlementNotice';
 import { pick } from '../../i18n/lang';
 import { nombre } from '../../utils/nombres';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -262,7 +263,7 @@ export default function TariffDownloads({ language = 'fr' }) {
 
             <CardContent className="p-3">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                {regionCountries.map((country) => (
+                {trierPays(regionCountries, (c) => c.name, language).map((country) => (
                   <div key={country.code} className="border border-gray-200 rounded-lg overflow-hidden">
                     <div className="flex items-center justify-between p-3 bg-gray-50">
                       <div className="flex-1 min-w-0">

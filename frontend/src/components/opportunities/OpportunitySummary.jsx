@@ -277,8 +277,8 @@ export default function OpportunitySummary({ language = 'fr' }) {
               { key: 'name', label: t('opportunities.opportunitySummary.country'), width: 2.5 },
               { key: 'value', label: t('opportunities.opportunitySummary.volumeB'), align: 'right', width: 1 },
             ],
-            // Noms en français : le PDF (jsPDF) ne sait pas écrire l'arabe.
-            rows: [...data.topPartners].reverse().map((p) => (language === 'en' ? p : { ...p, name: p.name_fr ?? p.name })),
+            // Noms dans la langue du PDF (le PDF écrit l'arabe depuis le 07/11/2026).
+            rows: [...data.topPartners].reverse().map((p) => (language === 'fr' ? { ...p, name: p.name_fr ?? p.name } : p)),
           },
         },
         data.topProducts?.length && {

@@ -9,6 +9,9 @@ import { toast } from '../../hooks/use-toast';
 import { chiffres, estAnglais, montant, montantUnite } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
 import { getCountryName, getRegionName } from '../../utils/translations';
+import { trierPays } from '../../utils/triPays';
+import { specProfilPaysPdf } from '../../utils/profilPaysPdf';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
 
 // Catégories de l'indice d'attractivité (GAI 2025), servies en français et anglais.
 const GAI_CATEGORIES_AR = {
@@ -591,7 +594,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                 <SelectValue placeholder={t.selectPlaceholder} />
               </SelectTrigger>
               <SelectContent>
-                {countries.map((country) => (
+                {trierPays(countries, (c) => c.name, language).map((country) => (
                   <SelectItem key={country.code} value={country.code}>
                     {getFlag(country.iso2 || country.code)} {country.name} - {country.region}
                   </SelectItem>
@@ -624,6 +627,12 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                   </span>
                   <span className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] px-3 py-1 rounded-full text-[var(--success)]">{t.auMember}</span>
                 </CardDescription>
+                <div className="mt-3">
+                  <OpportunityPdfExport
+                    language={language}
+                    getSpec={(_, langue) => specProfilPaysPdf(countryProfile, langue)}
+                  />
+                </div>
               </CardHeader>
             </Card>
 

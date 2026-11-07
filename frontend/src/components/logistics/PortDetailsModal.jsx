@@ -242,7 +242,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                     )}
                     {agent.contact && (
                       <p className="text-xs text-[var(--afcfta-muted)] flex items-center gap-1">
-                        <span>📞</span> {agent.contact}
+                        <span>📞</span> <bdi dir="ltr">{agent.contact}</bdi>
                       </p>
                     )}
                     {agent.email && (
@@ -501,7 +501,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                   {portAuthority.contact_phone && (
                     <p className="flex items-center gap-2">
                       <span className="text-[var(--info)]">&#x1F4DE;</span>
-                      <a href={`tel:${portAuthority.contact_phone}`} className="text-[var(--info)] hover:underline">{portAuthority.contact_phone}</a>
+                      <a href={`tel:${portAuthority.contact_phone}`} className="text-[var(--info)] hover:underline"><bdi dir="ltr">{portAuthority.contact_phone}</bdi></a>
                     </p>
                   )}
                   {portAuthority.contact_email && (

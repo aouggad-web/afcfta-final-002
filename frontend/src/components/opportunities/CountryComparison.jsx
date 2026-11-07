@@ -15,6 +15,7 @@ import OpportunityPdfExport from './OpportunityPdfExport';
 import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 import { pick } from '../../i18n/lang';
 import { getCountryName } from '../../utils/translations';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -212,7 +213,7 @@ export default function CountryComparison({ language = 'fr' }) {
                 <SelectValue placeholder={t('opportunities.countryComparison.selectA')} />
               </SelectTrigger>
               <SelectContent>
-                {AFCFTA_COUNTRIES.filter(c => c.iso3 !== countryB).map(c => (
+                {trierPays(AFCFTA_COUNTRIES, (c) => pick(lang, c.name, c.name, getCountryName(c.iso3, 'ar')), lang).filter(c => c.iso3 !== countryB).map(c => (
                   <SelectItem key={c.iso3} value={c.iso3}>{pick(lang, c.name, c.name, getCountryName(c.iso3, 'ar'))}</SelectItem>
                 ))}
               </SelectContent>
@@ -232,7 +233,7 @@ export default function CountryComparison({ language = 'fr' }) {
                 <SelectValue placeholder={t('opportunities.countryComparison.selectB')} />
               </SelectTrigger>
               <SelectContent>
-                {AFCFTA_COUNTRIES.filter(c => c.iso3 !== countryA).map(c => (
+                {trierPays(AFCFTA_COUNTRIES, (c) => pick(lang, c.name, c.name, getCountryName(c.iso3, 'ar')), lang).filter(c => c.iso3 !== countryA).map(c => (
                   <SelectItem key={c.iso3} value={c.iso3}>{pick(lang, c.name, c.name, getCountryName(c.iso3, 'ar'))}</SelectItem>
                 ))}
               </SelectContent>
