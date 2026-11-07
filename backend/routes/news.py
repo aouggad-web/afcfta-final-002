@@ -454,21 +454,22 @@ async def servir_image(
 async def illustrer_en_arriere_plan(ids: List[str], redacteur: dict) -> None:
     """Décision de l'exploitant (07/11/2026) : l'image d'aperçu est cherchée
     dès la publication, après la réponse, un article après l'autre ; le
-    rédacteur la retire ou la remplace s'il ne la veut pas. Un article déjà
-    illustré, non publié ou sans image trouvée est laissé tel quel."""
+    rédacteur la retire ou la remplace s'il ne la veut pas. Un article dont
+    l'image est déjà réglée (présente ou retirée), non publié ou sans image
+    trouvée est laissé tel quel ; l'écriture finale ne remplace jamais un choix
+    fait par le rédacteur pendant le téléchargement."""
     db = get_db()
     if db is None:
         return
-    illustres = await images.ids_illustres(db)
     for article_id in ids:
-        if article_id in illustres:
+        if await db.news_images.find_one({"_id": article_id}) is not None:
             continue
         doc = await db.news_redaction.find_one({"_id": article_id})
         if doc is None or doc.get("statut") != "publie":
             continue
         try:
             image = await images.recuperer(lien_article=(doc.get("article") or {}).get("link"))
-            await images.enregistrer(db, article_id, image, redacteur)
+            await images.enregistrer_si_absente(db, article_id, image, redacteur)
         except images.ImageRefusee as e:
             logging.info("Rédaction : pas d'image pour %s (%s)", article_id, e)
         except Exception:
@@ -483,11 +484,11 @@ async def chercher_images_manquantes(
 ):
     """Cherche, en arrière-plan, l'image des articles publiés qui n'en ont pas."""
     db = get_db()
-    illustres = await images.ids_illustres(db)
+    regles = await images.ids_decides(db)
     ids = [
         d["_id"]
         for d in await db.news_redaction.find({"statut": "publie"}).to_list(length=None)
-        if d["_id"] not in illustres
+        if d["_id"] not in regles
     ]
     taches.add_task(illustrer_en_arriere_plan, ids, redacteur)
     return {"ok": True, "recherches": len(ids)}

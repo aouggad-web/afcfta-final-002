@@ -68,6 +68,7 @@ class _Collection:
                 return
             doc = {k: v for k, v in filtre.items() if not isinstance(v, dict)}
             self.docs.append(doc)
+            doc.update(maj.get("$setOnInsert", {}))
         doc.update(maj.get("$set", {}))
         for cle in maj.get("$unset", {}):
             doc.pop(cle, None)
@@ -628,3 +629,40 @@ def test_chercher_les_images_manquantes_des_articles_deja_publies(app, base, ima
     }
     assert images_trouvees == ["https://presse.exemple/2"]
     assert _client(app).post("/api/news/redaction/images-manquantes").status_code == 403
+
+
+def test_un_choix_du_redacteur_pendant_la_recherche_n_est_pas_ecrase(app, base, monkeypatch):
+    """Revue Codex (#789) : le rédacteur choisit une image pendant que la
+    recherche automatique télécharge ; l'écriture automatique ne la remplace pas."""
+    admin = _client(app, ADMIN)
+
+    async def recherche_lente(lien_article=None, lien_image=None):
+        if lien_image:
+            return {"type": "image/webp", "donnees": b"CHOIX", "origine": lien_image}
+        # Pendant le téléchargement automatique, le rédacteur choisit une image.
+        await news_images.enregistrer(
+            base,
+            "a1",
+            {"type": "image/webp", "donnees": b"CHOIX", "origine": "https://choisie.exemple/i"},
+            ADMIN,
+        )
+        return {"type": "image/webp", "donnees": b"AUTO", "origine": lien_article}
+
+    monkeypatch.setattr(news_images, "recuperer", recherche_lente)
+    admin.post("/api/news/redaction/decision", json={"id": "a1", "action": "publier"})
+    assert _client(app).get("/api/news/images/a1").content == b"CHOIX"
+
+
+def test_une_image_retiree_n_est_pas_remise_automatiquement(app, base, images_trouvees):
+    admin = _client(app, ADMIN)
+    admin.post("/api/news/redaction/decision", json={"id": "a1", "action": "publier"})
+    admin.post("/api/news/redaction/image/retirer", json={"id": "a1"})
+    assert _client(app).get("/api/news/images/a1").status_code == 404
+    images_trouvees.clear()
+    assert admin.post("/api/news/redaction/images-manquantes").json()["recherches"] == 0
+    admin.post("/api/news/redaction/epingle", json={"id": "a1"})
+    assert images_trouvees == []
+    assert _client(app).get("/api/news").json()["articles"][0]["has_image"] is False
+    # Le rédacteur peut toujours en choisir une lui-même.
+    admin.post("/api/news/redaction/image", json={"id": "a1"})
+    assert _client(app).get("/api/news/images/a1").status_code == 200
