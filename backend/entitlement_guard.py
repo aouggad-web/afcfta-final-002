@@ -13,7 +13,8 @@ the "free" tier — `resolve_entitlements(None)` already resolves to free.
 Appels sans session (audit E1) : les calculs sont comptés en mémoire par
 visiteur (`require_calculations_quota`) ; l'API v2, le module Opportunités et
 les exports de fichiers exigent une clé API valide (plans API vendus, clés
-admin), déjà comptée par sa `request_quota` dans `auth.require_auth`.
+admin), déjà comptée par sa `request_quota` dans `auth.require_auth` ; les
+exports CSV et Excel, la session admin seule, aucune clé (`check_export_format`).
 
 Wire the database before first request, same pattern as `auth.py`/`billing.py`:
     from entitlement_guard import set_database
@@ -28,7 +29,13 @@ from typing import Optional
 from auth import require_auth
 from bson import ObjectId
 from bson.errors import InvalidId
-from entitlements import Entitlements, ModuleAccess, admin_acces_illimite, resolve_entitlements
+from entitlements import (
+    Entitlements,
+    ModuleAccess,
+    admin_acces_illimite,
+    all_tier_entitlements,
+    resolve_entitlements,
+)
 from fastapi import Depends, HTTPException, Request, status
 from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError, PyMongoError
@@ -454,14 +461,50 @@ def require_calculations_quota():
     return _dependency
 
 
+def _export_non_propose(fmt: str) -> HTTPException:
+    """Refus d'un format d'export qu'aucune formule ne propose : il n'invite
+    pas à changer de formule, comme pour le téléchargement des tarifs."""
+    nom = {"csv": "CSV", "excel": "Excel"}.get(fmt, fmt.upper())
+    return HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail={
+            "error": "export_disabled",
+            "module": f"export_{fmt}",
+            "message": f"L'export {nom} n'est proposé dans aucune formule.",
+        },
+    )
+
+
 def check_export_format(fmt: str, user: Optional[dict], key_doc) -> Entitlements:
     """Exige le format d'export `fmt` dans la formule (`export_formats`, audit
-    E1) : 403 sinon. Un appel sans session passe avec une clé API valide ; sans
-    clé, il est refusé comme la formule free (aucun format), base absente
-    comprise."""
+    E1) : 403 sinon.
+
+    Décision de l'exploitant du 06/11/2026 : le PDF est accordé à toutes les
+    formules ; un format qu'aucune formule ne propose (CSV, Excel) est réservé
+    au compte admin connecté quand ADMIN_ACCES_ILLIMITE est activé, comme le
+    téléchargement des tarifs : aucune clé API n'y passe, même admin.
+
+    Un appel sans session passe, pour un format proposé, avec une clé API
+    valide ; sans clé, il est refusé, base absente comprise."""
     ent = resolve_entitlements(user)
-    if user is None and _cle_api(key_doc):
+    if not any(fmt in formule.export_formats for formule in all_tier_entitlements().values()):
+        if fmt not in ent.export_formats:
+            raise _export_non_propose(fmt)
         return ent
+    if user is None:
+        if _cle_api(key_doc):
+            return ent
+        # Sans session, `ent` est la formule free, qui a le PDF : sans clé,
+        # aucun fichier n'est produit pour un anonyme pour autant.
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": "upgrade_required",
+                "tier": "anonymous",
+                "module": f"export_{fmt}",
+                "message": f"L'export {fmt.upper()} est réservé aux comptes connectés.",
+            },
+        )
     if fmt not in ent.export_formats:
         raise _forbidden(ent.tier, f"export_{fmt}")
     return ent

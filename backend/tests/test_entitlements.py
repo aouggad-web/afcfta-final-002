@@ -126,7 +126,7 @@ def test_no_user_grants_free_tier():
 
     assert ent.tier == "free"
     assert ent.daily_calculations == 10
-    assert ent.export_formats == ()
+    assert ent.export_formats == ("pdf",)
     assert ent.api_access is False
 
 
@@ -184,22 +184,22 @@ def test_business_tier_grants_api_access_and_seats():
     assert ent.seats_included == 5
 
 
-def test_pro_tier_unlocks_all_export_formats_and_unlimited_profiles():
+def test_pro_tier_unlocks_unlimited_profiles():
     user = {"subscription_tier": "pro", "subscription_status": "active"}
 
     ent = resolve_entitlements(user)
 
-    assert set(ent.export_formats) == {"csv", "excel", "pdf"}
     assert ent.monthly_country_profiles is None
     assert ent.daily_calculations == 100
 
 
-def test_starter_tier_only_unlocks_csv_export():
-    user = {"subscription_tier": "starter", "subscription_status": "active"}
+@pytest.mark.parametrize("tier", TIERS)
+def test_chaque_formule_n_a_que_l_export_pdf(tier):
+    # Décision de l'exploitant du 06/11/2026 : le PDF pour toutes les formules,
+    # CSV et Excel pour aucune (réservés au compte admin).
+    user = {"subscription_tier": tier, "subscription_status": "active"}
 
-    ent = resolve_entitlements(user)
-
-    assert ent.export_formats == ("csv",)
+    assert resolve_entitlements(user).export_formats == ("pdf",)
 
 
 def test_trialing_status_grants_paid_tier():

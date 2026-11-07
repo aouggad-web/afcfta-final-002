@@ -14,6 +14,7 @@ from datetime import datetime, timedelta, timezone
 
 import httpx
 from bson.errors import InvalidId
+from entitlements import resolve_entitlements
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Request, Response, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -127,6 +128,10 @@ def _public_user(doc: dict) -> dict:
         "name": doc.get("name", ""),
         "email": doc.get("email", ""),
         "role": doc.get("role", "user"),
+        # Formats d'export de la session : le navigateur n'affiche ses boutons
+        # CSV et JSON que si « csv » y figure, Excel que si « excel » y figure,
+        # c'est-à-dire pour l'admin seulement (voir entitlements.py).
+        "export_formats": list(resolve_entitlements(doc).export_formats),
     }
 
 

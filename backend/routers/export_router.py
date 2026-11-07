@@ -14,7 +14,7 @@ from auth import require_admin
 from entitlement_guard import require_export_format
 from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from fastapi.responses import StreamingResponse
-from formules_tableur import neutraliser_formule
+from formules_tableur import neutraliser_formule, neutraliser_formule_csv
 from motor.motor_asyncio import AsyncIOMotorClient
 
 logger = logging.getLogger(__name__)
@@ -34,6 +34,16 @@ def init_db(db):
 def _sans_formules(rows):
     """Cellules texte neutralisées contre l'injection de formules (audit M5)."""
     return [{k: neutraliser_formule(v) for k, v in row.items()} for row in rows]
+
+
+def _sans_formules_csv(rows):
+    """Comme `_sans_formules`, pour un CSV (`neutraliser_formule_csv`) : le
+    premier champ de chaque ligne est jugé en début de ligne."""
+    premier = next(iter(rows[0]), None) if rows else None
+    return [
+        {k: neutraliser_formule_csv(v, debut_de_ligne=k == premier) for k, v in row.items()}
+        for row in rows
+    ]
 
 
 def get_db():
@@ -94,7 +104,7 @@ async def export_tariffs_csv(
         if rows:
             writer = csv.DictWriter(output, fieldnames=rows[0].keys())
             writer.writeheader()
-            writer.writerows(_sans_formules(rows))
+            writer.writerows(_sans_formules_csv(rows))
 
         filename = f"tariffs_{re.sub(r'[^A-Za-z0-9_-]', '_', country)}_{datetime.now(timezone.utc).strftime('%Y%m%d')}.csv"
 
@@ -322,8 +332,8 @@ async def export_comparison_csv(
         output = io.StringIO()
         writer = csv.DictWriter(output, fieldnames=rows[0].keys())
         # L'en-tête reprend les codes pays de la requête (`{pays}_duty`).
-        writer.writerow({k: neutraliser_formule(k) for k in rows[0]})
-        writer.writerows(_sans_formules(rows))
+        writer.writerow({k: neutraliser_formule_csv(k) for k in rows[0]})
+        writer.writerows(_sans_formules_csv(rows))
 
         pays = re.sub(r"[^A-Za-z0-9_-]", "_", "_".join(country_list))
         filename = f"comparison_{pays}_{datetime.now(timezone.utc).strftime('%Y%m%d')}.csv"

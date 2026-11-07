@@ -152,8 +152,9 @@ async def _format_d_export(
     user: Optional[dict] = Depends(get_optional_subscriber),
     key_doc: dict = Depends(require_auth),
 ) -> str:
-    """Format demandé, contrôlé contre la formule (audit E1) : excel et pdf sont
-    des formats vendus, json reste libre. Le handler reçoit le format d'ici, sans
+    """Format demandé, contrôlé contre la formule (audit E1) : le pdf est
+    accordé à toutes les formules, l'excel au seul compte admin (décision du
+    06/11/2026), json reste libre. Le handler reçoit le format d'ici, sans
     second paramètre dont le défaut pourrait diverger."""
     if format in ("excel", "pdf"):
         check_export_format(format, user, key_doc)

@@ -3,6 +3,7 @@ Tests for export endpoints
 """
 
 import io
+import re
 from unittest.mock import MagicMock
 
 import pandas as pd
@@ -111,22 +112,34 @@ def _app_comme_en_production():
     qui interroge une URL que la production ne sert pas ne prouve rien : on
     reconstitue ici la même composition.
 
-    Ces tests portent sur le contenu des fichiers : l'appelant y présente une
-    clé API admin, admise par chaque contrôle d'accès des exports (audit E1).
-    Ces contrôles eux-mêmes sont testés dans test_acces_par_formule.py.
+    Ces tests portent sur le contenu des fichiers : l'appelant y est le compte
+    admin connecté (avec ADMIN_ACCES_ILLIMITE, voir `_admin_illimite`), seul
+    admis aux exports CSV et Excel (décision du 06/11/2026), et présente une
+    clé API admin, exigée par le rapport de validation (`require_admin`). Ces
+    contrôles eux-mêmes sont testés dans test_acces_par_formule.py.
     """
     from auth import require_auth
+    from entitlement_guard import get_optional_subscriber
     from fastapi import APIRouter, FastAPI
 
     async def _cle_admin():
         return {"key_hash": "empreinte-de-test", "tier": "admin", "active": True}
+
+    async def _session_admin():
+        return {"_id": "admin", "email": "admin@exemple.invalid", "role": "admin"}
 
     api_router = APIRouter(prefix="/api")
     api_router.include_router(router)
     app = FastAPI()
     app.include_router(api_router)
     app.dependency_overrides[require_auth] = _cle_admin
+    app.dependency_overrides[get_optional_subscriber] = _session_admin
     return app
+
+
+@pytest.fixture(autouse=True)
+def _admin_illimite(monkeypatch):
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
 
 
 @pytest.fixture
@@ -412,3 +425,38 @@ class TestInjectionDeFormules:
         assert "'=1+1_duty" in en_tete
         assert "=1+1_duty" not in en_tete
         assert "comparison_KE__1_1_" in response.headers["content-disposition"]
+
+    def test_csv_lus_avec_le_separateur_point_virgule(self, mock_db):
+        """Excel en français coupe ces CSV à virgules sur chaque « ; » et chaque
+        fin de ligne, même entre guillemets : aucun morceau n'est une formule."""
+        piege = "x;=1+2;y\n=3+4"
+
+        async def find_one(*args, **kwargs):
+            lignes = [
+                {"hs_code": "010110", "description": piege},
+                # En fin de champ, le morceau continue sur le champ suivant.
+                {"hs_code": "010120", "description": "a,b;=", "unit": '"&1+1;'},
+                # Une liste est écrite sous forme de texte, « ; » compris.
+                {"hs_code": "010130", "customs_duty": ["w;=5+5;"]},
+                # Premier champ d'une ligne (comparaison) : un signe seul y
+                # continue, après la virgule, sur le champ suivant.
+                {"hs_code": "-", "description": "1+cmd|' /C calc'!A0;"},
+            ]
+            return {
+                "country_code": "KE",
+                "known_data_gaps": ["z;=6+6;"],
+                "tariffs": {"tariff_lines": lignes},
+            }
+
+        mock_db["customs_data"].find_one = find_one
+        init_db(mock_db)
+        client = TestClient(_app_comme_en_production())
+
+        for url, params in [
+            ("/api/export/tariffs/csv", {"country": "KE"}),
+            ("/api/export/comparison/csv", {"countries": "KE," + piege}),
+        ]:
+            response = client.get(url, params=params)
+            assert response.status_code == 200
+            morceaux = [m.lstrip('"') for m in re.split(r"[;\r\n]", response.text)]
+            assert not [m for m in morceaux if len(m) > 1 and m[0] in "=+-@"]

@@ -5,9 +5,12 @@
 - /api/reports/* (module Opportunités) : réservé aux abonnements payants ;
   les diagnostics /reports/health et /reports/oec-health restent publics.
 - /api/v2/* : refusé sans clé API valide.
-- Exports de fichiers : le format doit figurer dans la formule.
+- Exports de fichiers (décision de l'exploitant du 06/11/2026) : le PDF est
+  accordé à toutes les formules ; CSV et Excel ne le sont à aucune, réservés au
+  compte admin connecté.
 
-Une clé API valide (plans API vendus, clés admin) garde l'accès sans session.
+Une clé API valide (plans API vendus, clés admin) garde l'accès sans session,
+sauf aux exports CSV et Excel : aucune clé n'y passe, même admin.
 Sans base (dev, CI), calculs et rapports restent ouverts ; l'API v2 et les
 exports de fichiers, non.
 
@@ -33,6 +36,7 @@ import auth  # noqa: E402
 import entitlement_guard  # noqa: E402
 import routes  # noqa: E402
 from routers import export_router  # noqa: E402
+from routes import user_auth  # noqa: E402
 from services.user_auth_service import create_access_token  # noqa: E402
 
 from backend.tests.routes_effectives import routes_api  # noqa: E402
@@ -458,6 +462,8 @@ def test_sans_le_reglage_le_compte_admin_n_a_aucun_privilege(app_api, monkeypatc
 
     assert admin.get("/api/reports/macro/NGA").status_code == 403
     assert admin.get("/api/tariff-data/download-json/COG").status_code == 403
+    assert admin.get("/api/export/tariffs/csv?country=KE").status_code == 403
+    assert admin.get("/api/export/tariffs/excel?countries=KE").status_code == 403
 
 
 # ── API v2 : clé API valide ou session Business ─────────────────────────────
@@ -498,32 +504,68 @@ def test_api_v2_sans_base_refusee(app_api):
 
 # ── Exports de fichiers : le format doit figurer dans la formule ────────────
 
-
-def test_export_csv_refuse_au_free_accorde_au_starter(app_api):
-    chemin = "/api/export/tariffs/csv?country=KE"
-    free = _client(app_api, abonne=ABONNES["free"]).get(chemin)
-    starter = _client(app_api, abonne=ABONNES["starter"]).get(chemin)
-
-    assert free.status_code == 403
-    assert free.json()["detail"]["module"] == "export_csv"
-    assert starter.status_code == 200
-    comparaison = "/api/export/comparison/csv?countries=KE,TZ"
-    assert _client(app_api, abonne=ABONNES["free"]).get(comparaison).status_code == 403
-    assert _client(app_api, abonne=ABONNES["starter"]).get(comparaison).status_code == 200
+# Décision de l'exploitant du 06/11/2026 : CSV et Excel réservés au compte
+# admin connecté, dans tous les modules ; le PDF accordé à toutes les formules.
+EXPORTS_RESERVES = {
+    "/api/export/tariffs/csv?country=KE": "csv",
+    "/api/export/comparison/csv?countries=KE,TZ": "csv",
+    "/api/export/tariffs/excel?countries=KE": "excel",
+    "/api/regional-analytics/export?format=excel": "excel",
+}
+EXPORT_PDF = "/api/regional-analytics/export?format=pdf"
 
 
-def test_export_excel_refuse_au_starter_accorde_au_pro(app_api):
-    chemin = "/api/export/tariffs/excel?countries=KE"
+@pytest.mark.parametrize("chemin", EXPORTS_RESERVES)
+@pytest.mark.parametrize("formule", ABONNES)
+def test_csv_et_excel_refuses_a_toutes_les_formules(app_api, chemin, formule):
+    # Business comprise, et le refus n'invite pas à changer de formule.
+    reponse = _client(app_api, abonne=ABONNES[formule]).get(chemin)
 
-    assert _client(app_api, abonne=ABONNES["starter"]).get(chemin).status_code == 403
-    assert _client(app_api, abonne=ABONNES["pro"]).get(chemin).status_code == 200
+    assert reponse.status_code == 403
+    detail = reponse.json()["detail"]
+    assert detail["error"] == "export_disabled"
+    assert detail["module"] == f"export_{EXPORTS_RESERVES[chemin]}"
+    nom = {"csv": "CSV", "excel": "Excel"}[EXPORTS_RESERVES[chemin]]
+    assert detail["message"] == f"L'export {nom} n'est proposé dans aucune formule."
 
 
-def test_export_refuse_a_l_anonyme_sauf_cle_api(app_api):
-    chemin = "/api/export/tariffs/csv?country=KE"
+@pytest.mark.parametrize("chemin", EXPORTS_RESERVES)
+def test_csv_et_excel_accordes_au_compte_admin_connecte(app_api, chemin, monkeypatch):
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
 
-    assert _client(app_api).get(chemin).status_code == 403
-    assert _client(app_api, cle=CLE_VENDUE).get(chemin).status_code == 200
+    assert _client(app_api, abonne=ADMIN).get(chemin).status_code == 200
+
+
+@pytest.mark.parametrize("chemin", EXPORTS_RESERVES)
+def test_csv_et_excel_refuses_sans_session_meme_avec_une_cle_admin(app_api, chemin, monkeypatch):
+    # Comme le téléchargement des tarifs : la session admin, aucune clé.
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
+    for cle in (None, CLE_VENDUE, CLE_ADMIN):
+        reponse = _client(app_api, cle=cle).get(chemin)
+        assert reponse.status_code == 403, cle
+        assert reponse.json()["detail"]["error"] == "export_disabled"
+
+
+@pytest.mark.parametrize("formule", ABONNES)
+def test_pdf_accorde_a_toutes_les_formules(app_api, formule):
+    reponse = _client(app_api, abonne=ABONNES[formule]).get(EXPORT_PDF)
+
+    assert reponse.status_code == 200
+    assert reponse.headers["content-disposition"].endswith(".pdf")
+
+
+def test_pdf_accorde_au_compte_admin_connecte(app_api, monkeypatch):
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
+
+    assert _client(app_api, abonne=ADMIN).get(EXPORT_PDF).status_code == 200
+
+
+def test_pdf_refuse_a_l_anonyme_sauf_cle_api(app_api):
+    anonyme = _client(app_api).get(EXPORT_PDF)
+
+    assert anonyme.status_code == 403
+    assert anonyme.json()["detail"]["tier"] == "anonymous"
+    assert _client(app_api, cle=CLE_VENDUE).get(EXPORT_PDF).status_code == 200
 
 
 def test_export_sans_base_refuse(app_api):
@@ -531,6 +573,7 @@ def test_export_sans_base_refuse(app_api):
     auth.set_database(None)
 
     assert _client(app_api).get("/api/export/tariffs/csv?country=KE").status_code == 403
+    assert _client(app_api).get(EXPORT_PDF).status_code == 403
 
 
 def test_rapport_de_validation_reserve_a_l_admin(app_api):
@@ -541,19 +584,35 @@ def test_rapport_de_validation_reserve_a_l_admin(app_api):
     assert _client(app_api, cle=CLE_ADMIN).get(chemin).status_code == 200
 
 
-def test_export_regional_excel_et_pdf_selon_la_formule_json_libre(app_api):
+def test_export_regional_excel_par_defaut_json_libre(app_api):
     chemin = "/api/regional-analytics/export"
     anonyme = _client(app_api)
-    pro = _client(app_api, abonne=ABONNES["pro"])
 
-    assert anonyme.get(chemin).status_code == 403  # excel par défaut
-    assert anonyme.get(chemin, params={"format": "pdf"}).status_code == 403
-    assert _client(app_api, abonne=ABONNES["starter"]).get(chemin).status_code == 403
+    # Sans format : excel, réservé à l'admin.
+    assert _client(app_api, abonne=ABONNES["business"]).get(chemin).status_code == 403
+    assert anonyme.get(chemin).status_code == 403
     assert anonyme.get(chemin, params={"format": "json"}).status_code == 200
-    reponse = pro.get(chemin, params={"format": "pdf"})
-    assert reponse.status_code == 200
-    assert reponse.headers["content-disposition"].endswith(".pdf")
-    assert io.BytesIO(pro.get(chemin).content).read(2) == b"PK"  # xlsx
+
+
+def test_export_regional_excel_de_l_admin_est_un_xlsx(app_api, monkeypatch):
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
+    reponse = _client(app_api, abonne=ADMIN).get("/api/regional-analytics/export")
+
+    assert io.BytesIO(reponse.content).read(2) == b"PK"  # xlsx
+
+
+def test_la_session_donne_au_navigateur_ses_formats_d_export(app_api, base, monkeypatch):
+    """GET /api/auth/me : le navigateur masque ses boutons d'export CSV, JSON et
+    Excel d'après `export_formats` (le PDF seul pour toutes les formules)."""
+    monkeypatch.setattr(user_auth, "_db", base)
+    formats = {
+        formule: _client(app_api, abonne=abonne).get("/api/auth/me").json()["export_formats"]
+        for formule, abonne in ABONNES.items()
+    }
+    assert formats == {formule: ["pdf"] for formule in ABONNES}
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
+    me = _client(app_api, abonne=ADMIN).get("/api/auth/me").json()
+    assert me["export_formats"] == ["csv", "excel", "pdf"]
 
 
 def _porte(route, prefixe):

@@ -108,7 +108,7 @@ async function loadEntitlements() {
         ok: ent.export_formats.length > 0,
         text: ent.export_formats.length > 0
           ? 'Export ' + ent.export_formats.map(function (f) { return f.toUpperCase(); }).join(' + ')
-          : 'Export CSV / Excel / PDF'
+          : 'Export PDF'
       });
       items.push({
         ok: ent.api_access,
