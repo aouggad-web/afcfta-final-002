@@ -150,7 +150,8 @@ function ContactChip({ icon: Icon, value, href, color = 'gray' }) {
       transition-colors cursor-pointer group`}
     >
       <Icon className="w-3 h-3 flex-shrink-0 text-[var(--afcfta-muted)] group-hover:text-[var(--text)]" />
-      <span className="truncate min-w-0">{value}</span>
+      {/* Numéro ou e-mail : de gauche à droite, même dans la page en arabe. */}
+      <span className="truncate min-w-0" dir="ltr">{value}</span>
     </span>
   );
   return href ? (
@@ -185,10 +186,10 @@ function ContactRow({ icon: Icon, label, value, href, mono = false }) {
         {href ? (
           <a href={href} target="_blank" rel="noreferrer"
             className="text-[var(--text)] hover:text-[var(--text)] underline-offset-2 hover:underline">
-            {value}
+            {mono ? <bdi dir="ltr">{value}</bdi> : value}
           </a>
         ) : (
-          <span>{value}</span>
+          <span>{mono ? <bdi dir="ltr">{value}</bdi> : value}</span>
         )}
       </div>
     </div>

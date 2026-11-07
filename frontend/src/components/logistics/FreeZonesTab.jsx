@@ -290,7 +290,7 @@ export default function FreeZonesTab({ language = 'fr' }) {
                         <p>📍 {zone.authority.address}</p>
                       )}
                       {zone.authority.phone && (
-                        <p>📞 <a href={`tel:${zone.authority.phone}`} className="hover:underline">{zone.authority.phone}</a></p>
+                        <p>📞 <a href={`tel:${zone.authority.phone}`} className="hover:underline"><bdi dir="ltr">{zone.authority.phone}</bdi></a></p>
                       )}
                       {zone.authority.email && (
                         <p>✉️ <a href={`mailto:${zone.authority.email}`} className="text-[var(--info)] hover:underline">{zone.authority.email}</a></p>

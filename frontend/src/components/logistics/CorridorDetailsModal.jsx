@@ -435,7 +435,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                                   {agent.city && <p className="text-xs text-[var(--afcfta-muted)]">📍 {trDonnee(agent.city, language)}{agent.address ? ` – ${agent.address}` : ''}</p>}
                                   <div className="flex flex-wrap gap-2 mt-1">
                                     {agent.phone && (
-                                      <a href={`tel:${agent.phone}`} className="text-xs text-[var(--info)] hover:underline">📞 {agent.phone}</a>
+                                      <a href={`tel:${agent.phone}`} className="text-xs text-[var(--info)] hover:underline">📞 <bdi dir="ltr">{agent.phone}</bdi></a>
                                     )}
                                     {agent.email && (
                                       <a href={`mailto:${agent.email}`} className="text-xs text-[var(--info)] hover:underline">✉️ {agent.email}</a>

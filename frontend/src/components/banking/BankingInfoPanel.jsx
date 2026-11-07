@@ -473,7 +473,7 @@ function ContactBlock({ contact, t }) {
       {contact.address && <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">📍</span>{contact.address}</div>}
       {contact.phone && (
         <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">📞</span>
-          <a href={`tel:${contact.phone}`} className="text-[var(--info)] hover:underline">{contact.phone}</a>
+          <a href={`tel:${contact.phone}`} className="text-[var(--info)] hover:underline"><bdi dir="ltr">{contact.phone}</bdi></a>
         </div>
       )}
       {contact.email && (
@@ -1690,7 +1690,7 @@ function RegisterTab({ t, countries, language }) {
                         )}
                         {bank.contact?.phone && (
                           <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">📞</span>
-                            <a href={`tel:${bank.contact.phone}`} className="text-[var(--info)] hover:underline">{bank.contact.phone}</a>
+                            <a href={`tel:${bank.contact.phone}`} className="text-[var(--info)] hover:underline"><bdi dir="ltr">{bank.contact.phone}</bdi></a>
                           </div>
                         )}
                         {bank.contact?.email && (
@@ -1954,7 +1954,7 @@ function RegulationsTab({ t, language }) {
                             <div className="space-y-1">
                               {row.central_bank_phone && (
                                 <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">📞</span>
-                                  <a href={`tel:${row.central_bank_phone}`} className="text-[var(--info)] hover:underline">{row.central_bank_phone}</a>
+                                  <a href={`tel:${row.central_bank_phone}`} className="text-[var(--info)] hover:underline"><bdi dir="ltr">{row.central_bank_phone}</bdi></a>
                                 </div>
                               )}
                               {row.central_bank_email && (
