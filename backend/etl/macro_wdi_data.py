@@ -17,11 +17,11 @@ ind_usd=NV.IND.TOTL.CD, manuf_usd=NV.IND.MANF.CD, serv_usd=NV.SRV.TOTL.CD,
 gdp_usd=NY.GDP.MKTP.CD.
 
 Source   : https://data.worldbank.org/ (API v2, sans clé)
-Récupéré : 2026-09-21T16:58:25.424345+00:00
+Récupéré : 2026-11-03T11:37:22.908779+00:00
 Couverture : 53 pays, 5056 points (pays×année).
 """
 
-WDI_FETCHED_AT = "2026-09-21T16:58:25.424345+00:00"
+WDI_FETCHED_AT = "2026-11-03T11:37:22.908779+00:00"
 
 WDI_MACRO = {'AGO': {2015: {'agri': 13.66,
                 'agri_usd': 14011251328,
