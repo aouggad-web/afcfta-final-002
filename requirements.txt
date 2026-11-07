@@ -23,6 +23,8 @@ numpy==2.3.3
 openpyxl==3.1.5
 xlrd==2.0.2
 pymupdf==1.28.2
+# Vignettes des actualités (réduction et réencodage, sans métadonnées).
+pillow==13.0.0
 
 # Email support
 aiosmtplib==5.1.3
