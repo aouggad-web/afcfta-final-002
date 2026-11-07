@@ -28,6 +28,22 @@ le reconstruit à la première requête — mais ne comptez pas dessus.
 BRANCH=main bash sync_emergent.sh
 ```
 
+**Tapez-la vous-même dans le terminal (Shell) Emergent** (depuis `/app` :
+`cd /app && BRANCH=main bash sync_emergent.sh`), pas dans le chat de l'agent
+Emergent : chaque message à l'agent est facturé comme un tour, une
+synchronisation par le terminal n'en coûte aucun (conseil du support Emergent,
+novembre 2026). Une seule synchronisation par lot, après la fusion ; ne la
+redemandez pas quand elle a réussi. Elle a réussi si :
+
+- la ligne qui suit « 1bis/6 » affiche « ✓ » ;
+- la sortie se termine par « ✅ Synchronisation terminée », sans
+  « ⚠ RAPPEL » juste avant (sinon, voir §6 bis).
+
+Ne collez jamais de valeur secrète (clé, jeton, mot de passe, contenu de
+`backend/.env`) dans le chat Emergent : modifiez `/app/backend/.env` dans le
+terminal, puis `supervisorctl restart backend`. Une valeur déjà collée est à
+considérer comme exposée et à changer.
+
 Ne lancez **pas** `start.sh` sous Emergent : supervisord gère les services, et
 `sync_emergent.sh` fait déjà `supervisorctl restart all`.
 
