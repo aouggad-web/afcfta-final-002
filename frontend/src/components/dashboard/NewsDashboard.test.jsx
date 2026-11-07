@@ -114,10 +114,31 @@ describe('NewsRedaction — panneau du rédacteur en chef', () => {
     await waitFor(() => expect(csrfFetch).toHaveBeenCalledTimes(1));
     expect(csrfFetch.mock.calls[0][0]).toMatch(/\/redaction\/epingle$/);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Chercher l’image' }));
+    // Pendant une action, le panneau désactive ses boutons (un clic serait
+    // ignoré) : attendre qu'il ait rechargé la file avant le clic suivant.
+    const chercher = screen.getByRole('button', { name: 'Chercher l’image' });
+    await waitFor(() => expect(chercher).not.toBeDisabled());
+    fireEvent.click(chercher);
     await waitFor(() => expect(csrfFetch).toHaveBeenCalledTimes(2));
     expect(csrfFetch.mock.calls[1][0]).toMatch(/\/redaction\/image$/);
     expect(JSON.parse(csrfFetch.mock.calls[1][1].body)).toEqual({ id: 'q1' });
+  });
+
+  it('lance la recherche des images manquantes depuis « Publiés »', async () => {
+    useAuth.mockReturnValue({ user: { role: 'admin' } });
+    csrfFetch.mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve({ ok: true, recherches: 1 }),
+    });
+    render(<NewsDashboard language="fr" />);
+    await screen.findByText('Dépêche en attente');
+
+    fireEvent.click(screen.getByRole('tab', { name: /Publiés/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Chercher les images manquantes' }));
+    await waitFor(() => expect(csrfFetch).toHaveBeenCalledTimes(1));
+    expect(csrfFetch.mock.calls[0][0]).toMatch(/\/redaction\/images-manquantes$/);
+    expect(await screen.findByRole('status')).toHaveTextContent('Recherche lancée pour 1 article(s)');
   });
 
   it('affiche le refus du serveur au rédacteur', async () => {

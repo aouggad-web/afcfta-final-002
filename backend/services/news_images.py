@@ -202,6 +202,7 @@ def vignette(donnees: bytes) -> bytes:
 
 
 async def enregistrer(db, article_id: str, image: Dict, redacteur: Dict) -> None:
+    """Choix du rédacteur : remplace toute image, et lève un retrait."""
     await db.news_images.update_one(
         {"_id": article_id},
         {
@@ -209,6 +210,24 @@ async def enregistrer(db, article_id: str, image: Dict, redacteur: Dict) -> None
                 **image,
                 "recupere_le": datetime.now(timezone.utc),
                 "recupere_par": redacteur.get("email") or "",
+            },
+            "$unset": {"retiree": ""},
+        },
+        upsert=True,
+    )
+
+
+async def enregistrer_si_absente(db, article_id: str, image: Dict, redacteur: Dict) -> None:
+    """Recherche automatique : n'écrit que si l'article n'a encore ni image ni
+    retrait. `$setOnInsert` avec `upsert` est atomique : un choix fait par le
+    rédacteur pendant le téléchargement n'est jamais écrasé."""
+    await db.news_images.update_one(
+        {"_id": article_id},
+        {
+            "$setOnInsert": {
+                **image,
+                "recupere_le": datetime.now(timezone.utc),
+                "recupere_par": f"automatique ({redacteur.get('email') or ''})",
             }
         },
         upsert=True,
@@ -216,9 +235,26 @@ async def enregistrer(db, article_id: str, image: Dict, redacteur: Dict) -> None
 
 
 async def retirer(db, article_id: str) -> None:
-    await db.news_images.delete_one({"_id": article_id})
+    """Garde une trace du retrait : la recherche automatique ne remet pas une
+    image que le rédacteur a retirée (lui peut toujours en choisir une)."""
+    await db.news_images.update_one(
+        {"_id": article_id},
+        {
+            "$set": {"retiree": True, "recupere_le": datetime.now(timezone.utc)},
+            "$unset": {"donnees": "", "type": "", "origine": ""},
+        },
+        upsert=True,
+    )
 
 
 async def ids_illustres(db) -> set:
+    docs = await db.news_images.find({"donnees": {"$exists": True}}, {"_id": 1}).to_list(
+        length=None
+    )
+    return {d["_id"] for d in docs}
+
+
+async def ids_decides(db) -> set:
+    """Articles dont l'image est déjà réglée : présente ou retirée."""
     docs = await db.news_images.find({}, {"_id": 1}).to_list(length=None)
     return {d["_id"] for d in docs}

@@ -191,12 +191,13 @@ async def decider(db, article_id: str, action: str, collectes: List[Dict], redac
     return True
 
 
-async def publier_tout(db, collectes: List[Dict], redacteur: Dict) -> int:
-    """Publie d'un coup toute la file à valider (utile au premier jour)."""
+async def publier_tout(db, collectes: List[Dict], redacteur: Dict) -> List[str]:
+    """Publie d'un coup toute la file à valider (utile au premier jour) ;
+    rend les identifiants publiés."""
     file = (await etat_redaction(db, collectes))["a_valider"]
     for article in file:
         await decider(db, article["id"], "publier", collectes, redacteur)
-    return len(file)
+    return [article["id"] for article in file]
 
 
 async def epingler(db, article_id: str, collectes: List[Dict], redacteur: Dict) -> bool:

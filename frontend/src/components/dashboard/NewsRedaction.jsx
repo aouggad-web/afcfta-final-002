@@ -255,7 +255,12 @@ const NewsRedaction = ({ onChange }) => {
     setOccupe(true);
     setMessage(null);
     try {
-      if (quoi === 'decision') await appeler('/redaction/decision', 'POST', donnees);
+      if (quoi === 'decision') {
+        await appeler('/redaction/decision', 'POST', donnees);
+        if (donnees.action === 'publier') {
+          setMessage({ texte: 'Article publié. Son image est cherchée en arrière-plan.' });
+        }
+      }
       else if (quoi === 'epingle') await appeler('/redaction/epingle', 'POST', donnees);
       else if (quoi === 'monter' || quoi === 'descendre') {
         const ordre = [...epingles];
@@ -271,7 +276,12 @@ const NewsRedaction = ({ onChange }) => {
       } else if (quoi === 'retirer-image') await appeler('/redaction/image/retirer', 'POST', donnees);
       else if (quoi === 'tout') {
         const r = await appeler('/redaction/publier-tout');
-        setMessage({ texte: `${r.publies} article(s) publié(s).` });
+        setMessage({
+          texte: `${r.publies} article(s) publié(s). Images en cours de recherche : rechargez dans une minute.`,
+        });
+      } else if (quoi === 'images-manquantes') {
+        const r = await appeler('/redaction/images-manquantes');
+        setMessage({ texte: `Recherche lancée pour ${r.recherches} article(s) : rechargez dans une minute.` });
       } else if (quoi === 'bloquer') await appeler('/redaction/regles', 'POST', donnees);
       else if (quoi === 'debloquer') await appeler(`/redaction/regles/${encodeURIComponent(donnees.id)}`, 'DELETE');
       else if (quoi === 'manuel') {
@@ -308,6 +318,19 @@ const NewsRedaction = ({ onChange }) => {
           <Action disabled={occupe} onClick={() => agir('tout')}>
             Tout publier ({etat.a_valider.length})
           </Action>
+        )}
+        {onglet === 'publies' && (
+          <div className="flex gap-1.5">
+            <Action
+              disabled={occupe || !(etat?.publies || []).some((a) => !a.has_image)}
+              onClick={() => agir('images-manquantes')}
+            >
+              Chercher les images manquantes
+            </Action>
+            <Action disabled={occupe} onClick={() => agir('recharger')}>
+              Recharger
+            </Action>
+          </div>
         )}
       </div>
 
