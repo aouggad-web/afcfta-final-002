@@ -43,7 +43,8 @@ _admin = [Depends(require_admin)]
 # or no auth at all) is gated as the free tier — see
 # entitlement_guard.get_optional_subscriber. Exceptions (audit E1): without a
 # session, calculations are counted in memory per visitor, and reports, API v2
-# and file exports are refused unless a valid API key is sent — see the
+# and file exports are refused unless a valid API key is sent (CSV and Excel
+# exports: the admin session only, no key, no plan includes them) — see the
 # entitlement_guard module docstring.
 #
 # Browse/reference modules (stats, production, logistics, roo, tools) are gated

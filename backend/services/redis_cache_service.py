@@ -182,6 +182,12 @@ class JsonFileCacheService:
         return self.invalidate_pattern("*")
 
 
+# Après un échec de connexion, pas de nouvel essai avant ce délai (constat E2) :
+# sinon chaque lecture ou écriture du cache retente la connexion (jusqu'à 2 s
+# chacune si l'hôte ne répond pas), de façon synchrone dans le handler.
+_DELAI_RECONNEXION_S = 30
+
+
 class RedisCacheService:
     """
     Redis-based caching service for expensive API calls.
@@ -191,10 +197,16 @@ class RedisCacheService:
         self.redis_url = redis_url or os.environ.get("REDIS_URL", "redis://localhost:6379")
         self._client: Optional[redis.Redis] = None
         self._connected = False
+        self._dernier_echec: Optional[float] = None
 
     def _get_client(self) -> Optional[redis.Redis]:
         """Get or create Redis client with lazy initialization"""
         if self._client is None:
+            if (
+                self._dernier_echec is not None
+                and time.monotonic() - self._dernier_echec < _DELAI_RECONNEXION_S
+            ):
+                return None
             try:
                 app_env = os.environ.get("APP_ENV", "development")
                 if app_env != "development":
@@ -218,10 +230,12 @@ class RedisCacheService:
                 logger.warning(f"Redis connection failed: {e}. Cache disabled.")
                 self._client = None
                 self._connected = False
+                self._dernier_echec = time.monotonic()
             except Exception as e:
                 logger.error(f"Unexpected Redis error: {e}")
                 self._client = None
                 self._connected = False
+                self._dernier_echec = time.monotonic()
         return self._client
 
     @property

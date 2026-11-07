@@ -4,6 +4,7 @@ worker. Doublons retirés et listes bornées à 20 ; requêtes de recherche
 bornées à 100 caractères ; Redis injoignable n'est plus retenté à chaque appel.
 """
 
+import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
@@ -100,3 +101,74 @@ def test_redis_injoignable_pas_de_nouvel_essai_avant_le_delai(monkeypatch):
     monkeypatch.setattr(cl, "_DELAI_RECONNEXION_S", 0)
     couche.get("k")
     assert len(essais) == 2
+
+
+class _RedisRefuse:
+    """Module redis factice : chaque connexion est comptée, puis refusée."""
+
+    ConnectionError = ConnectionError
+
+    def __init__(self, erreur=ConnectionError):
+        self.essais = 0
+        self.erreur = erreur
+
+    def from_url(self, *args, **kwargs):
+        self.essais += 1
+        return self
+
+    def ping(self):
+        raise self.erreur("connexion refusée")
+
+
+def test_cache_service_redis_injoignable_pas_de_nouvel_essai_avant_30_s(monkeypatch):
+    import time
+
+    from services import cache_service as cs
+
+    horloge = [1000.0]
+    redis_refuse = _RedisRefuse()
+    monkeypatch.setattr(time, "monotonic", lambda: horloge[0])
+    monkeypatch.setattr(cs, "REDIS_AVAILABLE", True)
+    monkeypatch.setattr(cs, "CACHE_ENABLED", True)
+    monkeypatch.setattr(cs, "redis", redis_refuse)
+    monkeypatch.setattr(cs, "_redis_client", None)
+    monkeypatch.setattr(cs, "_dernier_echec", None)
+    monkeypatch.setattr(cs, "_DISK_CACHE_ENABLED", False)
+    monkeypatch.setattr(cs, "_MEMORY_STORE", {})
+
+    assert cs.cache_get("k") is None
+    assert cs.cache_set("k", 1) is True  # repli mémoire
+    horloge[0] += 29.9
+    assert cs.cache_get("k") == 1
+    assert redis_refuse.essais == 1
+
+    # 30 s après l'échec, la connexion est retentée.
+    horloge[0] += 0.1
+    cs.cache_get("k")
+    assert redis_refuse.essais == 2
+
+
+# Hôte muet (redis.TimeoutError) et REDIS_URL vide (ValueError) n'héritent pas
+# de redis.ConnectionError : ils passent par l'autre branche d'échec.
+@pytest.mark.parametrize("erreur", [ConnectionError, TimeoutError])
+def test_cache_ia_redis_injoignable_pas_de_nouvel_essai_avant_30_s(monkeypatch, erreur):
+    import time
+
+    from services import redis_cache_service as rcs
+
+    horloge = [1000.0]
+    redis_refuse = _RedisRefuse(erreur)
+    monkeypatch.setattr(time, "monotonic", lambda: horloge[0])
+    monkeypatch.setattr(rcs, "redis", redis_refuse)
+    service = rcs.RedisCacheService("redis://localhost:6379")
+
+    assert service.get("p", {}) is None
+    assert service.set("p", {}, {"v": 1}) is False
+    horloge[0] += 29.9
+    assert service.is_connected is False
+    assert redis_refuse.essais == 1
+
+    # 30 s après l'échec, la connexion est retentée.
+    horloge[0] += 0.1
+    service.get("p", {})
+    assert redis_refuse.essais == 2

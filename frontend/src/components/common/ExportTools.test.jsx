@@ -1,7 +1,23 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CSVExportButton, JSONExportButton } from './ExportTools';
+import { useAuth } from '../../context/AuthContext';
+import { CSVExportButton, JSONExportButton, PDFExportButton } from './ExportTools';
+
+vi.mock('../../context/AuthContext', () => ({ useAuth: vi.fn() }));
+
+// Décision de l'exploitant du 06/11/2026 : CSV et Excel réservés à
+// l'administrateur, seule sa session a « csv » et « excel » dans
+// `export_formats` (GET /api/auth/me) ; toutes les formules ont le PDF.
+const SESSION_ADMIN = { user: { role: 'admin', export_formats: ['csv', 'excel', 'pdf'] } };
+const SESSION_BUSINESS = { user: { role: 'user', export_formats: ['pdf'] } };
+const SESSION_FREE = { user: { role: 'user', export_formats: ['pdf'] } };
+const SANS_DROIT = [
+  ['un abonné Business', SESSION_BUSINESS],
+  ['un abonné free', SESSION_FREE],
+  ['un visiteur sans session', { user: null }],
+  ['un écran hors du fournisseur de session', null],
+];
 
 // Capture le contenu CSV directement via le constructeur Blob (jsdom n'expose
 // pas Blob.text() de façon fiable). On neutralise aussi createObjectURL et le
@@ -13,6 +29,7 @@ const originalRevoke = URL.revokeObjectURL;
 let clickSpy;
 
 beforeEach(() => {
+  useAuth.mockReturnValue(SESSION_ADMIN);
   csvContent = '';
   global.Blob = vi.fn((parts) => {
     csvContent = (parts || []).join('');
@@ -115,10 +132,11 @@ describe('CSVExportButton', () => {
     await userEvent.click(screen.getByRole('button'));
 
     const lines = csvContent.replace(/^﻿/, '').split('\n');
-    // Le nombre négatif reste un nombre, le tiret seul reste tel quel.
+    // Le nombre négatif reste un nombre ; le tiret seul, en début de ligne,
+    // est neutralisé (voir plus bas).
     expect(lines[1]).toBe("'=1+1,-5");
     expect(lines[2]).toBe("'+cmd,'@SUM(A1)");
-    expect(lines[3]).toBe("-,'- Autres");
+    expect(lines[3]).toBe("'-,'- Autres");
   });
 
   it('neutralise aussi une valeur tableau dont le texte commence par =', async () => {
@@ -139,6 +157,44 @@ describe('CSVExportButton', () => {
     expect(csvContent).toContain("Pays exportateur,'@SUM(1)");
   });
 
+  it('neutralise aussi après un « ; » ou un saut de ligne intérieur (Excel en français)', async () => {
+    const rows = [
+      { country: 'x;=1+2;y', exports: 'a\n@SUM(1)' },
+      { country: 'Animaux vivants; produits', exports: 'x;-;y' },
+      // En fin de cellule, le morceau continue sur la cellule suivante.
+      { country: 'x;=', exports: '"&1+1;' },
+    ];
+    render(<CSVExportButton rows={rows} columns={columns} />);
+    await userEvent.click(screen.getByRole('button'));
+
+    expect(csvContent).toContain(`"x;'=1+2;y","a\n'@SUM(1)"\n"Animaux vivants; produits","x;-;y"\n"x;'=","""&1+1;"`);
+  });
+
+  it('neutralise en début de ligne un signe seul ou un nombre négatif', async () => {
+    // Ouvert avec le séparateur « ; », le premier champ continue après la
+    // virgule sur le suivant : « -,1+cmd|' /C calc'!A0 » serait une formule.
+    const rows = [
+      { country: '-', exports: "1+cmd|' /C calc'!A0" },
+      { country: -5, exports: '-' },
+      { country: 'Maroc', exports: -5 },
+    ];
+    render(<CSVExportButton rows={rows} columns={columns} />);
+    await userEvent.click(screen.getByRole('button'));
+
+    const lines = csvContent.replace(/^\uFEFF/, '').split('\n');
+    expect(lines.slice(1)).toEqual(["'-,1+cmd|' /C calc'!A0", "'-5,-", 'Maroc,-5']);
+  });
+
+  it.each(SANS_DROIT)('n’est pas proposé à %s', (_, session) => {
+    useAuth.mockReturnValue(session);
+    render(<CSVExportButton rows={[{ country: 'X' }]} columns={columns} />);
+    expect(screen.queryByRole('button')).toBeNull();
+  });
+
+  it('est proposé à l’administrateur', () => {
+    render(<CSVExportButton rows={[{ country: 'X' }]} columns={columns} />);
+    expect(screen.getByRole('button')).toHaveTextContent('Exporter CSV');
+  });
 });
 
 describe('JSONExportButton', () => {
@@ -165,5 +221,27 @@ describe('JSONExportButton', () => {
     await userEvent.click(screen.getByRole('button'));
 
     expect(JSON.parse(csvContent)).toEqual(data);
+  });
+
+  // Téléchargement de données : même règle que le CSV.
+  it.each(SANS_DROIT)('n’est pas proposé à %s', (_, session) => {
+    useAuth.mockReturnValue(session);
+    render(<JSONExportButton data={{ a: 1 }} />);
+    expect(screen.queryByRole('button')).toBeNull();
+  });
+
+  it('est proposé à l’administrateur', () => {
+    render(<JSONExportButton data={{ a: 1 }} />);
+    expect(screen.getByRole('button')).toHaveTextContent('Exporter JSON');
+  });
+});
+
+describe('PDFExportButton', () => {
+  // Le PDF des résultats est permis à toutes les formules : le bouton ne
+  // dépend pas de la session.
+  it.each([['l’administrateur', SESSION_ADMIN], ...SANS_DROIT])('est proposé à %s', (_, session) => {
+    useAuth.mockReturnValue(session);
+    render(<PDFExportButton targetRef={{ current: null }} />);
+    expect(screen.getByRole('button')).toHaveTextContent('Exporter PDF');
   });
 });

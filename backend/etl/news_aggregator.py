@@ -25,17 +25,22 @@ from translations import COUNTRY_TRANSLATIONS
 # Décodeur Google News (base64 → URL source réelle). Sans lui, les entrées de
 # `news.google.com/rss/articles/...` renvoient "refused to connect" quand un
 # utilisateur clique dessus (Google News exige un redirect JS que certains
-# navigateurs/réseaux bloquent).
+# navigateurs/réseaux bloquent). googlenewsdecoder 0.2.2 (backend/requirements.txt
+# seulement), version asynchrone : httpx, deux requêtes par lien décodé.
 try:
-    from googlenewsdecoder import gnewsdecoder as _gnews_decode  # type: ignore
+    from googlenewsdecoder import gnews_decoder_async as _gnews_decode  # type: ignore
 
     GNEWS_DECODER_AVAILABLE = True
 except ImportError:  # optional dependency
     _gnews_decode = None  # type: ignore
     GNEWS_DECODER_AVAILABLE = False
 
+# Le délai de 10 s de googlenewsdecoder vaut pour chaque opération réseau, pas pour
+# une réponse envoyée au compte-gouttes : chaque lien a donc aussi un délai total.
+_DECODAGE_MAX_S = 30
 
-def _resolve_google_news_url(url: str) -> str:
+
+async def _resolve_google_news_url(url: str) -> str:
     """Décode une URL redirect Google News (`news.google.com/rss/articles/...`)
     vers l'URL réelle de l'article source. Si la résolution échoue ou si
     l'URL n'est pas une redirection Google News, retourne l'URL inchangée.
@@ -45,8 +50,8 @@ def _resolve_google_news_url(url: str) -> str:
     if not GNEWS_DECODER_AVAILABLE or _gnews_decode is None:
         return url
     try:
-        result = _gnews_decode(url, interval=0)
-        if isinstance(result, dict) and result.get("status") and result.get("decoded_url"):
+        result = await asyncio.wait_for(_gnews_decode(url, interval=0, timeout=10), _DECODAGE_MAX_S)
+        if isinstance(result, dict) and result.get("success") and result.get("decoded_url"):
             return result["decoded_url"]
     except Exception:
         pass
@@ -1178,9 +1183,6 @@ async def fetch_feed(
                     title = entry.get("title", "")
                     summary = entry.get("summary", entry.get("description", ""))
                     link = entry.get("link", "")
-                    # Résoudre les liens Google News → URL source réelle
-                    # (évite le "refused to connect" côté client).
-                    link = _resolve_google_news_url(link)
                     pub_date = entry.get("published", entry.get("updated", ""))
 
                     # Nettoyer le résumé (enlever HTML et décoder entités)
@@ -1303,7 +1305,21 @@ async def fetch_all_news() -> List[Dict]:
     unique_articles.sort(key=lambda a: a.get("published_at", ""), reverse=True)
     unique_articles.sort(key=sort_tier)
 
-    return unique_articles[:100]  # Limiter à 100 articles
+    articles = unique_articles[:100]  # Limiter à 100 articles
+
+    # Résoudre les liens Google News → URL source réelle (évite le "refused to
+    # connect" côté client), une fois tous les flux reçus et pour les seuls
+    # articles gardés, un lien après l'autre. Après 3 échecs de suite (Google
+    # injoignable : 10 s par opération, 30 s par lien), les liens restants sont
+    # gardés tels quels.
+    echecs = 0
+    for article in articles:
+        lien = article["link"]
+        if echecs < 3 and "news.google.com/rss/articles/" in lien:
+            article["link"] = await _resolve_google_news_url(lien)
+            echecs = echecs + 1 if article["link"] == lien else 0
+
+    return articles
 
 
 def balance_articles_by_country(articles: List[Dict], max_per_country: int = 2) -> List[Dict]:

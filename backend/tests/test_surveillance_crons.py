@@ -82,8 +82,11 @@ def test_le_script_ne_recoit_pas_les_chemins_de_backend_env(tmp_path, monkeypatc
     """Une ligne EMERGENT_DIR=… dans backend/.env rendrait le contrôle toujours « ok »."""
     monkeypatch.setenv("EMERGENT_DIR", "/nulle-part")
     monkeypatch.setenv("CRON_D", "/nulle-part")
+    monkeypatch.setenv("RACINE_SYSTEME", "/nulle-part")
     script = tmp_path / "controle.sh"
-    script.write_text('[ -z "${EMERGENT_DIR:-}${CRON_D:-}" ] || exit 1\nexit 0\n')
+    script.write_text(
+        '[ -z "${EMERGENT_DIR:-}${CRON_D:-}${RACINE_SYSTEME:-}" ] || exit 1\nexit 0\n'
+    )
     assert surveillance_crons.controler(script) == "ok"
 
 

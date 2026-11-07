@@ -28,6 +28,25 @@ le reconstruit à la première requête — mais ne comptez pas dessus.
 BRANCH=main bash sync_emergent.sh
 ```
 
+**Tapez-la vous-même dans le terminal (Shell) Emergent** (depuis `/app` :
+`cd /app && BRANCH=main bash sync_emergent.sh`), pas dans le chat de l'agent
+Emergent : chaque message à l'agent est facturé comme un tour, une
+synchronisation par le terminal n'en coûte aucun (conseil du support Emergent,
+novembre 2026). Une seule synchronisation par lot, après la fusion ; ne la
+redemandez pas quand elle a réussi. Elle a réussi si :
+
+- la ligne qui suit « 1bis/6 » affiche « ✓ » ;
+- la sortie se termine par « ✅ Synchronisation terminée », sans
+  « ⚠ RAPPEL » juste avant (sinon, voir §6 bis).
+
+Ne collez jamais de valeur secrète (clé, jeton, mot de passe, contenu de
+`backend/.env`) dans le chat Emergent. Saisissez-la par la carte sécurisée
+d'Emergent ; elle prime sur `backend/.env`, qui ne remplace pas une variable
+déjà présente dans l'environnement. Une clé qui n'est que dans
+`/app/backend/.env` se modifie dans le terminal, puis
+`supervisorctl restart backend`. Une valeur déjà collée est à considérer comme
+exposée et à changer.
+
 Ne lancez **pas** `start.sh` sous Emergent : supervisord gère les services, et
 `sync_emergent.sh` fait déjà `supervisorctl restart all`.
 
@@ -228,7 +247,23 @@ même contrôle que l'étape 1bis de `sync_emergent.sh`. Il signale :
 - un fichier inattendu dans `/etc/cron.d`. Le relevé du 06/11/2026 y trouve
   `.placeholder`, `e2scrub_all` et `webhook-crons` ;
 - une crontab d'utilisateur ;
-- un script de `.emergent/cron/` différent de `scripts/crons_emergent_sha256.txt`.
+- un script de `.emergent/cron/` différent de `scripts/crons_emergent_sha256.txt` ;
+- un fichier Debian lancé en root différent du même manifeste : `/etc/crontab`,
+  `/etc/cron.daily/apt-compat`, `/etc/cron.daily/dpkg` et
+  `/etc/supervisor/supervisord.conf` (empreintes du relevé du 06/11/2026,
+  identiques aux fichiers des paquets bookworm officiels) ;
+- dans `/etc/cron.hourly`, `cron.daily`, `cron.weekly`, `cron.monthly` et
+  `cron.yearly`, un fichier absent du manifeste. Les noms contenant un point
+  (`.placeholder`, `x.sh`…) ne sont pas signalés : `run-parts` ne les lance
+  jamais ;
+- un `/etc/anacrontab` ou une file d'attente `at` non vide
+  (`/var/spool/cron/atjobs`, `atspool`) : ni anacron ni at ne sont installés ;
+- dans `/etc/supervisor/conf.d`, un fichier autre que `supervisord.conf`,
+  `supervisord_code_server.conf`, `supervisord_nginx_proxy.conf` et
+  `webhook-crond.conf` ; un programme supervisord (`[program:…]`) autre que
+  `backend`, `frontend`, `mongodb`, `code-server`, `nginx-code-proxy` et
+  `webhook-crond` (l'un d'eux disparu rend le contrôle incomplet, code 2). Le
+  contenu de ces fichiers d'Emergent (commandes lancées) n'est pas comparé.
 
 Le verdict est publié, sans détail, dans `components.crons` de
 `/api/health/status`. La tâche GitHub « Surveillance sécurité » le lit toutes les
@@ -257,8 +292,8 @@ effacer `/app/.afcfta-crons-anomalie` et ne pas corriger les crons à la main.
    Contrôle de sécurité en LECTURE SEULE : ne modifie, n'efface, ne redémarre et ne synchronise rien. N'affiche aucune valeur de secret.
    1. cat /app/.afcfta-crons-anomalie
    2. grep -n "Crons du pod" /var/log/supervisor/backend.err.log | tail -5
-   3. cd /app && env -u EMERGENT_DIR -u CRON_D -u CRON_SPOOL -u MANIFESTE bash scripts/controle_crons_emergent.sh; echo "code=$?"
-   4. ls -la /etc/cron.d/ /var/spool/cron/crontabs/ 2>&1
+   3. cd /app && env -u EMERGENT_DIR -u CRON_D -u CRON_SPOOL -u MANIFESTE -u RACINE_SYSTEME bash scripts/controle_crons_emergent.sh; echo "code=$?"
+   4. ls -la /etc/cron.d/ /etc/cron.hourly/ /etc/cron.daily/ /etc/cron.weekly/ /etc/cron.monthly/ /etc/cron.yearly/ /etc/supervisor/conf.d/ /var/spool/cron/ /var/spool/cron/crontabs/ 2>&1
    5. git -C /app log --oneline -1 ; git -C /app status --short .emergent | head -20
    Renvoie-moi toutes les sorties telles quelles.
    ```
@@ -273,7 +308,10 @@ effacer `/app/.afcfta-crons-anomalie` et ne pas corriger les crons à la main.
    manifeste) :
    1. corriger dans une PR ce qui déclenche l'alerte, le plus souvent
       `scripts/crons_emergent_sha256.txt` après relecture du changement
-      d'Emergent, puis la fusionner ;
+      d'Emergent, puis la fusionner. Pour une empreinte `/etc/…` (image du pod
+      mise à jour par Emergent), ne la remplacer qu'après l'avoir retrouvée
+      dans le paquet Debian officiel correspondant (deb.debian.org ou
+      security.debian.org) ;
    2. message à coller dans Emergent :
 
       ```text

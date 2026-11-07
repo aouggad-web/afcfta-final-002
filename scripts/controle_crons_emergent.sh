@@ -8,13 +8,16 @@
 # pod ; 2 contrôle incomplet (fichier illisible, manifeste absent).
 #
 # Emplacements réglables, pour les tests : EMERGENT_DIR (/app/.emergent),
-# CRON_D (/etc/cron.d), CRON_SPOOL (/var/spool/cron/crontabs) et MANIFESTE
-# (scripts/crons_emergent_sha256.txt). Les chemins écrits DANS les lignes de cron
+# CRON_D (/etc/cron.d), CRON_SPOOL (/var/spool/cron/crontabs), MANIFESTE
+# (scripts/crons_emergent_sha256.txt) et RACINE_SYSTEME (vide : /), préfixe de
+# /etc/crontab, /etc/cron.hourly…, /etc/anacrontab, des files d'attente at et
+# de /etc/supervisor. Les chemins écrits DANS les lignes de cron
 # (/app/.emergent/cron/…, /app/backend/.env) restent ceux du pod.
 
 EMERGENT_DIR="${EMERGENT_DIR:-/app/.emergent}"
 CRON_D="${CRON_D:-/etc/cron.d}"
 CRON_SPOOL="${CRON_SPOOL:-/var/spool/cron/crontabs}"
+RACINE_SYSTEME="${RACINE_SYSTEME:-}"
 MANIFESTE="${MANIFESTE:-$(CDPATH='' cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null && pwd)/crons_emergent_sha256.txt}"
 
 # Persistance (audit de sécurité, C3) : webhook_crond.sh — script de la
@@ -104,9 +107,11 @@ _check_emergent_crons() (
     _signaler "$CRON_D/webhook-crons diffère de la copie persistante d'Emergent."
   fi
   # Sur le pod seulement (point 17 de l'audit) : le reste de /etc/cron.d, les
-  # crontabs d'utilisateur et l'empreinte des scripts de la plateforme. Relevé
-  # sur le pod le 06/11/2026 : .placeholder et e2scrub_all (Debian), plus
-  # webhook-crons ; spool vide ; scripts identiques au dépôt.
+  # crontabs d'utilisateur, at et anacron, /etc/crontab et /etc/cron.hourly…,
+  # les programmes de supervisord et les empreintes du manifeste. Relevé sur
+  # le pod le 06/11/2026 : .placeholder et e2scrub_all (Debian), plus
+  # webhook-crons ; spool vide ; ni at ni anacron ; scripts identiques au
+  # dépôt ; fichiers Debian identiques à ceux des paquets bookworm.
   if [ -d "$EMERGENT_DIR/cron" ]; then
     local e2_ok='^(30 3 \* \* 0 root test -e /run/systemd/system \|\| SERVICE_MODE=1 /usr/lib/(aarch64|x86_64)-linux-gnu/e2fsprogs/e2scrub_all_cron|10 3 \* \* \* root test -e /run/systemd/system \|\| SERVICE_MODE=1 /(usr/)?sbin/e2scrub_all -A -r)$'
     for f in "$CRON_D"/* "$CRON_D"/.[!.]* "$CRON_D"/..?*; do
@@ -131,30 +136,49 @@ _check_emergent_crons() (
         *) _signaler "fichier inattendu dans $CRON_D : $nom" ;;
       esac
     done
-    if [ -d "$CRON_SPOOL" ]; then
-      if [ -r "$CRON_SPOOL" ] && [ -x "$CRON_SPOOL" ]; then
-        for f in "$CRON_SPOOL"/* "$CRON_SPOOL"/.[!.]* "$CRON_SPOOL"/..?*; do
+    # at et anacron ne sont pas installés sur le pod : une file d'attente at
+    # non vide (le paquet at y crée atjobs/.SEQ) ou un /etc/anacrontab est
+    # signalé.
+    local d
+    for d in "$CRON_SPOOL" "$RACINE_SYSTEME/var/spool/cron/atjobs" "$RACINE_SYSTEME/var/spool/cron/atspool"; do
+      [ -d "$d" ] || continue
+      if [ -r "$d" ] && [ -x "$d" ]; then
+        for f in "$d"/* "$d"/.[!.]* "$d"/..?*; do
           [ -e "$f" ] || [ -L "$f" ] || continue
-          _signaler "crontab d'utilisateur dans $CRON_SPOOL : ${f##*/}"
+          if [ "$d" = "$CRON_SPOOL" ]; then
+            _signaler "crontab d'utilisateur dans $CRON_SPOOL : ${f##*/}"
+          else
+            _signaler "file d'attente at non vide alors que at n'est pas installé : $d/${f##*/}"
+          fi
         done
       else
-        echo "  · $CRON_SPOOL : illisible, contrôle incomplet"
+        echo "  · $d : illisible, contrôle incomplet"
         incomplet=1
       fi
+    done
+    if [ -e "$RACINE_SYSTEME/etc/anacrontab" ] || [ -L "$RACINE_SYSTEME/etc/anacrontab" ]; then
+      _signaler "/etc/anacrontab présent alors qu'anacron n'est pas installé"
     fi
-    # Empreintes des scripts de la plateforme, versionnées dans le dépôt :
-    # un script modifié sur le pod (persistance root) est signalé.
-    local verifiees=0 crons_yml_au_manifeste=0
+    # Empreintes versionnées dans le dépôt : scripts de la plateforme
+    # (.emergent/…) et fichiers Debian lancés en root (/etc/…, empreintes
+    # vérifiées sur les paquets bookworm officiels). Un fichier modifié sur le
+    # pod (persistance root) est signalé.
+    local verifiees=0 crons_yml_au_manifeste=0 quoi
+    local -A au_manifeste=()
     if [ -r "$MANIFESTE" ]; then
       while read -r attendu chemin || [ -n "$attendu" ]; do
         [ -n "$attendu" ] || continue
         verifiees=$((verifiees + 1))
+        au_manifeste["$chemin"]=1
         [ "$chemin" = .emergent/crons.yml ] && crons_yml_au_manifeste=1
-        f="$EMERGENT_DIR/${chemin#.emergent/}"
+        case "$chemin" in
+          /*) f="$RACINE_SYSTEME$chemin" quoi="fichier système" ;;
+          *) f="$EMERGENT_DIR/${chemin#.emergent/}" quoi="script de la plateforme" ;;
+        esac
         if [ ! -f "$f" ] || [ ! -r "$f" ]; then
-          _signaler "script de la plateforme absent ou illisible : $chemin"
+          _signaler "$quoi absent ou illisible : $chemin"
         elif [ "$(sha256sum "$f" | cut -d' ' -f1)" != "$attendu" ]; then
-          _signaler "script de la plateforme modifié : $chemin (empreinte différente du manifeste)"
+          _signaler "$quoi modifié : $chemin (empreinte différente du manifeste)"
         fi
       done < "$MANIFESTE"
       if [ "$verifiees" -eq 0 ]; then
@@ -165,6 +189,68 @@ _check_emergent_crons() (
       echo "  · $MANIFESTE : absent, empreintes non vérifiées"
       incomplet=1
     fi
+    # /etc/crontab (au manifeste) lance « run-parts --report » sur
+    # cron.hourly, daily, weekly et monthly ; cron.yearly, que rien ne lance
+    # ici, est contrôlé de même. Sans --lsbsysinit ni --regex, run-parts
+    # (debianutils 5.7, valid_name) ne lance que les noms faits de
+    # [A-Za-z0-9_-] : un nom contenant un point (.placeholder, x.sh,
+    # x.dpkg-old…) n'est jamais exécuté, quel que soit son mode, et n'est pas
+    # lu. Tout autre nom doit figurer au manifeste, même non exécutable (chmod
+    # +x suffirait). Sans manifeste lu, rien n'est comparé : le contrôle est
+    # déjà incomplet.
+    local rep
+    if [ "$verifiees" -gt 0 ]; then
+      for rep in cron.hourly cron.daily cron.weekly cron.monthly cron.yearly; do
+        for f in "$RACINE_SYSTEME/etc/$rep"/*; do
+          [ -e "$f" ] || [ -L "$f" ] || continue
+          nom="${f##*/}"
+          case "$nom" in *.*) continue ;; esac
+          [ -n "${au_manifeste["/etc/$rep/$nom"]}" ] || _signaler "fichier inattendu dans /etc/$rep : $nom"
+        done
+      done
+    fi
+    # supervisord lance en root chaque [program:…] de supervisord.conf
+    # (fichier Debian, au manifeste) et de conf.d/*.conf. Les fichiers de
+    # conf.d, écrits par Emergent, n'ont pas d'empreinte (stabilité non
+    # établie) : leur liste et celle des programmes sont celles du relevé du
+    # 06/11/2026.
+    # Python (configparser) coupe aussi les lignes sur CR et ignore en tête
+    # les blancs Unicode : hors ASCII imprimable, tout octet devient \001, et
+    # toute ligne qui peut être un en-tête [program:…] doit en avoir la forme
+    # exacte.
+    local sup="$RACINE_SYSTEME/etc/supervisor" programmes=" " p
+    local prog_re=$'^[ \t]*\\[program:([A-Za-z0-9_.-]+)\\][ \t]*$'
+    for f in "$sup/conf.d"/* "$sup/conf.d"/.[!.]* "$sup/conf.d"/..?*; do
+      [ -e "$f" ] || [ -L "$f" ] || continue
+      case "${f##*/}" in
+        supervisord.conf | supervisord_code_server.conf | supervisord_nginx_proxy.conf | webhook-crond.conf) ;;
+        *) _signaler "fichier inattendu dans /etc/supervisor/conf.d : ${f##*/}" ;;
+      esac
+    done
+    for f in "$sup/supervisord.conf" "$sup/conf.d"/*.conf; do
+      [ -f "$f" ] || continue
+      [ -r "$f" ] || { echo "  · $f : illisible, contrôle incomplet"; incomplet=1; continue; }
+      while IFS= read -r line; do
+        n="${line%%:*}" line="${line#*:}"
+        if ! [[ $line =~ $prog_re ]]; then
+          _signaler "$f:$n : en-tête [program:…] hors forme : $(printf '%s' "$line" | sed -E "$masque")"
+          continue
+        fi
+        p="${BASH_REMATCH[1]}"
+        case "$p" in
+          backend | frontend | mongodb | code-server | nginx-code-proxy | webhook-crond) programmes+="$p " ;;
+          *) _signaler "$f:$n : programme supervisord inattendu : $p" ;;
+        esac
+      done < <(tr '\r' '\n' < "$f" | tr -c '\011\012\040-\176' '\001' \
+        | grep -a -n -E $'^[[:space:]\001]*\\[program:')
+    done
+    # Un programme attendu absent n'est pas une persistance : fichier de
+    # conf.d illisible ou disposition d'Emergent changée, contrôle incomplet.
+    for p in backend frontend mongodb code-server nginx-code-proxy webhook-crond; do
+      [[ $programmes == *" $p "* ]] && continue
+      echo "  · programme supervisord attendu absent : $p, contrôle incomplet"
+      incomplet=1
+    done
     # L'application ne déclare aucun cron : un crons.yml apparu sur le pod
     # ferait rendre des tâches dispatch_webhook par watch_crons.sh. S'il
     # devient légitime, son empreinte s'ajoute au manifeste.

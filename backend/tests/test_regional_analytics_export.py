@@ -18,24 +18,31 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from auth import require_auth  # noqa: E402
 from dashboard.export_services import ExportService  # noqa: E402
+from entitlement_guard import get_optional_subscriber  # noqa: E402
 from routes import regional_analytics  # noqa: E402
 
 FORMULE = '=HYPERLINK("https://exemple.invalid","x")'
 
 
 @pytest.fixture
-def client():
-    """Routeur monté sous /api, appelé avec une clé API admin : l'accès par
-    formule est testé dans test_acces_par_formule.py."""
+def client(monkeypatch):
+    """Routeur monté sous /api, appelé par le compte admin connecté, seul admis
+    à l'export Excel (décision du 06/11/2026) : l'accès par formule est testé
+    dans test_acces_par_formule.py."""
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
 
-    async def _cle_admin():
-        return {"key_hash": "empreinte-de-test", "tier": "admin", "active": True}
+    async def _sans_cle():
+        return {}
+
+    async def _session_admin():
+        return {"_id": "admin", "email": "admin@exemple.invalid", "role": "admin"}
 
     api = APIRouter(prefix="/api")
     api.include_router(regional_analytics.router)
     app = FastAPI()
     app.include_router(api)
-    app.dependency_overrides[require_auth] = _cle_admin
+    app.dependency_overrides[require_auth] = _sans_cle
+    app.dependency_overrides[get_optional_subscriber] = _session_admin
     return TestClient(app)
 
 

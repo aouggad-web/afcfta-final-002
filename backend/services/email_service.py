@@ -45,8 +45,9 @@ def send_email(to: str, subject: str, body: str) -> None:
     message.set_content(body)
 
     try:
+        # Sans contexte, smtplib.SMTP_SSL ne vérifie pas le certificat du serveur.
+        context = ssl.create_default_context()
         if use_tls:
-            context = ssl.create_default_context()
             with smtplib.SMTP(host, port, timeout=20) as smtp:
                 smtp.ehlo()
                 smtp.starttls(context=context)
@@ -54,7 +55,7 @@ def send_email(to: str, subject: str, body: str) -> None:
                 smtp.login(user, password)
                 smtp.send_message(message)
         else:
-            with smtplib.SMTP_SSL(host, port, timeout=20) as smtp:
+            with smtplib.SMTP_SSL(host, port, timeout=20, context=context) as smtp:
                 smtp.login(user, password)
                 smtp.send_message(message)
         logger.info("Email sent to %s", to)

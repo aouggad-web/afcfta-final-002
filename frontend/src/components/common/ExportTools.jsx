@@ -4,6 +4,18 @@ import { Download, Loader2, ZoomIn, ZoomOut, Image } from 'lucide-react';
 import { exportToPDF } from '../../utils/pdfExport';
 import html2canvas from 'html2canvas';
 import { pick } from '../../i18n/lang';
+import { useAuth } from '../../context/AuthContext';
+
+/**
+ * Formats d'export de la session (`export_formats` de GET /api/auth/me,
+ * backend/entitlements.py). Décision de l'exploitant du 06/11/2026 : CSV et
+ * Excel réservés à l'administrateur, aucune formule ne les a (les boutons
+ * JSON suivent le CSV) ; le PDF reste à toutes les formules, ses boutons ne
+ * sont pas contrôlés ici.
+ */
+export function useExportAutorise(format) {
+  return Boolean(useAuth()?.user?.export_formats?.includes(format));
+}
 
 /**
  * PDFExportButton - Bouton d'export PDF réutilisable
@@ -93,6 +105,7 @@ export function CSVExportButton({
   className = '',
   ...buttonProps
 }) {
+  const autorise = useExportAutorise('csv');
   const texts = {
     fr: { export: 'Exporter CSV' },
     en: { export: 'Export CSV' },
@@ -100,23 +113,30 @@ export function CSVExportButton({
   };
   const t = texts[language] || texts.fr;
 
-  const escapeCell = (val) => {
+  const escapeCell = (val, debutDeLigne = false) => {
     if (val == null) return '';
     let s = String(val);
     // Injection de formules (audit M5) : un texte de plus d'un caractère qui
     // commence par = + - @, tabulation ou retour chariot serait évalué par le
     // tableur ; l'apostrophe le fait lire comme du texte. Nombres et booléens
     // gardent leur valeur ; un tableau est jugé sur son texte.
-    // Résidu accepté : ouvert avec le séparateur « ; », un « ; » intérieur peut couper le champ devant un « = ».
-    if (typeof val !== 'number' && typeof val !== 'boolean' && s.length > 1 && /^[=+\-@\t\r]/.test(s)) s = `'${s}`;
+    // Premier champ d'une ligne : ouvert avec le séparateur « ; », son morceau
+    // continue après la virgule sur le champ suivant (`-,1+cmd|' /C calc'!A0`) ;
+    // un signe seul ou un nombre négatif y est neutralisé lui aussi.
+    if ((debutDeLigne || (typeof val !== 'number' && typeof val !== 'boolean' && s.length > 1)) && /^[=+\-@\t\r]/.test(s)) s = `'${s}`;
+    // Ouvert avec le séparateur « ; » (Excel en français), le fichier est aussi
+    // coupé à chaque « ; » et saut de ligne, même entre guillemets : chaque
+    // morceau est neutralisé de même, sauf un signe suivi d'un « ; » ou d'un
+    // saut de ligne (en fin de cellule, le morceau continue sur la suivante).
+    s = s.replace(/([;\r\n])(?="*[=+\-@\t\r](?![;\r\n]))/g, "$1'");
     return /[",\n;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
   };
 
   const handleExport = () => {
     if (!rows.length || !columns.length) return;
-    const header = columns.map((c) => escapeCell(c.label ?? c.key)).join(',');
+    const header = columns.map((c, i) => escapeCell(c.label ?? c.key, i === 0)).join(',');
     const body = rows
-      .map((r) => columns.map((c) => escapeCell(r[c.key])).join(','))
+      .map((r) => columns.map((c, i) => escapeCell(r[c.key], i === 0)).join(','))
       .join('\n');
     const metadataRows = exportMetadata
       ? [
@@ -131,7 +151,7 @@ export function CSVExportButton({
           ['Lacunes', exportMetadata.known_data_gaps || ''],
           ['Mention', 'Simulation informative — non opposable à l’administration douanière.'],
           [],
-        ].map((row) => row.map(escapeCell).join(','))
+        ].map((row) => row.map((v, i) => escapeCell(v, i === 0)).join(','))
       : [];
     // BOM pour qu'Excel reconnaisse l'UTF-8 (accents)
     const csv = `\uFEFF${metadataRows.length ? `${metadataRows.join('\n')}\n` : ''}${header}\n${body}`;
@@ -147,6 +167,8 @@ export function CSVExportButton({
     // téléchargement sur certains navigateurs avant qu'il n'ait démarré.
     setTimeout(() => URL.revokeObjectURL(url), 0);
   };
+
+  if (!autorise) return null;
 
   return (
     <Button
@@ -178,6 +200,8 @@ export function JSONExportButton({
   className = '',
   ...buttonProps
 }) {
+  // Téléchargement de données, comme le CSV : réservé à l'administrateur.
+  const autorise = useExportAutorise('csv');
   const texts = {
     fr: { export: 'Exporter JSON' },
     en: { export: 'Export JSON' },
@@ -202,6 +226,8 @@ export function JSONExportButton({
     // téléchargement sur certains navigateurs avant qu'il n'ait démarré.
     setTimeout(() => URL.revokeObjectURL(url), 0);
   };
+
+  if (!autorise) return null;
 
   return (
     <Button

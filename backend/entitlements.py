@@ -87,7 +87,10 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
         tier="free",
         daily_calculations=10,
         monthly_country_profiles=None,
-        export_formats=(),
+        # Exports (décision de l'exploitant du 06/11/2026) : le PDF pour toutes
+        # les formules ; CSV et Excel pour aucune, réservés au compte admin
+        # (_ADMIN_ENTITLEMENTS). Quotas de PDF par formule : à définir.
+        export_formats=("pdf",),
         api_access=False,
         api_monthly_quota=None,
         seats_included=1,
@@ -121,7 +124,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
         tier="starter",
         daily_calculations=40,
         monthly_country_profiles=None,
-        export_formats=("csv",),
+        export_formats=("pdf",),
         api_access=False,
         api_monthly_quota=None,
         seats_included=1,
@@ -138,7 +141,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
         tier="pro",
         daily_calculations=100,
         monthly_country_profiles=None,
-        export_formats=("csv", "excel", "pdf"),
+        export_formats=("pdf",),
         api_access=False,
         api_monthly_quota=None,
         seats_included=1,
@@ -155,7 +158,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
         tier="business",
         daily_calculations=None,
         monthly_country_profiles=None,
-        export_formats=("csv", "excel", "pdf"),
+        export_formats=("pdf",),
         api_access=True,
         api_monthly_quota=1000,
         seats_included=5,
@@ -277,11 +280,12 @@ _ADMIN_ENTITLEMENTS = Entitlements(
 
 def admin_acces_illimite(user: Optional[dict]) -> bool:
     """Le compte admin a-t-il l'accès illimité (tous les modules sans quota,
-    téléchargement des tarifs) ? Réglage du déploiement, lu à chaque appel :
-    ADMIN_ACCES_ILLIMITE=true sur Emergent pendant le développement, pour les
-    présentations ; désactivé par défaut, et à décider pour la production
-    (accès de l'équipe de maintenance). Désactivé, le compte admin est traité
-    comme tout utilisateur, selon sa formule."""
+    téléchargement des tarifs, exports CSV et Excel) ? Réglage du déploiement,
+    lu à chaque appel :
+    ADMIN_ACCES_ILLIMITE=true sur Emergent, maintenu en production (décision de
+    l'exploitant du 06/11/2026) ; désactivé quand la variable est absente.
+    Désactivé, le compte admin est traité comme tout utilisateur, selon sa
+    formule."""
     if not user or user.get("role") != "admin":
         return False
     return os.environ.get("ADMIN_ACCES_ILLIMITE", "").strip().lower() in ("1", "true", "oui", "yes")

@@ -8,6 +8,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { pick } from '../../i18n/lang';
+import { useExportAutorise } from '../common/ExportTools';
 
 const API = import.meta.env.VITE_BACKEND_URL
   ? `${import.meta.env.VITE_BACKEND_URL}/api`
@@ -174,6 +175,10 @@ export default function RegionalAnalyticsDashboard({ language = 'fr' }) {
     }
   }, [selectedBloc]);
 
+  // Export Excel réservé à l'administrateur (décision du 06/11/2026) ; le PDF
+  // est accordé à toutes les formules.
+  const exportExcel = useExportAutorise('excel');
+
   const handleExport = useCallback(async (format = 'excel') => {
     try {
       const response = await axios.get(`${API}/regional-analytics/export`, {
@@ -203,12 +208,14 @@ export default function RegionalAnalyticsDashboard({ language = 'fr' }) {
           🌍 {t.title}
         </h2>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
+          {exportExcel && (
           <button
             onClick={() => handleExport('excel')}
             style={{ background: '#10B981', color: '#fff', border: 'none', borderRadius: '8px', padding: '0.5rem 1rem', cursor: 'pointer', fontWeight: 600, fontSize: '0.85rem' }}
           >
             📊 {t.exportBtn}
           </button>
+          )}
           <button
             onClick={() => handleExport('pdf')}
             style={{ background: '#3B82F6', color: '#fff', border: 'none', borderRadius: '8px', padding: '0.5rem 1rem', cursor: 'pointer', fontWeight: 600, fontSize: '0.85rem' }}

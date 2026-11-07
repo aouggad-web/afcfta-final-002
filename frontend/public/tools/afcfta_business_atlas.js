@@ -448,6 +448,22 @@ function globalSearch(q) {
 }
 
 // ── EXPORT CSV ────────────────────────────────────────
+// Réservé à l'administrateur (demande du 06/11/2026) : les boutons, masqués
+// dans la page, n'apparaissent que si la session a le format CSV
+// (`export_formats` de GET /api/auth/me, sans « csv » pour toutes les formules).
+let exportCsvAutorise = false;
+
+async function verifierDroitExport() {
+  try {
+    const res = await fetch('/api/auth/me', { credentials: 'include' });
+    const me = res.ok ? await res.json() : null;
+    exportCsvAutorise = Boolean(me && Array.isArray(me.export_formats) && me.export_formats.includes('csv'));
+  } catch (e) {
+    exportCsvAutorise = false;
+  }
+  document.querySelectorAll('[data-export]').forEach((b) => { b.hidden = !exportCsvAutorise; });
+}
+
 function exportCSV(type) {
   const data = type==='operators' ? DATA.operators : type==='institutions' ? DATA.institutions : DATA.facilitators;
   if (!data.length) return;
@@ -502,7 +518,7 @@ function brancherEvenements() {
     }
     const exportEl = e.target.closest('[data-export]');
     if (exportEl) {
-      exportCSV(exportEl.dataset.export);
+      if (exportCsvAutorise) exportCSV(exportEl.dataset.export);
       return;
     }
     const carte = e.target.closest('#country-grid [data-iso3]');
@@ -518,4 +534,5 @@ function brancherEvenements() {
 }
 
 brancherEvenements();
+verifierDroitExport();
 bootAtlas();
