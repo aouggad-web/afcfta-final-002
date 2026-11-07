@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import { Badge } from '../ui/badge';
 import { Search, ChevronDown, X, Globe, Star } from 'lucide-react';
 import { getCountriesByRegion } from '../../utils/translations';
+import { trierPays } from '../../utils/triPays';
 
 const MAJOR_ECONOMIES = ['ZAF', 'NGA', 'EGY', 'KEN', 'GHA', 'ETH', 'MAR', 'DZA', 'TZA', 'CIV'];
 
@@ -113,7 +114,11 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
   }, [searchTerm, AFRICAN_COUNTRIES_BY_REGION]);
 
   const majorEconomiesFiltered = useMemo(() => {
-    const majors = allCountries.filter((country) => MAJOR_ECONOMIES.includes(country.code));
+    const majors = trierPays(
+      allCountries.filter((country) => MAJOR_ECONOMIES.includes(country.code)),
+      (country) => country.name,
+      language
+    );
 
     if (!searchTerm) return majors;
 
@@ -122,7 +127,7 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
       const normalizedName = country.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       return normalizedName.includes(normalizedSearch) || country.code.toLowerCase().includes(normalizedSearch);
     });
-  }, [searchTerm, allCountries]);
+  }, [searchTerm, allCountries, language]);
 
   const totalResults = Object.values(filteredRegions).flat().length;
 

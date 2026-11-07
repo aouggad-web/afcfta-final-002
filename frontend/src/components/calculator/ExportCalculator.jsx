@@ -173,7 +173,7 @@ export default function ExportCalculator({ language = 'fr' }) {
                 <SelectValue placeholder={pick(language, 'Choisir', 'Choose', 'اختر')} />
               </SelectTrigger>
               <SelectContent>
-                {Object.entries(pays).map(([iso, n]) => (
+                {Object.entries(pays).sort(([a], [b]) => a.localeCompare(b)).map(([iso, n]) => (
                   <SelectItem key={iso} value={iso}>
                     {iso} — {n
                       ? `${n} ${pick(language, 'positions avec droit de sortie', 'positions with export duty', 'بندًا خاضعًا لرسم التصدير')}`

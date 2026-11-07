@@ -6,6 +6,7 @@ import { Button } from '../ui/button';
 import { montant, montantUnite } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -260,7 +261,7 @@ export default function Insurance({ language = 'en' }) {
                     onChange={(e) => setCountryCode(e.target.value)}
                     className="w-full px-3 py-2 border rounded"
                   >
-                    {countries.map((c) => (
+                    {trierPays(countries, (c) => trDonnee(c.country_name, language), language).map((c) => (
                       <option key={c.country_code} value={c.country_code}>
                         {trDonnee(c.country_name, language)} ({c.country_code})
                       </option>

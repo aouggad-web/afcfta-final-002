@@ -34,6 +34,7 @@ import {
   DollarSign, Target, MapPin, ChevronRight, ChevronDown, Sparkles,
   BarChart3, ShieldCheck
 } from 'lucide-react';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -827,7 +828,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
                   <SelectValue placeholder={t('opportunities.substitutionAnalysis.selectCountry')} />
                 </SelectTrigger>
                 <SelectContent>
-                  {countries.map((country) => (
+                  {trierPays(countries, (c) => pick(currentLang, c.name, c.name, getCountryName(c.iso3, 'ar')), currentLang).map((country) => (
                     <SelectItem key={country.iso3} value={country.iso3}>
                       <span className="flex items-center gap-2">
                         {pick(currentLang, country.name, country.name, getCountryName(country.iso3, 'ar'))}

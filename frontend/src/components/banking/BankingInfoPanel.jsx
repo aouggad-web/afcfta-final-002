@@ -5,6 +5,7 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { montantUnite } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -1577,7 +1578,7 @@ function RegisterTab({ t, countries, language }) {
           className="border rounded px-3 py-1.5 text-sm bg-[var(--afcfta-card)]"
         >
           <option value="">{t.allCountries}</option>
-          {countries.map((c) => (
+          {trierPays(countries, (c) => c.country_name, language).map((c) => (
             <option key={c.country_code} value={c.country_code}>
               {c.country_name} ({c.country_code})
             </option>

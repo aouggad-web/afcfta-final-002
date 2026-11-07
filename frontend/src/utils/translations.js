@@ -1,3 +1,5 @@
+import { trierPays } from './triPays';
+
 // Centralized translations for country names and regions
 // This file provides bilingual support (FR/EN) for all African countries
 
@@ -218,6 +220,10 @@ export const getCountriesByRegion = (language = 'fr') => {
       { code: 'ZWE', name: getCountryName('ZWE', language), flag: '🇿🇼' },
     ],
   };
+  // Ordre alphabétique dans chaque région, selon la langue affichée.
+  Object.keys(regions).forEach((region) => {
+    regions[region] = trierPays(regions[region], (c) => c.name, language);
+  });
   return regions;
 };
 
@@ -228,7 +234,7 @@ export const getAllCountries = (language = 'fr') => {
   Object.values(regions).forEach(regionCountries => {
     countries.push(...regionCountries);
   });
-  return countries;
+  return trierPays(countries, (c) => c.name, language);
 };
 
 export default {

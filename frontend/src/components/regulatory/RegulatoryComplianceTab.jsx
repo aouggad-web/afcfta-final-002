@@ -10,6 +10,7 @@ import { regulatoryApi } from '../../services/api-v2';
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { toast } from '../../hooks/use-toast';
 import { pick } from '../../i18n/lang';
+import { trierPays } from '../../utils/triPays';
 
 // Mirrors backend _ACTIVE_MANDATE_STATUSES (regulatory_compliance_service.py):
 // only these mandate_status values are a confirmed, currently active mandate.
@@ -378,7 +379,7 @@ export default function RegulatoryComplianceTab({ language = 'fr' }) {
               <SelectValue placeholder={t.selectPlaceholder} />
             </SelectTrigger>
             <SelectContent>
-              {supportedCountries.map((iso3) => (
+              {trierPays(supportedCountries, (iso3) => countryLabel(iso3, language), language).map((iso3) => (
                 <SelectItem key={iso3} value={iso3}>
                   {countryLabel(iso3, language)}
                 </SelectItem>

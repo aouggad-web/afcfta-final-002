@@ -9,6 +9,7 @@ import { toast } from '../../hooks/use-toast';
 import { chiffres, estAnglais, montant, montantUnite } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
 import { getCountryName, getRegionName } from '../../utils/translations';
+import { trierPays } from '../../utils/triPays';
 
 // Catégories de l'indice d'attractivité (GAI 2025), servies en français et anglais.
 const GAI_CATEGORIES_AR = {
@@ -591,7 +592,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                 <SelectValue placeholder={t.selectPlaceholder} />
               </SelectTrigger>
               <SelectContent>
-                {countries.map((country) => (
+                {trierPays(countries, (c) => c.name, language).map((country) => (
                   <SelectItem key={country.code} value={country.code}>
                     {getFlag(country.iso2 || country.code)} {country.name} - {country.region}
                   </SelectItem>
