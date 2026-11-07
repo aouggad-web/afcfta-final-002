@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Facteur de marché du fret vrac sec (proxy BDRY) appliqué au modèle distance-coût de backend/logistics_bulk_fees_data.py, uniformément par classe de navire. Proxy, pas l'indice Baltic par classe. Sans facteur live, repli statique 1,0 (modèle calibré Baltic 2024). Zéro fabrication.",
-    "generated_at": "2026-11-05T19:15:20Z",
+    "generated_at": "2026-11-06T20:33:37Z",
     "generator": "etl/update_bulk_freight_indices.py (GitHub Actions, jours ouvrés)",
     "market_proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
     "market_proxy_url": "https://finance.yahoo.com/quote/BDRY/",
@@ -13,40 +13,40 @@
   },
   "vessel_class_multipliers": {
     "handysize": {
-      "multiplier": 1.1147,
+      "multiplier": 1.1248,
       "is_live": true,
       "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
-      "proxy_level": 13.17,
-      "proxy_baseline_12m": 11.8144,
-      "as_of": "2026-11-05",
-      "source": "Yahoo Finance (BDRY) — proxy marché du fret vrac sec (panier futures Capesize/Panamax/Supramax) — cours 13.17 vs moyenne glissante 11.8144 (252 j). Proxy marché vrac sec appliqué uniformément aux classes (pas l'indice Baltic par classe)."
+      "proxy_level": 13.31,
+      "proxy_baseline_12m": 11.8337,
+      "as_of": "2026-11-06",
+      "source": "Yahoo Finance (BDRY) — proxy marché du fret vrac sec (panier futures Capesize/Panamax/Supramax) — cours 13.31 vs moyenne glissante 11.8337 (252 j). Proxy marché vrac sec appliqué uniformément aux classes (pas l'indice Baltic par classe)."
     },
     "supramax": {
-      "multiplier": 1.1147,
+      "multiplier": 1.1248,
       "is_live": true,
       "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
-      "proxy_level": 13.17,
-      "proxy_baseline_12m": 11.8144,
-      "as_of": "2026-11-05",
-      "source": "Yahoo Finance (BDRY) — proxy marché du fret vrac sec (panier futures Capesize/Panamax/Supramax) — cours 13.17 vs moyenne glissante 11.8144 (252 j). Proxy marché vrac sec appliqué uniformément aux classes (pas l'indice Baltic par classe)."
+      "proxy_level": 13.31,
+      "proxy_baseline_12m": 11.8337,
+      "as_of": "2026-11-06",
+      "source": "Yahoo Finance (BDRY) — proxy marché du fret vrac sec (panier futures Capesize/Panamax/Supramax) — cours 13.31 vs moyenne glissante 11.8337 (252 j). Proxy marché vrac sec appliqué uniformément aux classes (pas l'indice Baltic par classe)."
     },
     "panamax": {
-      "multiplier": 1.1147,
+      "multiplier": 1.1248,
       "is_live": true,
       "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
-      "proxy_level": 13.17,
-      "proxy_baseline_12m": 11.8144,
-      "as_of": "2026-11-05",
-      "source": "Yahoo Finance (BDRY) — proxy marché du fret vrac sec (panier futures Capesize/Panamax/Supramax) — cours 13.17 vs moyenne glissante 11.8144 (252 j). Proxy marché vrac sec appliqué uniformément aux classes (pas l'indice Baltic par classe)."
+      "proxy_level": 13.31,
+      "proxy_baseline_12m": 11.8337,
+      "as_of": "2026-11-06",
+      "source": "Yahoo Finance (BDRY) — proxy marché du fret vrac sec (panier futures Capesize/Panamax/Supramax) — cours 13.31 vs moyenne glissante 11.8337 (252 j). Proxy marché vrac sec appliqué uniformément aux classes (pas l'indice Baltic par classe)."
     },
     "capesize": {
-      "multiplier": 1.1147,
+      "multiplier": 1.1248,
       "is_live": true,
       "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
-      "proxy_level": 13.17,
-      "proxy_baseline_12m": 11.8144,
-      "as_of": "2026-11-05",
-      "source": "Yahoo Finance (BDRY) — proxy marché du fret vrac sec (panier futures Capesize/Panamax/Supramax) — cours 13.17 vs moyenne glissante 11.8144 (252 j). Proxy marché vrac sec appliqué uniformément aux classes (pas l'indice Baltic par classe)."
+      "proxy_level": 13.31,
+      "proxy_baseline_12m": 11.8337,
+      "as_of": "2026-11-06",
+      "source": "Yahoo Finance (BDRY) — proxy marché du fret vrac sec (panier futures Capesize/Panamax/Supramax) — cours 13.31 vs moyenne glissante 11.8337 (252 j). Proxy marché vrac sec appliqué uniformément aux classes (pas l'indice Baltic par classe)."
     }
   }
 }
