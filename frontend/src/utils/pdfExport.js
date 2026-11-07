@@ -1,6 +1,29 @@
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { dessinerLogo, nomSaas } from './pdfMarque';
+import { chargerPoliceArabe, estArabe, preparerArabe } from './pdfArabe';
+
+// Textes du cadre (en-tête, pied) dans les trois langues.
+const CADRE = {
+  fr: {
+    date: (d) => `Généré le ${d}`,
+    notice: 'Simulation informative des droits et taxes à l’importation',
+    footerNotice: 'Simulation informative — non opposable à l’administration douanière.',
+    page: (i, n) => `Page ${i} sur ${n}`,
+  },
+  en: {
+    date: (d) => `Generated on ${d}`,
+    notice: 'Informative simulation of import duties and taxes',
+    footerNotice: 'Informative estimate — not binding on customs administration.',
+    page: (i, n) => `Page ${i} of ${n}`,
+  },
+  ar: {
+    date: (d) => `أُنشئ في ${d}`,
+    notice: 'محاكاة إرشادية للرسوم والضرائب عند الاستيراد',
+    footerNotice: 'محاكاة إرشادية — لا يُحتج بها أمام إدارة الجمارك.',
+    page: (i, n) => `الصفحة ${i} من ${n}`,
+  },
+};
 
 /**
  * Export a DOM element to PDF
@@ -37,6 +60,13 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
       format: format
     });
 
+    // En arabe : police arabe, même mise en page.
+    const langue = estArabe(language) ? 'ar' : language === 'en' ? 'en' : 'fr';
+    const cadre = CADRE[langue];
+    if (langue === 'ar') {
+      await chargerPoliceArabe();
+      preparerArabe(pdf);
+    }
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
 
@@ -66,9 +96,7 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
       if (showDate) {
         pdf.setFontSize(10);
         pdf.setTextColor(150, 150, 150);
-        const dateText = language === 'fr' 
-          ? `Généré le ${new Date().toLocaleDateString('fr-FR')}`
-          : `Generated on ${new Date().toLocaleDateString('en-US')}`;
+        const dateText = cadre.date(new Date().toLocaleDateString(langue === 'en' ? 'en-US' : 'fr-FR'));
         pdf.text(dateText, margin, yOffset + 5);
         yOffset += 10;
       }
@@ -76,13 +104,7 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
       if (informationalNotice) {
         pdf.setFontSize(9);
         pdf.setTextColor(180, 90, 20);
-        pdf.text(
-          language === 'fr'
-            ? 'Simulation informative des droits et taxes à l’importation'
-            : 'Informative simulation of import duties and taxes',
-          margin,
-          yOffset + 5
-        );
+        pdf.text(cadre.notice, margin, yOffset + 5);
         yOffset += 8;
       }
 
@@ -146,9 +168,7 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
         pdf.setFontSize(7);
         pdf.setTextColor(180, 90, 20);
         pdf.text(
-          language === 'fr'
-            ? 'Simulation informative — non opposable à l’administration douanière.'
-            : 'Informative estimate — not binding on customs administration.',
+          cadre.footerNotice,
           pageWidth / 2,
           pageHeight - 9,
           { align: 'center' }
@@ -156,9 +176,7 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
       }
       pdf.setFontSize(8);
       pdf.setTextColor(150, 150, 150);
-      const footerText = language === 'fr'
-        ? `Page ${i} sur ${totalPages} - ${nomSaas(language)}`
-        : `Page ${i} of ${totalPages} - ${nomSaas(language)}`;
+      const footerText = `${cadre.page(i, totalPages)} - ${nomSaas(language)}`;
       pdf.text(footerText, pageWidth / 2, pageHeight - 5, { align: 'center' });
     }
 

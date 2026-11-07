@@ -13,10 +13,11 @@
  */
 import jsPDF from 'jspdf';
 import { dessinerLogo, nomSaas } from './pdfMarque';
+import { estArabe, preparerArabe } from './pdfArabe';
 
 const THEME_LIGHT = {
   name: 'light',
-  printNote: { fr: 'Optimisé pour impression.', en: 'Optimized for printing.' },
+  printNote: { fr: 'Optimisé pour impression.', en: 'Optimized for printing.', ar: 'مُهيّأ للطباعة.' },
   page: [250, 246, 238], // --bg (light) FAF6EE
   surface: [255, 255, 255], // --surface FFFFFF
   card2: [245, 239, 227], // --afcfta-card2 F5EFE3
@@ -34,7 +35,7 @@ const THEME_LIGHT = {
 
 const THEME_DARK = {
   name: 'dark',
-  printNote: { fr: 'Optimisé pour lecture à l’écran.', en: 'Optimized for on-screen reading.' },
+  printNote: { fr: 'Optimisé pour lecture à l’écran.', en: 'Optimized for on-screen reading.', ar: 'مُهيّأ للقراءة على الشاشة.' },
   page: [12, 18, 25], // --bg 0C1219 nuit africaine
   surface: [17, 24, 32], // --surface 111820
   card2: [24, 32, 48], // --afcfta-card 182030
@@ -101,6 +102,31 @@ const I18N = {
     footerNote: 'Amounts and volumes are rounded. Both charts use separate scales.',
     volLabel: 'Volume (tonnes)', legendBalance: 'Balance', legendValue: 'Value',
   },
+  ar: {
+    tag: 'الذكاء التجاري',
+    badge: 'بطاقة بلد-منتج',
+    period: 'الفترة المحللة',
+    match: 'المطابقة',
+    exportsAcc: 'الصادرات التراكمية',
+    importsAcc: 'الواردات التراكمية',
+    balanceAcc: 'الميزان التراكمي',
+    cagrExports: 'معدل النمو السنوي المركب للصادرات',
+    cagrImports: 'معدل النمو السنوي المركب للواردات',
+    deficit: 'عجز',
+    surplus: 'فائض',
+    dynamics: 'دينامية المبادلات',
+    amountsIn: 'المبالغ بالدولار الأمريكي',
+    scaleNote: 'مقياس مستقل للحفاظ على وضوح القراءة',
+    signal: 'إشارة',
+    coverage: 'معدل التغطية (الصادرات/الواردات)',
+    detail: 'التفصيل السنوي',
+    roundedValues: 'قيم مقرّبة',
+    year: 'السنة', exports: 'الصادرات', volExp: 'الحجم المصدَّر',
+    imports: 'الواردات', volImp: 'الحجم المستورد', balance: 'الميزان التجاري',
+    source: 'المصدر', consulted: 'تاريخ الاطلاع', page: 'الصفحة',
+    footerNote: 'المبالغ والأحجام مقرّبة. يستخدم الرسمان البيانيان مقياسين مستقلين.',
+    volLabel: 'الحجم (طن)', legendBalance: 'الميزان', legendValue: 'القيمة',
+  },
 };
 
 const MM = { pageW: 210, pageH: 297, margin: 13 };
@@ -137,7 +163,8 @@ export function espacesSimples(doc) {
   // remplacement, ils sortent en caractères illisibles.
   const SIGNES = { '\u2192': '->', '\u2190': '<-', '\u2264': '<=', '\u2265': '>=', '\u2248': '~', '\u2212': '-' };
   const simple = (t) => (typeof t === 'string'
-    ? t.replace(/[\u00A0\u202F\u2009]/g, ' ').replace(/[\u2192\u2190\u2264\u2265\u2248\u2212]/g, (c) => SIGNES[c])
+    // En arabe, l'espace insécable lie les groupes de chiffres (pdfArabe.js) : on la garde.
+    ? t.replace(doc.__arabe ? /[\u202F\u2009]/g : /[\u00A0\u202F\u2009]/g, ' ').replace(/[\u2192\u2190\u2264\u2265\u2248\u2212]/g, (c) => SIGNES[c])
     : Array.isArray(t) ? t.map(simple) : t);
   ['text', 'getTextWidth', 'splitTextToSize'].forEach((m) => {
     const f = doc[m].bind(doc);
@@ -224,7 +251,7 @@ function drawFlowPanel(doc, opts) {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(6.6);
     doc.setTextColor(...theme.text);
-    const valLabel = (val / divisor).toLocaleString(language === 'fr' ? 'fr-FR' : 'en-US', {
+    const valLabel = (val / divisor).toLocaleString(language === 'en' ? 'en-US' : 'fr-FR', {
       maximumFractionDigits: Math.abs(val / divisor) < 10 ? 1 : 0,
     });
     doc.text(valLabel, cx, barY - (hasQty ? 5.2 : 1.6), { align: 'center' });
@@ -332,6 +359,8 @@ export function buildTradeReportPdf(p) {
   const theme = themeName === 'dark' ? THEME_DARK : THEME_LIGHT;
   const t = I18N[language] || I18N.fr;
   const doc = espacesSimples(new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' }));
+  // En arabe : police arabe (chargée par l'appelant), même mise en page.
+  if (estArabe(language)) preparerArabe(doc);
   const rows = data.chart_rows || [];
   const years = rows.map((r) => r.year);
   const period = years.length ? `${years[0]}-${years[years.length - 1]}` : '—';
@@ -369,7 +398,8 @@ export function buildTradeReportPdf(p) {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(19);
   doc.setTextColor(...theme.onBand);
-  const title = language === 'fr' ? `Commerce extérieur — ${data.country_name}` : `Foreign trade — ${data.country_name}`;
+  const title = { fr: `Commerce extérieur — ${data.country_name}`, en: `Foreign trade — ${data.country_name}`, ar: `التجارة الخارجية — ${data.country_name}` }[language]
+    || `Commerce extérieur — ${data.country_name}`;
   doc.text(title, MM.margin, 27, { maxWidth: MM.pageW - 2 * MM.margin - 24 });
 
   const productLabel = data.hs_labels?.[0]?.label || '';
@@ -461,9 +491,11 @@ export function buildTradeReportPdf(p) {
   const coveragePct = lastRow && lastRow.imports > 0 ? (lastRow.exports / lastRow.imports) * 100 : null;
   const signalText =
     lastRow
-      ? language === 'fr'
-        ? `En ${lastRow.year}, les importations atteignent ${fmtUSD(lastRow.imports)} contre ${fmtUSD(lastRow.exports)} d'exportations.`
-        : `In ${lastRow.year}, imports reach ${fmtUSD(lastRow.imports)} against ${fmtUSD(lastRow.exports)} of exports.`
+      ? {
+        fr: `En ${lastRow.year}, les importations atteignent ${fmtUSD(lastRow.imports)} contre ${fmtUSD(lastRow.exports)} d'exportations.`,
+        en: `In ${lastRow.year}, imports reach ${fmtUSD(lastRow.imports)} against ${fmtUSD(lastRow.exports)} of exports.`,
+        ar: `في ${lastRow.year}، بلغت الواردات ${fmtUSD(lastRow.imports)} مقابل ${fmtUSD(lastRow.exports)} من الصادرات.`,
+      }[language] || `En ${lastRow.year}, les importations atteignent ${fmtUSD(lastRow.imports)} contre ${fmtUSD(lastRow.exports)} d'exportations.`
       : '';
   doc.setFillColor(...theme.card2);
   doc.roundedRect(MM.margin, signalY, MM.pageW - 2 * MM.margin, 15, 1.6, 1.6, 'F');
@@ -526,7 +558,7 @@ export function buildTradeReportPdf(p) {
 
   const rowH = 6.4;
   y = drawTableHeader(y);
-  const consultedDate = new Date().toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US');
+  const consultedDate = new Date().toLocaleDateString(language === 'en' ? 'en-US' : 'fr-FR');
 
   rows.forEach((row, idx) => {
     if (y + rowH > MM.pageH - 18) {

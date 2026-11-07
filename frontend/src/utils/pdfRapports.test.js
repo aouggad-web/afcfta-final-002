@@ -3,6 +3,7 @@ import { writeFileSync } from 'node:fs';
 import { buildOpportunityPdf } from './opportunityPdf';
 import { specCalculPdf } from './calculPdf';
 import { specProfilPaysPdf } from './profilPaysPdf';
+import { chargerPoliceArabe } from './pdfArabe';
 import calculDZA from './__fixtures__/calculDZA.json';
 import profilDZA from './__fixtures__/profilPaysDZA.json';
 
@@ -32,8 +33,9 @@ describe('PDF du calculateur', () => {
     const titres = spec.sections.map((s) => s.title).filter(Boolean);
     expect(titres).toEqual(expect.arrayContaining([
       'Opération', 'Comment lire ce calcul', 'Détail des droits et taxes — régime NPF',
-      'Détail des droits et taxes — GZALE', 'Formalités administratives', "Réglementation à l'importation", 'Avertissement',
+      'Détail des droits et taxes — GZALE', 'Formalités administratives', 'Avertissement',
     ]));
+    expect(titres.filter((x) => x.startsWith("Réglementation à l'importation — "))).toHaveLength(1);
     const npf = spec.sections.find((s) => s.title === 'Détail des droits et taxes — régime NPF').table;
     expect(npf.rows).toHaveLength(calculDZA.npf.lignes.length);
     expect(texte(spec)).toContain('non opposable');
@@ -100,5 +102,30 @@ describe('Marque du site sur les PDF', () => {
     const brut = doc.output();
     expect(brut).toContain('/Subtype /Image');
     expect(brut).toContain('ZLECAf Intelligence');
+  });
+});
+
+describe('PDF en arabe', () => {
+  it('sort le calcul en arabe, avec la police arabe et la même mise en page', async () => {
+    await chargerPoliceArabe();
+    const spec = specCalculPdf({ calcul: calculDZA, result: RESULTAT, origine: 'تونس', destination: 'الجزائر', langue: 'ar' });
+    expect(spec.title).toBe('الرسوم والضرائب عند الاستيراد — الجزائر');
+    expect(spec.sections.map((x) => x.title)).toContain('تفصيل الرسوم والضرائب — نظام الدولة الأولى بالرعاية');
+    const doc = buildOpportunityPdf({ ...spec, language: 'ar' });
+    expect(doc.output()).toContain('/BaseFont /NotoArabe');
+    // Même mise en page qu'en français : même nombre de pages.
+    const fr = buildOpportunityPdf({ ...specCalculPdf({ calcul: calculDZA, result: RESULTAT, origine: 'Tunisie', destination: 'Algérie', langue: 'fr' }), language: 'fr' });
+    expect(doc.internal.getNumberOfPages()).toBe(fr.internal.getNumberOfPages());
+    ecrire(doc, 'calcul-ar.pdf');
+  });
+
+  it('sort le profil pays en arabe, projets compris', async () => {
+    await chargerPoliceArabe();
+    const spec = specProfilPaysPdf(profilDZA, 'ar');
+    expect(spec.title).toBe('الملف الاقتصادي — الجزائر');
+    const premier = spec.sections.find((x) => x.title?.startsWith('المشاريع الهيكلية — '));
+    expect(premier.title).toContain(profilDZA.ongoing_projects[0].titre_ar);
+    const doc = buildOpportunityPdf({ ...spec, language: 'ar' });
+    ecrire(doc, 'profil-ar.pdf');
   });
 });

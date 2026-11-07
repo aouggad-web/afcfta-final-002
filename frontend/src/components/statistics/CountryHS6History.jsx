@@ -10,6 +10,7 @@ import {
 } from 'recharts';
 import { Search, Loader2, TrendingUp, TrendingDown, Minus, FileDown, Moon } from 'lucide-react';
 import { buildTradeReportPdf, tradeReportFilename } from '../../utils/tradeReportPdf';
+import { chargerPoliceArabe } from '../../utils/pdfArabe';
 import { montantCompact, nombreCompact, chiffres } from '../../utils/nombres';
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { pick, isRtl } from '../../i18n/lang';
@@ -252,10 +253,12 @@ export default function CountryHS6History({ language = 'fr' }) {
     if (!data || !data.chart_rows || data.chart_rows.length === 0) return;
     setExportingTheme(themeName);
     try {
-      // jsPDF n'a pas de police arabe : en arabe, le rapport sort en français.
-      const pdfLang = isRtl(language) ? 'fr' : language;
+      // Le rapport sort dans la langue de l'écran, arabe compris.
+      const pdfLang = isRtl(language) ? 'ar' : language;
+      if (pdfLang === 'ar') await chargerPoliceArabe();
       const doc = buildTradeReportPdf({
-        data,
+        // Le nom du pays dans la langue du rapport (dictionnaire des données).
+        data: { ...data, country_name: trDonnee(data.country_name, pdfLang) },
         totals,
         language: pdfLang,
         levelLen: LEVEL_LEN[searchLevel],

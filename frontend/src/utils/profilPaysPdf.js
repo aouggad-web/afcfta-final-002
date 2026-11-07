@@ -24,6 +24,8 @@ const T = {
     growth: 'Croissance du PIB',
     inflation: 'Inflation',
     unemployment: 'Chômage',
+    worldRank: 'rang mondial',
+    projection: 'projection',
     hdi: 'Indice de développement humain',
     govDebt: 'Dette publique (% du PIB)',
     rankSub: (r, n) => `rang ${r}/${n} en Afrique`,
@@ -103,6 +105,8 @@ const T = {
     growth: 'GDP growth',
     inflation: 'Inflation',
     unemployment: 'Unemployment',
+    worldRank: 'world rank',
+    projection: 'projection',
     hdi: 'Human Development Index',
     govDebt: 'Government debt (% of GDP)',
     rankSub: (r, n) => `rank ${r}/${n} in Africa`,
@@ -170,6 +174,87 @@ const T = {
     ],
     filename: 'Country_profile',
   },
+  ar: {
+    module: 'وحدة ملفات البلدان',
+    badge: 'الملف الاقتصادي',
+    title: (n) => `الملف الاقتصادي — ${n}`,
+    subtitle: (r, c) => `${r} · الرمز ISO ${c}`,
+    na: 'غير منشور',
+    worldRank: 'الترتيب العالمي',
+    projection: 'توقع',
+    gdp: 'الناتج المحلي الإجمالي',
+    gdpPc: 'نصيب الفرد من الناتج المحلي',
+    population: 'السكان',
+    growth: 'نمو الناتج المحلي',
+    inflation: 'التضخم',
+    unemployment: 'البطالة',
+    hdi: 'مؤشر التنمية البشرية',
+    govDebt: 'الدين العام (% من الناتج المحلي)',
+    rankSub: (r, n) => `الترتيب ${r}/${n} في أفريقيا`,
+    macro: 'مؤشرات الاقتصاد الكلي',
+    cols: { indicator: 'المؤشر', value: 'القيمة', year: 'السنة', rank: 'الترتيب في أفريقيا', source: 'المصدر' },
+    macroText: [
+      'الناتج المحلي الإجمالي: قيمة كل ما ينتجه البلد في سنة، بالدولار الجاري. نصيب الفرد: هذا الناتج مقسومًا على عدد السكان، وهو مقياس شائع لمستوى المعيشة.',
+      'التضخم: الارتفاع السنوي في أسعار الاستهلاك. البطالة: نسبة القوى العاملة التي لا تعمل وتبحث عن عمل.',
+      'يرتّب «الترتيب في أفريقيا» البلد بين البلدان التي تنشر المؤشر في السنة نفسها (1 = القيمة الأعلى، إلا في التضخم والبطالة والدين حيث 1 = الأدنى).',
+    ],
+    imf: 'توقعات صندوق النقد الدولي',
+    imfText: (src) => `توقعات تقرير آفاق الاقتصاد العالمي لصندوق النقد الدولي${src ? ` (${src})` : ''}. السنوات المقبلة توقعات تُراجع مرتين في السنة.`,
+    imfCols: { year: 'السنة', growth: 'النمو (%)', inflation: 'التضخم (%)', debt: 'الدين العام (% من الناتج)' },
+    society: 'التنمية البشرية والمجتمع',
+    lifeExp: 'متوسط العمر المتوقع (سنوات)',
+    gini: 'مؤشر جيني (اللامساواة، 0-100)',
+    poverty: 'الفقر (أقل من 3 دولارات يوميًا، %)',
+    urban: 'سكان الحضر (%)',
+    internet: 'مستخدمو الإنترنت (%)',
+    electricity: 'الحصول على الكهرباء (%)',
+    femaleLabor: 'النساء في القوى العاملة (%)',
+    mobile: 'تغطية الهاتف المحمول 3G (%)',
+    water: 'الإجهاد المائي (%)',
+    ghg: 'انبعاثات غازات الدفيئة (مليون طن)',
+    learning: 'فقر التعلّم (%)',
+    societyText: 'مؤشر جيني: 0 = مساواة تامة، 100 = لامساواة قصوى. فقر التعلّم: نسبة الأطفال في سن العاشرة العاجزين عن قراءة نص بسيط وفهمه (البنك الدولي).',
+    external: 'المالية الخارجية',
+    extDebt: 'الدين الخارجي',
+    extDebtGni: 'الدين الخارجي (% من الدخل القومي الإجمالي)',
+    reserves: 'احتياطيات الصرف',
+    reservesMonths: 'الاحتياطيات بأشهر الواردات',
+    gold: 'احتياطيات الذهب',
+    goldRank: (a, g) => `${a ? `الترتيب ${a} في أفريقيا` : ''}${a && g ? '، ' : ''}${g ? `${g} عالميًا` : ''}`,
+    externalText: 'تبيّن الاحتياطيات بأشهر الواردات المدة التي يستطيع البلد خلالها تمويل وارداته من احتياطياته وحدها: 3 أشهر هي العتبة الاحترازية المعتادة.',
+    ratings: 'التصنيفات السيادية والمخاطر',
+    globalRisk: 'المخاطر الإجمالية',
+    ratingsText: 'تقييمات الوكالات لقدرة الدولة على سداد ديونها: من AAA (الأكثر أمانًا) إلى D (التخلف عن السداد). دون BBB- (S&P وFitch) أو Baa3 (Moody\'s) يُعدّ الدين مضاربيًا.',
+    gai: 'جاذبية الاستثمار',
+    gaiScore: 'نتيجة GAI 2025',
+    gaiRating: 'التقدير',
+    gaiCategory: 'الفئة',
+    gaiRank: 'الترتيب',
+    gaiRankValue: (a, g) => `${a ? `${a} في أفريقيا` : ''}${a && g ? '، ' : ''}${g ? `${g} عالميًا` : ''}`,
+    gaiTrend: 'الاتجاه',
+    trends: { improving: 'في تحسّن', declining: 'في تراجع', stable: 'مستقر' },
+    infra: 'البنية التحتية واللوجستيك',
+    lpi: 'مؤشر الأداء اللوجستي (البنية التحتية، 1-5)',
+    aidi: 'مؤشر النقل AIDI (البنك الأفريقي للتنمية، 0-100)',
+    infraRank: 'ترتيب البنية التحتية في أفريقيا',
+    infraText: 'مؤشر الأداء اللوجستي (LPI، البنك الدولي): جودة البنية التحتية التجارية وبنية النقل، من 1 إلى 5. مؤشر AIDI (البنك الأفريقي للتنمية): تطوّر البنية التحتية للنقل، من 0 إلى 100.',
+    customs: 'إدارة الجمارك',
+    customsFields: {
+      administration: 'الإدارة', adresse: 'العنوان', website: 'الموقع الإلكتروني',
+      bureaux_portuaires: 'المكاتب المينائية', bureaux_aeriens: 'مكاتب المطارات', bureaux_terrestres: 'المكاتب البرية',
+    },
+    projects: 'المشاريع الهيكلية',
+    projectFields: {
+      secteur: 'القطاع', statut: 'الحالة', budget: 'الميزانية', echeance: 'الأجل',
+      description: 'الوصف', impact: 'الأثر', partenaires: 'الشركاء', source: 'المصدر',
+    },
+    warning: 'تنبيه',
+    warningText: [
+      'أرقام مأخوذة من المصادر العامة المذكورة (البنك الدولي، صندوق النقد الدولي، برنامج الأمم المتحدة الإنمائي، البنك الأفريقي للتنمية، وكالات التصنيف) في التاريخ المبيّن لكل منها. تراجع المصادر سلاسلها: يُرجى التحقق من آخر إصدار قبل أي قرار.',
+      'هذا الملف خلاصة لمعلومات اقتصادية: لا يُعدّ نصيحة استثمارية ولا تقييمًا ائتمانيًا.',
+    ],
+    filename: 'Profil_pays_ar',
+  },
 };
 
 const estNombre = (v) => typeof v === 'number' && Number.isFinite(v);
@@ -201,7 +286,7 @@ export function specProfilPaysPdf(profil, langue = 'fr') {
     { label: t.growth, value: pct(p.gdp_growth_latest), sub: p.gdp_growth_latest_year ? String(p.gdp_growth_latest_year) : '', accent: 'green' },
     { label: t.inflation, value: pct(profil.inflation_rate), sub: ans.inflation ? String(ans.inflation) : '', accent: 'red' },
     { label: t.unemployment, value: pct(profil.unemployment_rate), sub: ans.unemployment ? String(ans.unemployment) : '', accent: 'red' },
-    { label: t.hdi, value: num(profil.hdi, 3), sub: profil.hdi_rank ? `${langue === 'en' ? 'world rank' : 'rang mondial'} ${profil.hdi_rank}` : '', accent: 'green' },
+    { label: t.hdi, value: num(profil.hdi, 3), sub: profil.hdi_rank ? `${t.worldRank} ${profil.hdi_rank}` : '', accent: 'green' },
     { label: t.govDebt, value: pct(profil.total_debt_pct_gdp), sub: p.debt_year ? String(p.debt_year) : '', accent: 'terra' },
   ];
 
@@ -210,7 +295,7 @@ export function specProfilPaysPdf(profil, langue = 'fr') {
     { indicator: t.gdpPc, value: usd(profil.gdp_per_capita), year: ans.gdp_per_capita, rank: rang('gdp_per_capita') },
     { indicator: t.population, value: estNombre(profil.population) ? nombre(profil.population, langue) : t.na, year: ans.population, rank: rang('population') },
     { indicator: t.growth, value: pct(p.gdp_growth_latest), year: p.gdp_growth_latest_year, rank: rang('gdp_growth') },
-    { indicator: `${t.growth} (projection)`, value: pct(p.gdp_growth_projection_current), year: p.gdp_growth_projection_current_year, rank: rang('gdp_growth_projection') },
+    { indicator: `${t.growth} (${t.projection})`, value: pct(p.gdp_growth_projection_current), year: p.gdp_growth_projection_current_year, rank: rang('gdp_growth_projection') },
     { indicator: t.inflation, value: pct(profil.inflation_rate), year: ans.inflation, rank: rang('inflation') },
     { indicator: t.unemployment, value: pct(profil.unemployment_rate), year: ans.unemployment, rank: rang('unemployment') },
     { indicator: t.govDebt, value: pct(profil.total_debt_pct_gdp), year: p.debt_year, rank: rang('gov_debt') },
@@ -343,13 +428,15 @@ export function specProfilPaysPdf(profil, langue = 'fr') {
   if (douaneKv.length) sections.push({ title: t.customs, keyValues: douaneKv });
 
   const projets = profil.ongoing_projects || [];
-  // Une fiche par projet : son titre, puis ses rubriques publiées.
+  // Une fiche par projet : son titre, puis ses rubriques publiées. En arabe,
+  // le texte arabe de la source (`titre_ar`…) quand il existe.
+  const champ = (pr, cle) => (langue === 'ar' && publiee(pr[`${cle}_ar`]) ? pr[`${cle}_ar`] : pr[cle]);
   projets.forEach((pr, i) => {
     sections.push({
-      title: `${i === 0 ? `${t.projects} — ` : ''}${pr.titre || '—'}`,
+      title: `${i === 0 ? `${t.projects} — ` : ''}${champ(pr, 'titre') || '—'}`,
       keyValues: Object.entries(t.projectFields)
-        .filter(([cle]) => publiee(pr[cle]))
-        .map(([cle, label]) => ({ label, value: pr[cle] })),
+        .filter(([cle]) => publiee(champ(pr, cle)))
+        .map(([cle, label]) => ({ label, value: champ(pr, cle) })),
     });
   });
 

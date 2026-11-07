@@ -186,6 +186,91 @@ const T = {
     ],
     filename: 'Duty_calculation',
   },
+  ar: {
+    module: 'وحدة الحاسبة',
+    badge: 'محاكاة جمركية',
+    title: (dest) => `الرسوم والضرائب عند الاستيراد — ${dest}`,
+    subtitle: (o, d, code) => `المنشأ ${o} · المقصد ${d} · البند ${code}`,
+    prefName: 'النظام التفضيلي',
+    cif: 'القيمة سيف (CIF)',
+    cifSub: 'أساس الحساب (دولار أمريكي)',
+    npf: 'رسوم وضرائب الدولة الأولى بالرعاية',
+    pref: (r) => `رسوم وضرائب ${r}`,
+    eff: (p) => `المعدل الفعلي ${p}`,
+    economy: 'الوفر',
+    economySub: (p) => `${p} من رسوم الدولة الأولى بالرعاية`,
+    toPay: 'المجموع المستحق (الدولة الأولى بالرعاية)',
+    toPaySub: 'سيف + الرسوم والضرائب',
+    todo: 'يُستكمل',
+    operation: 'العملية',
+    origin: 'بلد المنشأ',
+    destination: 'بلد المقصد',
+    code: 'البند التعريفي',
+    level: { national: 'بند وطني', hs6: 'بند فرعي SH6' },
+    designation: 'التسمية',
+    regime: 'النظام المعتمد',
+    source: 'مصدر التعريفة',
+    collected: 'تاريخ الجمع',
+    legalBase: 'السند القانوني للأوعية',
+    currency: 'العملة الوطنية',
+    rate: (taux, dev, date) => `1 USD = ${taux} ${dev}${date ? ` (بتاريخ ${date})` : ''}`,
+    state: 'حالة الحساب',
+    states: {
+      COMPLET: 'كامل: صُفّيت كل بنود الرسوم والضرائب المنشورة لهذا البند.',
+      INDICATIF: (codes) => `إرشادي: صُفّيت كل البنود، لكن ${codes} يستند إلى متوسط إحصائي على مستوى SH6 (WITS/TRAINS)، لا إلى التعريفة الوطنية.`,
+      PARTIEL: 'جزئي: تعذّرت تصفية بند أو أكثر (انظر «العناصر الناقصة»). المجموع جزئي، ولم يُختلق أي مبلغ.',
+      INDISPONIBLE: 'غير متاح: لم تُصفَّ أي بند لهذا البند التعريفي (انظر «العناصر الناقصة»).',
+    },
+    howTo: 'كيف يُقرأ هذا الحساب',
+    howToText: () => [
+      'القيمة سيف (التكلفة والتأمين والشحن): قيمة البضاعة واصلةً إلى حدود بلد المقصد، وهي الأساس المعتاد للرسم الجمركي.',
+      'يُطبَّق كل بند على وعائه (عمود «الوعاء»): الرسم الجمركي على القيمة سيف، والضرائب الداخلية كضريبة القيمة المضافة على أساس يشمل عادةً الرسوم المحسوبة قبلها (أثر التراكم)، وفق السند القانوني المذكور أعلاه.',
+      'نظام الدولة الأولى بالرعاية: التعريفة العامة المطبقة على كل بضاعة لا تستفيد من أي اتفاق تفضيلي.',
+      'النظام التفضيلي (زليكاف أو منطقة تجارة حرة أو اتحاد جمركي): لا يُطبَّق إلا إذا كانت البضاعة ناشئة وفق قواعد المنشأ في الاتفاق، مع إثبات المنشأ (شهادة المنشأ).',
+      'المعدل الفعلي: مجموع الرسوم والضرائب مقسومًا على القيمة سيف، ويسمح بالمقارنة بين نظامين أو بلدين.',
+    ],
+    regimeNote: 'ملاحظة حول النظام',
+    linesNpf: 'تفصيل الرسوم والضرائب — نظام الدولة الأولى بالرعاية',
+    linesPref: (r) => `تفصيل الرسوم والضرائب — ${r}`,
+    cols: { code: 'الرمز', label: 'التسمية', base_expr: 'الوعاء', base: 'الأساس', rate: 'المعدل', amount: 'المبلغ', status: 'الحالة' },
+    calculated: 'محسوب',
+    totals: 'المجاميع',
+    totalDuties: 'مجموع الرسوم والضرائب',
+    totalToPay: 'المجموع المستحق (سيف + الرسوم والضرائب)',
+    effective: 'المعدل الفعلي',
+    missing: 'العناصر الناقصة',
+    missingIntro: 'لم تُصفَّ هذه البنود ولا يشملها المجموع: يجب استكمالها قبل الاعتماد عليه.',
+    motif: 'السبب',
+    motifs: {
+      TAUX_INDISPONIBLE: 'معدل غير منشور في المصدر لهذا البند.',
+      ASSIETTE_INDISPONIBLE: 'وعاء (أساس الحساب) غير محدد في المصدر.',
+      QUANTITE_REQUISE: 'رسم نوعي: أدخل الكمية في الحاسبة.',
+      QUANTITE_COMPLEMENTAIRE_REQUISE: 'أدخل الكمية التكميلية التي تطلبها التعريفة.',
+      TAUX_DE_CHANGE_REQUIS: 'مبلغ بالعملة الوطنية: يلزم سعر صرف.',
+      ASSIETTE_INCOMPLETE: 'وعاء ناقص: تعذّر حساب أحد مكوّناته.',
+      VALEUR_FOB_REQUISE: 'أدخل القيمة فوب (FOB)، وهي أساس هذا البند.',
+      REGLE_COMPOSEE_NON_ETABLIE: 'رسم مركّب لم تُحدَّد قاعدة الترجيح فيه.',
+      UNITES_DE_QUANTITE_MULTIPLES: 'وحدات كمية متعددة ممكنة: حدّد الكمية.',
+      NON_TRACEE_A_LA_SOURCE: 'فئة ضرائب لا يتتبعها المصدر: المبلغ مجهول وليس صفرًا.',
+    },
+    notes: 'ملاحظات المصدر حسب البند',
+    formalities: 'الإجراءات الإدارية',
+    noFormality: 'لا يُنشر أي إجراء إداري خاص لهذا البند. وتبقى الالتزامات العامة للاستيراد سارية.',
+    formalitiesUnknown: 'الإجراءات غير محددة لهذا البند. وغياب المعلومة لا يعني غياب الالتزام: يُرجى التحقق لدى إدارة الجمارك في بلد المقصد.',
+    document: 'الوثيقة',
+    regulation: 'تنظيم الاستيراد',
+    authority: 'الجهة',
+    legalRef: 'المرجع',
+    documents: 'الوثائق',
+    steps: 'الإجراء',
+    exchange: 'سعر الصرف',
+    warning: 'تنبيه',
+    warningText: [
+      'محاكاة إرشادية لا يُحتج بها أمام إدارة الجمارك. المعدلات مأخوذة من المصدر المذكور في تاريخ جمعه، وقد تكون تغيّرت منذ ذلك الحين.',
+      'قبل أي عملية، يجب تأكيد البند التعريفي والمنشأ والمبالغ لدى إدارة الجمارك في بلد المقصد أو لدى معشّر جمركي معتمد.',
+    ],
+    filename: 'Calcul_droits_ar',
+  },
 };
 
 const estCalculee = (l) => l?.statut === 'CALCULE' && typeof l.montant === 'number';
@@ -356,7 +441,10 @@ export function specCalculPdf({ calcul, result, origine, destination, langue = '
         ],
         rows: formalites.map((f) => ({
           code: f.code || '—',
-          document: langue === 'en' ? (f.document_en || f.document_fr || f.texte) : (f.document_fr || f.document_en || f.texte),
+          // En arabe, le texte officiel quand la source le publie en arabe (Égypte).
+          document: langue === 'en' ? (f.document_en || f.document_fr || f.texte)
+            : langue === 'ar' ? (f.texte || f.document_fr || f.document_en)
+              : (f.document_fr || f.document_en || f.texte),
         })),
       },
     });
@@ -369,17 +457,19 @@ export function specCalculPdf({ calcul, result, origine, destination, langue = '
   }
 
   const mesures = calcul.regulatory_compliance?.measures || [];
-  if (mesures.length) {
-    const paragraphes = [];
-    mesures.forEach((m) => {
-      paragraphes.push(`• ${m.measure_name}`);
-      if (m.authority) paragraphes.push(`${t.authority} : ${m.authority}`);
-      if (m.legal_reference) paragraphes.push(`${t.legalRef} : ${m.legal_reference}`);
-      if (m.documents?.length) paragraphes.push(`${t.documents} : ${m.documents.join(' ; ')}`);
-      if (m.procedure?.steps?.length) paragraphes.push(`${t.steps} : ${m.procedure.steps.join(' > ')}`);
+  // Une fiche par mesure : le libellé et le texte de la source séparés, pour
+  // qu'un libellé arabe ne se mêle pas à un texte publié en français.
+  mesures.forEach((m, i) => {
+    sections.push({
+      title: `${i === 0 ? `${t.regulation} — ` : ''}${m.measure_name}`,
+      keyValues: [
+        m.authority && { label: t.authority, value: m.authority },
+        m.legal_reference && { label: t.legalRef, value: m.legal_reference },
+        m.documents?.length && { label: t.documents, value: m.documents.join(' ; ') },
+        m.procedure?.steps?.length && { label: t.steps, value: m.procedure.steps.join(' > ') },
+      ].filter(Boolean),
     });
-    sections.push({ title: t.regulation, paragraphs: paragraphes });
-  }
+  });
 
   const reserve = reserveConversion({ ...result, conversion_monetaire: calcul.conversion_monetaire }, langue);
   if (reserve) sections.push({ title: t.exchange, notice: [`${reserve.titre}. ${reserve.texte}`] });

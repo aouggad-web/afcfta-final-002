@@ -15,6 +15,7 @@
 import jsPDF from 'jspdf';
 import { THEME_LIGHT, THEME_DARK, espacesSimples } from './tradeReportPdf';
 import { dessinerLogo, nomSaas } from './pdfMarque';
+import { estArabe, preparerArabe } from './pdfArabe';
 
 const MM = { pageW: 210, pageH: 297, margin: 13 };
 // Logo du site, à droite du bandeau ; le titre s'arrête avant lui.
@@ -24,6 +25,7 @@ const TEXTE_BANDEAU = MM.pageW - 2 * MM.margin - LOGO - 4;
 const I18N = {
   fr: { page: 'Page', source: 'SOURCE', consulted: 'Consultation', module: 'MODULE OPPORTUNITÉS' },
   en: { page: 'Page', source: 'SOURCE', consulted: 'Consulted', module: 'OPPORTUNITIES MODULE' },
+  ar: { page: 'الصفحة', source: 'المصدر', consulted: 'تاريخ الاطلاع', module: 'وحدة الفرص' },
 };
 
 const ACCENTS = { green: 'green', red: 'red', gold: 'gold', terra: 'terra' };
@@ -291,7 +293,8 @@ function drawNotice(doc, theme, paragraphs, startY) {
 
 function drawFooters(doc, theme, { language, source }) {
   const t = I18N[language] || I18N.fr;
-  const consulted = new Date().toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US');
+  // En arabe, la date en chiffres (jj/mm/aaaa), comme sur l'écran.
+  const consulted = new Date().toLocaleDateString(language === 'en' ? 'en-US' : 'fr-FR');
   const total = doc.internal.getNumberOfPages();
   for (let i = 1; i <= total; i++) {
     doc.setPage(i);
@@ -305,9 +308,13 @@ function drawFooters(doc, theme, { language, source }) {
     doc.text(t.source, MM.margin, y + 3.8);
     const labelW = doc.getTextWidth(t.source);
     doc.setFont('helvetica', 'normal');
-    doc.text(`${source || '—'} • ${t.consulted}: ${consulted}`, MM.margin + labelW + 2, y + 3.8, {
-      maxWidth: MM.pageW - 2 * MM.margin - labelW - 22,
-    });
+    // La source (souvent en français ou en anglais) et la date d'accès en
+    // deux textes : en arabe, chacun garde son sens d'écriture.
+    const xSource = MM.margin + labelW + 2;
+    const largeurSource = MM.pageW - 2 * MM.margin - labelW - 22 - 38;
+    const ligneSource = doc.splitTextToSize(`${source || '—'} •`, largeurSource)[0];
+    doc.text(ligneSource, xSource, y + 3.8);
+    doc.text(`${t.consulted}: ${consulted}`, xSource + doc.getTextWidth(ligneSource) + 1.5, y + 3.8);
     doc.setFont('helvetica', 'bold');
     doc.text(`${t.page} ${i}/${total}`, MM.pageW - MM.margin, y + 3.8, { align: 'right' });
   }
@@ -320,7 +327,7 @@ function drawFooters(doc, theme, { language, source }) {
  * @param {string} spec.title
  * @param {string} [spec.subtitle]
  * @param {string} [spec.badge]      Pastille sous le wordmark (nom du sous-module)
- * @param {'fr'|'en'} [spec.language]
+ * @param {'fr'|'en'|'ar'} [spec.language]  En arabe, attendre d'abord chargerPoliceArabe().
  * @param {'light'|'dark'} [spec.theme]
  * @param {Array}  [spec.kpis]       [{label, value, sub, accent}]
  * @param {Array}  [spec.sections]   [{title, table}|{title, keyValues}|{title, paragraphs}|{title, notice}, ...]
@@ -331,6 +338,8 @@ export function buildOpportunityPdf(spec) {
   const theme = spec.theme === 'dark' ? THEME_DARK : THEME_LIGHT;
   const language = spec.language || 'fr';
   const doc = espacesSimples(new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' }));
+  // En arabe : police arabe et page de droite à gauche (police chargée par l'appelant).
+  if (estArabe(language)) preparerArabe(doc);
   paintPage(doc, theme);
 
   let y = drawMasthead(doc, theme, { ...spec, language });
