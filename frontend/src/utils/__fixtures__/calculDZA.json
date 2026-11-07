@@ -1,0 +1,281 @@
+{
+ "position": {
+  "designation": "- En carcasses ou demi-carcasses :\n- - - De l'espece domestique :\n- - - - De veaux",
+  "unite": null,
+  "source": "https://www.douane.gov.dz/spip.php?page=sous_position&section=01&chapitre=02&range=01&position=101100&sous_position=0201101100"
+ },
+ "valeur_cif": 10000.0,
+ "npf": {
+  "lignes": [
+   {
+    "code": "DAPS",
+    "libelle": "DAPS",
+    "famille": "droit",
+    "assiette": "CIF",
+    "taux_pct": 0.0,
+    "source": "douane.gov.dz — Tarif douanier (e-service DGD)",
+    "note": "* D.A.P.S =50% Si date validation de la declaration avant le 21-04-2019 JORADP N° 26 du 21-04-2019",
+    "base": 10000.0,
+    "montant": 0.0,
+    "statut": "CALCULE"
+   },
+   {
+    "code": "DD",
+    "libelle": "DD",
+    "famille": "droit",
+    "assiette": "CIF",
+    "taux_pct": 5.0,
+    "source": "douane.gov.dz — Tarif douanier (e-service DGD)",
+    "note": "ART. 139 LF 2026",
+    "base": 10000.0,
+    "montant": 500.0,
+    "statut": "CALCULE"
+   },
+   {
+    "code": "TCS",
+    "libelle": "TCS",
+    "famille": "accise",
+    "assiette": "CIF",
+    "taux_pct": 3.0,
+    "source": "douane.gov.dz — Tarif douanier (e-service DGD)",
+    "base": 10000.0,
+    "montant": 300.0,
+    "statut": "CALCULE"
+   },
+   {
+    "code": "TVA",
+    "libelle": "TVA",
+    "famille": "tva",
+    "assiette": "CIF+DAPS+DD+TIC+TCE+TEE+TICPV",
+    "taux_pct": 0.0,
+    "source": "douane.gov.dz — Tarif douanier (e-service DGD)",
+    "composants_sans_objet": [
+     "TIC",
+     "TCE",
+     "TEE",
+     "TICPV"
+    ],
+    "base": 10500.0,
+    "montant": 0.0,
+    "statut": "CALCULE"
+   },
+   {
+    "code": "PRCT",
+    "libelle": "PRCT",
+    "famille": "post_tva",
+    "assiette": "CIF+DD+TCS+TVA",
+    "taux_pct": 2.0,
+    "source": "douane.gov.dz — Tarif douanier (e-service DGD)",
+    "base": 10800.0,
+    "montant": 216.0,
+    "statut": "CALCULE"
+   }
+  ],
+  "manques": [],
+  "lignes_base_statistique": [],
+  "total_droits": 1016.0,
+  "total_a_payer": 11016.0,
+  "taux_effectif_pct": 10.16,
+  "etat": "COMPLET"
+ },
+ "preference": {
+  "lignes": [
+   {
+    "code": "DAPS",
+    "libelle": "DAPS",
+    "famille": "droit",
+    "assiette": "CIF",
+    "taux_pct": 0.0,
+    "source": "douane.gov.dz — Tarif douanier (e-service DGD)",
+    "note": "* D.A.P.S =50% Si date validation de la declaration avant le 21-04-2019 JORADP N° 26 du 21-04-2019",
+    "base": 10000.0,
+    "montant": 0.0,
+    "statut": "CALCULE"
+   },
+   {
+    "code": "DD",
+    "libelle": "DD",
+    "famille": "droit",
+    "assiette": "CIF",
+    "taux_pct": 0.0,
+    "source": "douane.gov.dz — Tarif douanier (e-service DGD)",
+    "note": "ART. 139 LF 2026",
+    "taux_npf_pct": 5.0,
+    "regime_applique": "preference",
+    "base": 10000.0,
+    "montant": 0.0,
+    "statut": "CALCULE"
+   },
+   {
+    "code": "TCS",
+    "libelle": "TCS",
+    "famille": "accise",
+    "assiette": "CIF",
+    "taux_pct": 3.0,
+    "source": "douane.gov.dz — Tarif douanier (e-service DGD)",
+    "base": 10000.0,
+    "montant": 300.0,
+    "statut": "CALCULE"
+   },
+   {
+    "code": "TVA",
+    "libelle": "TVA",
+    "famille": "tva",
+    "assiette": "CIF+DAPS+DD+TIC+TCE+TEE+TICPV",
+    "taux_pct": 0.0,
+    "source": "douane.gov.dz — Tarif douanier (e-service DGD)",
+    "composants_sans_objet": [
+     "TIC",
+     "TCE",
+     "TEE",
+     "TICPV"
+    ],
+    "base": 10000.0,
+    "montant": 0.0,
+    "statut": "CALCULE"
+   },
+   {
+    "code": "PRCT",
+    "libelle": "PRCT",
+    "famille": "post_tva",
+    "assiette": "CIF+DD+TCS+TVA",
+    "taux_pct": 2.0,
+    "source": "douane.gov.dz — Tarif douanier (e-service DGD)",
+    "base": 10300.0,
+    "montant": 206.0,
+    "statut": "CALCULE"
+   }
+  ],
+  "manques": [],
+  "lignes_base_statistique": [],
+  "total_droits": 506.0,
+  "total_a_payer": 10506.0,
+  "taux_effectif_pct": 5.06,
+  "etat": "COMPLET",
+  "prelevements_remises": [
+   "DD"
+  ]
+ },
+ "economie": 510.0,
+ "provenance": {
+  "iso3": "DZA",
+  "code_demande": "0201101100",
+  "niveau": "national",
+  "source": {
+   "fichier": "backend/data/crawled/DZA_tariffs.json",
+   "origine": "crawl",
+   "nom": "douane.gov.dz — Tarif douanier (e-service DGD)",
+   "url": "https://www.douane.gov.dz/spip.php?page=tarif_douanier",
+   "qualite": "crawled_authentic",
+   "nomenclature": null,
+   "collecte": "2026-10-04T06:51:48+00:00",
+   "sha256": "e189e6149f335a11d0f640d1302041948767f68e6f4f621dd789a93e90469132"
+  },
+  "couverture": {
+   "familles": [
+    "accise",
+    "autre",
+    "droit",
+    "post_tva",
+    "tva"
+   ],
+   "droit_de_douane": true,
+   "tva": true,
+   "positions_liquidables": 17279,
+   "droits_liquidables": 70676,
+   "etat": "PARTIEL",
+   "motif": "195 droits sur 70871 non liquidables"
+  },
+  "assiettes": {
+   "reference_legale": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS ; TIC, TCE, TEE dans la base TVA (art. 27 CTCA, LF 2017 art. 72) — fiche DZA_assiettes_taxes_interieures_2026-10-27.json",
+   "origine": "source_et_table"
+  },
+  "devise_nationale": "DZD",
+  "socle_version": "1",
+  "dates": {
+   "codes": "2026-10-04",
+   "taux": "2026-10-04"
+  }
+ },
+ "complements_nationaux": [],
+ "simulations_regionales": [],
+ "regime_commercial": {
+  "applique": true,
+  "regime": "GZALE",
+  "code_bloc": "GZALE",
+  "libelle_bloc": "Grande zone arabe de libre-échange",
+  "statut": "FRANCHISE_ZONE_LIBRE_ECHANGE",
+  "note": "Grande zone arabe de libre-échange (GZALE) : droit de douane 0 % pour les produits d'origine arabe, la liste négative algérienne étant supprimée depuis le 1er janvier 2022 (télex DGD n° 516/DGD/D042.21). Conditions : certificat d'origine arabe (valeur ajoutée locale d'au moins 40 %) et transport direct. Seul le droit de douane est exonéré : TVA, TCS et autres taxes restent dues. La ZLECAf s'applique aussi à cette origine, mais elle est moins favorable pour cette position.",
+  "zlecaf": {
+   "statut": "APPLIED",
+   "note": "Neuf origines admises (circulaire 482/2024). Taux calculés depuis le NPF par le calendrier national (listes A, B, C ; positions gelées au droit commun) ; DAPS exonéré pour les listes A et B. Voir DZA_application_2026-09-14.json."
+  },
+  "perimetre": {
+   "DD": "GZALE (adhésion de l'Algérie au 01/01/2009) ; liste négative algérienne supprimée au 01/01/2022, télex DGD n° 516/DGD/D042.21 du 24/12/2021 — exonération du seul droit de douane"
+  }
+ },
+ "preference_zlecaf": {
+  "applique": false,
+  "regime": "GZALE",
+  "statut": "REGIME_GZALE",
+  "statut_zlecaf": "APPLIED",
+  "note": "La ZLECAf n'est pas retenue ici : la franchise de la Grande zone arabe de libre-échange est appliquée. Neuf origines admises (circulaire 482/2024). Taux calculés depuis le NPF par le calendrier national (listes A, B, C ; positions gelées au droit commun) ; DAPS exonéré pour les listes A et B. Voir DZA_application_2026-09-14.json."
+ },
+ "regulatory_compliance": {
+  "country_iso3": "DZA",
+  "as_of": "2026-10-26",
+  "measure_type": "import_regulatory_compliance",
+  "measure_count": 1,
+  "mandated_actor_count": 0,
+  "measures": [
+   {
+    "record_id": "DZA_IMPORT_REQUEST_REVIEW",
+    "measure_name": "Examen des demandes d'importation par le comité permanent de suivi et de traitement des demandes d'importation",
+    "measure_category": "other",
+    "scope": "Le comité « examine et émet son avis sur les demandes d'importation, pour chaque opération d'importation, y compris les opérations d'importation réalisées pour propre compte par tout opérateur dans le cadre de ses activités de production et de service dans la limite de ses propres besoins » (art. 4). Il réserve un traitement d'urgence aux produits « revêtant un caractère sensible et/ou prioritaire pour l'approvisionnement du marché national ou pour le fonctionnement des unités de production ». Le décret prévoit un avis ; il ne dit pas qui décide, ni l'effet d'un avis défavorable.",
+    "scope_type": "GENERAL",
+    "products": "Toute opération d'importation, quel que soit le produit (art. 4) ; aucune liste de positions tarifaires.",
+    "hs_codes_explicit": [],
+    "hs_codes_status": "NOT_AVAILABLE",
+    "transport": "Non précisé par le décret.",
+    "conditions": "Demande d'importation enregistrée sur « la plate-forme numérique dédiée à l'enregistrement des demandes d'importation » (art. 4), dont le décret ne donne ni le nom ni l'adresse. Le décret entre en vigueur à sa publication au Journal officiel n° 72 du 13 octobre 2026.",
+    "exemptions": "NOT_AVAILABLE",
+    "thresholds_and_exclusions": {
+     "text": null,
+     "status": "NOT_AVAILABLE"
+    },
+    "documents": [
+     "Demande d'importation enregistrée sur la plate-forme numérique (pièces à joindre non fixées par le décret)."
+    ],
+    "authority": "Comité permanent de suivi et de traitement des demandes d'importation, placé auprès du ministre du commerce extérieur et de la promotion des exportations, qui le préside ; secrétariat assuré par les services de ce ministère (art. 1er à 3).",
+    "platform": "Plate-forme numérique dédiée à l'enregistrement des demandes d'importation (art. 4) — non nommée par le décret.",
+    "procedure": {
+     "steps": [
+      "Enregistrement de la demande d'importation sur la plate-forme numérique dédiée.",
+      "Examen et avis du comité, pour chaque opération ; traitement d'urgence pour les produits sensibles ou prioritaires."
+     ],
+     "official_delay": null,
+     "status": "PARTIAL"
+    },
+    "fees": null,
+    "fees_status": "NOT_AVAILABLE",
+    "source_id": "DZA-JORADP-DE-26-327",
+    "legal_reference": "Décret exécutif n° 26-327 du 13 octobre 2026, art. 1er à 4 (JO n° 72, p. 16-17), pris en application de l'ordonnance n° 03-04 du 19 juillet 2003, art. 6 octies.",
+    "verification_status": "DOCUMENTED",
+    "pending_primary_archive": false,
+    "mandated_actor_status": "NOT_APPLICABLE",
+    "mandated_actors": [],
+    "sides": [
+     "import"
+    ],
+    "source_record_path": "data/algeria/regulatory_measures.json"
+   }
+  ],
+  "mandated_actors": [],
+  "source_record_path": "data/algeria/regulatory_measures.json",
+  "notes": "Premier lot réglementaire Algérie : examen des demandes d'importation par le comité permanent créé par le décret exécutif n° 26-327 (JO n° 72 du 13 octobre 2026). Mesure générale, attachée à chaque opération d'importation et non à une position tarifaire : elle n'est pas portée par les formalités particulières de la fiche « sous-position » (services/formalites.py). Ce n'est ni un droit ou une taxe, ni une licence d'importation, ni une condition propre à la ZLECAf.",
+  "disclaimer": "Simulation informative — non opposable à l’administration douanière. Un prestataire privé est présenté uniquement comme acteur d’exécution dans la limite d’un mandat documenté. Les frais, seuils, exemptions et portées SH non prouvés restent NOT_AVAILABLE."
+ },
+ "regulatory_cost": null,
+ "regulatory_reported": null
+}

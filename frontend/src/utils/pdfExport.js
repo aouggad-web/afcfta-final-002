@@ -1,5 +1,6 @@
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { dessinerLogo, nomSaas } from './pdfMarque';
 
 /**
  * Export a DOM element to PDF
@@ -39,12 +40,19 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
 
-    // Add header if title provided
-    let yOffset = margin;
+    // Marque du site : logo en haut à droite, nom au-dessus du titre.
+    const logo = 16;
+    dessinerLogo(pdf, pageWidth - margin - logo, margin, logo);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(9);
+    pdf.setTextColor(184, 118, 26);
+    pdf.text(nomSaas(language), margin, margin + 4);
+    pdf.setFont('helvetica', 'normal');
+    let yOffset = margin + 4;
     if (title) {
       pdf.setFontSize(18);
       pdf.setTextColor(30, 64, 175); // Blue color
-      pdf.text(title, margin, yOffset + 10);
+      pdf.text(title, margin, yOffset + 10, { maxWidth: pageWidth - 2 * margin - logo - 4 });
       yOffset += 15;
 
       if (subtitle) {
@@ -83,6 +91,7 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
       pdf.line(margin, yOffset, pageWidth - margin, yOffset);
       yOffset += 5;
     }
+    yOffset = Math.max(yOffset, margin + logo + 3);
 
     // Calculate image dimensions
     const imgWidth = pageWidth - (margin * 2);
@@ -147,9 +156,9 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
       }
       pdf.setFontSize(8);
       pdf.setTextColor(150, 150, 150);
-      const footerText = language === 'fr' 
-        ? `Page ${i} sur ${totalPages} - ZLECAf Analytics`
-        : `Page ${i} of ${totalPages} - AfCFTA Analytics`;
+      const footerText = language === 'fr'
+        ? `Page ${i} sur ${totalPages} - ${nomSaas(language)}`
+        : `Page ${i} of ${totalPages} - ${nomSaas(language)}`;
       pdf.text(footerText, pageWidth / 2, pageHeight - 5, { align: 'center' });
     }
 

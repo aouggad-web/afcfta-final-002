@@ -57,6 +57,9 @@ import {
   zlecafTotalTaxRatePct,
 } from './zlecafAvailability';
 import { montant } from '../../utils/nombres';
+import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
+import { specCalculPdf } from '../../utils/calculPdf';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
 import { pick } from '../../i18n/lang';
 import { anonymousCalculationNoticeText } from '../tools/entitlementNotice';
 import SubscriptionNotice from '../tools/SubscriptionNotice';
@@ -501,6 +504,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     return country ? country.name : code;
   };
 
+  // Le PDF s'écrit en français ou en anglais (jsPDF n'écrit pas l'arabe) :
+  // le nom du pays suit la langue du PDF, pas celle de l'écran.
+  const nomPaysPdf = (code, langue) => AFRICAN_COUNTRIES[code]?.[`name_${langue}`] || getCountryName(code);
+
   const resetSearch = () => {
     setOriginCountry('');
     setDestinationCountry('');
@@ -644,6 +651,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       setResult({
         ...legacyResult,
         taxes_detail: normalizeTaxesDetail(legacyResult.taxes_detail, legacyResult.taxes_breakdown),
+        // La réponse du moteur, telle quelle : le PDF du calcul la détaille
+        // ligne par ligne (base, taux, montant, manques, sources).
+        _calcul: calcul,
         // La clé qui rattache une quantité à SA position. Construite ici, à
         // l'endroit exact où l'appel est fait, et relue telle quelle par le
         // champ de saisie : la reconstruire ailleurs à partir des champs
@@ -1287,6 +1297,18 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </CardDescription>
                   </div>
                 </div>
+                {result._calcul && (
+                  <OpportunityPdfExport
+                    language={language}
+                    getSpec={(_, langue) => specCalculPdf({
+                      calcul: result._calcul,
+                      result,
+                      origine: nomPaysPdf(result.origin_country, langue),
+                      destination: nomPaysPdf(result.destination_country, langue),
+                      langue,
+                    })}
+                  />
+                )}
               </div>
             </CardHeader>
             

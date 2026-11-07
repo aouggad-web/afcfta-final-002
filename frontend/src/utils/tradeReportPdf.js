@@ -12,6 +12,7 @@
  * sur le rendu à l'écran de l'appli).
  */
 import jsPDF from 'jspdf';
+import { dessinerLogo, nomSaas } from './pdfMarque';
 
 const THEME_LIGHT = {
   name: 'light',
@@ -104,18 +105,6 @@ const I18N = {
 
 const MM = { pageW: 210, pageH: 297, margin: 13 };
 
-function starPoints(cx, cy, outerR, innerR, points, rotationDeg) {
-  const pts = [];
-  const step = Math.PI / points;
-  const rot = (rotationDeg * Math.PI) / 180;
-  for (let i = 0; i < points * 2; i++) {
-    const r = i % 2 === 0 ? outerR : innerR;
-    const a = i * step - Math.PI / 2 + rot;
-    pts.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]);
-  }
-  return pts;
-}
-
 function cagrOf(rows, key) {
   if (!rows.length) return null;
   const first = rows[0]?.[key] || 0;
@@ -123,29 +112,6 @@ function cagrOf(rows, key) {
   if (first <= 0 || last <= 0) return null;
   const years = Math.max(1, rows.length - 1);
   return (Math.pow(last / first, 1 / years) - 1) * 100;
-}
-
-function drawEmblem(doc, cx, cy, size, theme) {
-  // Insigne "étoile Najm" (motif zellige de Tlemcen documenté dans le design
-  // system de l'appli) plutôt qu'un clip-art de silhouette continentale —
-  // fidèle au vocabulaire visuel du projet et net en tracé vectoriel simple.
-  const r = size / 2;
-  doc.setFillColor(...theme.headerBandTo);
-  doc.setDrawColor(...theme.gold);
-  doc.setLineWidth(0.5);
-  doc.roundedRect(cx - r, cy - r, size, size, 1.5, 1.5, 'FD');
-  const pts = starPoints(cx, cy, r * 0.62, r * 0.28, 8, 0);
-  doc.setDrawColor(...theme.gold);
-  doc.setLineWidth(0.35);
-  for (let i = 0; i < pts.length; i++) {
-    const [x1, y1] = pts[i];
-    const [x2, y2] = pts[(i + 1) % pts.length];
-    doc.line(x1, y1, x2, y2);
-  }
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(5.2);
-  doc.setTextColor(...theme.gold);
-  doc.text('ZLECAf', cx, cy + r + 3.2, { align: 'center' });
 }
 
 function pillBadge(doc, x, y, text, theme) {
@@ -167,7 +133,12 @@ function pillBadge(doc, x, y, text, theme) {
  * document reçoit donc des espaces simples.
  */
 export function espacesSimples(doc) {
-  const simple = (t) => (typeof t === 'string' ? t.replace(/\u00A0/g, ' ') : Array.isArray(t) ? t.map(simple) : t);
+  // Les polices standard de jsPDF n'ont pas ces signes : sans
+  // remplacement, ils sortent en caractères illisibles.
+  const SIGNES = { '\u2192': '->', '\u2190': '<-', '\u2264': '<=', '\u2265': '>=', '\u2248': '~', '\u2212': '-' };
+  const simple = (t) => (typeof t === 'string'
+    ? t.replace(/[\u00A0\u202F\u2009]/g, ' ').replace(/[\u2192\u2190\u2264\u2265\u2248\u2212]/g, (c) => SIGNES[c])
+    : Array.isArray(t) ? t.map(simple) : t);
   ['text', 'getTextWidth', 'splitTextToSize'].forEach((m) => {
     const f = doc[m].bind(doc);
     doc[m] = (t, ...rest) => f(simple(t), ...rest);
@@ -381,7 +352,7 @@ export function buildTradeReportPdf(p) {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9.5);
   doc.setTextColor(...theme.onBand);
-  const wordmark = 'AFCFTA / ZLECAf';
+  const wordmark = nomSaas(language);
   doc.text(wordmark, MM.margin, 9);
   // Largeur mesurée AVANT de changer de police : getTextWidth() lit la police
   // actuellement active, pas celle utilisée pour dessiner le texte mesuré —
@@ -411,7 +382,7 @@ export function buildTradeReportPdf(p) {
   doc.setTextColor(...theme.onBand);
   doc.text(`${t.period}: ${period}   •   ${t.match}: ${matchLevelLabel}`, MM.margin, 37.5);
 
-  drawEmblem(doc, MM.pageW - MM.margin - 8, bandH / 2, 15, theme);
+  dessinerLogo(doc, MM.pageW - MM.margin - 22, (bandH - 22) / 2, 22);
 
   // ── KPI ────────────────────────────────────────────────────────────
   const kpiY = bandH + 6;
