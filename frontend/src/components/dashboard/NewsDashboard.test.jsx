@@ -156,3 +156,53 @@ describe('NewsRedaction — panneau du rédacteur en chef', () => {
     expect(await screen.findByRole('status')).toHaveTextContent('aucune image d’aperçu dans la page');
   });
 });
+
+describe('Retrait d’articles du fil public', () => {
+  it('le rédacteur retire un article depuis sa carte (après confirmation)', async () => {
+    useAuth.mockReturnValue({ user: { role: 'admin' } });
+    vi.stubGlobal('confirm', vi.fn(() => true));
+    render(<NewsDashboard language="fr" />);
+    await screen.findByText('Dépêche en attente');
+
+    const boutons = await screen.findAllByRole('button', { name: 'Retirer du fil public' });
+    fireEvent.click(boutons[0]);
+    await waitFor(() => expect(csrfFetch).toHaveBeenCalledTimes(1));
+    const [url, options] = csrfFetch.mock.calls[0];
+    expect(url).toMatch(/\/api\/news\/redaction\/decision$/);
+    expect(JSON.parse(options.body)).toEqual({ id: 'a1', action: 'masquer' });
+  });
+
+  it('rien n’est retiré si le rédacteur annule', async () => {
+    useAuth.mockReturnValue({ user: { role: 'admin' } });
+    vi.stubGlobal('confirm', vi.fn(() => false));
+    render(<NewsDashboard language="fr" />);
+    const boutons = await screen.findAllByRole('button', { name: 'Retirer du fil public' });
+    fireEvent.click(boutons[0]);
+    expect(csrfFetch).not.toHaveBeenCalled();
+  });
+
+  it('un visiteur ne voit aucun bouton de retrait', async () => {
+    useAuth.mockReturnValue({ user: { role: 'user' } });
+    render(<NewsDashboard language="fr" />);
+    await screen.findAllByText('Corridor Alger-Lagos');
+    expect(screen.queryByRole('button', { name: 'Retirer du fil public' })).toBeNull();
+  });
+
+  it('dans « Publiés », retire plusieurs articles sélectionnés d’un coup', async () => {
+    useAuth.mockReturnValue({ user: { role: 'admin' } });
+    render(<NewsDashboard language="fr" />);
+    await screen.findByText('Dépêche en attente');
+
+    fireEvent.click(screen.getByRole('tab', { name: /Publiés/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Tout sélectionner' }));
+    const retirer = screen.getByRole('button', { name: 'Retirer la sélection du fil public (2)' });
+    fireEvent.click(retirer);
+    await waitFor(() => expect(csrfFetch).toHaveBeenCalledTimes(2));
+    expect(csrfFetch.mock.calls.map(([, o]) => JSON.parse(o.body))).toEqual([
+      { id: 'a1', action: 'masquer' },
+      { id: 'a2', action: 'masquer' },
+    ]);
+    expect(await screen.findByRole('status')).toHaveTextContent('2 article(s) retiré(s) du fil public');
+  });
+});
+

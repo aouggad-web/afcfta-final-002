@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { Badge } from '../ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import {
@@ -15,6 +15,11 @@ import { pick, intlLocale } from '../../i18n/lang';
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { useAuth } from '../../context/AuthContext';
 import NewsRedaction from './NewsRedaction';
+import { csrfFetch } from '../../services/csrf';
+
+// Rédacteur en chef : retrait d'un article du fil public depuis sa carte.
+// Fourni seulement au compte admin ; absent, les cartes n'ont pas de bouton.
+const RetraitPublic = createContext(null);
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -207,6 +212,7 @@ export const ArticleIllustration = ({ article, categoryStyle, featured = false, 
 };
 
 const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
+  const retirer = useContext(RetraitPublic);
   const regionAccent = REGION_ACCENTS[article.region] || REGION_ACCENTS.Afrique;
   const categoryStyle = CATEGORY_ACCENTS[article.category] || CATEGORY_ACCENTS.Économie;
   const contentTags = article.content_tags || [];
@@ -274,6 +280,17 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
             </Badge>
           );
         })}
+        {retirer && (
+          <button
+            type="button"
+            onClick={() => retirer(article)}
+            title="Visible par vous seul : l’article passe dans l’onglet Masqués de la rédaction, d’où il peut être rétabli."
+            className="ml-auto px-2 py-0.5 rounded-md text-xs font-medium border"
+            style={{ borderColor: 'color-mix(in srgb, var(--danger) 45%, transparent)', color: 'var(--text)' }}
+          >
+            Retirer du fil public
+          </button>
+        )}
       </div>
 
       <h3
@@ -453,6 +470,9 @@ const NewsDashboard = ({ language = 'fr' }) => {
 
   // Rédacteur en chef : le compte admin voit le panneau de rédaction.
   const estRedacteur = useAuth()?.user?.role === 'admin';
+  // Le panneau garde son propre état : on le remonte après un retrait fait
+  // depuis une carte, pour que ses onglets suivent.
+  const [versionRedaction, setVersionRedaction] = useState(0);
 
   // `silencieux` : après une action de rédaction, rafraîchir le fil sans
   // remplacer la page par l'indicateur de chargement.
@@ -546,7 +566,26 @@ const NewsDashboard = ({ language = 'fr' }) => {
     );
   }
 
+  // Retrait depuis une carte : même décision que « Retirer du fil public »
+  // dans le panneau (l'article est masqué, rétablissable).
+  const retirerDuFil = async (article) => {
+    if (!window.confirm(`Retirer du fil public : « ${article.title} » ?`)) return;
+    try {
+      const reponse = await csrfFetch(`${API}/news/redaction/decision`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: article.id, action: 'masquer' }),
+      });
+      if (!reponse.ok) throw new Error(`HTTP ${reponse.status}`);
+      setVersionRedaction((v) => v + 1);
+      await fetchNews(false, true);
+    } catch (e) {
+      window.alert(`Retrait impossible : ${e.message}`);
+    }
+  };
+
   return (
+    <RetraitPublic.Provider value={estRedacteur ? retirerDuFil : null}>
     <section className="space-y-4">
       <div
         className="rounded-2xl border overflow-hidden"
@@ -606,7 +645,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
         </div>
       </div>
 
-      {estRedacteur && <NewsRedaction onChange={() => fetchNews(false, true)} />}
+      {estRedacteur && <NewsRedaction key={versionRedaction} onChange={() => fetchNews(false, true)} />}
 
       <CountrySpotlight spotlight={countryOfWeek} t={t} language={language} />
 
@@ -683,6 +722,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
         📰 {t.footer}
       </div>
     </section>
+    </RetraitPublic.Provider>
   );
 };
 

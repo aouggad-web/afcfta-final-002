@@ -92,13 +92,21 @@ RSS_FEEDS = {
         "logo": "🌐",
     },
     # Médias panafricains de référence (premier plan)
+    # Source de référence de l'exploitant. Google News range une recherche
+    # « site: » par pertinence, pas par date : sans « when:7d », les dix
+    # premières entrées mêlaient dépêches du jour et articles de 2016, et la
+    # coupe à 100 articles finissait par effacer Ecofin du fil (08/11/2026).
+    # Les flux propres au site ne servent pas : /feed s'est arrêté en 2025,
+    # /rss est vide.
     "agence_ecofin": {
         "name": "Agence Ecofin",
         "feeds": {
-            "economie": "https://news.google.com/rss/search?q=site:agenceecofin.com&hl=fr",
+            "economie": "https://news.google.com/rss/search?q=site:agenceecofin.com+when:7d&hl=fr&gl=FR&ceid=FR:fr",
         },
         "language": "fr",
         "logo": "📰",
+        "priority": True,
+        "max_entries": 20,
     },
     "the_africa_report": {
         "name": "The Africa Report",
@@ -1164,6 +1172,7 @@ async def fetch_feed(
     category: str,
     source_country: Optional[str] = None,
     source_priority: bool = False,
+    max_entries: int = 10,
 ) -> List[Dict]:
     """Récupérer et parser un flux RSS"""
     articles = []
@@ -1179,7 +1188,15 @@ async def fetch_feed(
                 content = await response.text()
                 feed = feedparser.parse(content)
 
-                for entry in feed.entries[:10]:  # Limiter à 10 articles par feed
+                # Les plus récentes d'abord : une recherche Google News est
+                # rangée par pertinence, et garder ses dix premières entrées
+                # retenait des articles de plusieurs années.
+                entrees = sorted(
+                    feed.entries,
+                    key=lambda e: tuple(e.get("published_parsed") or e.get("updated_parsed") or ()),
+                    reverse=True,
+                )
+                for entry in entrees[:max_entries]:
                     title = entry.get("title", "")
                     summary = entry.get("summary", entry.get("description", ""))
                     link = entry.get("link", "")
@@ -1249,6 +1266,7 @@ async def fetch_all_news() -> List[Dict]:
                         category,
                         source_config.get("country"),
                         source_config.get("priority", False),
+                        source_config.get("max_entries", 10),
                     )
                 )
 
