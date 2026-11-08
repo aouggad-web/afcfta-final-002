@@ -7,6 +7,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { Factory, TrendingUp, Award, Building2, Package, Loader2, AlertTriangle, Info, DollarSign, Users, Download } from 'lucide-react';
 import { buildProductionPdf, productionPdfFilename } from '../../utils/productionPdf';
+import { specManufacturePdf } from '../../utils/manufacturePdf';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
 import { chargerPoliceArabe, estArabe } from '../../utils/pdfArabe';
 import { chiffres, montant, montantCompact, montantUnite, nombre } from '../../utils/nombres';
 import { trDonnee } from '../../i18n/donnees';
@@ -487,6 +489,23 @@ function ProductionManufacturing({ language = 'fr' }) {
               variant="prominent"
               language={language}
             />
+            {/* Rapport de l'écran entier, au format des autres rapports
+                Production (le détail ISIC 4 garde son propre export). */}
+            {!loading && unidoData && !unidoData.message && (
+              <div className="mt-3 flex justify-end">
+                <OpportunityPdfExport
+                  language={language}
+                  getSpec={(_, langue) => specManufacturePdf({
+                    unido: unidoData,
+                    code: selectedCountry,
+                    rang: getCountryRank(),
+                    total: mvaRanking.length,
+                    divisions: isic4Status === 'ready' ? groupIsic4ByDivision() : [],
+                    basis: isic4Basis,
+                  }, langue)}
+                />
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
