@@ -11,6 +11,8 @@ import {
 } from 'recharts';
 import { pick } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specFichePortPdf } from '../../utils/logistiqueFichesPdf';
 
 function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
   const texts = {
@@ -242,6 +244,7 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                   {t.grade} {metrics.efficiency_grade}
                 </Badge>
               )}
+              <OpportunityPdfExport language={language} getSpec={(_, langue) => specFichePortPdf(port, langue)} />
             </div>
           </div>
         </DialogHeader>

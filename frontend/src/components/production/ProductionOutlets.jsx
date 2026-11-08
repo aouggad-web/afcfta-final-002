@@ -27,6 +27,8 @@ import { AlertTriangle, ArrowRight, Loader2, PackageSearch } from 'lucide-react'
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { intlLocale, isRtl } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specDebouchesPdf } from '../../utils/productionRapportsPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -118,6 +120,15 @@ function ProductionOutlets({ language = 'fr' }) {
         onChange={setCountry}
         language={language}
       />
+
+      {status === 'ready' && products.length > 0 && (
+        <div className="flex justify-end">
+          <OpportunityPdfExport
+            language={language}
+            getSpec={(_, langue) => specDebouchesPdf(profile, langue)}
+          />
+        </div>
+      )}
 
       {status === 'loading' && (
         <div className="flex items-center gap-2 text-sm text-[var(--afcfta-muted)] py-6">

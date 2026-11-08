@@ -1,0 +1,383 @@
+{
+ "airport_id": "ZAF-JNB-001",
+ "airport_name": "Johannesburg - O.R. Tambo International",
+ "country_iso": "ZAF",
+ "country_name": "Afrique du Sud",
+ "iata_code": "JNB",
+ "icao_code": "FAOR",
+ "geo_lat": -26.1392,
+ "geo_lon": 28.246,
+ "cargo_terminal_area_sqm": 42000,
+ "annual_capacity_tons": 450000,
+ "cargo_infra_notes": "Terminal cargo dédié, capacité chaîne du froid, hub principal Afrique Australe",
+ "historical_stats": [
+  {
+   "year": 2024,
+   "cargo_throughput_tons": 405000,
+   "mail_throughput_tons": 12500,
+   "cargo_aircraft_movements": 8200,
+   "source_org": "ACSA",
+   "source_url": "https://www.acsa.co.za/"
+  },
+  {
+   "year": 2023,
+   "cargo_throughput_tons": 385000,
+   "mail_throughput_tons": 11800,
+   "cargo_aircraft_movements": 7950,
+   "source_org": "ACSA",
+   "source_url": "https://www.acsa.co.za/"
+  },
+  {
+   "year": 2022,
+   "cargo_throughput_tons": 362000,
+   "mail_throughput_tons": 11200,
+   "cargo_aircraft_movements": 7600,
+   "source_org": "ACSA",
+   "source_url": "https://www.acsa.co.za/"
+  }
+ ],
+ "actors": [
+  {
+   "actor_name": "South African Airways Cargo",
+   "actor_type": "airline",
+   "group": "National",
+   "services": [
+    "Cargo transport",
+    "Ground handling"
+   ],
+   "operating_hours": "24h/24 - 7j/7",
+   "certifications": [
+    "IATA",
+    "ISO 9001"
+   ],
+   "cargo_categories": [
+    "General cargo",
+    "Express"
+   ]
+  },
+  {
+   "actor_name": "Ethiopian Cargo",
+   "actor_type": "airline",
+   "group": "International (Ethiopia)",
+   "services": [
+    "Cargo transport",
+    "Ground handling"
+   ],
+   "operating_hours": "24h/24 - 7j/7",
+   "certifications": [
+    "IATA",
+    "ISO 9001"
+   ],
+   "cargo_categories": [
+    "General cargo",
+    "Express"
+   ]
+  },
+  {
+   "actor_name": "Emirates SkyCargo",
+   "actor_type": "airline",
+   "group": "International (UAE)",
+   "services": [
+    "Cargo transport",
+    "Ground handling"
+   ],
+   "operating_hours": "24h/24 - 7j/7",
+   "certifications": [
+    "IATA",
+    "ISO 9001"
+   ],
+   "cargo_categories": [
+    "General cargo",
+    "Express"
+   ]
+  },
+  {
+   "actor_name": "Qatar Airways Cargo",
+   "actor_type": "airline",
+   "group": "International (Qatar)",
+   "services": [
+    "Cargo transport",
+    "Ground handling"
+   ],
+   "operating_hours": "24h/24 - 7j/7",
+   "certifications": [
+    "IATA",
+    "ISO 9001"
+   ],
+   "cargo_categories": [
+    "General cargo",
+    "Express"
+   ]
+  },
+  {
+   "actor_name": "Turkish Cargo",
+   "actor_type": "airline",
+   "group": "International (Turkey)",
+   "services": [
+    "Cargo transport",
+    "Ground handling"
+   ],
+   "operating_hours": "24h/24 - 7j/7",
+   "certifications": [
+    "IATA",
+    "ISO 9001"
+   ],
+   "cargo_categories": [
+    "General cargo",
+    "Express"
+   ]
+  },
+  {
+   "actor_name": "Cargolux",
+   "actor_type": "airline",
+   "group": "International (Luxembourg)",
+   "services": [
+    "Cargo transport",
+    "Ground handling"
+   ],
+   "operating_hours": "24h/24 - 7j/7",
+   "certifications": [
+    "IATA",
+    "ISO 9001"
+   ],
+   "cargo_categories": [
+    "General cargo",
+    "Express"
+   ]
+  },
+  {
+   "actor_name": "DHL Aviation",
+   "actor_type": "airline",
+   "group": "Integrator (Germany)",
+   "services": [
+    "Cargo transport",
+    "Ground handling"
+   ],
+   "operating_hours": "24h/24 - 7j/7",
+   "certifications": [
+    "IATA",
+    "ISO 9001"
+   ],
+   "cargo_categories": [
+    "General cargo",
+    "Express"
+   ]
+  },
+  {
+   "actor_name": "FedEx Express",
+   "actor_type": "airline",
+   "group": "Integrator (USA)",
+   "services": [
+    "Cargo transport",
+    "Ground handling"
+   ],
+   "operating_hours": "24h/24 - 7j/7",
+   "certifications": [
+    "IATA",
+    "ISO 9001"
+   ],
+   "cargo_categories": [
+    "General cargo",
+    "Express"
+   ]
+  },
+  {
+   "actor_name": "Swissport",
+   "actor_type": "handler",
+   "group": "International",
+   "services": [
+    "Cargo transport",
+    "Ground handling"
+   ],
+   "operating_hours": "24h/24 - 7j/7",
+   "certifications": [
+    "IATA",
+    "ISO 9001"
+   ],
+   "cargo_categories": [
+    "General cargo",
+    "Express"
+   ]
+  },
+  {
+   "actor_name": "Menzies Aviation",
+   "actor_type": "handler",
+   "group": "International",
+   "services": [
+    "Cargo transport",
+    "Ground handling"
+   ],
+   "operating_hours": "24h/24 - 7j/7",
+   "certifications": [
+    "IATA",
+    "ISO 9001"
+   ],
+   "cargo_categories": [
+    "General cargo",
+    "Express"
+   ]
+  },
+  {
+   "actor_name": "Bolloré Logistics",
+   "actor_type": "forwarder",
+   "group": "International (France)",
+   "services": [
+    "Cargo transport",
+    "Ground handling"
+   ],
+   "operating_hours": "24h/24 - 7j/7",
+   "certifications": [
+    "IATA",
+    "ISO 9001"
+   ],
+   "cargo_categories": [
+    "General cargo",
+    "Express"
+   ]
+  },
+  {
+   "actor_name": "Panalpina (DSV)",
+   "actor_type": "forwarder",
+   "group": "International (Switzerland)",
+   "services": [
+    "Cargo transport",
+    "Ground handling"
+   ],
+   "operating_hours": "24h/24 - 7j/7",
+   "certifications": [
+    "IATA",
+    "ISO 9001"
+   ],
+   "cargo_categories": [
+    "General cargo",
+    "Express"
+   ]
+  }
+ ],
+ "routes": [
+  {
+   "carrier": "Ethiopian Cargo",
+   "route_description": "East Africa-Southern Africa-Asia",
+   "frequency": "Daily",
+   "aircraft_types": "B777F, B787F",
+   "rotation": "ADD-NBO-JNB-HKG"
+  },
+  {
+   "carrier": "Emirates SkyCargo",
+   "route_description": "Middle East-Africa",
+   "frequency": "5x/week",
+   "aircraft_types": "B777F",
+   "rotation": "DXB-JNB-DXB"
+  },
+  {
+   "carrier": "Turkish Cargo",
+   "route_description": "Europe-Africa",
+   "frequency": "3x/week",
+   "aircraft_types": "A330-200F",
+   "rotation": "IST-JNB-CPT-IST"
+  },
+  {
+   "carrier": "Cargolux",
+   "route_description": "Europe-Africa",
+   "frequency": "2x/week",
+   "aircraft_types": "B747-8F",
+   "rotation": "LUX-JNB-LUX"
+  }
+ ],
+ "airport_authority": {
+  "authority_name": "Direction Générale - Johannesburg - O.R. Tambo International",
+  "iata_code": "JNB",
+  "departments": {
+   "air_traffic_control": {
+    "department": "Contrôle de la Circulation Aérienne",
+    "responsibilities": [
+     "Aircraft movement",
+     "Airspace management",
+     "Safety"
+    ],
+    "24h_emergency": true,
+    "contact_phone": "Voir direction aéroportuaire",
+    "contact_email": "jnb.air_traffic_control@airport.aero"
+   },
+   "customs_office": {
+    "department": "Douanes Aéroportuaires",
+    "responsibilities": [
+     "Cargo declarations",
+     "Passenger clearance",
+     "Duty collection"
+    ],
+    "24h_emergency": false,
+    "contact_phone": "Voir direction aéroportuaire",
+    "contact_email": "jnb.customs_office@airport.aero"
+   },
+   "cargo_operations": {
+    "department": "Direction des Opérations Cargo",
+    "responsibilities": [
+     "Cargo terminal management",
+     "Handler coordination",
+     "Capacity planning"
+    ],
+    "24h_emergency": true,
+    "contact_phone": "Voir direction aéroportuaire",
+    "contact_email": "jnb.cargo_operations@airport.aero"
+   },
+   "security_department": {
+    "department": "Sûreté Aéroportuaire",
+    "responsibilities": [
+     "Airport security",
+     "Cargo screening",
+     "Access control"
+    ],
+    "24h_emergency": true,
+    "contact_phone": "Voir direction aéroportuaire",
+    "contact_email": "jnb.security_department@airport.aero"
+   },
+   "commercial_department": {
+    "department": "Direction Commerciale",
+    "responsibilities": [
+     "Airline relations",
+     "Slot allocation",
+     "Business development"
+    ],
+    "24h_emergency": false,
+    "contact_phone": "Voir direction aéroportuaire",
+    "contact_email": "jnb.commercial_department@airport.aero"
+   },
+   "veterinary_phytosanitary": {
+    "department": "Services Vétérinaires et Phytosanitaires",
+    "responsibilities": [
+     "Live animals inspection",
+     "Plant quarantine",
+     "Health certificates"
+    ],
+    "24h_emergency": false,
+    "contact_phone": "Voir direction aéroportuaire",
+    "contact_email": "jnb.veterinary_phytosanitary@airport.aero"
+   }
+  }
+ },
+ "logistics_network": {
+  "global_cargo_airlines_present": [
+   "Emirates SkyCargo",
+   "Qatar Airways Cargo",
+   "Turkish Cargo",
+   "Ethiopian Airlines Cargo & Logistics Service",
+   "Cargolux Airlines International S.A."
+  ],
+  "integrators_present": [
+   "DHL Express / DHL Aviation",
+   "FedEx Express",
+   "UPS Airlines"
+  ],
+  "ground_handlers_present": [
+   "Swissport International AG",
+   "Menzies Aviation"
+  ],
+  "service_providers_available": [
+   "Customs brokers (air)",
+   "Freight forwarders (air)",
+   "Aircraft support services",
+   "Cargo warehouse operators"
+  ]
+ }
+}

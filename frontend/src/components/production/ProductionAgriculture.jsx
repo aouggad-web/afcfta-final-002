@@ -11,6 +11,8 @@ import {
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { pick } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specAgriculturePdf } from '../../utils/productionRapportsPdf';
 import {
   Wheat, Beef, Fish, TrendingUp, AlertTriangle, Loader2,
   Globe, BarChart3, Droplets, Award, Info
@@ -170,6 +172,15 @@ export default function ProductionAgriculture({ language = 'fr' }) {
             variant="prominent"
             language={language}
           />
+          {/* Le PDF reprend les trois sous-onglets, quel que soit celui ouvert. */}
+          {!loading && detail && (
+            <div className="mt-3 flex justify-end">
+              <OpportunityPdfExport
+                language={language}
+                getSpec={(_, langue) => specAgriculturePdf(detail, langue)}
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
 

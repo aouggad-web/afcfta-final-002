@@ -1,5 +1,8 @@
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+// html2canvas-pro : même API qu'html2canvas, mais comprend les couleurs CSS
+// modernes du thème (color(), color-mix(), oklch) sur lesquelles html2canvas
+// 1.4 plantait — aucun PDF ni image ne sortait.
+import html2canvas from 'html2canvas-pro';
 import { dessinerLogo, nomSaas } from './pdfMarque';
 import { chargerPoliceArabe, estArabe, preparerArabe } from './pdfArabe';
 
@@ -53,7 +56,9 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
       backgroundColor: '#ffffff'
     });
 
-    const imgData = canvas.toDataURL('image/png');
+    // JPEG : une capture pleine page en PNG pesait 20 à 60 Mo ; en JPEG
+    // qualité 0,85, quelques Mo, sans perte visible à l'impression.
+    const imgData = canvas.toDataURL('image/jpeg', 0.85);
     const pdf = new jsPDF({
       orientation: orientation,
       unit: 'mm',
@@ -124,7 +129,7 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
 
     if (imgHeight <= availableHeight) {
       // Single page
-      pdf.addImage(imgData, 'PNG', margin, yOffset, imgWidth, imgHeight);
+      pdf.addImage(imgData, 'JPEG', margin, yOffset, imgWidth, imgHeight);
     } else {
       // Multiple pages
       let remainingHeight = imgHeight;
@@ -151,8 +156,8 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
           0, 0, canvas.width, sourceHeight
         );
 
-        const tempImgData = tempCanvas.toDataURL('image/png');
-        pdf.addImage(tempImgData, 'PNG', margin, yOffset, imgWidth, currentHeight);
+        const tempImgData = tempCanvas.toDataURL('image/jpeg', 0.85);
+        pdf.addImage(tempImgData, 'JPEG', margin, yOffset, imgWidth, currentHeight);
 
         sourceY += sourceHeight;
         remainingHeight -= currentHeight;

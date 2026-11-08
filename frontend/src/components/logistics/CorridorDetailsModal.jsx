@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { pick, intlLocale } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specFicheCorridorPdf } from '../../utils/logistiqueFichesPdf';
 
 const CORRIDOR_TYPE_AR = { road: 'طريق بري', rail: 'سكك حديدية', multimodal: 'متعدد الوسائط' };
 
@@ -167,6 +169,9 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
             {corridor.importance === 'high' && <Badge className="bg-amber-500">⭐ {t.pidaPriority}</Badge>}
             <Badge variant="outline">{corridor.length_km} km</Badge>
           </DialogDescription>
+          <div className="mt-2">
+            <OpportunityPdfExport language={language} getSpec={(_, langue) => specFicheCorridorPdf(corridor, langue)} />
+          </div>
         </DialogHeader>
 
         {/* Description */}
