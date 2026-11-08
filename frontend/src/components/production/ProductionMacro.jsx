@@ -19,6 +19,8 @@ import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { montantCompact } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specMacroPdf } from '../../utils/productionRapportsPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -172,6 +174,12 @@ function ProductionMacro({ language = 'fr' }) {
                   <Badge className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
                     {sectorNames.length} {t('production.macro.panel.sectors')}
                   </Badge>
+                  {!loading && macroData.data_by_sector && (
+                    <OpportunityPdfExport
+                      language={language}
+                      getSpec={(_, langue) => specMacroPdf(macroData, langue)}
+                    />
+                  )}
                 </div>
               )}
             </div>

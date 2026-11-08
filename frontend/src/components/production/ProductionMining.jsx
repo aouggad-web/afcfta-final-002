@@ -7,6 +7,8 @@ import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, L
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { trDonnee } from '../../i18n/donnees';
 import { pick } from '../../i18n/lang';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specMiningPdf } from '../../utils/productionRapportsPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -124,6 +126,14 @@ function ProductionMining({ language = 'fr' }) {
                 <Badge variant="outline" className="text-sm ml-2">
                   {t('production.mining.panel.latestData')}: {latestYear}
                 </Badge>
+              )}
+              {!loading && (
+                <div className="mt-3">
+                  <OpportunityPdfExport
+                    language={language}
+                    getSpec={(_, langue) => specMiningPdf(miningData, langue)}
+                  />
+                </div>
               )}
             </div>
           )}

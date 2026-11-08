@@ -1,0 +1,445 @@
+{
+ "country_iso3": "DZA",
+ "country_name": "Algérie",
+ "region": "Afrique du Nord",
+ "data_year": 2023,
+ "source": "FAOSTAT 2023, Ministère de l'Agriculture Algérie (MADR)",
+ "sources": [
+  "FAOSTAT 2023, Ministère de l'Agriculture Algérie (MADR)",
+  "FAOSTAT — Production (QCL) bulk Africa"
+ ],
+ "main_crops": [
+  "Blé",
+  "Orge",
+  "Pomme de terre",
+  "Oranges",
+  "Dattes",
+  "Olives",
+  "Tomates"
+ ],
+ "cultures": [
+  {
+   "name": "Blé",
+   "value_2023": 3500000,
+   "unit": "tonnes",
+   "rank_africa": 4,
+   "area_ha": 1800000,
+   "yield_kg_ha": 1944
+  },
+  {
+   "name": "Orge",
+   "value_2023": 2100000,
+   "unit": "tonnes",
+   "rank_africa": 2,
+   "area_ha": 1200000,
+   "yield_kg_ha": 1750
+  },
+  {
+   "name": "Pomme de terre",
+   "value_2023": 5200000,
+   "unit": "tonnes",
+   "rank_africa": 2,
+   "area_ha": 170000,
+   "yield_kg_ha": 30588
+  },
+  {
+   "name": "Oranges",
+   "value_2023": 950000,
+   "unit": "tonnes",
+   "rank_africa": 4,
+   "area_ha": 62000,
+   "yield_kg_ha": 15322
+  },
+  {
+   "name": "Dattes",
+   "value_2023": 1200000,
+   "unit": "tonnes",
+   "rank_africa": 1,
+   "area_ha": 170000,
+   "yield_kg_ha": 7059
+  },
+  {
+   "name": "Olives",
+   "value_2023": 850000,
+   "unit": "tonnes",
+   "rank_africa": 3,
+   "area_ha": 500000,
+   "yield_kg_ha": 1700
+  },
+  {
+   "name": "Tomates",
+   "value_2023": 1400000,
+   "unit": "tonnes",
+   "rank_africa": 4,
+   "area_ha": 45000,
+   "yield_kg_ha": 31111
+  },
+  {
+   "name": "Pastèques",
+   "name_en": "Watermelons",
+   "value_2023": 2520724.26,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Oignons",
+   "name_en": "Onions",
+   "value_2023": 1830194.5,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Other vegetables, fresh n.e.c.",
+   "name_en": "Other vegetables, fresh n.e.c.",
+   "value_2023": 1706681.44,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Piments et poivrons",
+   "name_en": "Chillies and peppers",
+   "value_2023": 658529.75,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Raisins",
+   "name_en": "Grapes",
+   "value_2023": 605260.23,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Pommes",
+   "name_en": "Apples",
+   "value_2023": 591697.81,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Pumpkins, squash and gourds",
+   "name_en": "Pumpkins, squash and gourds",
+   "value_2023": 476580.21,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Carottes",
+   "name_en": "Carrots",
+   "value_2023": 428051.56,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Tangerines, mandarins, clementines",
+   "name_en": "Tangerines, mandarins, clementines",
+   "value_2023": 314985.45,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Broad beans and horse beans, green",
+   "name_en": "Broad beans and horse beans, green",
+   "value_2023": 309289.13,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Choux-fleurs",
+   "name_en": "Cauliflowers",
+   "value_2023": 282413.58,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Soya bean oil",
+   "name_en": "Soya bean oil",
+   "value_2023": 243700.0,
+   "year": 2023,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Green garlic",
+   "name_en": "Green garlic",
+   "value_2023": 237374.54,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Aubergines",
+   "name_en": "Eggplants",
+   "value_2023": 219616.38,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Peas, green",
+   "name_en": "Peas, green",
+   "value_2023": 207050.1,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Peaches and nectarines",
+   "name_en": "Peaches and nectarines",
+   "value_2023": 195226.16,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Concombres",
+   "name_en": "Cucumbers",
+   "value_2023": 192942.71,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Apricots",
+   "name_en": "Apricots",
+   "value_2023": 173085.13,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Pears",
+   "name_en": "Pears",
+   "value_2023": 162832.17,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  },
+  {
+   "name": "Choux",
+   "name_en": "Cabbages",
+   "value_2023": 156004.25,
+   "year": 2024,
+   "unit": "tonnes",
+   "rank_africa": null,
+   "area_ha": null,
+   "yield_kg_ha": null,
+   "is_bulk_faostat": true,
+   "source": "FAOSTAT — Production (QCL) bulk Africa"
+  }
+ ],
+ "evolution": {
+  "Blé": {
+   "2020": 2500000,
+   "2021": 2800000,
+   "2022": 3200000,
+   "2023": 3500000
+  },
+  "Orge": {
+   "2020": 1800000,
+   "2021": 1950000,
+   "2022": 2050000,
+   "2023": 2100000
+  },
+  "Pomme de terre": {
+   "2020": 4600000,
+   "2021": 4800000,
+   "2022": 5000000,
+   "2023": 5200000
+  },
+  "Dattes": {
+   "2020": 1050000,
+   "2021": 1100000,
+   "2022": 1150000,
+   "2023": 1200000
+  }
+ },
+ "elevage": [
+  {
+   "name": "Volailles",
+   "value": 200000000,
+   "unit": "têtes",
+   "rank_africa": 7
+  },
+  {
+   "name": "Ovins",
+   "value": 30000000,
+   "unit": "têtes",
+   "rank_africa": 2
+  },
+  {
+   "name": "Caprins",
+   "value": 5000000,
+   "unit": "têtes",
+   "rank_africa": 8
+  },
+  {
+   "name": "Bovins",
+   "value": 2000000,
+   "unit": "têtes",
+   "rank_africa": 15
+  },
+  {
+   "name": "Camelins",
+   "value": 340000,
+   "unit": "têtes",
+   "rank_africa": 5
+  }
+ ],
+ "livestock_production_2023": {
+  "Viande ovine": {
+   "value": 285000,
+   "unit": "tonnes"
+  },
+  "Lait": {
+   "value": 3800000,
+   "unit": "tonnes"
+  },
+  "Laine": {
+   "value": 75000,
+   "unit": "tonnes"
+  },
+  "Oeufs": {
+   "value": 320000,
+   "unit": "tonnes"
+  }
+ },
+ "peche_aquaculture": {
+  "capture_tonnes": 95000,
+  "aquaculture_tonnes": 5500,
+  "capture_rank_africa": 11,
+  "aquaculture_rank_africa": 14,
+  "species": [
+   "Anchois",
+   "Sardine",
+   "Thon",
+   "Merlu",
+   "Crevettes"
+  ],
+  "main_ports": [
+   "Oran",
+   "Alger",
+   "Annaba",
+   "Béjaïa",
+   "Skikda"
+  ]
+ },
+ "key_indicators": {
+  "agri_gdp_percent": 12.5,
+  "agri_employment_percent": 10.8,
+  "food_import_value_mln_usd": 9500,
+  "arable_land_ha": 7500000,
+  "irrigated_land_ha": 1200000
+ },
+ "has_livestock": true,
+ "has_fisheries": true,
+ "projections": [
+  {
+   "commodity": "Cereals (projection)",
+   "unit": "tonnes",
+   "sector_detail": "Crops (projection)",
+   "is_livestock": false,
+   "source_institution": "FAO / OECD",
+   "source_dataset": "OECD-FAO Agricultural Outlook 2024-2033",
+   "source_url": "https://www.fao.org/publications/oecd-fao-agricultural-outlook",
+   "points": [
+    {
+     "year": 2025,
+     "value": 4000000.0
+    },
+    {
+     "year": 2030,
+     "value": 4500000.0
+    }
+   ]
+  }
+ ],
+ "has_projections": true
+}
