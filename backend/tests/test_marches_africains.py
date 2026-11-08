@@ -91,7 +91,15 @@ def _a_lagos(jour, heure, minute=0):
 
 
 def _ngx(valeur):
-    return {**m.lire_ngx(NGX), "cloture": valeur}
+    # Chaque valeur a sa propre empreinte d'activité (transactions, volume, valeur).
+    return {**m.lire_ngx(NGX), "cloture": valeur, "empreinte": [valeur, 1, 1]}
+
+
+def test_ngx_empreinte_d_activite_lue_et_retiree_de_la_reponse():
+    lu = m.lire_ngx(NGX)
+    assert lu["empreinte"] == [32666.00, None, None]
+    sortie, _ = m.suivre_ngx(lu, None, _a_lagos(9, 16))
+    assert "empreinte" not in sortie
 
 
 def test_ngx_seance_selon_l_heure_de_lagos():
@@ -103,7 +111,7 @@ def test_ngx_seance_selon_l_heure_de_lagos():
 
 
 def test_ngx_ouverture_egale_la_cloture_de_la_veille():
-    lu, memoire = m.suivre_ngx(m.lire_ngx(NGX), None, _a_lagos(9, 16))
+    lu, memoire = m.suivre_ngx(_ngx(248877.22), None, _a_lagos(9, 16))
     assert lu["ouverture"] is None and lu["cloture"] == 248877.22 and lu["date"] == "2026-11-09"
     # Le lendemain, en séance : les cours bougent, l'ouverture reste la clôture de lundi.
     for heure, valeur in ((10, 249100.0), (11, 249500.0), (14, 250000.0)):
@@ -268,6 +276,69 @@ def test_lecture_mongo_ratee_reessayee_sans_ecraser_l_etat_garde():
     asyncio.run(marches.apercu(db=db, session_http=_Session()))
     assert base.ecrit == []  # rien d'écrit tant que l'état n'a pas été relu
     marches.lus_a.clear()
+    marches._prochain_essai_base = 0  # délai avant un nouvel essai de la base écoulé
     asyncio.run(marches.apercu(db=db, session_http=_Session()))
     assert base.appels == 2 and base.ecrit
     assert "2026-11-06" in base.ecrit[-1]["memoire_ngx"]["clotures"]
+
+
+def _a_lagos_le(mois, jour, heure):
+    return datetime(2026, mois, jour, heure, 0, tzinfo=LAGOS)
+
+
+def test_ngx_jour_ferie_fixe_non_compte_comme_seance():
+    _, memoire = m.suivre_ngx(_ngx(104000.0), None, _a_lagos_le(9, 29, 16))  # mardi
+    _, memoire = m.suivre_ngx(_ngx(105000.0), memoire, _a_lagos_le(9, 30, 16))  # mercredi
+    # Jeudi 01/10/2026, fête de l'indépendance : pas de séance, on montre celle de mercredi.
+    assert m.seance_ngx(_a_lagos_le(10, 1, 11)) == (datetime(2026, 9, 30).date(), True)
+    lu, memoire = m.suivre_ngx(_ngx(105000.0), memoire, _a_lagos_le(10, 1, 11))
+    assert (lu["date"], lu["ouverture"], lu["cloture"]) == ("2026-09-30", 104000.0, 105000.0)
+    # Vendredi 02/10 en séance : la séance précédente est celle de mercredi.
+    lu, _ = m.suivre_ngx(_ngx(106000.0), memoire, _a_lagos_le(10, 2, 11))
+    assert (lu["date"], lu["ouverture"]) == ("2026-10-02", 105000.0)
+    # Pâques 2026 (5 avril) : Vendredi saint et lundi de Pâques chômés.
+    assert m.ferie_ngx(datetime(2026, 4, 3).date()) and m.ferie_ngx(datetime(2026, 4, 6).date())
+    assert not m.ferie_ngx(datetime(2026, 4, 7).date())
+
+
+def test_ngx_ferie_annonce_tard_reconnu_a_l_activite_inchangee():
+    _, memoire = m.suivre_ngx(_ngx(99000.0), None, _a_lagos(10, 16))  # mardi
+    _, memoire = m.suivre_ngx(_ngx(100000.0), memoire, _a_lagos(11, 16))  # mercredi
+    # Jeudi 12/11 chômé (fête annoncée tard) : l'activité n'a pas bougé depuis mercredi.
+    lu, memoire = m.suivre_ngx(_ngx(100000.0), memoire, _a_lagos(12, 11))
+    assert (lu["date"], lu["ouverture"], lu["cloture"]) == ("2026-11-11", 99000.0, 100000.0)
+    lu, memoire = m.suivre_ngx(_ngx(100000.0), memoire, _a_lagos(12, 16))
+    assert lu["date"] == "2026-11-11" and memoire["sans_seance"] == ["2026-11-12"]
+    # Vendredi : la séance précédente est celle de mercredi.
+    lu, _ = m.suivre_ngx(_ngx(101000.0), memoire, _a_lagos(13, 11))
+    assert (lu["date"], lu["ouverture"]) == ("2026-11-13", 100000.0)
+
+
+def test_lecture_mongo_ratee_la_memoire_recente_n_est_pas_ecrasee(monkeypatch):
+    base = _BaseEnPanne()
+    db = type("Db", (), {"marches_africains": base})()
+    marches = m.Marches()
+    # Base en panne le vendredi soir : la clôture du 13 n'existe qu'en mémoire.
+    _, marches.memoire_ngx = m.suivre_ngx(_ngx(100000.0), None, _a_lagos(13, 16))
+    asyncio.run(marches._charger(db))
+    assert not marches._etat_charge
+    # Lundi : la base répond (elle ne connaît que le 06/11) ; les deux mémoires sont réunies.
+    marches._prochain_essai_base = 0
+    asyncio.run(marches._charger(db))
+    assert set(marches.memoire_ngx["clotures"]) == {"2026-11-06", "2026-11-13"}
+    lu, _ = m.suivre_ngx(_ngx(101000.0), marches.memoire_ngx, _a_lagos(16, 11))
+    assert lu["ouverture"] == 100000.0
+
+
+def test_base_injoignable_pas_de_nouvel_essai_a_chaque_appel():
+    class _Toujours(_BaseEnPanne):
+        async def find_one(self, filtre):
+            self.appels += 1
+            raise RuntimeError("Mongo injoignable")
+
+    base = _Toujours()
+    db = type("Db", (), {"marches_africains": base})()
+    marches = m.Marches()
+    for _ in range(3):
+        asyncio.run(marches.apercu(db=db, session_http=_Session()))
+    assert base.appels == 1 and base.ecrit == []

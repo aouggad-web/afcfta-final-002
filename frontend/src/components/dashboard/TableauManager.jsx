@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { pick, intlLocale, isRtl } from '../../i18n/lang';
+import './TableauManager.css';
 
 /**
  * Tableau de bord de direction (maquette validée le 08/11/2026) : ligne des
@@ -98,8 +99,7 @@ const T = {
     'Previous session close not available',
     'إغلاق الجلسة السابقة غير متاح',
   ],
-  pause: ['Mettre en pause le défilement', 'Pause scrolling', 'إيقاف التمرير مؤقتًا'],
-  lecture: ['Reprendre le défilement', 'Resume scrolling', 'استئناف التمرير'],
+  pause: ['Pause du défilement', 'Pause scrolling', 'إيقاف التمرير مؤقتًا'],
   ancienne: ['Source momentanément indisponible : dernière valeur lue', 'Source temporarily unavailable: last value read', 'المصدر غير متاح مؤقتًا: آخر قيمة مقروءة'],
   cours: ['Cours des matières premières', 'Commodity prices', 'أسعار المواد الأولية'],
   coursSous: ['Moyennes mensuelles, variation sur un mois', 'Monthly averages, change over one month', 'متوسطات شهرية، التغير على شهر'],
@@ -153,7 +153,8 @@ const Chiffre = ({ children, className = '' }) => (
 
 export function Variation({ pct, language }) {
   if (pct == null || Number.isNaN(pct)) return <span className="text-[var(--afcfta-muted)]">—</span>;
-  const arrondi = Math.round(pct * 10) / 10; // le sens suit le chiffre affiché
+  // Le sens suit le chiffre affiché ; arrondi symétrique (−1,25 → −1,3, comme +1,25 → +1,3).
+  const arrondi = (Math.sign(pct) * Math.round(Math.abs(pct) * 10)) / 10;
   const sens = arrondi > 0 ? 'hausse' : arrondi < 0 ? 'baisse' : 'stable';
   const couleur = { hausse: 'var(--green)', baisse: 'var(--danger)', stable: 'var(--afcfta-muted)' }[sens];
   const fleche = { hausse: '▲', baisse: '▼', stable: '■' }[sens];
@@ -240,15 +241,32 @@ function TuileCours({ cle, produit, couleur, language }) {
 
 function LigneDepeches({ articles, language }) {
   const [pause, setPause] = useState(false);
+  // La ligne ne défile que si les titres dépassent le cadre : sinon une seule
+  // copie, immobile, sans bouton pause.
+  const [defile, setDefile] = useState(false);
+  const cadre = useRef(null);
+  const copie = useRef(null);
+  useEffect(() => {
+    const c = cadre.current;
+    const p = copie.current;
+    if (!c || !p) return undefined;
+    const mesurer = () => setDefile(p.scrollWidth > c.clientWidth + 1);
+    mesurer();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const observateur = new ResizeObserver(mesurer);
+    observateur.observe(c);
+    observateur.observe(p);
+    return () => observateur.disconnect();
+  }, [articles]);
   if (!articles.length) return null;
-  const elements = (copie) =>
+  const elements = (seconde) =>
     articles.map((a) => (
       <a
-        key={`${copie}-${a.id || a.link}`}
+        key={`${seconde}-${a.id || a.link}`}
         href={a.link}
         target="_blank"
         rel="noopener noreferrer"
-        tabIndex={copie ? -1 : undefined}
+        tabIndex={seconde ? -1 : undefined}
         className="inline-flex items-center gap-2 text-sm text-[var(--text)] hover:underline"
       >
         <span className="font-bold text-[var(--gold)]">{a.source}</span>
@@ -267,28 +285,40 @@ function LigneDepeches({ articles, language }) {
       <span className="shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide" style={{ background: 'var(--terra)', color: 'var(--bg)' }}>
         {tr(language, T.depeches)}
       </span>
-      <button
-        type="button"
-        onClick={() => setPause((p) => !p)}
-        aria-pressed={pause}
-        aria-label={tr(language, pause ? T.lecture : T.pause)}
-        title={tr(language, pause ? T.lecture : T.pause)}
-        className="shrink-0 rounded-full border px-2 py-0.5 text-xs text-[var(--text-soft)]"
-        style={{ borderColor: 'var(--lift-border)' }}
-      >
-        <span aria-hidden="true">{pause ? '▶' : '❚❚'}</span>
-      </button>
+      {defile && (
+        <button
+          type="button"
+          onClick={() => setPause((p) => !p)}
+          aria-pressed={pause}
+          aria-label={tr(language, T.pause)}
+          title={tr(language, T.pause)}
+          className="ligne-depeches-pause shrink-0 rounded-full border px-2 py-0.5 text-xs text-[var(--text-soft)]"
+          style={{ borderColor: 'var(--lift-border)' }}
+        >
+          <span aria-hidden="true">{pause ? '▶' : '❚❚'}</span>
+        </button>
+      )}
       <div
-        className={`ligne-depeches min-w-0 flex-1${pause ? ' en-pause' : ''}`}
+        ref={cadre}
+        className={`ligne-depeches min-w-0 flex-1${defile ? ' ligne-depeches--defile' : ''}${pause ? ' en-pause' : ''}`}
         dir={isRtl(language) ? 'rtl' : 'ltr'}
         role="region"
         aria-label={tr(language, T.depeches)}
+        // Après un passage au clavier, le cadre défilé à la main revient au
+        // début : sinon l'animation reprendrait décalée.
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget)) e.currentTarget.scrollLeft = 0;
+        }}
       >
         <div className="ligne-depeches__piste">
-          {elements(0)}
-          <span aria-hidden="true" className="contents">
-            {elements(1)}
+          <span ref={copie} className="ligne-depeches__copie">
+            {elements(0)}
           </span>
+          {defile && (
+            <span aria-hidden="true" className="ligne-depeches__copie">
+              {elements(1)}
+            </span>
+          )}
         </div>
       </div>
     </div>
@@ -459,7 +489,9 @@ const libelleCategorie = (c, lang) => pick(lang, c, c, CATEGORIES_AR[c] || c);
 function ALaUne({ articles, language }) {
   const [categorie, setCategorie] = useState('toutes');
   const categories = [...new Set(articles.map((a) => a.category).filter(Boolean))];
-  const choix = articles.filter((a) => categorie === 'toutes' || a.category === categorie).slice(0, 5);
+  // Rubrique choisie absente du fil relu (article retiré) : retour à « Toutes ».
+  const actif = categorie === 'toutes' || categories.includes(categorie) ? categorie : 'toutes';
+  const choix = articles.filter((a) => actif === 'toutes' || a.category === actif).slice(0, 5);
   const [une, ...autres] = choix;
   const options = [['toutes', tr(language, T.toutes)], ...categories.map((c) => [c, libelleCategorie(c, language)])];
   const meta = (a) => [a.source, ilYa(a.published_at, language)].filter(Boolean).join(' · ');
@@ -472,7 +504,7 @@ function ALaUne({ articles, language }) {
           </h3>
           <div aria-hidden="true" className="stats-kente-bar" style={{ width: 120, marginTop: 6 }} />
         </div>
-        <Pastilles options={options} choisi={categorie} choisir={setCategorie} />
+        <Pastilles options={options} choisi={actif} choisir={setCategorie} />
       </div>
       {une && (
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr_1fr] gap-3">

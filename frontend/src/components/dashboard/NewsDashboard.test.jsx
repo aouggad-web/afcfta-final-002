@@ -3,6 +3,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { useAuth } from '../../context/AuthContext';
 import { csrfFetch } from '../../services/csrf';
 import NewsDashboard from './NewsDashboard';
+import { EVENEMENT_FIL } from './TableauManager';
 
 vi.mock('../../context/AuthContext', () => ({ useAuth: vi.fn() }));
 vi.mock('../../services/csrf', () => ({ csrfFetch: vi.fn() }));
@@ -170,6 +171,22 @@ describe('Retrait d’articles du fil public', () => {
     const [url, options] = csrfFetch.mock.calls[0];
     expect(url).toMatch(/\/api\/news\/redaction\/decision$/);
     expect(JSON.parse(options.body)).toEqual({ id: 'a1', action: 'masquer' });
+  });
+
+  it('prévient le tableau de bord de direction quand un article est retiré', async () => {
+    useAuth.mockReturnValue({ user: { role: 'admin' } });
+    vi.stubGlobal('confirm', vi.fn(() => true));
+    const recus = [];
+    const ecouter = (e) => recus.push(e.type);
+    window.addEventListener(EVENEMENT_FIL, ecouter);
+    try {
+      render(<NewsDashboard language="fr" />);
+      const boutons = await screen.findAllByRole('button', { name: 'Retirer du fil public' });
+      fireEvent.click(boutons[0]);
+      await waitFor(() => expect(recus).toEqual([EVENEMENT_FIL]));
+    } finally {
+      window.removeEventListener(EVENEMENT_FIL, ecouter);
+    }
   });
 
   it('rien n’est retiré si le rédacteur annule', async () => {

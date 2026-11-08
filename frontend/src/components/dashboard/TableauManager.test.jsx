@@ -1,5 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, within, cleanup } from '@testing-library/react';
+import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import TableauManager, { EVENEMENT_FIL } from './TableauManager';
 
 const serie = (debut, avantDernier, dernier) => [debut, ...Array(10).fill(debut), avantDernier, dernier];
@@ -96,7 +99,10 @@ describe('TableauManager', () => {
   it('fait défiler les dépêches et met un article à la une, filtrable par rubrique', async () => {
     render(<TableauManager language="fr" />);
     const ligne = await screen.findByRole('region', { name: 'Dernières dépêches' });
-    expect(within(ligne).getAllByText('Sonatrach signe un contrat gazier')).toHaveLength(2);
+    // Titres qui tiennent dans le cadre (jsdom ne mesure rien) : une seule copie, immobile.
+    expect(within(ligne).getAllByText('Sonatrach signe un contrat gazier')).toHaveLength(1);
+    expect(ligne.className).not.toContain('ligne-depeches--defile');
+    expect(screen.queryByRole('button', { name: 'Pause du défilement' })).toBeNull();
     expect(screen.getByTestId('article-une').textContent).toContain('Sonatrach');
     fireEvent.click(screen.getByRole('button', { name: 'Finance' }));
     expect(screen.getByTestId('article-une').textContent).toContain('La BAD finance');
@@ -161,16 +167,75 @@ describe('TableauManager — cas limites', () => {
     expect(stable.dataset.sens).toBe('stable');
     expect(espaces(stable.textContent)).toContain('0,0 %');
     expect(screen.getByTestId('indice-nse20').querySelector('[data-sens]').dataset.sens).toBe('hausse');
+    // Arrondi symétrique : −0,05 est une baisse de 0,1 %, −1,25 une baisse de 1,3 %.
+    const baisses = [
+      ['brvm_c', -0.05, '0,1 %'],
+      ['ngx_asi', -1.25, '1,3 %'],
+    ];
+    cleanup();
+    servir({ marches: { ...APERCU, indices: baisses.map(([cle, v]) => ({ cle, ouverture: 1, cloture: 1, date: null, variation_pct: v, a_jour: true })) } });
+    render(<TableauManager language="fr" />);
+    for (const [cle, , texte] of baisses) {
+      const pastille = (await screen.findByTestId(`indice-${cle}`)).querySelector('[data-sens]');
+      expect(pastille.dataset.sens).toBe('baisse');
+      expect(espaces(pastille.textContent)).toContain(texte);
+    }
   });
 
-  it('la ligne des dépêches se met en pause au bouton', async () => {
+  it('défile seulement si les titres dépassent le cadre, avec un bouton pause', async () => {
     servir();
+    const largeur = vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(2000);
+    const cadre = vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(500);
+    try {
+      render(<TableauManager language="fr" />);
+      const ligne = await screen.findByRole('region', { name: 'Dernières dépêches' });
+      await waitFor(() => expect(ligne.className).toContain('ligne-depeches--defile'));
+      // Seconde copie pour la boucle, cachée aux lecteurs d'écran et hors du parcours clavier.
+      const copies = ligne.querySelectorAll('.ligne-depeches__copie');
+      expect(copies).toHaveLength(2);
+      expect(copies[1].getAttribute('aria-hidden')).toBe('true');
+      expect([...copies[1].querySelectorAll('a')].every((a) => a.tabIndex === -1)).toBe(true);
+      const bouton = screen.getByRole('button', { name: 'Pause du défilement' });
+      expect(bouton.getAttribute('aria-pressed')).toBe('false');
+      fireEvent.click(bouton);
+      expect(ligne.className).toContain('en-pause');
+      // Bouton bascule : le nom reste le même, seul aria-pressed change.
+      expect(screen.getByRole('button', { name: 'Pause du défilement' }).getAttribute('aria-pressed')).toBe('true');
+    } finally {
+      largeur.mockRestore();
+      cadre.mockRestore();
+    }
+  });
+
+  it('le style de la ligne est chargé avec le composant (App.css ne l’est nulle part)', () => {
+    const lire = (f) => readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), f), 'utf8');
+    expect(lire('./TableauManager.jsx')).toContain("import './TableauManager.css';");
+    const css = lire('./TableauManager.css');
+    expect(css).toMatch(/\.ligne-depeches--defile \.ligne-depeches__piste\s*\{[^}]*animation:/);
+    expect(css).toContain('prefers-reduced-motion');
+  });
+
+  it('« hier » suit le calendrier, pas des tranches de 24 heures', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date(2026, 10, 8, 23, 0)); // 8 nov., 23 h, heure locale
+    try {
+      // Publié le 7 nov. à 1 h (heure locale), soit 46 h plus tôt : la veille au calendrier.
+      const publie = new Date(2026, 10, 7, 1, 0).toISOString().slice(0, 19);
+      servir({ news: { articles: [{ ...ARTICLES[0], published_at: publie }] } });
+      render(<TableauManager language="fr" />);
+      expect((await screen.findByTestId('article-une')).textContent).toContain('hier');
+      expect(screen.getByTestId('article-une').textContent).not.toContain('avant-hier');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('la courbe est coupée au mois manquant', async () => {
+    const serieTrouee = [60, 70, 70, 70, 70, null, 70, 70, 70, 70, 100, 110, 125];
+    servir({ marches: { ...APERCU, cours: { ...APERCU.cours, produits: { brent: { famille: 'hydrocarbures', serie: serieTrouee } } } } });
     render(<TableauManager language="fr" />);
-    const ligne = await screen.findByRole('region', { name: 'Dernières dépêches' });
-    const bouton = screen.getByRole('button', { name: 'Mettre en pause le défilement' });
-    fireEvent.click(bouton);
-    expect(ligne.className).toContain('en-pause');
-    expect(screen.getByRole('button', { name: 'Reprendre le défilement' }).getAttribute('aria-pressed')).toBe('true');
+    const trace = (await screen.findByTestId('tuile-brent')).querySelector('path[fill="none"]').getAttribute('d');
+    expect(trace.match(/M/g)).toHaveLength(2);
   });
 
   it('relit le fil quand le rédacteur retire un article', async () => {
@@ -188,5 +253,26 @@ describe('TableauManager — cas limites', () => {
     servir({ news: { articles: [{ ...ARTICLES[0], published_at: ilYaDeuxHeures }] } });
     render(<TableauManager language="fr" />);
     expect((await screen.findByTestId('article-une')).textContent).toContain('il y a 2 heures');
+  });
+});
+
+describe('TableauManager — à la une après relecture du fil', () => {
+  const fetchOriginal = global.fetch;
+  afterEach(() => {
+    global.fetch = fetchOriginal;
+  });
+
+  it('revient à « Toutes » quand la rubrique choisie disparaît du fil', async () => {
+    servir();
+    render(<TableauManager language="fr" />);
+    await screen.findByTestId('article-une');
+    fireEvent.click(screen.getByRole('button', { name: 'Finance' }));
+    expect(screen.getByTestId('article-une').textContent).toContain('La BAD finance');
+    // Le rédacteur retire l'article Finance : le fil relu n'a plus cette rubrique.
+    servir({ news: { articles: ARTICLES.filter((a) => a.category !== 'Finance') } });
+    window.dispatchEvent(new Event(EVENEMENT_FIL));
+    await waitFor(() => expect(screen.queryByRole('button', { name: 'Finance' })).toBeNull());
+    expect(screen.getByTestId('article-une').textContent).toContain('Sonatrach');
+    expect(screen.getByRole('button', { name: 'Toutes' }).getAttribute('aria-pressed')).toBe('true');
   });
 });

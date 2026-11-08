@@ -78,6 +78,11 @@ DELAIS = {"cours": DUREE_COURS_S, **{c: DUREE_INDICES_S for c in INDICES}}
 LAGOS = timezone(timedelta(hours=1))
 OUVERTURE_NGX = (10, 0)
 FERMETURE_NGX = (14, 30)
+# Jours fériés fixes du Nigeria (mois, jour) ; Vendredi saint et lundi de Pâques
+# sont calculés. Les fêtes musulmanes, annoncées au dernier moment, sont
+# reconnues à l'instantané lui-même (voir suivre_ngx).
+FERIES_FIXES_NGX = {(1, 1), (5, 1), (6, 12), (10, 1), (12, 25), (12, 26)}
+JOURS_GARDES_NGX = 15
 _ENTETES = {"User-Agent": "Mozilla/5.0 (compatible; AfCFTA-Trade-Intelligence/1.0)"}
 _DELAI = aiohttp.ClientTimeout(total=20)
 
@@ -175,16 +180,42 @@ def lire_nse(html: str) -> Dict:
 
 
 def lire_ngx(texte: str) -> Dict:
-    """Instantané officiel de NGX : All-Share Index (sans la veille, voir suivre_ngx)."""
-    asi = json.loads(texte).get("ASI")
+    """Instantané officiel de NGX : All-Share Index (sans la veille, voir suivre_ngx).
+    L'empreinte (transactions, volume, valeur échangés dans la séance) dit si
+    une nouvelle séance a eu lieu depuis la précédente."""
+    donnees = json.loads(texte)
+    asi = donnees.get("ASI")
     if not asi:
         raise ValueError("NGX ASI introuvable")
-    return {"ouverture": None, "cloture": float(asi), "date": None}
+    empreinte = [donnees.get(k) for k in ("DEALS", "VOLUME", "VALUE")]
+    return {"ouverture": None, "cloture": float(asi), "date": None, "empreinte": empreinte}
 
 
-def _jour_ouvre_precedent(jour: date) -> date:
+def _paques(annee: int) -> date:
+    """Dimanche de Pâques (calendrier grégorien, méthode de Meeus)."""
+    a, b, c = annee % 19, annee // 100, annee % 100
+    d, e = b // 4, b % 4
+    f = (b + 8) // 25
+    g = (b - f + 1) // 3
+    h = (19 * a + b - d - g + 15) % 30
+    i, k = c // 4, c % 4
+    l_ = (32 + 2 * e + 2 * i - h - k) % 7
+    m_ = (a + 11 * h + 22 * l_) // 451
+    mois = (h + l_ - 7 * m_ + 114) // 31
+    jour = (h + l_ - 7 * m_ + 114) % 31 + 1
+    return date(annee, mois, jour)
+
+
+def ferie_ngx(jour: date) -> bool:
+    if (jour.month, jour.day) in FERIES_FIXES_NGX:
+        return True
+    paques = _paques(jour.year)
+    return jour in (paques - timedelta(days=2), paques + timedelta(days=1))
+
+
+def _jour_ouvre_precedent(jour: date, sans_seance=()) -> date:
     jour -= timedelta(days=1)
-    while jour.weekday() >= 5:
+    while jour.weekday() >= 5 or ferie_ngx(jour) or jour.isoformat() in sans_seance:
         jour -= timedelta(days=1)
     return jour
 
@@ -193,25 +224,47 @@ def seance_ngx(maintenant: datetime) -> Tuple[date, bool]:
     """Séance que montre l'instantané NGX lu à `maintenant`, et si sa valeur est
     déjà la clôture (séance terminée) ou encore un cours de séance."""
     t = maintenant.astimezone(LAGOS)
-    if t.weekday() < 5 and (t.hour, t.minute) >= OUVERTURE_NGX:
+    if t.weekday() < 5 and not ferie_ngx(t.date()) and (t.hour, t.minute) >= OUVERTURE_NGX:
         return t.date(), (t.hour, t.minute) >= FERMETURE_NGX
-    # Avant l'ouverture ou le week-end : la dernière séance est close.
+    # Avant l'ouverture, le week-end ou un jour férié : la dernière séance est close.
     return _jour_ouvre_precedent(t.date()), True
 
 
 def suivre_ngx(lu: Dict, memoire: Optional[Dict], maintenant: Optional[datetime] = None) -> Tuple[Dict, Dict]:
     """NGX ne donne que la dernière valeur, sans date ni veille. On garde les
     clôtures par date de séance (lectures faites après la fermeture, ou avant
-    l'ouverture suivante) ; l'ouverture est la clôture du jour ouvré précédent.
-    Si cette clôture n'a pas été lue (personne n'a consulté le tableau ce
-    jour-là, serveur arrêté), l'ouverture reste vide plutôt que fausse."""
+    l'ouverture suivante) ; l'ouverture est la clôture du jour de séance
+    précédent. Si cette clôture n'a pas été lue (personne n'a consulté le
+    tableau ce jour-là, serveur arrêté), l'ouverture reste vide plutôt que fausse.
+
+    Un jour ouvré où l'activité (empreinte) n'a pas bougé depuis la séance
+    précédente n'est pas une séance (férié annoncé tard, séance pas encore
+    commencée) : on montre la séance précédente, et, une fois la journée finie,
+    ce jour est noté « sans séance » pour le calcul de la veille."""
     seance, close = seance_ngx(maintenant or datetime.now(timezone.utc))
-    clotures = dict((memoire or {}).get("clotures") or {})
-    if close:
+    memoire = memoire or {}
+    clotures = dict(memoire.get("clotures") or {})
+    empreintes = dict(memoire.get("empreintes") or {})
+    sans_seance = set(memoire.get("sans_seance") or [])
+    empreinte = lu.get("empreinte")
+    precedente = max((j for j in clotures if j < seance.isoformat()), default=None)
+    if precedente and empreinte and empreintes.get(precedente) == empreinte:
+        if close:
+            sans_seance.add(seance.isoformat())
+        seance = date.fromisoformat(precedente)
+    elif close:
         clotures[seance.isoformat()] = lu["cloture"]
-        clotures = dict(sorted(clotures.items())[-10:])
-    ouverture = clotures.get(_jour_ouvre_precedent(seance).isoformat())
-    return {**lu, "ouverture": ouverture, "date": seance.isoformat()}, {"clotures": clotures}
+        if empreinte:
+            empreintes[seance.isoformat()] = empreinte
+    gardes = sorted(clotures)[-JOURS_GARDES_NGX:]
+    memoire = {
+        "clotures": {j: clotures[j] for j in gardes},
+        "empreintes": {j: empreintes[j] for j in gardes if j in empreintes},
+        "sans_seance": sorted(j for j in sans_seance if gardes and j >= gardes[0]),
+    }
+    ouverture = clotures.get(_jour_ouvre_precedent(seance, sans_seance).isoformat())
+    lu = {k: v for k, v in lu.items() if k != "empreinte"}
+    return {**lu, "ouverture": ouverture, "date": seance.isoformat()}, memoire
 
 
 LECTEURS = {"dzair": lire_sgbv, "brvm_c": lire_brvm, "ngx_asi": lire_ngx, "nse20": lire_nse}
@@ -230,6 +283,7 @@ class Marches:
         self.memoire_ngx: Optional[Dict] = None
         self.lus_a: Dict[str, float] = {}  # source → heure de la dernière lecture
         self._etat_charge = False
+        self._prochain_essai_base = 0.0
         self._verrou = asyncio.Lock()
 
     async def _texte(self, session, url) -> str:
@@ -265,14 +319,23 @@ class Marches:
                              "lu_le": datetime.now(timezone.utc).isoformat(timespec="seconds")}
 
     async def _charger(self, db):
-        if db is None or self._etat_charge:
+        if db is None or self._etat_charge or time.time() < self._prochain_essai_base:
             return
         try:
             doc = await db.marches_africains.find_one({"_id": "etat"}) or {}
-        except Exception as e:  # base indisponible : réessayée au prochain appel
+        except Exception as e:
+            # Base indisponible : réessayée dans NOUVEL_ESSAI_S, pas à chaque appel
+            # (chaque essai attend le délai de sélection du serveur Mongo).
             logger.warning("Marchés : lecture de l'état impossible (%s)", type(e).__name__)
+            self._prochain_essai_base = time.time() + NOUVEL_ESSAI_S
             return
-        self.memoire_ngx = doc.get("memoire_ngx") or self.memoire_ngx
+        # Mémoire NGX : celle de la base complétée par celle lue depuis (plus récente).
+        base, vive = doc.get("memoire_ngx") or {}, self.memoire_ngx or {}
+        self.memoire_ngx = {
+            "clotures": {**(base.get("clotures") or {}), **(vive.get("clotures") or {})},
+            "empreintes": {**(base.get("empreintes") or {}), **(vive.get("empreintes") or {})},
+            "sans_seance": sorted(set(base.get("sans_seance") or []) | set(vive.get("sans_seance") or [])),
+        }
         self.indices = {**doc.get("indices", {}), **self.indices}
         if self.cours is None and doc.get("cours"):
             self.cours = doc["cours"]
