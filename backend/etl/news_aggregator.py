@@ -10,8 +10,9 @@ import json
 import os
 import re
 import threading
+import calendar
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -98,19 +99,29 @@ RSS_FEEDS = {
     # coupe à 100 articles finissait par effacer Ecofin du fil (08/11/2026).
     # Les flux propres au site ne servent pas : /feed s'est arrêté en 2025,
     # /rss est vide.
+    # Lecture directe d'abord (flux officiel /rss, vide au 08/11/2026) ; s'il
+    # ne donne rien de frais, Google News en secours, sur 48 h. Une recherche
+    # par rubrique (« site:agenceecofin.com/finance ») ne rend rien : la
+    # recherche sur tout le site couvre déjà les deux jours (≈ 20 dépêches).
     "agence_ecofin": {
         "name": "Agence Ecofin",
         "feeds": {
-            "economie": "https://news.google.com/rss/search?q=site:agenceecofin.com+when:7d&hl=fr&gl=FR&ceid=FR:fr",
+            "economie": "https://www.agenceecofin.com/rss",
+        },
+        "feeds_secours": {
+            "economie": "https://news.google.com/rss/search?q=site:agenceecofin.com+when:2d&hl=fr&gl=FR&ceid=FR:fr",
         },
         "language": "fr",
         "logo": "📰",
         "priority": True,
-        "max_entries": 20,
+        "max_entries": 40,
     },
     "the_africa_report": {
         "name": "The Africa Report",
         "feeds": {
+            "business": "https://www.theafricareport.com/feed/",
+        },
+        "feeds_secours": {
             "business": "https://news.google.com/rss/search?q=site:theafricareport.com&hl=fr",
         },
         "language": "multi",
@@ -119,10 +130,37 @@ RSS_FEEDS = {
     "african_business": {
         "name": "African Business / APA News",
         "feeds": {
+            "business": "https://african.business/feed",
+        },
+        "feeds_secours": {
             "business": "https://news.google.com/rss/search?q=site:african.business+OR+site:apanews.net&hl=en",
         },
         "language": "en",
         "logo": "🌍",
+    },
+    # Sources lues en direct, sans Google (ajoutées le 08/11/2026 ; flux
+    # vérifiés ce jour : dépêches du jour et de la veille). Les médias
+    # généralistes ne gardent que les articles économiques (`economie_seule`).
+    # Jeune Afrique, RFI Afrique et Le Monde Afrique écartés par l'exploitant.
+    "financial_afrik": {
+        "name": "Financial Afrik",
+        "feeds": {"finance": "https://www.financialafrik.com/feed/"},
+        "language": "fr",
+        "logo": "💹",
+    },
+    "africanews": {
+        "name": "Africanews",
+        "feeds": {"business": "https://www.africanews.com/feed/rss?themes=business"},
+        "language": "multi",
+        "logo": "📺",
+        "economie_seule": True,
+    },
+    "bbc_africa": {
+        "name": "BBC Africa",
+        "feeds": {"business": "https://feeds.bbci.co.uk/news/world/africa/rss.xml"},
+        "language": "en",
+        "logo": "🌍",
+        "economie_seule": True,
     },
     # PRIORITÉ ALGÉRIE - Flux dédiés
     "google_news_algeria": {
@@ -1129,23 +1167,6 @@ def detect_content_tags(text: str) -> List[str]:
     return tags
 
 
-def parse_date(date_str: str) -> datetime:
-    """Parser différents formats de date"""
-    formats = [
-        "%a, %d %b %Y %H:%M:%S %z",
-        "%a, %d %b %Y %H:%M:%S %Z",
-        "%Y-%m-%dT%H:%M:%S%z",
-        "%Y-%m-%d %H:%M:%S",
-        "%d/%m/%Y %H:%M",
-    ]
-    for fmt in formats:
-        try:
-            return datetime.strptime(date_str, fmt)
-        except ValueError:
-            continue
-    return datetime.now()
-
-
 def generate_article_id(title: str, source: str) -> str:
     """Générer un ID unique pour l'article"""
     return hashlib.md5(f"{title}:{source}".encode()).hexdigest()[:12]
@@ -1165,6 +1186,48 @@ def truncate_text(text: str, max_length: int = 200) -> str:
     return text[:max_length].rsplit(" ", 1)[0] + "..."
 
 
+# Fil au plus près de l'activité (décision de l'exploitant, 08/11/2026) :
+# seulement les dépêches du jour et de la veille (UTC). Une entrée sans date
+# est écartée, sa fraîcheur ne se vérifie pas.
+JOURS_FRAICHEUR = 2
+
+# Mots qui signalent un article économique dans un média généraliste, en plus
+# des mots-clés de catégorie.
+ECONOMIE_GENERALE = [
+    "économie", "economy", "économique", "economic", "croissance", "growth",
+    "inflation", "pib", "gdp", "budget", "dette", "debt", "exportations",
+    "exports", "importations", "imports", "entreprise", "entreprises",
+    "company", "companies", "industrie", "industry", "zlecaf", "afcfta",
+    "douane", "customs", "marché", "market", "pétrole", "oil", "emploi", "jobs",
+]
+
+
+def debut_fenetre(maintenant: Optional[datetime] = None) -> datetime:
+    """Minuit UTC de la veille : rien de plus ancien n'entre dans le fil."""
+    maintenant = maintenant or datetime.now(timezone.utc)
+    minuit = maintenant.replace(hour=0, minute=0, second=0, microsecond=0)
+    return minuit - timedelta(days=JOURS_FRAICHEUR - 1)
+
+
+def _horodatage(entry) -> Optional[datetime]:
+    t = entry.get("published_parsed") or entry.get("updated_parsed")
+    return datetime.fromtimestamp(calendar.timegm(t), tz=timezone.utc) if t else None
+
+
+def recherche_recente(url: str) -> str:
+    """Recherche Google News : limitée aux deux derniers jours (« when:2d »),
+    sinon Google range par pertinence et mêle des articles de plusieurs années."""
+    if "news.google.com/rss/search" not in url or "when:" in url or "when%3A" in url:
+        return url
+    return re.sub(r"([?&]q=)([^&]*)", lambda m: f"{m.group(1)}{m.group(2)}+when:2d", url, count=1)
+
+
+def est_economique(texte: str) -> bool:
+    texte = texte.lower()
+    mots = [m for liste in CATEGORY_KEYWORDS.values() for m in liste] + ECONOMIE_GENERALE
+    return any(_keyword_pattern(m).search(texte) for m in mots)
+
+
 async def fetch_feed(
     session: aiohttp.ClientSession,
     url: str,
@@ -1173,6 +1236,7 @@ async def fetch_feed(
     source_country: Optional[str] = None,
     source_priority: bool = False,
     max_entries: int = 10,
+    economie_seule: bool = False,
 ) -> List[Dict]:
     """Récupérer et parser un flux RSS"""
     articles = []
@@ -1180,6 +1244,8 @@ async def fetch_feed(
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Accept": "application/rss+xml, application/xml, text/xml, */*",
     }
+    url = recherche_recente(url)
+    debut = debut_fenetre()
     try:
         async with session.get(
             url, timeout=aiohttp.ClientTimeout(total=15), headers=headers
@@ -1196,11 +1262,15 @@ async def fetch_feed(
                     key=lambda e: tuple(e.get("published_parsed") or e.get("updated_parsed") or ()),
                     reverse=True,
                 )
-                for entry in entrees[:max_entries]:
+                for entry in entrees:
+                    if len(articles) >= max_entries:
+                        break
+                    quand = _horodatage(entry)
+                    if quand is None or quand < debut:
+                        continue
                     title = entry.get("title", "")
                     summary = entry.get("summary", entry.get("description", ""))
                     link = entry.get("link", "")
-                    pub_date = entry.get("published", entry.get("updated", ""))
 
                     # Nettoyer le résumé (enlever HTML et décoder entités)
                     import html
@@ -1214,6 +1284,8 @@ async def fetch_feed(
 
                     # Détecter région, catégorie et signaux éditoriaux prioritaires
                     full_text = f"{title} {summary}"
+                    if economie_seule and not est_economique(full_text):
+                        continue
                     region = (
                         detect_region(full_text)
                         if not source_country
@@ -1235,11 +1307,7 @@ async def fetch_feed(
                             "priority": source_priority,
                             "content_tags": content_tags,
                             "content_priority": len(content_tags) > 0,
-                            "published_at": (
-                                parse_date(pub_date).isoformat()
-                                if pub_date
-                                else datetime.now().isoformat()
-                            ),
+                            "published_at": quand.replace(tzinfo=None).isoformat(),
                             "fetched_at": datetime.now().isoformat(),
                         }
                     )
@@ -1249,27 +1317,41 @@ async def fetch_feed(
     return articles
 
 
+async def _collecter_source(session: aiohttp.ClientSession, config: Dict) -> List[Dict]:
+    """Flux d'une source ; si aucun ne donne de dépêche fraîche, ses flux de
+    secours (Google News) prennent le relais."""
+
+    async def lire(flux: Dict[str, str]) -> List[Dict]:
+        lots = await asyncio.gather(
+            *[
+                fetch_feed(
+                    session,
+                    url,
+                    config["name"],
+                    category,
+                    config.get("country"),
+                    config.get("priority", False),
+                    config.get("max_entries", 10),
+                    config.get("economie_seule", False),
+                )
+                for category, url in flux.items()
+            ],
+            return_exceptions=True,
+        )
+        return [a for lot in lots if isinstance(lot, list) for a in lot]
+
+    articles = await lire(config["feeds"])
+    if not articles and config.get("feeds_secours"):
+        articles = await lire(config["feeds_secours"])
+    return articles
+
+
 async def fetch_all_news() -> List[Dict]:
     """Récupérer toutes les actualités de toutes les sources"""
     all_articles = []
 
     async with aiohttp.ClientSession() as session:
-        tasks = []
-
-        for source_key, source_config in RSS_FEEDS.items():
-            for category, url in source_config["feeds"].items():
-                tasks.append(
-                    fetch_feed(
-                        session,
-                        url,
-                        source_config["name"],
-                        category,
-                        source_config.get("country"),
-                        source_config.get("priority", False),
-                        source_config.get("max_entries", 10),
-                    )
-                )
-
+        tasks = [_collecter_source(session, config) for config in RSS_FEEDS.values()]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
         for result in results:

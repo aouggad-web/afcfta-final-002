@@ -1,22 +1,37 @@
-"""Ecofin dans le fil : dépêches récentes d'abord, source prioritaire (08/11/2026)."""
+"""Fil d'actualités au plus près de l'activité (08/11/2026) : dépêches du jour
+et de la veille, Ecofin lu en direct puis par Google en secours, médias
+généralistes réduits à leurs articles économiques."""
 
 import asyncio
+from datetime import datetime, timezone
+
+import pytest
 
 from etl import news_aggregator as na
 
+MAINTENANT = datetime(2026, 11, 8, 15, 0, tzinfo=timezone.utc)
+
 # Recherche Google News « site: » : rangée par pertinence, pas par date.
 FLUX = """<?xml version="1.0"?><rss version="2.0"><channel><title>t</title>
-<item><title>Vieille depeche 2016</title><link>https://a/1</link><pubDate>Tue, 19 Jul 2016 10:57:08 GMT</pubDate></item>
-<item><title>Depeche du 3 novembre</title><link>https://a/2</link><pubDate>Tue, 03 Nov 2026 07:33:00 GMT</pubDate></item>
-<item><title>Depeche du 7 novembre</title><link>https://a/3</link><pubDate>Sat, 07 Nov 2026 11:20:00 GMT</pubDate></item>
+<item><title>Vieille dépêche sur la banque</title><link>https://a/1</link><pubDate>Tue, 19 Jul 2016 10:57:08 GMT</pubDate></item>
+<item><title>Dépêche d'avant-hier sur la banque</title><link>https://a/2</link><pubDate>Fri, 06 Nov 2026 22:00:00 GMT</pubDate></item>
+<item><title>Dépêche de la veille sur la banque</title><link>https://a/3</link><pubDate>Sat, 07 Nov 2026 00:30:00 GMT</pubDate></item>
+<item><title>Dépêche du jour sur la banque</title><link>https://a/4</link><pubDate>Sun, 08 Nov 2026 09:00:00 GMT</pubDate></item>
+<item><title>Match de football du jour</title><link>https://a/5</link><pubDate>Sun, 08 Nov 2026 10:00:00 GMT</pubDate></item>
+<item><title>Dépêche sans date sur la banque</title><link>https://a/6</link></item>
 </channel></rss>"""
+
+VIDE = """<?xml version="1.0"?><rss version="2.0"><channel><title>vide</title></channel></rss>"""
 
 
 class _Reponse:
     status = 200
 
+    def __init__(self, corps):
+        self._corps = corps
+
     async def text(self):
-        return FLUX
+        return self._corps
 
     async def __aenter__(self):
         return self
@@ -26,19 +41,77 @@ class _Reponse:
 
 
 class _Session:
-    def get(self, *args, **kwargs):
-        return _Reponse()
+    """Sert FLUX, ou VIDE pour les adresses de `vides` ; note les adresses lues."""
+
+    def __init__(self, vides=()):
+        self.vides = set(vides)
+        self.lues = []
+
+    def get(self, url, *args, **kwargs):
+        self.lues.append(url)
+        return _Reponse(VIDE if url in self.vides else FLUX)
 
 
-def test_les_entrees_les_plus_recentes_sont_gardees():
+DEBUT_REEL = na.debut_fenetre
+
+
+@pytest.fixture(autouse=True)
+def _horloge(monkeypatch):
+    # Horloge figée au 08/11/2026 15:00 UTC : le test ne dépend pas du jour où il tourne.
+    monkeypatch.setattr(na, "debut_fenetre", lambda maintenant=None: DEBUT_REEL(MAINTENANT))
+
+
+def _titres(articles):
+    return [a["title"] for a in articles]
+
+
+def test_fenetre_du_jour_et_de_la_veille():
+    assert DEBUT_REEL(MAINTENANT) == datetime(2026, 11, 7, tzinfo=timezone.utc)
+
+
+def test_seules_les_depeches_du_jour_et_de_la_veille_entrent_les_plus_recentes_d_abord():
+    articles = asyncio.run(na.fetch_feed(_Session(), "https://x", "Source", "finance"))
+    assert _titres(articles) == [
+        "Match de football du jour",
+        "Dépêche du jour sur la banque",
+        "Dépêche de la veille sur la banque",
+    ]
+
+
+def test_un_media_generaliste_ne_garde_que_l_economie():
     articles = asyncio.run(
-        na.fetch_feed(_Session(), "https://x", "Agence Ecofin", "economie", max_entries=2)
+        na.fetch_feed(_Session(), "https://x", "BBC Africa", "business", economie_seule=True)
     )
-    assert [a["title"] for a in articles] == ["Depeche du 7 novembre", "Depeche du 3 novembre"]
+    assert "Match de football du jour" not in _titres(articles)
+    assert "Dépêche du jour sur la banque" in _titres(articles)
 
 
-def test_ecofin_limite_aux_sept_derniers_jours_et_prioritaire():
+def test_recherche_google_limitee_a_deux_jours():
+    url = "https://news.google.com/rss/search?q=site:theafricareport.com&hl=fr"
+    assert na.recherche_recente(url) == "https://news.google.com/rss/search?q=site:theafricareport.com+when:2d&hl=fr"
+    deja = "https://news.google.com/rss/search?q=site:agenceecofin.com+when:2d&hl=fr"
+    assert na.recherche_recente(deja) == deja
+    assert na.recherche_recente("https://www.financialafrik.com/feed/") == "https://www.financialafrik.com/feed/"
+
+
+def test_ecofin_lu_en_direct_puis_google_en_secours():
     ecofin = na.RSS_FEEDS["agence_ecofin"]
-    assert all("when:7d" in url for url in ecofin["feeds"].values())
+    direct = ecofin["feeds"]["economie"]
+    assert "agenceecofin.com/rss" in direct
+    assert all("when:2d" in u for u in ecofin["feeds_secours"].values())
     assert ecofin["priority"] is True
-    assert ecofin["max_entries"] >= 10
+
+    # Flux direct vide → Google en secours.
+    session = _Session(vides={direct})
+    articles = asyncio.run(na._collecter_source(session, ecofin))
+    assert articles and len(session.lues) == 2
+
+    # Flux direct frais → Google n'est pas appelé.
+    session = _Session()
+    asyncio.run(na._collecter_source(session, ecofin))
+    assert session.lues == [direct]
+
+
+def test_sources_retirees_par_l_exploitant():
+    for cle in ("jeune_afrique_eco", "rfi_afrique", "le_monde_afrique"):
+        assert cle not in na.RSS_FEEDS
