@@ -1,16 +1,19 @@
 """Marchés africains pour le tableau de bord de direction (décision du 08/11/2026).
 
 - Cours des matières premières : Pink Sheet de la Banque mondiale (CC BY 4.0),
-  moyennes mensuelles en dollars US, publiées début de mois. L'adresse du
-  fichier change à chaque édition : on la relit sur la page de la Banque
-  mondiale.
+  moyennes mensuelles en dollars US, publiées début de mois. Le classeur est
+  remplacé sur place chaque mois (son dossier change une fois par an) : on
+  relit son adresse sur la page de la Banque mondiale, puis on le redemande
+  avec If-Modified-Since, et il n'est relu que s'il a changé.
 - Indices boursiers, points à l'ouverture et à la clôture de la dernière séance,
   lus sur les sites officiels des bourses : Alger (SGBV, DZAIR INDEX), Abidjan
   (BRVM Composite), Lagos (NGX All-Share) et Nairobi (NSE 20). Pour un indice,
-  l'ouverture est la clôture de la séance précédente.
+  l'ouverture est la clôture de la séance précédente. NGX ne publie que la
+  dernière valeur : les clôtures sont gardées par date de séance (voir
+  suivre_ngx) et, faute de la clôture de la veille, l'ouverture reste vide.
 
 Une source en panne n'efface pas la dernière valeur lue : elle est rendue avec
-`a_jour: False`.
+`a_jour: False`, et elle est redemandée cinq minutes plus tard.
 """
 
 import asyncio
@@ -19,7 +22,7 @@ import json
 import logging
 import re
 import time
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from typing import Dict, Optional, Tuple
 
 import aiohttp
@@ -67,6 +70,14 @@ INDICES = ["dzair", "brvm_c", "ngx_asi", "nse20"]
 
 DUREE_COURS_S = 12 * 3600
 DUREE_INDICES_S = 30 * 60
+NOUVEL_ESSAI_S = 5 * 60  # après un échec, la source est redemandée plus tôt
+DELAIS = {"cours": DUREE_COURS_S, **{c: DUREE_INDICES_S for c in INDICES}}
+
+# Bourse de Lagos : séance de 10 h à 14 h 30, heure du Nigeria (UTC+1 toute
+# l'année, sans heure d'été).
+LAGOS = timezone(timedelta(hours=1))
+OUVERTURE_NGX = (10, 0)
+FERMETURE_NGX = (14, 30)
 _ENTETES = {"User-Agent": "Mozilla/5.0 (compatible; AfCFTA-Trade-Intelligence/1.0)"}
 _DELAI = aiohttp.ClientTimeout(total=20)
 
@@ -171,15 +182,36 @@ def lire_ngx(texte: str) -> Dict:
     return {"ouverture": None, "cloture": float(asi), "date": None}
 
 
-def suivre_ngx(lu: Dict, memoire: Optional[Dict]) -> Tuple[Dict, Dict]:
-    """NGX ne donne que la dernière valeur : l'ouverture est la valeur précédente
-    gardée en mémoire, remplacée quand une nouvelle séance change l'indice."""
-    memoire = dict(memoire or {})
-    if memoire.get("cloture") != lu["cloture"]:
-        if memoire.get("cloture") is not None:
-            memoire["ouverture"] = memoire["cloture"]
-        memoire["cloture"] = lu["cloture"]
-    return {**lu, "ouverture": memoire.get("ouverture")}, memoire
+def _jour_ouvre_precedent(jour: date) -> date:
+    jour -= timedelta(days=1)
+    while jour.weekday() >= 5:
+        jour -= timedelta(days=1)
+    return jour
+
+
+def seance_ngx(maintenant: datetime) -> Tuple[date, bool]:
+    """Séance que montre l'instantané NGX lu à `maintenant`, et si sa valeur est
+    déjà la clôture (séance terminée) ou encore un cours de séance."""
+    t = maintenant.astimezone(LAGOS)
+    if t.weekday() < 5 and (t.hour, t.minute) >= OUVERTURE_NGX:
+        return t.date(), (t.hour, t.minute) >= FERMETURE_NGX
+    # Avant l'ouverture ou le week-end : la dernière séance est close.
+    return _jour_ouvre_precedent(t.date()), True
+
+
+def suivre_ngx(lu: Dict, memoire: Optional[Dict], maintenant: Optional[datetime] = None) -> Tuple[Dict, Dict]:
+    """NGX ne donne que la dernière valeur, sans date ni veille. On garde les
+    clôtures par date de séance (lectures faites après la fermeture, ou avant
+    l'ouverture suivante) ; l'ouverture est la clôture du jour ouvré précédent.
+    Si cette clôture n'a pas été lue (personne n'a consulté le tableau ce
+    jour-là, serveur arrêté), l'ouverture reste vide plutôt que fausse."""
+    seance, close = seance_ngx(maintenant or datetime.now(timezone.utc))
+    clotures = dict((memoire or {}).get("clotures") or {})
+    if close:
+        clotures[seance.isoformat()] = lu["cloture"]
+        clotures = dict(sorted(clotures.items())[-10:])
+    ouverture = clotures.get(_jour_ouvre_precedent(seance).isoformat())
+    return {**lu, "ouverture": ouverture, "date": seance.isoformat()}, {"clotures": clotures}
 
 
 LECTEURS = {"dzair": lire_sgbv, "brvm_c": lire_brvm, "ngx_asi": lire_ngx, "nse20": lire_nse}
@@ -194,10 +226,10 @@ class Marches:
 
     def __init__(self):
         self.cours: Optional[Dict] = None
-        self.cours_lu_a = 0.0
         self.indices: Dict[str, Dict] = {}
-        self.indices_lus_a = 0.0
         self.memoire_ngx: Optional[Dict] = None
+        self.lus_a: Dict[str, float] = {}  # source → heure de la dernière lecture
+        self._etat_charge = False
         self._verrou = asyncio.Lock()
 
     async def _texte(self, session, url) -> str:
@@ -209,12 +241,16 @@ class Marches:
         lien = lien_pink_sheet(await self._texte(session, PAGE_BANQUE_MONDIALE))
         if not lien:
             raise ValueError("lien du Pink Sheet introuvable")
-        if self.cours and self.cours.get("lien") == lien:
-            return  # même édition : rien à relire
-        async with session.get(lien, headers=_ENTETES, timeout=_DELAI) as r:
+        entetes = dict(_ENTETES)
+        if self.cours and self.cours.get("lien") == lien and self.cours.get("modifie_le"):
+            entetes["If-Modified-Since"] = self.cours["modifie_le"]
+        async with session.get(lien, headers=entetes, timeout=_DELAI) as r:
+            if r.status == 304:
+                return  # classeur inchangé depuis la dernière lecture
             r.raise_for_status()
             contenu = await r.read()
-        self.cours = {**lire_pink_sheet(contenu), "lien": lien}
+            modifie_le = r.headers.get("Last-Modified")
+        self.cours = {**lire_pink_sheet(contenu), "lien": lien, "modifie_le": modifie_le}
 
     async def _rafraichir_indice(self, session, cle):
         lu = LECTEURS[cle](await self._texte(session, SOURCES_INDICES[cle]))
@@ -229,20 +265,23 @@ class Marches:
                              "lu_le": datetime.now(timezone.utc).isoformat(timespec="seconds")}
 
     async def _charger(self, db):
-        if db is None or self.memoire_ngx is not None:
+        if db is None or self._etat_charge:
             return
         try:
             doc = await db.marches_africains.find_one({"_id": "etat"}) or {}
-            self.memoire_ngx = doc.get("memoire_ngx") or {}
-            self.indices = {**doc.get("indices", {}), **self.indices}
-            if self.cours is None and doc.get("cours"):
-                self.cours = doc["cours"]
-        except Exception as e:  # base indisponible : le cache mémoire suffit
+        except Exception as e:  # base indisponible : réessayée au prochain appel
             logger.warning("Marchés : lecture de l'état impossible (%s)", type(e).__name__)
-            self.memoire_ngx = {}
+            return
+        self.memoire_ngx = doc.get("memoire_ngx") or self.memoire_ngx
+        self.indices = {**doc.get("indices", {}), **self.indices}
+        if self.cours is None and doc.get("cours"):
+            self.cours = doc["cours"]
+        self._etat_charge = True
 
     async def _enregistrer(self, db):
-        if db is None:
+        # Pas d'écriture tant que l'état n'a pas été relu : elle écraserait la
+        # mémoire NGX et les cours gardés en base.
+        if db is None or not self._etat_charge:
             return
         try:
             await db.marches_africains.replace_one(
@@ -257,36 +296,33 @@ class Marches:
         async with self._verrou:
             await self._charger(db)
             maintenant = time.time()
-            taches = []
-            if maintenant - self.cours_lu_a > DUREE_COURS_S:
-                taches.append(("cours", None))
-            if maintenant - self.indices_lus_a > DUREE_INDICES_S:
-                taches += [("indice", cle) for cle in INDICES]
+            taches = [c for c in DELAIS if maintenant - self.lus_a.get(c, 0.0) > DELAIS[c]]
             if taches:
                 session = session_http or aiohttp.ClientSession()
                 try:
                     resultats = await asyncio.gather(
                         *[
-                            self._rafraichir_cours(session) if t == "cours" else self._rafraichir_indice(session, c)
-                            for t, c in taches
+                            self._rafraichir_cours(session) if c == "cours" else self._rafraichir_indice(session, c)
+                            for c in taches
                         ],
                         return_exceptions=True,
                     )
                 finally:
                     if session_http is None:
                         await session.close()
-                for (t, c), r in zip(taches, resultats):
+                for c, r in zip(taches, resultats):
                     if isinstance(r, Exception):
-                        logger.warning("Marchés : %s %s indisponible (%s)", t, c or "", r)
-                        if t == "indice" and c in self.indices:
+                        logger.warning("Marchés : %s indisponible (%s)", c, r)
+                        if c in self.indices:
                             self.indices[c]["a_jour"] = False
-                if any(t == "cours" for t, _ in taches):
-                    self.cours_lu_a = maintenant
-                if any(t == "indice" for t, _ in taches):
-                    self.indices_lus_a = maintenant
+                        # Redemandée dans NOUVEL_ESSAI_S, et non au bout du délai complet.
+                        self.lus_a[c] = maintenant - DELAIS[c] + NOUVEL_ESSAI_S
+                    else:
+                        self.lus_a[c] = maintenant
                 await self._enregistrer(db)
 
-            cours = {k: v for k, v in (self.cours or {}).items() if k != "lien"} or None
+            internes = ("lien", "modifie_le")
+            cours = {k: v for k, v in (self.cours or {}).items() if k not in internes} or None
             return {
                 "cours": cours,
                 "indices": [{"cle": c, **self.indices[c]} for c in INDICES if c in self.indices],

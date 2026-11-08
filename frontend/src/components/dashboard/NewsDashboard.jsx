@@ -15,6 +15,7 @@ import { pick, intlLocale } from '../../i18n/lang';
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { useAuth } from '../../context/AuthContext';
 import NewsRedaction from './NewsRedaction';
+import { EVENEMENT_FIL } from './TableauManager';
 import { csrfFetch } from '../../services/csrf';
 
 // Rédacteur en chef : retrait d'un article du fil public depuis sa carte.
@@ -566,6 +567,13 @@ const NewsDashboard = ({ language = 'fr' }) => {
     );
   }
 
+  // Fil changé par le rédacteur : ce fil-ci est relu, et le tableau de bord de
+  // direction (ligne des dépêches, à la une) est prévenu.
+  const filModifie = async () => {
+    await fetchNews(false, true);
+    window.dispatchEvent(new Event(EVENEMENT_FIL));
+  };
+
   // Retrait depuis une carte : même décision que « Retirer du fil public »
   // dans le panneau (l'article est masqué, rétablissable).
   const retirerDuFil = async (article) => {
@@ -578,7 +586,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
       });
       if (!reponse.ok) throw new Error(`HTTP ${reponse.status}`);
       setVersionRedaction((v) => v + 1);
-      await fetchNews(false, true);
+      await filModifie();
     } catch (e) {
       window.alert(`Retrait impossible : ${e.message}`);
     }
@@ -645,7 +653,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
         </div>
       </div>
 
-      {estRedacteur && <NewsRedaction key={versionRedaction} onChange={() => fetchNews(false, true)} />}
+      {estRedacteur && <NewsRedaction key={versionRedaction} onChange={filModifie} />}
 
       <CountrySpotlight spotlight={countryOfWeek} t={t} language={language} />
 

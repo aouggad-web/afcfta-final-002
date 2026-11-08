@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
-import TableauManager from './TableauManager';
+import TableauManager, { EVENEMENT_FIL } from './TableauManager';
 
 const serie = (debut, avantDernier, dernier) => [debut, ...Array(10).fill(debut), avantDernier, dernier];
 
@@ -65,16 +65,21 @@ describe('TableauManager', () => {
   it("donne les points d'ouverture et de clôture de chaque bourse", async () => {
     render(<TableauManager language="fr" />);
     const dzair = await screen.findByTestId('indice-dzair');
-    expect(espaces(dzair.textContent)).toContain('DZAIR INDEX');
-    expect(espaces(dzair.textContent)).toContain('3 809,45');
-    expect(espaces(dzair.textContent)).toContain('3 812,11');
-    expect(espaces(dzair.textContent)).toContain('8 nov.');
-    // NGX : ouverture connue à la prochaine séance.
-    const ngx = screen.getByTestId('indice-ngx_asi');
-    expect(espaces(ngx.textContent)).toContain('—');
-    expect(espaces(ngx.textContent)).toContain('dernière séance');
-    // Source en panne : dernière valeur lue, signalée.
-    expect(screen.getByTestId('indice-brvm_c').querySelector('[title]')).toBeTruthy();
+    const [nom, ouverture, cloture, , seance] = dzair.querySelectorAll('td');
+    expect(espaces(nom.textContent)).toContain('DZAIR INDEX');
+    expect(espaces(ouverture.textContent)).toBe('3 809,45');
+    expect(espaces(cloture.textContent)).toBe('3 812,11');
+    expect(espaces(seance.textContent)).toBe('8 nov.');
+    // NGX sans clôture de la veille : ouverture vide, expliquée.
+    const ngx = screen.getByTestId('indice-ngx_asi').querySelectorAll('td');
+    expect(ngx[1].querySelector('[aria-hidden="true"]').textContent).toBe('—');
+    expect(ngx[1].textContent).toContain('Clôture de la séance précédente non disponible');
+    expect(espaces(ngx[4].textContent)).toBe('dernière séance');
+    // Source en panne : dernière valeur lue, signalée à l'écran et aux lecteurs d'écran.
+    const brvm = screen.getByTestId('indice-brvm_c').querySelectorAll('td');
+    expect(brvm[2].textContent).toContain('dernière valeur lue');
+    expect(screen.getByText(/^\* Source momentanément indisponible/)).toBeTruthy();
+    expect(screen.getByText(/^— Clôture de la séance précédente/)).toBeTruthy();
     expect(screen.queryByText(/Casablanca/)).toBeNull();
   });
 
@@ -101,6 +106,8 @@ describe('TableauManager', () => {
     render(<TableauManager language="ar" />);
     const dzair = await screen.findByTestId('indice-dzair');
     expect(dzair.textContent).toContain('الجزائر');
+    expect(dzair.textContent).not.toMatch(/[٠-٩۰-۹]/);
+    expect(dzair.querySelectorAll('td')[2].textContent).toMatch(/3,812\.11/);
     expect(screen.getByText('البورصات الأفريقية')).toBeTruthy();
     expect(screen.getByRole('region', { name: 'آخر الأخبار' }).getAttribute('dir')).toBe('rtl');
     expect(dzair.querySelector('bdi[dir="ltr"]')).toBeTruthy();
@@ -112,5 +119,74 @@ describe('TableauManager', () => {
     await screen.findByTestId('article-une');
     expect(screen.queryByText('Bourses africaines')).toBeNull();
     expect(screen.getByText("Marchés africains en un coup d'œil")).toBeTruthy();
+  });
+});
+
+describe('TableauManager — cas limites', () => {
+  const fetchOriginal = global.fetch;
+  afterEach(() => {
+    global.fetch = fetchOriginal;
+  });
+
+  it("un mois non publié laisse la variation vide au lieu de la calculer contre un autre mois", async () => {
+    const brent = [60, 70, 70, 70, 70, 70, 70, 70, 70, 70, 100, null, 125];
+    const cuivre = [null, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11];
+    servir({
+      marches: {
+        ...APERCU,
+        cours: { ...APERCU.cours, produits: { brent: { famille: 'hydrocarbures', serie: brent }, cuivre: { famille: 'minerais', serie: cuivre } } },
+      },
+    });
+    render(<TableauManager language="fr" />);
+    const tuile = await screen.findByTestId('tuile-brent');
+    expect(espaces(tuile.textContent)).not.toContain('25,0 %');
+    expect(espaces(tuile.textContent)).toContain('sur 12 mois +108 %');
+    const cuivreTuile = screen.getByTestId('tuile-cuivre');
+    expect(espaces(cuivreTuile.textContent)).toContain('10,0 %');
+    expect(espaces(cuivreTuile.textContent)).toContain('sur 12 mois —');
+  });
+
+  it("la pastille suit le chiffre affiché : 0,04 % est « stable », 0,06 % une hausse de 0,1 %", async () => {
+    servir({
+      marches: {
+        ...APERCU,
+        indices: [
+          { cle: 'dzair', ouverture: 1000, cloture: 1000.4, date: null, variation_pct: 0.04, a_jour: true },
+          { cle: 'nse20', ouverture: 1000, cloture: 1000.6, date: null, variation_pct: 0.06, a_jour: true },
+        ],
+      },
+    });
+    render(<TableauManager language="fr" />);
+    const stable = (await screen.findByTestId('indice-dzair')).querySelector('[data-sens]');
+    expect(stable.dataset.sens).toBe('stable');
+    expect(espaces(stable.textContent)).toContain('0,0 %');
+    expect(screen.getByTestId('indice-nse20').querySelector('[data-sens]').dataset.sens).toBe('hausse');
+  });
+
+  it('la ligne des dépêches se met en pause au bouton', async () => {
+    servir();
+    render(<TableauManager language="fr" />);
+    const ligne = await screen.findByRole('region', { name: 'Dernières dépêches' });
+    const bouton = screen.getByRole('button', { name: 'Mettre en pause le défilement' });
+    fireEvent.click(bouton);
+    expect(ligne.className).toContain('en-pause');
+    expect(screen.getByRole('button', { name: 'Reprendre le défilement' }).getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('relit le fil quand le rédacteur retire un article', async () => {
+    servir();
+    render(<TableauManager language="fr" />);
+    await screen.findByTestId('article-une');
+    const appels = () => global.fetch.mock.calls.filter(([u]) => u.endsWith('/news')).length;
+    expect(appels()).toBe(1);
+    window.dispatchEvent(new Event(EVENEMENT_FIL));
+    await waitFor(() => expect(appels()).toBe(2));
+  });
+
+  it("lit l'heure des articles en UTC (le fil la donne sans fuseau)", async () => {
+    const ilYaDeuxHeures = new Date(Date.now() - 2 * 3600000).toISOString().slice(0, 19); // sans « Z »
+    servir({ news: { articles: [{ ...ARTICLES[0], published_at: ilYaDeuxHeures }] } });
+    render(<TableauManager language="fr" />);
+    expect((await screen.findByTestId('article-une')).textContent).toContain('il y a 2 heures');
   });
 });

@@ -12,6 +12,9 @@ import { pick, intlLocale, isRtl } from '../../i18n/lang';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
+/** Émis par NewsDashboard quand le rédacteur change le fil public. */
+export const EVENEMENT_FIL = 'actualites:fil-modifie';
+
 const UNITES = {
   bbl: ['$/baril', '$/bbl', '$/برميل'],
   mmbtu: ['$/MMBtu', '$/MMBtu', '$/MMBtu'],
@@ -91,10 +94,12 @@ const T = {
   seance: ['Séance', 'Session', 'الجلسة'],
   derniere: ['dernière séance', 'last session', 'آخر جلسة'],
   ouvertureAVenir: [
-    "Ouverture connue à partir de la prochaine séance",
-    'Open known from the next session',
-    'يُعرف الافتتاح ابتداءً من الجلسة القادمة',
+    "Clôture de la séance précédente non disponible",
+    'Previous session close not available',
+    'إغلاق الجلسة السابقة غير متاح',
   ],
+  pause: ['Mettre en pause le défilement', 'Pause scrolling', 'إيقاف التمرير مؤقتًا'],
+  lecture: ['Reprendre le défilement', 'Resume scrolling', 'استئناف التمرير'],
   ancienne: ['Source momentanément indisponible : dernière valeur lue', 'Source temporarily unavailable: last value read', 'المصدر غير متاح مؤقتًا: آخر قيمة مقروءة'],
   cours: ['Cours des matières premières', 'Commodity prices', 'أسعار المواد الأولية'],
   coursSous: ['Moyennes mensuelles, variation sur un mois', 'Monthly averages, change over one month', 'متوسطات شهرية، التغير على شهر'],
@@ -123,7 +128,22 @@ const CATEGORIES_AR = {
 const tr = (lang, [fr, en, ar]) => pick(lang, fr, en, ar);
 const nombre = (v, lang, d = 2) =>
   new Intl.NumberFormat(intlLocale(lang), { minimumFractionDigits: d, maximumFractionDigits: d }).format(v);
-const ecart = (avant, apres) => (avant ? ((apres - avant) / avant) * 100 : null);
+const ecart = (avant, apres) => (avant && apres != null ? ((apres - avant) / avant) * 100 : null);
+const signe = (v, lang) =>
+  new Intl.NumberFormat(intlLocale(lang), { maximumFractionDigits: 0, signDisplay: 'exceptZero' }).format(v);
+
+/** Dernier mois, mois précédent et mois d'il y a un an, par position (un mois non
+ *  publié reste un trou : la variation devient « — » au lieu d'être calculée
+ *  contre un autre mois). */
+function lireSerie(serie) {
+  const n = serie.length;
+  const dernier = serie[n - 1];
+  return {
+    dernier,
+    surUnMois: n >= 2 ? ecart(serie[n - 2], dernier) : null,
+    surDouzeMois: n >= 13 ? ecart(serie[0], dernier) : null,
+  };
+}
 
 const Chiffre = ({ children, className = '' }) => (
   <bdi dir="ltr" className={className}>
@@ -133,7 +153,8 @@ const Chiffre = ({ children, className = '' }) => (
 
 export function Variation({ pct, language }) {
   if (pct == null || Number.isNaN(pct)) return <span className="text-[var(--afcfta-muted)]">—</span>;
-  const sens = pct > 0.05 ? 'hausse' : pct < -0.05 ? 'baisse' : 'stable';
+  const arrondi = Math.round(pct * 10) / 10; // le sens suit le chiffre affiché
+  const sens = arrondi > 0 ? 'hausse' : arrondi < 0 ? 'baisse' : 'stable';
   const couleur = { hausse: 'var(--green)', baisse: 'var(--danger)', stable: 'var(--afcfta-muted)' }[sens];
   const fleche = { hausse: '▲', baisse: '▼', stable: '■' }[sens];
   return (
@@ -142,26 +163,40 @@ export function Variation({ pct, language }) {
       className="inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-bold"
       style={{ color: couleur, background: `color-mix(in srgb, ${couleur} 14%, transparent)` }}
     >
-      {fleche} <Chiffre>{nombre(Math.abs(pct), language, 1)} %</Chiffre>
+      {fleche} <Chiffre>{nombre(Math.abs(arrondi), language, 1)} %</Chiffre>
     </span>
   );
 }
 
 function Courbe({ serie, largeur, hauteur, couleur }) {
-  const v = (serie || []).filter((x) => x != null);
+  const s = serie || [];
+  const v = s.filter((x) => x != null);
   if (v.length < 2) return null;
   const min = Math.min(...v);
   const max = Math.max(...v);
-  const pts = v.map((y, i) => [
-    (i * largeur) / (v.length - 1),
-    hauteur - 2 - ((y - min) / (max - min || 1)) * (hauteur - 4),
-  ]);
-  const trace = pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ');
-  const [dx, dy] = pts[pts.length - 1];
+  // Chaque mois garde sa place ; un mois manquant coupe la courbe.
+  const segments = [];
+  let courant = [];
+  s.forEach((y, i) => {
+    if (y == null) {
+      if (courant.length) segments.push(courant);
+      courant = [];
+      return;
+    }
+    courant.push([(i * largeur) / (s.length - 1), hauteur - 2 - ((y - min) / (max - min || 1)) * (hauteur - 4)]);
+  });
+  if (courant.length) segments.push(courant);
+  const trace = (seg) => seg.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ');
+  const aire = segments
+    .filter((seg) => seg.length > 1)
+    .map((seg) => `${trace(seg)} L${seg[seg.length - 1][0].toFixed(1)} ${hauteur} L${seg[0][0].toFixed(1)} ${hauteur}Z`)
+    .join(' ');
+  const dernierSeg = segments[segments.length - 1];
+  const [dx, dy] = dernierSeg[dernierSeg.length - 1];
   return (
     <svg width={largeur} height={hauteur} viewBox={`0 0 ${largeur} ${hauteur}`} aria-hidden="true" className="block max-w-full">
-      <path d={`${trace} L${largeur} ${hauteur} L0 ${hauteur}Z`} fill={couleur} opacity="0.12" />
-      <path d={trace} fill="none" stroke={couleur} strokeWidth="2" strokeLinejoin="round" />
+      {aire && <path d={aire} fill={couleur} opacity="0.12" />}
+      <path d={segments.map(trace).join(' ')} fill="none" stroke={couleur} strokeWidth="2" strokeLinejoin="round" />
       <circle cx={dx} cy={dy} r="3" fill={couleur} />
     </svg>
   );
@@ -174,9 +209,7 @@ const unite = (cle, lang) => {
 
 function TuileCours({ cle, produit, couleur, language }) {
   const [fr, en, ar, , d] = PRODUITS[cle];
-  const s = produit.serie.filter((x) => x != null);
-  const dernier = s[s.length - 1];
-  const sur12 = ecart(s[0], dernier);
+  const { dernier, surUnMois, surDouzeMois: sur12 } = lireSerie(produit.serie);
   return (
     <div
       data-testid={`tuile-${cle}`}
@@ -186,7 +219,7 @@ function TuileCours({ cle, produit, couleur, language }) {
       <div className="absolute inset-x-0 top-0 h-[3px]" style={{ background: couleur }} />
       <div className="flex items-center justify-between gap-2 text-xs font-semibold text-[var(--afcfta-muted)]">
         <span>{pick(language, fr, en, ar)}</span>
-        <Variation pct={ecart(s[s.length - 2], dernier)} language={language} />
+        <Variation pct={surUnMois} language={language} />
       </div>
       <div
         className="mt-2 font-bold text-[var(--text)]"
@@ -196,7 +229,7 @@ function TuileCours({ cle, produit, couleur, language }) {
       </div>
       <div className="text-xs text-[var(--afcfta-muted)]">
         {unite(cle, language)} · {tr(language, T.sur12)}{' '}
-        <Chiffre>{sur12 == null ? '—' : `${sur12 > 0 ? '+' : ''}${nombre(sur12, language, 0)} %`}</Chiffre>
+        <Chiffre>{sur12 == null ? '—' : `${signe(sur12, language)} %`}</Chiffre>
       </div>
       <div className="mt-1">
         <Courbe serie={produit.serie} largeur={220} hauteur={40} couleur={couleur} />
@@ -206,6 +239,7 @@ function TuileCours({ cle, produit, couleur, language }) {
 }
 
 function LigneDepeches({ articles, language }) {
+  const [pause, setPause] = useState(false);
   if (!articles.length) return null;
   const elements = (copie) =>
     articles.map((a) => (
@@ -224,12 +258,32 @@ function LigneDepeches({ articles, language }) {
   return (
     <div
       className="flex items-center gap-3 rounded-xl border px-3 py-2"
-      style={{ background: 'var(--overlay), var(--afcfta-card)', borderColor: 'var(--overlay-border)' }}
+      style={{
+        backgroundColor: 'var(--afcfta-card)',
+        backgroundImage: 'linear-gradient(var(--overlay), var(--overlay))',
+        borderColor: 'var(--overlay-border)',
+      }}
     >
-      <span className="shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-white" style={{ background: 'var(--terra)' }}>
+      <span className="shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide" style={{ background: 'var(--terra)', color: 'var(--bg)' }}>
         {tr(language, T.depeches)}
       </span>
-      <div className="ligne-depeches min-w-0 flex-1" dir={isRtl(language) ? 'rtl' : 'ltr'} role="region" aria-label={tr(language, T.depeches)}>
+      <button
+        type="button"
+        onClick={() => setPause((p) => !p)}
+        aria-pressed={pause}
+        aria-label={tr(language, pause ? T.lecture : T.pause)}
+        title={tr(language, pause ? T.lecture : T.pause)}
+        className="shrink-0 rounded-full border px-2 py-0.5 text-xs text-[var(--text-soft)]"
+        style={{ borderColor: 'var(--lift-border)' }}
+      >
+        <span aria-hidden="true">{pause ? '▶' : '❚❚'}</span>
+      </button>
+      <div
+        className={`ligne-depeches min-w-0 flex-1${pause ? ' en-pause' : ''}`}
+        dir={isRtl(language) ? 'rtl' : 'ltr'}
+        role="region"
+        aria-label={tr(language, T.depeches)}
+      >
         <div className="ligne-depeches__piste">
           {elements(0)}
           <span aria-hidden="true" className="contents">
@@ -270,11 +324,23 @@ function Bourses({ indices, language }) {
                   <div className="text-xs text-[var(--afcfta-muted)]">{tr(language, place)}</div>
                 </td>
                 <td className="py-3 px-2 text-end" title={i.ouverture == null ? tr(language, T.ouvertureAVenir) : undefined}>
-                  <Chiffre>{i.ouverture == null ? '—' : nombre(i.ouverture, language)}</Chiffre>
+                  {i.ouverture == null ? (
+                    <>
+                      <span aria-hidden="true">—</span>
+                      <span className="sr-only">{tr(language, T.ouvertureAVenir)}</span>
+                    </>
+                  ) : (
+                    <Chiffre>{nombre(i.ouverture, language)}</Chiffre>
+                  )}
                 </td>
                 <td className="py-3 px-2 text-end font-bold text-[var(--text)]" title={i.a_jour === false ? tr(language, T.ancienne) : undefined}>
                   <Chiffre>{nombre(i.cloture, language)}</Chiffre>
-                  {i.a_jour === false && <span className="ms-1 text-[var(--afcfta-muted)]">*</span>}
+                  {i.a_jour === false && (
+                    <>
+                      <span aria-hidden="true" className="ms-1 text-[var(--afcfta-muted)]">*</span>
+                      <span className="sr-only">{tr(language, T.ancienne)}</span>
+                    </>
+                  )}
                 </td>
                 <td className="py-3 px-2 text-end">
                   <Variation pct={i.variation_pct} language={language} />
@@ -287,6 +353,12 @@ function Bourses({ indices, language }) {
           })}
         </tbody>
       </table>
+      {(indices.some((i) => i.a_jour === false) || indices.some((i) => i.ouverture == null)) && (
+        <div aria-hidden="true" className="mt-2 space-y-0.5 text-[11px] text-[var(--afcfta-muted)]">
+          {indices.some((i) => i.a_jour === false) && <p>* {tr(language, T.ancienne)}</p>}
+          {indices.some((i) => i.ouverture == null) && <p>— {tr(language, T.ouvertureAVenir)}</p>}
+        </div>
+      )}
     </div>
   );
 }
@@ -303,7 +375,7 @@ function Pastilles({ options, choisi, choisir }) {
           className="rounded-full border px-3 py-1 text-xs transition-colors"
           style={
             choisi === valeur
-              ? { background: 'var(--terra)', borderColor: 'var(--terra)', color: '#fff' }
+              ? { background: 'var(--terra)', borderColor: 'var(--terra)', color: 'var(--bg)' }
               : { borderColor: 'var(--lift-border)', color: 'var(--text-soft)' }
           }
         >
@@ -335,8 +407,8 @@ function CoursParFamille({ produits, language }) {
                   {tr(language, FAMILLES[f])}
                 </div>
                 {cles.map((c) => {
-                  const s = produits[c].serie.filter((x) => x != null);
-                  const hausse = s[s.length - 1] >= s[s.length - 2];
+                  const { dernier, surUnMois } = lireSerie(produits[c].serie);
+                  const teinte = surUnMois == null ? 'var(--afcfta-muted)' : surUnMois >= 0 ? 'var(--green)' : 'var(--danger)';
                   return (
                     <div
                       key={c}
@@ -349,11 +421,11 @@ function CoursParFamille({ produits, language }) {
                         <div className="text-[11px] text-[var(--afcfta-muted)]">{unite(c, language)}</div>
                       </div>
                       <div className="font-bold text-[var(--text)]" style={{ fontVariantNumeric: 'tabular-nums' }}>
-                        <Chiffre>{nombre(s[s.length - 1], language, PRODUITS[c][4])}</Chiffre>
+                        <Chiffre>{nombre(dernier, language, PRODUITS[c][4])}</Chiffre>
                       </div>
-                      <Courbe serie={produits[c].serie} largeur={56} hauteur={24} couleur={hausse ? 'var(--green)' : 'var(--danger)'} />
+                      <Courbe serie={produits[c].serie} largeur={56} hauteur={24} couleur={teinte} />
                       <div className="text-end">
-                        <Variation pct={ecart(s[s.length - 2], s[s.length - 1])} language={language} />
+                        <Variation pct={surUnMois} language={language} />
                       </div>
                     </div>
                   );
@@ -366,12 +438,20 @@ function CoursParFamille({ produits, language }) {
   );
 }
 
+// Le fil date ses articles en UTC sans fuseau (« 2026-11-08T09:00:00 ») : sans
+// le « Z », le navigateur les lirait à l'heure locale du lecteur.
+const lireDate = (iso) => new Date(/(Z|[+-]\d\d:?\d\d)$/i.test(iso) ? iso : `${iso}Z`);
+const minuitLocal = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+
 const ilYa = (iso, lang) => {
-  const date = new Date(iso);
+  if (!iso) return '';
+  const date = lireDate(String(iso));
   if (Number.isNaN(date.getTime())) return '';
-  const heures = Math.round((date.getTime() - Date.now()) / 3600000);
   const rtf = new Intl.RelativeTimeFormat(intlLocale(lang), { numeric: 'auto' });
-  return heures > -24 ? rtf.format(Math.min(heures, 0), 'hour') : rtf.format(Math.round(heures / 24), 'day');
+  const ecoule = Date.now() - date.getTime();
+  if (ecoule < 24 * 3600000) return rtf.format(-Math.max(0, Math.round(ecoule / 3600000)), 'hour');
+  // Au-delà : jours du calendrier (« hier », « avant-hier »), pas tranches de 24 h.
+  return rtf.format(-Math.round((minuitLocal(new Date()) - minuitLocal(date)) / 86400000), 'day');
 };
 
 const libelleCategorie = (c, lang) => pick(lang, c, c, CATEGORIES_AR[c] || c);
@@ -465,12 +545,18 @@ export default function TableauManager({ language = 'fr' }) {
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => actif && setMarches(d))
       .catch(() => actif && setMarches(null));
-    fetch(`${API}/news`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => actif && setArticles(d?.articles || []))
-      .catch(() => actif && setArticles([]));
+    const lireFil = () =>
+      fetch(`${API}/news`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => actif && setArticles(d?.articles || []))
+        .catch(() => actif && setArticles([]));
+    lireFil();
+    // Le rédacteur retire un article du fil public (NewsDashboard) : la ligne
+    // des dépêches et la une suivent sans recharger la page.
+    window.addEventListener(EVENEMENT_FIL, lireFil);
     return () => {
       actif = false;
+      window.removeEventListener(EVENEMENT_FIL, lireFil);
     };
   }, []);
 

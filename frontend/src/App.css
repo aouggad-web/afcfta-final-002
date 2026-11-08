@@ -327,8 +327,18 @@ body {
 }
 
 .ligne-depeches:hover .ligne-depeches__piste,
-.ligne-depeches:focus-within .ligne-depeches__piste {
+.ligne-depeches.en-pause .ligne-depeches__piste {
   animation-play-state: paused;
+}
+
+/* Au clavier, la ligne s'arrête et se fait défiler : le lien qui a le focus
+   est ramené dans le cadre au lieu de rester caché hors champ. */
+.ligne-depeches:focus-within {
+  overflow-x: auto;
+}
+.ligne-depeches:focus-within .ligne-depeches__piste {
+  animation: none;
+  transform: none;
 }
 
 @keyframes defilement-depeches {
@@ -342,6 +352,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .ligne-depeches { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
   .ligne-depeches__piste { animation: none; }
+  .ligne-depeches__piste > [aria-hidden='true'] { display: none; }
 }
 
 /* ============================================
