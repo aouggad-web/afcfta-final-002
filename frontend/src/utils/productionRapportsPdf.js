@@ -125,6 +125,11 @@ const T = {
       kRecords: 'Valeurs publiées',
       kLatest: 'Dernière année',
       kDatasets: 'Jeux de données',
+      profileTitle: 'Profil minier',
+      profile: { country: 'Pays', region: 'Région', years: 'Années couvertes', minerals: 'Minéraux suivis', records: 'Valeurs publiées', datasets: 'Jeux de données' },
+      synthTitle: (y) => `Synthèse : dernière valeur publiée et évolution (dernière année : ${y})`,
+      synthCols: { latest: 'Dernière valeur', year: 'Année', previous: 'Année précédente', change: 'Variation' },
+      synthText: "Pour chaque minéral, la dernière valeur publiée et sa variation par rapport à l'année d'avant, dans la même unité. Les minéraux ne se comparent pas entre eux : leurs unités diffèrent (tonnes, milliers de tonnes, carats).",
       tableTitle: 'Production par minéral et par année',
       cols: { mineral: 'Minéral', code: 'Code', source: 'Mesure et source' },
       tableText: [
@@ -279,6 +284,11 @@ const T = {
       kRecords: 'Published values',
       kLatest: 'Latest year',
       kDatasets: 'Datasets',
+      profileTitle: 'Mining profile',
+      profile: { country: 'Country', region: 'Region', years: 'Years covered', minerals: 'Minerals tracked', records: 'Published values', datasets: 'Datasets' },
+      synthTitle: (y) => `Summary: latest published value and change (latest year: ${y})`,
+      synthCols: { latest: 'Latest value', year: 'Year', previous: 'Previous year', change: 'Change' },
+      synthText: 'For each mineral, the latest published value and its change from the year before, in the same unit. Minerals cannot be compared with each other: their units differ (tonnes, thousand tonnes, carats).',
       tableTitle: 'Output by mineral and year',
       cols: { mineral: 'Mineral', code: 'Code', source: 'Measure and source' },
       tableText: [
@@ -433,6 +443,11 @@ const T = {
       kRecords: 'القيم المنشورة',
       kLatest: 'آخر سنة',
       kDatasets: 'مجموعات البيانات',
+      profileTitle: 'الملف المعدني',
+      profile: { country: 'البلد', region: 'المنطقة', years: 'السنوات المشمولة', minerals: 'المعادن المتابَعة', records: 'القيم المنشورة', datasets: 'مجموعات البيانات' },
+      synthTitle: (y) => `خلاصة: آخر قيمة منشورة وتطورها (آخر سنة: ${y})`,
+      synthCols: { latest: 'آخر قيمة', year: 'السنة', previous: 'السنة السابقة', change: 'التغيّر' },
+      synthText: 'لكل معدن، آخر قيمة منشورة وتغيّرها مقارنة بالسنة السابقة، بالوحدة نفسها. لا تُقارَن المعادن ببعضها: وحداتها مختلفة (طن، آلاف الأطنان، قيراط).',
       tableTitle: 'الإنتاج حسب المعدن والسنة',
       cols: { mineral: 'المعدن', code: 'الرمز', source: 'المقياس والمصدر' },
       tableText: [
@@ -896,7 +911,47 @@ export function specMiningPdf(mining, langue = 'fr') {
   const mesure = (r) => /^.+ — (.+) \d{4}$/.exec(r?.usgs_table_name || '')?.[1];
 
   const sections = [];
+  const region = getRegionName(mining?.region, lang) || donnee(mining?.region) || tc.na;
+  sections.push({
+    title: t.profileTitle,
+    keyValues: [
+      { label: t.profile.country, value: nom },
+      { label: t.profile.region, value: region },
+      { label: t.profile.years, value: ans.length ? annees(ans) : tc.na },
+      { label: t.profile.minerals, value: String(mineraux.length) },
+      { label: t.profile.records, value: String(mining?.total_records ?? 0) },
+      { label: t.profile.datasets, value: jeux.length ? editions(jeux).join(' ; ') : tc.na },
+    ],
+  });
   if (mineraux.length) {
+    // Dernière valeur publiée et variation sur l'année d'avant, même unité.
+    const pctVar = (v) => `${v > 0 ? '+' : ''}${nombre(v, lang, 1)}${estAnglais(lang) ? '' : ' '}%`;
+    sections.push({
+      title: t.synthTitle(dernierAn || tc.na),
+      table: {
+        columns: [
+          { key: 'mineral', label: t.cols.mineral, width: 2 },
+          { key: 'latest', label: t.synthCols.latest, width: 1.6, align: 'right' },
+          { key: 'year', label: t.synthCols.year, width: 0.7, align: 'right' },
+          { key: 'previous', label: t.synthCols.previous, width: 1.6, align: 'right' },
+          { key: 'change', label: t.synthCols.change, width: 0.9, align: 'right' },
+        ],
+        rows: mineraux.map(([mineral, recs]) => {
+          const tries = [...recs].filter((r) => estNombre(r.value)).sort((a, b) => a.year - b.year);
+          const der = tries[tries.length - 1];
+          const avant = der ? tries.filter((r) => r.year < der.year && r.unit === der.unit).pop() : null;
+          const avecUnite = (r) => (r ? `${vol(r.value)} ${donnee(r.unit) || ''}`.trim() : tc.na);
+          return {
+            mineral: donnee(mineral),
+            latest: avecUnite(der),
+            year: der ? String(der.year) : '—',
+            previous: avant ? `${avecUnite(avant)} (${avant.year})` : tc.na,
+            change: der && avant && avant.value ? pctVar(((der.value - avant.value) / avant.value) * 100) : '—',
+          };
+        }),
+      },
+    });
+    sections.push({ paragraphs: [t.synthText] });
     sections.push({
       title: t.tableTitle,
       table: {
