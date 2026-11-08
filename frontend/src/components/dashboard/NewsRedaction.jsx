@@ -55,13 +55,22 @@ const Action = ({ children, onClick, disabled, titre }) => (
   </button>
 );
 
-const Ligne = ({ article, onglet, occupe, agir, epingles, version }) => {
+const Ligne = ({ article, onglet, occupe, agir, epingles, version, choisi, basculer }) => {
   const rang = epingles.indexOf(article.id);
   return (
     <li
       className="flex gap-3 rounded-lg border p-3"
       style={{ borderColor: 'var(--overlay-border)', background: 'var(--lift)' }}
     >
+      {onglet === 'publies' && (
+        <input
+          type="checkbox"
+          className="mt-1 shrink-0"
+          checked={choisi}
+          onChange={() => basculer(article.id)}
+          aria-label={`Sélectionner « ${article.title} »`}
+        />
+      )}
       {article.has_image ? (
         <img
           src={`${API}/images/${encodeURIComponent(article.id)}?v=${version}`}
@@ -133,8 +142,12 @@ const Ligne = ({ article, onglet, occupe, agir, epingles, version }) => {
                   À la une (7 jours)
                 </Action>
               )}
-              <Action disabled={occupe} onClick={() => agir('decision', { id: article.id, action: 'masquer' })}>
-                Masquer
+              <Action
+                disabled={occupe}
+                titre="L’article ne s’affiche plus pour le public. Il reste dans l’onglet Masqués, d’où vous pouvez le rétablir."
+                onClick={() => agir('decision', { id: article.id, action: 'masquer' })}
+              >
+                Retirer du fil public
               </Action>
             </>
           )}
@@ -251,6 +264,10 @@ const NewsRedaction = ({ onChange }) => {
 
   const epingles = (etat?.publies || []).filter((a) => a.pinned).map((a) => a.id);
 
+  // Retrait de plusieurs articles publiés d'un coup (onglet Publiés).
+  const [selection, setSelection] = useState([]);
+  const basculer = (id) => setSelection((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
+
   const agir = async (quoi, donnees) => {
     setOccupe(true);
     setMessage(null);
@@ -274,6 +291,14 @@ const NewsRedaction = ({ onChange }) => {
         if (!url) return false;
         await appeler('/redaction/image', 'POST', { id: donnees.id, url });
       } else if (quoi === 'retirer-image') await appeler('/redaction/image/retirer', 'POST', donnees);
+      else if (quoi === 'retirer-selection') {
+        // Un appel par article : chacun est masqué (rétablissable), pas supprimé.
+        for (const id of donnees.ids) {
+          await appeler('/redaction/decision', 'POST', { id, action: 'masquer' });
+        }
+        setSelection([]);
+        setMessage({ texte: `${donnees.ids.length} article(s) retiré(s) du fil public (onglet Masqués).` });
+      }
       else if (quoi === 'tout') {
         const r = await appeler('/redaction/publier-tout');
         setMessage({
@@ -320,7 +345,21 @@ const NewsRedaction = ({ onChange }) => {
           </Action>
         )}
         {onglet === 'publies' && (
-          <div className="flex gap-1.5">
+          <div className="flex flex-wrap gap-1.5">
+            <Action
+              disabled={occupe || !(etat?.publies || []).length}
+              onClick={() => setSelection(
+                selection.length === (etat?.publies || []).length ? [] : (etat?.publies || []).map((a) => a.id)
+              )}
+            >
+              {selection.length && selection.length === (etat?.publies || []).length ? 'Tout désélectionner' : 'Tout sélectionner'}
+            </Action>
+            <Action
+              disabled={occupe || selection.length === 0}
+              onClick={() => agir('retirer-selection', { ids: selection })}
+            >
+              Retirer la sélection du fil public ({selection.length})
+            </Action>
             <Action
               disabled={occupe || !(etat?.publies || []).some((a) => !a.has_image)}
               onClick={() => agir('images-manquantes')}
@@ -382,6 +421,8 @@ const NewsRedaction = ({ onChange }) => {
               agir={agir}
               epingles={epingles}
               version={version}
+              choisi={selection.includes(article.id)}
+              basculer={basculer}
             />
           ))}
         </ul>
