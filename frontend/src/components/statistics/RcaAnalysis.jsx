@@ -19,6 +19,8 @@ import { getCountryFlag, AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { pick } from '../../i18n/lang';
 import { CSVExportButton } from '../common/ExportTools';
 import { trierPays } from '../../utils/triPays';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specRcaPdf } from '../../utils/statistiquesRapportsPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -245,19 +247,25 @@ export default function RcaAnalysis({ language = 'fr' }) {
               {txt.summary(response.products_with_advantage, response.total_products)}
             </div>
             {rows.length > 0 && (
-              <CSVExportButton
-                rows={rows}
-                columns={[
-                  { key: 'hs_code', label: txt.code },
-                  { key: 'product', label: txt.product },
-                  { key: 'rca', label: txt.rca },
-                  { key: 'country_share', label: txt.countryShare },
-                  { key: 'world_share', label: txt.worldShare },
-                  { key: 'has_advantage', label: txt.advantage },
-                ]}
-                filename={`rca_${selectedCountry}_${year}_${hsLevel}`}
-                language={language}
-              />
+              <div className="flex items-center gap-2 flex-wrap">
+                <OpportunityPdfExport
+                  language={language}
+                  getSpec={(_, langue) => specRcaPdf(response, { pays: selectedCountry }, langue)}
+                />
+                <CSVExportButton
+                  rows={rows}
+                  columns={[
+                    { key: 'hs_code', label: txt.code },
+                    { key: 'product', label: txt.product },
+                    { key: 'rca', label: txt.rca },
+                    { key: 'country_share', label: txt.countryShare },
+                    { key: 'world_share', label: txt.worldShare },
+                    { key: 'has_advantage', label: txt.advantage },
+                  ]}
+                  filename={`rca_${selectedCountry}_${year}_${hsLevel}`}
+                  language={language}
+                />
+              </div>
             )}
           </div>
         )}

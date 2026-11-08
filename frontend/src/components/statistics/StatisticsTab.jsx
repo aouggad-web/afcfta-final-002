@@ -26,6 +26,8 @@ import RcaAnalysis from './RcaAnalysis';
 import TradeComplementarity from './TradeComplementarity';
 import PreferenceMargin from './PreferenceMargin';
 import { PDFExportButton } from '../common/ExportTools';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specVueEnsemblePdf } from '../../utils/statistiquesRapportsPdf';
 import { montantUnite } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
@@ -52,6 +54,8 @@ const AfricaTooltip = ({ active, payload, label, unit, language }) => {
 export default function StatisticsTab({ language = 'fr' }) {
   const { t } = useTranslation();
   const [statistics, setStatistics] = useState(null);
+  // Totaux africains (OEC/BACI) pour le rapport PDF de la vue d'ensemble.
+  const [africaTotals, setAfricaTotals] = useState(null);
   const [activeSubTab, setActiveSubTab] = useState('overview');
   const contentRef = useRef(null);
 
@@ -125,6 +129,9 @@ export default function StatisticsTab({ language = 'fr' }) {
 
   useEffect(() => {
     fetchStatistics();
+    axios.get(`${API}/oec/africa/totals?year=2024`)
+      .then((res) => setAfricaTotals(res.data))
+      .catch((error) => console.error('Error loading Africa totals:', error));
   }, []);
 
   const fetchStatistics = async () => {
@@ -198,6 +205,14 @@ export default function StatisticsTab({ language = 'fr' }) {
         <div ref={contentRef}>
           {/* ── Overview Tab ─────────────────────────────────── */}
           <TabsContent value="overview" className="space-y-8">
+            {statistics && (
+              <div className="flex justify-end">
+                <OpportunityPdfExport
+                  language={language}
+                  getSpec={(_, langue) => specVueEnsemblePdf({ statistics, totaux: africaTotals }, langue)}
+                />
+              </div>
+            )}
             <OECTradeStats language={language} />
             <StatisticsZaubaStyle language={language} />
 

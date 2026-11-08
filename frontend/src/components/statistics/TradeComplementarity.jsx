@@ -16,6 +16,8 @@ import { getCountryFlag, AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { pick } from '../../i18n/lang';
 import { CSVExportButton } from '../common/ExportTools';
 import { trierPays } from '../../utils/triPays';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specComplementaritePdf } from '../../utils/statistiquesRapportsPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -226,6 +228,12 @@ export default function TradeComplementarity({ language = 'fr' }) {
           <div className="flex items-center justify-center py-10 text-[var(--afcfta-muted)]">{txt.noData}</div>
         ) : (
           <>
+            <div className="flex justify-end">
+              <OpportunityPdfExport
+                language={language}
+                getSpec={(_, langue) => specComplementaritePdf(response, { exportateur: exporter, importateur: importer }, langue)}
+              />
+            </div>
             {/* ── Score TCI ─────────────────────────────────────── */}
             <div className="flex flex-col items-center justify-center py-4 rounded-xl bg-[var(--afcfta-card2)]">
               <div className="flex items-center gap-3 text-sm text-[var(--afcfta-muted)] mb-2">

@@ -1,0 +1,24 @@
+{
+ "_note": "Exemple à la forme exacte de GET /dismantlement/preference-profile/{iso3} (services/preference_profile_service.py). Au 08/11/2026, l'API répond 404 pour tous les pays : les fichiers {ISO3}_tariffs.json n'ont pas encore de zlecaf_rate. Valeurs illustratives.",
+ "country_iso3": "KEN",
+ "total_lines_analyzed": 5612,
+ "avg_npf_rate": 14.83,
+ "avg_zlecaf_rate": 6.12,
+ "avg_preference_margin": 8.71,
+ "lines_with_preference": 4210,
+ "lines_with_preference_pct": 75.0,
+ "lines_already_duty_free": 980,
+ "lines_already_duty_free_pct": 17.5,
+ "sensitivity_breakdown": {
+  "normal": { "count": 5050, "share_pct": 90.0, "avg_npf_rate": 13.9, "avg_preference_margin": 9.4 },
+  "sensitive": { "count": 393, "share_pct": 7.0, "avg_npf_rate": 24.1, "avg_preference_margin": 4.2 },
+  "excluded": { "count": 169, "share_pct": 3.0, "avg_npf_rate": 31.5, "avg_preference_margin": null }
+ },
+ "top_sectors_by_margin": [
+  { "sector": "Textiles", "count": 812, "avg_preference_margin": 18.4 },
+  { "sector": "Agriculture", "count": 1020, "avg_preference_margin": 12.7 },
+  { "sector": "Machines", "count": 960, "avg_preference_margin": 3.1 }
+ ],
+ "methodology": "Marge préférentielle = NPF − ZLECAf par ligne SH6, agrégée par pays. Mesure le potentiel préférentiel offert (données tarifaires réelles), non le taux d'utilisation douanier effectif.",
+ "source": "Fichiers tarifaires nationaux ({ISO3}_tariffs.json)"
+}

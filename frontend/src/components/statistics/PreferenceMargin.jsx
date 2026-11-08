@@ -21,6 +21,8 @@ import { getCountryFlag, AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { pick, intlLocale } from '../../i18n/lang';
 import { CSVExportButton } from '../common/ExportTools';
 import { trierPays } from '../../utils/triPays';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specMargePreferencePdf } from '../../utils/statistiquesRapportsPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -198,6 +200,12 @@ export default function PreferenceMargin({ language = 'fr' }) {
           <div className="flex items-center justify-center py-10 text-[var(--danger)]">{txt.error}</div>
         ) : data ? (
           <>
+            <div className="flex justify-end">
+              <OpportunityPdfExport
+                language={language}
+                getSpec={(_, langue) => specMargePreferencePdf(data, { pays: country }, langue)}
+              />
+            </div>
             {/* ── KPI ─────────────────────────────────────────── */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
               <Kpi label={txt.avgNpf} value={data.avg_npf_rate} suffix="%" />

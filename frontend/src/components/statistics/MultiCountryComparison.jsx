@@ -24,6 +24,8 @@ import { montant, montantCompact, montantUnite, nombreUnite } from '../../utils/
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { pick } from '../../i18n/lang';
 import { trierPays } from '../../utils/triPays';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specComparaisonPdf } from '../../utils/statistiquesRapportsPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -493,6 +495,12 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       {/* ── Results ────────────────────────────────────────────── */}
       {!loading && !error && hasData && (
         <>
+          <div className="flex justify-end">
+            <OpportunityPdfExport
+              language={language}
+              getSpec={(_, langue) => specComparaisonPdf({ pays: selectedCountries, donnees: countryData }, langue)}
+            />
+          </div>
           {/* Radar Chart */}
           <div className="stats-chart-card">
             <div className="stats-chart-header" style={{ borderBottomColor: 'rgba(155,110,245,0.2)' }}>
