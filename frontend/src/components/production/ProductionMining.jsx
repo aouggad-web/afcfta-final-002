@@ -128,7 +128,7 @@ function ProductionMining({ language = 'fr' }) {
                 </Badge>
               )}
               {!loading && (
-                <div className="mt-3">
+                <div className="mt-3 flex justify-end">
                   <OpportunityPdfExport
                     language={language}
                     getSpec={(_, langue) => specMiningPdf(miningData, langue)}

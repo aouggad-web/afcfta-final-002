@@ -137,6 +137,20 @@ describe('PDF mines', () => {
     expect(titres(spec)).toContain('Couverture des sources');
   });
 
+  it('commence par le profil minier et la synthèse dernière valeur / évolution', () => {
+    const spec = specMiningPdf(minesZAF, 'fr');
+    expect(titres(spec).slice(0, 2)).toEqual(['Profil minier', expect.stringMatching(/^Synthèse : dernière valeur publiée/)]);
+    const synthese = spec.sections.find((x) => x.title?.startsWith('Synthèse')).table.rows;
+    // Or : dernière valeur 2024, comparée à l'année publiée juste avant, même unité.
+    const or = synthese.find((r) => r.mineral === 'Gold');
+    expect(or).toMatchObject({ latest: '100 tonnes', year: '2024' });
+    expect(or.previous).toMatch(/tonnes \(\d{4}\)$/);
+    expect(or.change).toMatch(/%$/);
+    // Un minéral publié une seule année n'a pas de valeur précédente : « non publié », jamais 0.
+    const seul = synthese.find((r) => r.previous === 'non publié');
+    if (seul) expect(seul.change).toBe('—');
+  });
+
   it('sans production publiée, explique la couverture des sources', () => {
     const spec = specMiningPdf(minesCOM, 'en');
     expect(spec.title).toBe('Mining production — Comoros');
