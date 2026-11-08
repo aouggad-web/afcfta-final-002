@@ -6,6 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { intlLocale } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specFicheAeroportPdf } from '../../utils/logistiqueFichesPdf';
 
 export default function AirportDetailsModal({ airport, open, onClose, language = 'fr' }) {
   const texts = {
@@ -140,6 +142,9 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
             <Badge className="bg-sky-600">{trDonnee(airport.country_name, language)}</Badge>
             <Badge variant="outline">{airport.icao_code}</Badge>
           </DialogDescription>
+          <div className="mt-2">
+            <OpportunityPdfExport language={language} getSpec={(_, langue) => specFicheAeroportPdf(airport, langue)} />
+          </div>
         </DialogHeader>
 
         {/* KPI Cards */}
@@ -316,10 +321,17 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
                       <tbody>
                         {airport.routes.map((route, idx) => (
                           <tr key={idx} className="border-b hover:bg-[var(--afcfta-card2)]">
-                            <td className="p-3 font-semibold">{route.destination_airport}</td>
-                            <td className="p-3">{route.airline}</td>
+                            {/* Champs de l'API : route_description (+ rotation), carrier,
+                                aircraft_types. Les anciens noms restent lus en repli. */}
+                            <td className="p-3 font-semibold">
+                              {route.route_description || route.destination_airport}
+                              {route.rotation && (
+                                <span className="block text-xs font-normal text-[var(--afcfta-muted)]" dir="ltr">{route.rotation}</span>
+                              )}
+                            </td>
+                            <td className="p-3">{route.carrier || route.airline}</td>
                             <td className="p-3">{trDonnee(route.frequency, language)}</td>
-                            <td className="p-3">{route.aircraft_type}</td>
+                            <td className="p-3">{route.aircraft_types || route.aircraft_type}</td>
                           </tr>
                         ))}
                       </tbody>
