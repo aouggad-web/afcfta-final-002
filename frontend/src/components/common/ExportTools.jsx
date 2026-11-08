@@ -2,7 +2,10 @@ import React, { useState, useRef } from 'react';
 import { Button } from '../ui/button';
 import { Download, Loader2, ZoomIn, ZoomOut, Image } from 'lucide-react';
 import { exportToPDF } from '../../utils/pdfExport';
-import html2canvas from 'html2canvas';
+// html2canvas-pro : même API qu'html2canvas, mais comprend les couleurs CSS
+// modernes du thème (color(), color-mix(), oklch) sur lesquelles html2canvas
+// 1.4 plantait — aucun PDF ni image ne sortait.
+import html2canvas from 'html2canvas-pro';
 import { pick } from '../../i18n/lang';
 import { useAuth } from '../../context/AuthContext';
 
@@ -26,7 +29,10 @@ export function PDFExportButton({
   title = '', 
   subtitle = '',
   language = 'fr',
-  informationalNotice = true,
+  // La mention « simulation des droits et taxes » ne vaut que pour un calcul :
+  // aucun écran exporté par ce bouton n'en est un (Statistiques, Production,
+  // Logistique). Un écran de calcul la demande explicitement.
+  informationalNotice = false,
   className = '',
   ...buttonProps
 }) {
@@ -46,7 +52,7 @@ export function PDFExportButton({
     try {
       const result = await exportToPDF(targetRef.current, `${filename}_${new Date().toISOString().split('T')[0]}.pdf`, {
         title,
-        subtitle: subtitle || pick(language, 'Rapport ZLECAf Analytics', 'AfCFTA Analytics Report', 'تقرير تحليلات زليكاف'),
+        subtitle: subtitle || pick(language, 'Rapport ZLECAf Intelligence', 'AfCFTA Intelligence report', 'تقرير ZLECAf Intelligence'),
         language,
         showDate: true,
         informationalNotice
