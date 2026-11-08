@@ -181,7 +181,7 @@ function TuileCours({ cle, produit, couleur, language }) {
     <div
       data-testid={`tuile-${cle}`}
       className="relative overflow-hidden rounded-2xl border p-4 pb-2"
-      style={{ background: 'var(--lift)', borderColor: 'var(--lift-border)', boxShadow: 'var(--lift-shadow)' }}
+      style={{ background: 'var(--lift), var(--afcfta-card)', borderColor: 'var(--lift-border)', boxShadow: 'var(--lift-shadow)' }}
     >
       <div className="absolute inset-x-0 top-0 h-[3px]" style={{ background: couleur }} />
       <div className="flex items-center justify-between gap-2 text-xs font-semibold text-[var(--afcfta-muted)]">
@@ -224,7 +224,7 @@ function LigneDepeches({ articles, language }) {
   return (
     <div
       className="flex items-center gap-3 rounded-xl border px-3 py-2"
-      style={{ background: 'var(--overlay)', borderColor: 'var(--overlay-border)' }}
+      style={{ background: 'var(--overlay), var(--afcfta-card)', borderColor: 'var(--overlay-border)' }}
     >
       <span className="shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-white" style={{ background: 'var(--terra)' }}>
         {tr(language, T.depeches)}
@@ -263,7 +263,7 @@ function Bourses({ indices, language }) {
             return (
               <tr key={i.cle} data-testid={`indice-${i.cle}`} className="border-t" style={{ borderColor: 'var(--lift-border)' }}>
                 <td className="py-3 pe-2">
-                  <div className="font-bold text-[var(--text)]">
+                  <div className="font-bold text-[var(--text)] whitespace-nowrap">
                     <span aria-hidden="true" className="me-2">{drapeau}</span>
                     {nom}
                   </div>
@@ -321,7 +321,7 @@ function CoursParFamille({ produits, language }) {
   return (
     <>
       <Pastilles options={options} choisi={famille} choisir={setFamille} />
-      <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-x-6">
+      <div className="mt-3 grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-x-6">
         {Object.keys(FAMILLES)
           .filter((f) => famille === 'tout' || famille === f)
           .map((f) => {
@@ -384,11 +384,14 @@ function ALaUne({ articles, language }) {
   const options = [['toutes', tr(language, T.toutes)], ...categories.map((c) => [c, libelleCategorie(c, language)])];
   const meta = (a) => [a.source, ilYa(a.published_at, language)].filter(Boolean).join(' · ');
   return (
-    <section className="rounded-2xl border p-5" style={{ background: 'var(--panel)', borderColor: 'var(--panel-border)' }}>
+    <section className="zellige-frise rounded-2xl border p-5 pt-7" style={{ background: 'var(--panel)', borderColor: 'var(--panel-border)', boxShadow: 'var(--panel-shadow)' }}>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <h3 className="text-2xl font-bold text-[var(--text)]" style={{ fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)" }}>
-          {tr(language, T.une)}
-        </h3>
+        <div>
+          <h3 className="text-2xl font-bold text-[var(--text)]" style={{ fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)" }}>
+            {tr(language, T.une)}
+          </h3>
+          <div aria-hidden="true" className="stats-kente-bar" style={{ width: 120, marginTop: 6 }} />
+        </div>
         <Pastilles options={options} choisi={categorie} choisir={setCategorie} />
       </div>
       {une && (
@@ -426,7 +429,7 @@ function ALaUne({ articles, language }) {
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-xl border p-4 hover:opacity-90"
-              style={{ background: 'var(--lift)', borderColor: 'var(--lift-border)' }}
+              style={{ background: 'var(--lift), var(--afcfta-card)', borderColor: 'var(--lift-border)' }}
             >
               <div className="text-[11px] font-bold uppercase tracking-wide text-[var(--gold)]">{libelleCategorie(a.category, language)}</div>
               <h4 className="my-1.5 font-semibold leading-snug text-[var(--text)]">{a.title}</h4>
@@ -440,12 +443,13 @@ function ALaUne({ articles, language }) {
 }
 
 const Panneau = ({ titre, sous, children }) => (
-  <section className="rounded-2xl border p-5" style={{ background: 'var(--panel)', borderColor: 'var(--panel-border)', boxShadow: 'var(--panel-shadow)' }}>
+  <section className="zellige-frise rounded-2xl border p-5 pt-7" style={{ background: 'var(--panel)', borderColor: 'var(--panel-border)', boxShadow: 'var(--panel-shadow)' }}>
     <div className="mb-3">
       <h3 className="text-2xl font-bold text-[var(--text)]" style={{ fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)" }}>
         {titre}
       </h3>
       {sous && <p className="text-xs text-[var(--afcfta-muted)]">{sous}</p>}
+      <div aria-hidden="true" className="stats-kente-bar" style={{ width: 120, marginTop: 6 }} />
     </div>
     {children}
   </section>
@@ -482,54 +486,62 @@ export default function TableauManager({ language = 'fr' }) {
   const aujourdhui = new Intl.DateTimeFormat(intlLocale(language), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date());
   const bandeau = CLES_BANDEAU.filter(([c]) => produits[c]);
 
+  // Décor du SaaS, comme les autres modules : cadre kente (khatam de Tlemcen à
+  // l'intérieur), bandeau de titre de Statistiques (velours du Kasaï et
+  // souligné kente), frise sur chaque panneau ; textes sur fonds opaques.
   return (
-    <div className="space-y-4" data-testid="tableau-manager">
-      <header className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-        <div>
-          <div className="text-xs font-bold uppercase tracking-widest text-[var(--gold)]">{tr(language, T.eyebrow)}</div>
-          <h2 className="mt-1 text-3xl md:text-4xl font-bold text-[var(--text)]" style={{ fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)" }}>
-            {tr(language, T.titre)}
-          </h2>
-          <p className="text-sm text-[var(--text-soft)]">{tr(language, T.chapeau)}</p>
-        </div>
-        <div className="text-sm md:text-end">
-          <div className="font-bold first-letter:uppercase text-[var(--text)]">{aujourdhui}</div>
-          {moisCours && (
-            <div className="text-xs text-[var(--afcfta-muted)]">
-              {tr(language, T.coursDe)} : {moisCours}
-            </div>
-          )}
-        </div>
-      </header>
+    <div className="kente-cadre" data-testid="tableau-manager">
+      <div className="space-y-4 p-2 sm:p-3 md:p-5">
+        <header className="stats-hero flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <div className="text-xs font-bold uppercase tracking-widest text-[var(--gold)]">{tr(language, T.eyebrow)}</div>
+            <h2 className="stats-hero-title mt-1">{tr(language, T.titre)}</h2>
+            <p className="stats-hero-subtitle">{tr(language, T.chapeau)}</p>
+            <div aria-hidden="true" className="stats-kente-bar" style={{ width: 200, marginTop: 12 }} />
+          </div>
+          <div className="text-sm md:text-end">
+            <div className="font-bold first-letter:uppercase text-[var(--text)]">{aujourdhui}</div>
+            {moisCours && (
+              <div className="text-xs text-[var(--afcfta-muted)]">
+                {tr(language, T.coursDe)} : {moisCours}
+              </div>
+            )}
+          </div>
+        </header>
 
-      <LigneDepeches articles={articles.slice(0, 12)} language={language} />
+        <LigneDepeches articles={articles.slice(0, 12)} language={language} />
 
-      {bandeau.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
-          {bandeau.map(([c, couleur]) => (
-            <TuileCours key={c} cle={c} produit={produits[c]} couleur={couleur} language={language} />
-          ))}
-        </div>
-      )}
+        {bandeau.length > 0 && (
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
+            {bandeau.map(([c, couleur]) => (
+              <TuileCours key={c} cle={c} produit={produits[c]} couleur={couleur} language={language} />
+            ))}
+          </div>
+        )}
 
-      {(indices.length > 0 || Object.keys(produits).length > 0) && (
-        <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-4 items-start">
-          {indices.length > 0 && (
-            <Panneau titre={tr(language, T.bourses)} sous={tr(language, T.boursesSous)}>
-              <Bourses indices={indices} language={language} />
-            </Panneau>
-          )}
-          {Object.keys(produits).length > 0 && (
-            <Panneau titre={tr(language, T.cours)} sous={tr(language, T.coursSous)}>
-              <CoursParFamille produits={produits} language={language} />
-            </Panneau>
-          )}
-        </div>
-      )}
+        {(indices.length > 0 || Object.keys(produits).length > 0) && (
+          <div className="grid grid-cols-1 gap-4">
+            {indices.length > 0 && (
+              <Panneau titre={tr(language, T.bourses)} sous={tr(language, T.boursesSous)}>
+                <Bourses indices={indices} language={language} />
+              </Panneau>
+            )}
+            {Object.keys(produits).length > 0 && (
+              <Panneau titre={tr(language, T.cours)} sous={tr(language, T.coursSous)}>
+                <CoursParFamille produits={produits} language={language} />
+              </Panneau>
+            )}
+          </div>
+        )}
 
-      {articles.length > 0 && <ALaUne articles={articles} language={language} />}
+        {articles.length > 0 && <ALaUne articles={articles} language={language} />}
 
-      {marches && <p className="text-[11px] text-[var(--afcfta-muted)]">{tr(language, T.sources)}</p>}
+        {marches && (
+          <p className="rounded-lg px-3 py-2 text-[11px] text-[var(--afcfta-muted)]" style={{ background: 'var(--afcfta-card)' }}>
+            {tr(language, T.sources)}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
