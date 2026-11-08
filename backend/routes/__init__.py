@@ -88,6 +88,7 @@ from .etl import router as etl_router
 from .hs_codes import router as hs_codes_router
 from .industrie_nationale import router as industrie_nationale_router
 from .logistics import router as logistics_router
+from .marches import router as marches_router
 from .oec import router as oec_router
 from .production import router as production_router
 from .rules_of_origin import init_data as init_rules_data
@@ -428,6 +429,8 @@ def register_routes(api_router: APIRouter):
         dependencies=_auth + _logistics_entitlement,
     )
     api_router.include_router(countries_router, tags=["Countries"], dependencies=_auth)
+    # Tableau de bord de direction : cours des matières premières et bourses africaines.
+    api_router.include_router(marches_router, tags=["Marchés africains"], dependencies=_auth)
     api_router.include_router(tariffs_router, tags=["Tariffs"], dependencies=_auth)
     api_router.include_router(
         statistics_router,

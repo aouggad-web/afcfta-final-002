@@ -97,8 +97,10 @@ class TestRegionalDataHelpers:
     def test_iter_country_files_yields_countries(self):
         from routes.regional_data import _iter_country_files
 
-        countries = list(_iter_country_files())
-        codes = {cc for cc, _ in countries}
+        # Un fichier à la fois : `list(...)` gardait les 54 fichiers chargés
+        # ensemble (751 Mo de JSON, 1,9 Go en mémoire) et la machine de la CI,
+        # à court de mémoire, cessait de répondre au milieu de la suite.
+        codes = {cc for cc, _ in _iter_country_files()}
         assert len(codes) >= 50, f"Expected ≥50 countries, got {len(codes)}"
 
     def test_get_lines_tariff_lines_format(self):

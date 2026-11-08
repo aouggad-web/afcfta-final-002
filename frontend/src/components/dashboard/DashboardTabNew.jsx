@@ -9,6 +9,7 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import NewsDashboard from './NewsDashboard';
+import TableauManager from './TableauManager';
 import { montantCompact, montantUnite } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
 
@@ -256,6 +257,8 @@ const DashboardTabNew = ({ language = 'fr' }) => {
 
   return (
     <div className="space-y-6">
+      <TableauManager language={language} />
+
       <section
         className="rounded-2xl border overflow-hidden zellige-frise"
         style={{
