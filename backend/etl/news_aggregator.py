@@ -162,6 +162,40 @@ RSS_FEEDS = {
         "logo": "🌍",
         "economie_seule": True,
     },
+    # Presse internationale de premier plan : seulement ses articles
+    # économiques qui portent sur l'Afrique (`afrique_seule`).
+    "nytimes": {
+        "name": "The New York Times",
+        "feeds": {
+            "business": "https://rss.nytimes.com/services/xml/rss/nyt/Africa.xml",
+            "economy": "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml",
+        },
+        "language": "en",
+        "logo": "🗞️",
+        "economie_seule": True,
+        "afrique_seule": True,
+    },
+    "wsj": {
+        "name": "The Wall Street Journal",
+        "feeds": {"business": "https://feeds.content.dowjones.io/public/rss/RSSWorldNews"},
+        "feeds_secours": {
+            "business": "https://news.google.com/rss/search?q=site:wsj.com+africa+when:2d&hl=en-US&gl=US&ceid=US:en",
+        },
+        "language": "en",
+        "logo": "🗞️",
+        "economie_seule": True,
+        "afrique_seule": True,
+    },
+    # Les Échos refuse la lecture directe de ses flux (403) : Google News seul.
+    "les_echos": {
+        "name": "Les Échos",
+        "feeds": {
+            "economie": "https://news.google.com/rss/search?q=site:lesechos.fr+afrique+when:2d&hl=fr&gl=FR&ceid=FR:fr",
+        },
+        "language": "fr",
+        "logo": "🗞️",
+        "afrique_seule": True,
+    },
     # PRIORITÉ ALGÉRIE - Flux dédiés
     "google_news_algeria": {
         "name": "Algérie Économie",
@@ -1222,6 +1256,14 @@ def recherche_recente(url: str) -> str:
     return re.sub(r"([?&]q=)([^&]*)", lambda m: f"{m.group(1)}{m.group(2)}+when:2d", url, count=1)
 
 
+_AFRIQUE = re.compile(r"\b(afrique|africa|african|africaine?s?|africains)\b")
+
+
+def est_africain(texte: str) -> bool:
+    """L'article parle-t-il de l'Afrique ou d'un pays africain ?"""
+    return bool(_AFRIQUE.search((texte or "").lower())) or detect_country_in_title(texte) is not None
+
+
 def est_economique(texte: str) -> bool:
     texte = texte.lower()
     mots = [m for liste in CATEGORY_KEYWORDS.values() for m in liste] + ECONOMIE_GENERALE
@@ -1237,6 +1279,7 @@ async def fetch_feed(
     source_priority: bool = False,
     max_entries: int = 10,
     economie_seule: bool = False,
+    afrique_seule: bool = False,
 ) -> List[Dict]:
     """Récupérer et parser un flux RSS"""
     articles = []
@@ -1286,6 +1329,8 @@ async def fetch_feed(
                     full_text = f"{title} {summary}"
                     if economie_seule and not est_economique(full_text):
                         continue
+                    if afrique_seule and not est_africain(full_text):
+                        continue
                     region = (
                         detect_region(full_text)
                         if not source_country
@@ -1333,6 +1378,7 @@ async def _collecter_source(session: aiohttp.ClientSession, config: Dict) -> Lis
                     config.get("priority", False),
                     config.get("max_entries", 10),
                     config.get("economie_seule", False),
+                    config.get("afrique_seule", False),
                 )
                 for category, url in flux.items()
             ],

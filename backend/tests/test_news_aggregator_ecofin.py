@@ -115,3 +115,17 @@ def test_ecofin_lu_en_direct_puis_google_en_secours():
 def test_sources_retirees_par_l_exploitant():
     for cle in ("jeune_afrique_eco", "rfi_afrique", "le_monde_afrique"):
         assert cle not in na.RSS_FEEDS
+
+
+def test_presse_internationale_ne_garde_que_l_afrique():
+    flux = FLUX.replace("Dépêche du jour sur la banque", "Banque centrale du Nigeria : hausse des taux")
+    session = _Session()
+    session.get = lambda url, *a, **k: _Reponse(flux)
+    articles = asyncio.run(
+        na.fetch_feed(session, "https://x", "The New York Times", "business", economie_seule=True, afrique_seule=True)
+    )
+    assert _titres(articles) == ["Banque centrale du Nigeria : hausse des taux"]
+    assert na.est_africain("Africa's trade zone grows") and not na.est_africain("Fed raises rates")
+    for cle in ("nytimes", "wsj", "les_echos"):
+        assert na.RSS_FEEDS[cle]["afrique_seule"] is True
+
