@@ -108,6 +108,7 @@ def _corridor_index() -> Dict[str, Dict[str, Any]]:
             "status": c.get("status"),
             "source_org": c.get("source_org"),
             "infra_details": c.get("infra_details"),
+            "nodes": c.get("nodes", []) or [],
             "borders": borders,
             "osbp": osbp,
             "modes": _modes_for(c.get("corridor_type", "road")),
@@ -144,6 +145,7 @@ def get_land_freight_cost(
     mode: str = "road",
     weight_tons: float = 30.0,
     cargo_type: str = "general",
+    length_km: Optional[float] = None,
 ) -> Optional[Dict[str, Any]]:
     """
     Calcule le coût de fret terrestre sur un corridor donné.
@@ -153,6 +155,9 @@ def get_land_freight_cost(
         mode : 'road' ou 'rail' (doit être disponible pour le corridor)
         weight_tons : tonnage transporté (tonnes)
         cargo_type : nature de la marchandise (clé de CARGO_FACTORS)
+        length_km : distance réellement parcourue sur le corridor (tronçon d'une
+            paire de pays). Par défaut : longueur totale du corridor. Les postes-
+            frontières restent ceux du corridor entier (pas de prorata).
     """
     corridor = _corridor_index().get(corridor_id)
     if not corridor:
@@ -165,7 +170,8 @@ def get_land_freight_cost(
         mode = corridor["modes"][0]
 
     cargo = CARGO_FACTORS.get(cargo_type, CARGO_FACTORS["general"])
-    length = corridor["length_km"]
+    full_length = corridor["length_km"]
+    length = full_length if length_km is None else min(max(float(length_km), 0.0), full_length)
     factor = cargo["factor"]
 
     if mode == "multimodal":
@@ -231,6 +237,7 @@ def get_land_freight_cost(
         "corridor_type": corridor["type"],
         "countries": corridor["countries"],
         "length_km": length,
+        "corridor_length_km": full_length,
         "weight_tons": round(weight_tons, 2),
         "cargo_type": cargo_type,
         "cargo_label": cargo["label_fr"],

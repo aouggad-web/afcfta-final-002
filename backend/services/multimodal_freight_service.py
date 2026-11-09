@@ -18,6 +18,7 @@ CO2 emission factors (g CO2-eq per ton-km, well-to-wheel):
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from logistics_air_fees_data import _airport_registry as air_registry
@@ -97,6 +98,12 @@ LANDLOCKED_GATEWAYS: Dict[str, List[Dict[str, str]]] = {
         {"port": "GHTEM", "port_country": "GHA", "via": "Ouagadougou-Tema"},
     ],
     "NER": [
+        {
+            "port": "BJCOO",
+            "port_country": "BEN",
+            "via": "Niamey-Cotonou",
+            "corridor_ids": ["CORR-COTONOU-NIAMEY-015"],
+        },
         {"port": "NGAPP", "port_country": "NGA", "via": "Niamey-Lagos"},
         {"port": "GHTEM", "port_country": "GHA", "via": "Niamey-Tema"},
     ],
@@ -131,7 +138,14 @@ LANDLOCKED_GATEWAYS: Dict[str, List[Dict[str, str]]] = {
         {"port": "MZMPM", "port_country": "MOZ", "via": "Harare-Maputo (Beira Corridor)"},
     ],
     "MWI": [
-        {"port": "MZMPM", "port_country": "MOZ", "via": "Lilongwe-Beira (Beira Corridor)"},
+        # Le corridor de Nacala part du port de Nacala : la jambe maritime doit y
+        # arriver (une entrée « Maputo » ne pouvait pas être suivie de ce corridor).
+        {
+            "port": "MZNAC",
+            "port_country": "MOZ",
+            "via": "Lilongwe-Nacala (Corridor de Nacala)",
+            "corridor_ids": ["CORR-NACALA-011"],
+        },
         {"port": "TZDAR", "port_country": "TZA", "via": "Lilongwe-Dar es Salaam"},
     ],
     "BWA": [
@@ -258,6 +272,63 @@ def _avg_transit(rmin: Optional[int], rmax: Optional[int]) -> Optional[float]:
     return (rmin + rmax) / 2.0
 
 
+def _closed_border_between(c: Dict[str, Any], a: str, b: str) -> bool:
+    """True si un poste-frontière du corridor entre exactement les pays a et b est
+    signalé fermé (ex. Maghnia DZA-MAR, « Frontière fermée depuis 1994 ») : le
+    corridor n'est alors pas utilisable pour cette paire, quel que soit son statut."""
+    pair = {a.upper(), b.upper()}
+    for n in c.get("nodes") or []:
+        if n.get("node_type") != "border_crossing":
+            continue
+        if not re.search(r"ferm[ée]", (n.get("notes") or "").lower()):
+            continue
+        m = re.search(r"\(([A-Z]{3})-([A-Z]{3})\)", n.get("node_name") or "")
+        if m and {m.group(1), m.group(2)} == pair:
+            return True
+    return False
+
+
+def _pair_leg_km(c: Dict[str, Any], a: str, b: str) -> float:
+    """Distance facturée entre les pays a et b sur le corridor c.
+
+    RÈGLE : les données ne donnent que la longueur totale et la liste ordonnée des
+    pays traversés. Pour un corridor de plus de deux pays, le tronçon de la paire
+    est la longueur totale au prorata du nombre d'intervalles de pays parcourus
+    (|rang(a) − rang(b)| / (nombre de pays − 1)). Un corridor à deux pays, ou dont
+    un pays est absent, est facturé sur toute sa longueur."""
+    full = float(c.get("length_km") or 0)
+    countries = [x.upper() for x in c.get("countries", [])]
+    a, b = a.upper(), b.upper()
+    if len(countries) <= 2 or a not in countries or b not in countries or a == b:
+        return full
+    return full * abs(countries.index(a) - countries.index(b)) / (len(countries) - 1)
+
+
+def _is_detached_from(c: Dict[str, Any], origin: str) -> bool:
+    """True si le nœud de départ de c n'est pas relié à l'origine : il est le
+    terminus d'un corridor de l'origine (ex. rail Alger-Tamanrasset) ou un nœud
+    intermédiaire d'un autre corridor qui part ailleurs (ex. Tamanrasset sur la
+    Transsaharienne). Une telle dérivation exige la jambe origine → nœud."""
+    start = c.get("start_node")
+    if not start:
+        return False
+    origin = origin.upper()
+    for d in get_land_corridors_list():
+        if d["corridor_id"] == c["corridor_id"]:
+            continue
+        if origin not in [x.upper() for x in d.get("countries", [])]:
+            continue
+        if d.get("start_node") == start:
+            continue
+        if d.get("end_node") == start:
+            return True
+        if any(
+            (n.get("node_name") or "").startswith(start) for n in d.get("nodes") or []
+        ):
+            return True
+    return False
+
+
 def _find_corridor_for_pair(country_a: str, country_b: str) -> Optional[Dict[str, Any]]:
     """Find a corridor that connects the two countries (operational corridors preferred).
 
@@ -270,7 +341,7 @@ def _find_corridor_for_pair(country_a: str, country_b: str) -> Optional[Dict[str
     future: List[Tuple[int, Dict[str, Any]]] = []
     for c in corridors:
         countries = [x.upper() for x in c.get("countries", [])]
-        if a in countries and b in countries:
+        if a in countries and b in countries and not _closed_border_between(c, a, b):
             score = abs(countries.index(a) - countries.index(b))
             status = (c.get("status") or "Opérationnel").lower()
             if any(k in status for k in ("planifi", "constr", "étude", "etude", "faisabilit")):
@@ -293,7 +364,7 @@ def _find_all_corridors_for_pair(country_a: str, country_b: str) -> List[Dict[st
     matches = []
     for c in corridors:
         countries = [x.upper() for x in c.get("countries", [])]
-        if a in countries and b in countries:
+        if a in countries and b in countries and not _closed_border_between(c, a, b):
             matches.append(c)
     return matches
 
@@ -417,6 +488,7 @@ def _rail_then_road_option(
                 "road",
                 weight_tonnes,
                 cargo_type,
+                length_km=_pair_leg_km(road, origin, dest),
             )
             if not road_data:
                 continue
@@ -662,8 +734,13 @@ def _bulk_sea_options(
     if not bulk_commodity:
         return []
 
-    # Liquid bulk → tanker market (out of scope)
+    # Liquid bulk → tanker market (out of scope). Sous le seuil de bascule, le lot
+    # voyage en conteneur (ISO-tank/flexitank) : rien à signaler, le conteneur
+    # reste l'option opérationnelle. Au-dessus, on dit que le tanker est hors périmètre.
     if bulk_commodity.get("is_liquid"):
+        threshold_kg = float(bulk_commodity.get("container_threshold_tonnes") or 0) * 1000.0
+        if weight_kg < threshold_kg:
+            return []
         return [
             {
                 "mode": "sea_bulk",
@@ -925,13 +1002,19 @@ def _land_option(
     corridors = _find_all_corridors_for_pair(origin_country, destination_country)
     options: List[Dict[str, Any]] = []
     for corridor in corridors:
+        # Dérivation dont le départ (ex. Tamanrasset) n'est pas relié à l'origine :
+        # route incomplète, traitée par _rail_then_road_option.
+        if _is_detached_from(corridor, origin_country):
+            continue
         # For planned/under-construction corridors, still compute the modeled cost
         # so the user sees the projected economics.
+        leg_km = _pair_leg_km(corridor, origin_country, destination_country)
         land = get_land_freight_cost(
             corridor["corridor_id"],
             corridor.get("type", "road"),
             weight_tonnes,
             cargo_type,
+            length_km=leg_km,
         )
         if not land:
             continue
@@ -985,13 +1068,39 @@ def _land_option(
                 "available": not is_future,
                 "feasibility": "medium" if not is_future else "future",
                 "notes": (
-                    corridor.get("infra_details")
-                    or "Corridor terrestre direct — convient pour pays voisins."
+                    (
+                        corridor.get("infra_details")
+                        or "Corridor terrestre direct — convient pour pays voisins."
+                    )
+                    + (
+                        f" Distance facturée : {round(dist_km)} km sur "
+                        f"{round(corridor.get('length_km') or 0)} km (tronçon de la paire, "
+                        "prorata des pays traversés)."
+                        if dist_km < (corridor.get("length_km") or 0)
+                        else ""
+                    )
+                ),
+                "distance_rule": (
+                    "pair_leg_pro_rata" if dist_km < (corridor.get("length_km") or 0) else "full"
                 ),
                 "source": corridor.get("source_org") or "Banque Mondiale SSATP / UNECA / AfDB",
             }
         )
     return options
+
+
+def _gateway_corridors(gw: Dict[str, Any], country_a: str, country_b: str) -> List[Dict[str, Any]]:
+    """Corridors terrestres d'une passerelle portuaire entre deux pays.
+
+    Si l'entrée de LANDLOCKED_GATEWAYS nomme ses ``corridor_ids``, seuls ceux-ci
+    sont retenus (le corridor part du port de la passerelle). Sinon, tous les
+    corridors de la paire, sauf ceux qui partent d'un autre port que la
+    passerelle (ex. un corridor « Port de Nacala » après une arrivée à Maputo)."""
+    found = _find_all_corridors_for_pair(country_a, country_b)
+    ids = gw.get("corridor_ids")
+    if ids:
+        return [c for c in found if c["corridor_id"] in ids]
+    return found
 
 
 def _sea_then_land_option(
@@ -1029,13 +1138,14 @@ def _sea_then_land_option(
         sea = min(sea_candidates, key=lambda s: s.get("total_cost_usd") or float("inf"))
 
         # Leg 2: each corridor from gateway country to landlocked country
-        corridors = _find_all_corridors_for_pair(gw_country, dest)
+        corridors = _gateway_corridors(gw, gw_country, dest)
         for corridor in corridors:
             land = get_land_freight_cost(
                 corridor["corridor_id"],
                 corridor.get("type", "road"),
                 weight_tonnes,
                 cargo_type,
+                length_km=_pair_leg_km(corridor, gw_country, dest),
             )
             if not land:
                 continue
@@ -1160,7 +1270,7 @@ def _land_then_sea_option(
         gw_country = gw["port_country"]
 
         # Leg 1: corridor from the landlocked origin to its gateway country.
-        corridors = _find_all_corridors_for_pair(origin, gw_country)
+        corridors = _gateway_corridors(gw, origin, gw_country)
 
         # Leg 2: cheapest sea leg from the gateway port to any destination port.
         sea_candidates = []
@@ -1180,6 +1290,7 @@ def _land_then_sea_option(
                 corridor.get("type", "road"),
                 weight_tonnes,
                 cargo_type,
+                length_km=_pair_leg_km(corridor, origin, gw_country),
             )
             if not land:
                 continue
@@ -1359,7 +1470,8 @@ def compare_multimodal(
     # alternative (it prices one box, not the whole charter), so it is dropped
     # entirely to avoid ever showing "conteneurs nécessaires" alongside
     # "affrètement vrac" (cf. PLAN_FRET_VRAQUIER Lot C).
-    if bulk_sea_opts:
+    chartered = [o for o in bulk_sea_opts if o.get("available")]
+    if chartered:
         # Keep containerized quotes only as a demoted, non-operational reference
         # (available=False) so the UI can still cite the small-lot benchmark.
         for o in sea_opts:
@@ -1371,7 +1483,8 @@ def compare_multimodal(
                 "est l'affrètement vraquier ci-dessus."
             )
         options.extend(bulk_sea_opts)
-    # If containerized sea options remain operational (below threshold), add bulk note
+    # If containerized sea options remain operational (below threshold, or liquid bulk
+    # whose tanker marker is only an unavailability notice), add bulk note
     elif is_bulk and sea_opts:
         for o in sea_opts:
             o["bulk_cargo_note"] = (
@@ -1379,6 +1492,10 @@ def compare_multimodal(
                 "est utilisé comme repère pour les petits lots ou selon la disponibilité. "
                 "Pour les lots vraquiers importants, consulter les armateurs spécialisés."
             )
+    if not chartered:
+        # Marqueur « tanker indisponible » (vrac liquide au-dessus du seuil) : affiché
+        # sans toucher aux autres options.
+        options.extend(bulk_sea_opts)
     options.extend(sea_opts)
 
     # Compute the realism-policy exclusion explicitly: _air_option also

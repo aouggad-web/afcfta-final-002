@@ -214,7 +214,15 @@ def test_options_expose_exact_corridor_operators():
     multimodal = [o for o in result["options"] if o["mode"] == "multimodal"]
     assert multimodal, "MAR->MLI should yield a multimodal option"
     assert multimodal[0].get("carriers"), "multimodal option must aggregate carriers"
-    land_seg = [s for s in multimodal[0]["segments"] if s["mode"] in ("road", "rail", "multimodal")]
+    # Option via le corridor Dakar-Bamako (l'ordre dépend du coût, pas fixé).
+    dakar_bamako = next(
+        o
+        for o in multimodal
+        if any(s.get("corridor_id") == "CORR-DAKAR-BAMAKO-006" for s in o["segments"])
+    )
+    land_seg = [
+        s for s in dakar_bamako["segments"] if s["mode"] in ("road", "rail", "multimodal")
+    ]
     assert land_seg, "multimodal option must have a land leg"
     assert "Transrail" in (
         land_seg[0].get("carriers") or []
