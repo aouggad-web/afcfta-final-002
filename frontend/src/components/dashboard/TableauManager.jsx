@@ -82,6 +82,8 @@ const T = {
   coursDe: ['Cours Banque mondiale', 'World Bank prices', 'أسعار البنك الدولي'],
   depeches: ['Dernières dépêches', 'Latest news', 'آخر الأخبار'],
   sur12: ['sur 12 mois', 'over 12 months', 'على 12 شهرًا'],
+  moyenne: ['Moyenne mensuelle · {mois}', 'Monthly average · {mois}', 'المتوسط الشهري · {mois}'],
+  dernierCours: ['Dernier cours', 'Latest price', 'آخر سعر'],
   bourses: ['Bourses africaines', 'African stock exchanges', 'البورصات الأفريقية'],
   boursesSous: [
     "Points à l'ouverture et à la clôture de la dernière séance",
@@ -107,9 +109,9 @@ const T = {
   une: ['À la une', 'Top stories', 'أبرز الأخبار'],
   toutes: ['Toutes', 'All', 'الكل'],
   sources: [
-    'Sources : Banque mondiale, Pink Sheet (CC BY 4.0), cours moyens mensuels en dollars US · Bourses d’Alger (SGBV), d’Abidjan (BRVM), de Lagos (NGX) et de Nairobi (NSE)',
-    'Sources: World Bank, Pink Sheet (CC BY 4.0), monthly average prices in US dollars · Algiers (SGBV), Abidjan (BRVM), Lagos (NGX) and Nairobi (NSE) stock exchanges',
-    'المصادر: البنك الدولي، النشرة الوردية (CC BY 4.0)، متوسط الأسعار الشهرية بالدولار الأمريكي · بورصات الجزائر (SGBV) وأبيدجان (BRVM) ولاغوس (NGX) ونيروبي (NSE)',
+    'Sources : Banque mondiale, Pink Sheet (CC BY 4.0), cours moyens mensuels en dollars US · EIA, dernier cours quotidien du Brent · Bourses d’Alger (SGBV), d’Abidjan (BRVM), de Lagos (NGX) et de Nairobi (NSE)',
+    'Sources: World Bank, Pink Sheet (CC BY 4.0), monthly average prices in US dollars · EIA, latest daily Brent price · Algiers (SGBV), Abidjan (BRVM), Lagos (NGX) and Nairobi (NSE) stock exchanges',
+    'المصادر: البنك الدولي، النشرة الوردية (CC BY 4.0)، متوسط الأسعار الشهرية بالدولار الأمريكي · EIA، آخر سعر يومي لبرنت · بورصات الجزائر (SGBV) وأبيدجان (BRVM) ولاغوس (NGX) ونيروبي (NSE)',
   ],
 };
 
@@ -208,7 +210,15 @@ const unite = (cle, lang) => {
   return pick(lang, fr, en, ar);
 };
 
-function TuileCours({ cle, produit, couleur, language }) {
+const dateJour = (iso, lang) =>
+  new Intl.DateTimeFormat(intlLocale(lang), { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(new Date(`${iso}T00:00:00Z`));
+
+/**
+ * Les cours de la Banque mondiale sont des moyennes mensuelles : la tuile le
+ * dit, et celle du Brent donne aussi le dernier prix quotidien (EIA), pour ne
+ * pas confondre la moyenne du mois avec le cours du jour.
+ */
+function TuileCours({ cle, produit, couleur, language, moisCours, brentJour }) {
   const [fr, en, ar, , d] = PRODUITS[cle];
   const { dernier, surUnMois, surDouzeMois: sur12 } = lireSerie(produit.serie);
   return (
@@ -228,6 +238,11 @@ function TuileCours({ cle, produit, couleur, language }) {
       >
         <Chiffre>{nombre(dernier, language, d)}</Chiffre>
       </div>
+      {moisCours && (
+        <div className="text-[11px] font-semibold text-[var(--text-soft)]">
+          {tr(language, T.moyenne).replace('{mois}', moisCours)}
+        </div>
+      )}
       <div className="text-xs text-[var(--afcfta-muted)]">
         {unite(cle, language)} · {tr(language, T.sur12)}{' '}
         <Chiffre>{sur12 == null ? '—' : `${signe(sur12, language)} %`}</Chiffre>
@@ -235,6 +250,12 @@ function TuileCours({ cle, produit, couleur, language }) {
       <div className="mt-1">
         <Courbe serie={produit.serie} largeur={220} hauteur={40} couleur={couleur} />
       </div>
+      {cle === 'brent' && brentJour?.prix != null && (
+        <div data-testid="brent-jour" className="mt-1 border-t pt-1 text-xs text-[var(--text-soft)]" style={{ borderColor: 'var(--lift-border)' }}>
+          {tr(language, T.dernierCours)} : <Chiffre className="font-bold text-[var(--text)]">{nombre(brentJour.prix, language, 2)} {unite('brent', language)}</Chiffre>
+          {' '}({dateJour(brentJour.date, language)} · EIA)
+        </div>
+      )}
     </div>
   );
 }
@@ -632,7 +653,15 @@ export default function TableauManager({ language = 'fr' }) {
         {bandeau.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
             {bandeau.map(([c, couleur]) => (
-              <TuileCours key={c} cle={c} produit={produits[c]} couleur={couleur} language={language} />
+              <TuileCours
+                key={c}
+                cle={c}
+                produit={produits[c]}
+                couleur={couleur}
+                language={language}
+                moisCours={moisCours}
+                brentJour={marches?.brent_jour}
+              />
             ))}
           </div>
         )}

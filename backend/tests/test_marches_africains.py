@@ -26,6 +26,23 @@ NSE = """<div class="stat_figures"><p>239.72<span class="stat_percent negg">-1.8
 <div class="stat_head"><h3>NSE 25</h3></div>
 <div class="stat_figures"><p>6,733.75<span class="stat_percent negg">-28.50</span></p></div>"""
 
+EIA = """<tr>
+ <td class='B6'>&nbsp;&nbsp;2026 Oct-26 to Oct-30</td>
+ <td class='B3'>128.12</td>
+ <td class='B3'>123.10</td>
+ <td class='B3'>119.20</td>
+ <td class='B3'>115.28</td>
+ <td class='B3'>120.15</td>
+ </tr>
+ <tr>
+ <td class='B6'>&nbsp;&nbsp;2026 Nov- 2 to Nov- 6</td>
+ <td class='B3'>107.39</td>
+ <td class='B3'>107.03</td>
+ <td class='B3'></td>
+ <td class='B3'></td>
+ <td class='B3'></td>
+ </tr>"""
+
 NGX = '{"$id":"1","ASI":248877.22,"DEALS":32666.00,"CAP":161593642364255.53}'
 
 PAGE_BM = (
@@ -180,6 +197,7 @@ class _Session:
             m.SOURCES_INDICES["brvm_c"]: BRVM,
             m.SOURCES_INDICES["ngx_asi"]: NGX,
             m.SOURCES_INDICES["nse20"]: NSE,
+            m.PAGE_BRENT_EIA: EIA,
         }
 
     def get(self, url, headers=None, **kwargs):
@@ -342,3 +360,19 @@ def test_base_injoignable_pas_de_nouvel_essai_a_chaque_appel():
     for _ in range(3):
         asyncio.run(marches.apercu(db=db, session_http=_Session()))
     assert base.appels == 1 and base.ecrit == []
+
+
+def test_brent_dernier_prix_quotidien_eia():
+    assert m.lire_brent_eia(EIA) == {"prix": 107.03, "date": "2026-11-03"}
+    # Semaine à cheval sur deux années : la date suit le calendrier.
+    fin_annee = EIA.replace("2026 Nov- 2 to Nov- 6", "2026 Dec-29 to Jan- 2").replace(
+        "<td class='B3'></td>\n <td class='B3'></td>\n <td class='B3'></td>",
+        "<td class='B3'>101.5</td>\n <td class='B3'></td>\n <td class='B3'>99.9</td>")
+    assert m.lire_brent_eia(fin_annee) == {"prix": 99.9, "date": "2027-01-02"}
+    with pytest.raises(ValueError):
+        m.lire_brent_eia("<html>page refaite</html>")
+
+
+def test_apercu_rend_le_dernier_brent():
+    apercu = asyncio.run(m.Marches().apercu(session_http=_Session()))
+    assert apercu["brent_jour"] == {"prix": 107.03, "date": "2026-11-03", "source": "EIA"}
