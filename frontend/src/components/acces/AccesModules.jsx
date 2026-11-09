@@ -16,7 +16,7 @@ export const EVENEMENT_ACCES = 'zlecaf:acces-refuse';
 export const ONGLETS_PUBLICS = ['dashboard', 'contact'];
 
 const T = {
-  titreConnexion: ['Créez votre compte gratuit', 'Create your free account', 'أنشئ حسابك المجاني'],
+  titreConnexion: ['Créez votre compte gratuit (formule Découverte)', 'Create your free account (Discovery plan)', 'أنشئ حسابك المجاني (باقة الاكتشاف)'],
   texteConnexion: [
     "Sans compte, seul le tableau de bord est consultable. Avec un compte (adresse e-mail validée), vous disposez chaque mois de 2 calculs et de 5 recherches dans chaque module. Abonnez-vous pour un accès sans limite.",
     'Without an account, only the dashboard is available. With an account (verified email), you get 2 calculations and 5 searches in each module every month. Subscribe for unlimited access.',

@@ -86,9 +86,8 @@ class Entitlements:
 
 
 _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
-    # « free » n'est plus une formule proposée (décision de l'exploitant du
-    # 09/11/2026) : c'est la découverte d'un compte inscrit, e-mail validé, sans
-    # abonnement payant. Sans compte, seul le tableau de bord d'accueil est
+    # « free » = formule Découverte (décision de l'exploitant du 09/11/2026) :
+    # gratuite, pour un compte inscrit, e-mail validé, sans abonnement payant. Sans compte, seul le tableau de bord d'accueil est
     # consultable (entitlement_guard : 401 « login_required » ailleurs).
     # Chaque mois civil : 2 calculs, et 5 recherches par module de consultation
     # (un pays, un produit, un port… choisi ; ouvrir le module ne compte pas),

@@ -87,9 +87,7 @@ h1 em{font-style:italic;color:var(--gold)}
 .country-note:empty{display:none}
 
 /* plans grid */
-.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:960px;margin:48px auto 0;padding:0 24px}
-.decouverte{max-width:760px;margin:28px auto 0;padding:0 24px;text-align:center;font-size:14px;color:var(--muted);line-height:1.6}
-.decouverte strong{color:var(--txt)}
+.plans{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1180px;margin:48px auto 0;padding:0 24px}
 .plan{background:var(--ink2);border:1px solid var(--b);border-radius:var(--r);padding:22px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .2s}
 /* filigrane girih sur chaque carte de plan */
 .plan::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.6;z-index:0;
@@ -282,11 +280,26 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
   </div>
 </div>
 
-<!-- Sans abonnement : plus de formule Free (décision de l'exploitant du 09/11/2026) -->
-<p class="decouverte" id="decouverte">Sans compte, le tableau de bord est en libre accès. Avec un compte gratuit (adresse e-mail validée), vous disposez chaque mois de <strong>2 calculs</strong> et de <strong>5 recherches par module</strong>. Abonnez-vous pour un accès sans limite.</p>
-
 <!-- PLANS -->
 <div class="plans">
+
+  <!-- Formule Découverte (décision de l'exploitant du 09/11/2026) : gratuite, compte à adresse e-mail validée. -->
+  <div class="plan">
+    <div class="plan-name">Découverte</div>
+    <div class="plan-price" id="price-decouverte">0€<span>/mois</span></div>
+    <div class="plan-per">gratuit · compte à adresse e-mail validée</div>
+    <div class="plan-desc">Pour découvrir la plateforme. Sans compte, seul le tableau de bord est en libre accès.</div>
+    <div class="plan-items" id="items-decouverte">
+      <div class="plan-item ok">Tableau de bord : cours, bourses, actualités</div>
+      <div class="plan-item ok">2 calculs de tarifs par mois</div>
+      <div class="plan-item ok">5 recherches par mois dans chaque module</div>
+      <div class="plan-item ok">Export PDF</div>
+      <div class="plan-item no">Rapports d'opportunités</div>
+      <div class="plan-item no">Outils</div>
+      <div class="plan-item no">Accès API</div>
+    </div>
+    <button class="plan-btn secondary" data-href="/#auth=login">Créer un compte</button>
+  </div>
 
   <div class="plan">
     <div class="plan-name">Starter</div>
@@ -588,8 +601,8 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
   <div class="section-title" style="margin-bottom:24px">Tout ce que vous devez savoir</div>
   <div class="faq">
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" data-action="toggleFaq" data-clavier>
-      <div class="faq-q">Puis-je essayer sans abonnement ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="faq-a">Oui. Sans compte, le tableau de bord (cours des matières premières, bourses africaines, actualités) est en libre accès. Créez un compte gratuit et validez votre adresse e-mail : chaque mois, vous disposez de 2 calculs de tarifs et de 5 recherches dans chaque module (statistiques, production, logistique, règles d'origine, profils pays), sans carte bancaire. Le module Opportunités et les outils sont réservés aux abonnés.</div>
+      <div class="faq-q">Comment fonctionne la formule Découverte ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Sans compte, le tableau de bord (cours des matières premières, bourses africaines, actualités) est en libre accès. Avec la formule Découverte, gratuite (créez un compte et validez votre adresse e-mail), vous disposez chaque mois de 2 calculs de tarifs et de 5 recherches dans chaque module (statistiques, production, logistique, règles d'origine, profils pays), sans carte bancaire. Le module Opportunités et les outils sont réservés aux abonnés.</div>
     </div>
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" data-action="toggleFaq" data-clavier>
       <div class="faq-q">Puis-je annuler à tout moment ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>

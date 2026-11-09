@@ -75,9 +75,9 @@ const MODULE_LABELS = {
   tools: 'Outils (positions tarifaires nationales, suivi de la collecte)',
   reports: 'Rapports d\'opportunités'
 };
-// Pas de formule Free (décision de l'exploitant du 09/11/2026) : le compte
-// sans abonnement est décrit au-dessus des formules.
-const PLAN_TO_ITEMS_ID = { starter: 'items-starter', pro: 'items-pro', business: 'items-business' };
+// « free » côté serveur = formule Découverte (décision de l'exploitant du
+// 09/11/2026) : gratuite, compte à adresse e-mail validée.
+const PLAN_TO_ITEMS_ID = { free: 'items-decouverte', starter: 'items-starter', pro: 'items-pro', business: 'items-business' };
 
 function formatQuota(quota, period) {
   if (quota === null || quota === undefined) return 'illimité';
@@ -103,9 +103,11 @@ async function loadEntitlements() {
       const items = [];
       items.push({
         ok: true,
-        text: ent.daily_calculations === null
-          ? 'Calculs de tarifs illimités'
-          : ent.daily_calculations + ' calculs de tarifs par jour'
+        text: ent.monthly_calculations != null
+          ? ent.monthly_calculations + ' calculs de tarifs par mois'
+          : ent.daily_calculations === null
+            ? 'Calculs de tarifs illimités'
+            : ent.daily_calculations + ' calculs de tarifs par jour'
       });
       items.push({
         ok: ent.export_formats.length > 0,
@@ -129,7 +131,9 @@ async function loadEntitlements() {
         items.push({
           ok: access.enabled,
           text: access.enabled
-            ? label + (access.quota !== null ? ' (' + formatQuota(access.quota, access.quota_period) + ')' : '')
+            ? label + (access.quota !== null
+              ? ' (' + (tier === 'free' ? access.quota + ' recherches / mois' : formatQuota(access.quota, access.quota_period)) + ')'
+              : '')
             : label
         });
       });
@@ -366,6 +370,7 @@ function renderPrices() {
   const symbol = currentCurrency === 'DZD' ? ' DZD' : '€';
   // Formatage FR : séparateur de milliers en DZD (18 750 DZD lisible), rien en EUR.
   const fmt = (n) => currentCurrency === 'DZD' ? n.toLocaleString('fr-FR') : String(n);
+  document.getElementById('price-decouverte').innerHTML = '0' + symbol + '<span>/mois</span>';
   const productAmount = (id) => {
     const p = productPrices[id];
     return p ? (currentCurrency === 'DZD' ? p.dzd : p.eur) : null;

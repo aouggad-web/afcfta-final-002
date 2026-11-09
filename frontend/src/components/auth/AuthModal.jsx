@@ -631,7 +631,7 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
 }
 
 // « admin » : compte admin amorcé, tous les modules sans quota (hors grille vendue).
-const PLAN_LABELS = { starter: 'Starter', pro: 'Pro', business: 'Business', admin: 'Admin' };
+const PLAN_LABELS = { free: 'Découverte', starter: 'Starter', pro: 'Pro', business: 'Business', admin: 'Admin' };
 
 function formatDate(value, language) {
   if (!value) return null;
@@ -650,8 +650,8 @@ function SubscriptionBlock({ subscription, language, infoStyle, loading, onManag
 
   let detail = null;
   if (!isPaid) {
-    // Compte sans abonnement (la formule Free n'est plus proposée, décision de
-    // l'exploitant du 09/11/2026) : ce qu'il permet chaque mois.
+    // Formule Découverte (ex-Free, décision de l'exploitant du 09/11/2026) :
+    // compte gratuit, ce qu'il permet chaque mois.
     detail = pick(language, 'Chaque mois : 2 calculs et 5 recherches par module. Abonnez-vous pour un accès sans limite.', 'Every month: 2 calculations and 5 searches per module. Subscribe for unlimited access.', 'كل شهر: حسابان و5 عمليات بحث لكل وحدة. اشترك للوصول دون حدود.');
   } else if (subscription.status === 'past_due') {
     detail = pick(language, 'Le dernier paiement a échoué : mettez à jour votre carte pour garder votre accès.', 'Your last payment failed: update your card to keep your access.', 'فشلت عملية الدفع الأخيرة: حدِّث بطاقتك للحفاظ على وصولك.');
@@ -670,9 +670,8 @@ function SubscriptionBlock({ subscription, language, infoStyle, loading, onManag
         {pick(language, 'Mon abonnement', 'My subscription', 'اشتراكي')}
       </div>
       <strong>
-        {isPaid
-          ? <>{pick(language, 'Formule ', 'Plan ', 'الباقة ')}{PLAN_LABELS[tier] || tier}</>
-          : pick(language, 'Sans abonnement', 'No subscription', 'بدون اشتراك')}
+        {pick(language, 'Formule ', 'Plan ', 'الباقة ')}
+        {isPaid ? PLAN_LABELS[tier] || tier : pick(language, 'Découverte', 'Discovery', 'اكتشاف')}
         {isPaid && tier !== 'admin' ? ` · ${cycle}` : ''}
       </strong>
       {detail && <div style={{ fontSize: 13, marginTop: 4 }}>{detail}</div>}

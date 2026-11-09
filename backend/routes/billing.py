@@ -177,11 +177,12 @@ async def get_entitlements():
     (`entitlement_guard.require_module`), au lieu d'une liste HTML codée en
     dur qui pourrait diverger. Aucune authentification : ce sont les règles
     des formules, pas les droits d'un utilisateur précis — le tier "free"
-    inclus ici est celui d'un visiteur non connecté.
+    est la formule Découverte (compte gratuit à adresse e-mail validée).
     """
     return {
         tier: {
             "daily_calculations": ent.daily_calculations,
+            "monthly_calculations": ent.monthly_calculations,
             "monthly_country_profiles": ent.monthly_country_profiles,
             "export_formats": list(ent.export_formats),
             "api_access": ent.api_access,
