@@ -48,11 +48,20 @@ describe('InvitationAbonnement', () => {
   it("invite à s'abonner quand les 5 recherches du mois sont utilisées", () => {
     render(<InvitationAbonnement language="fr" onOpenAuth={vi.fn()} />);
     expect(screen.queryByRole('dialog')).toBeNull();
-    refuser({ genre: 'quota', module: 'stats', quota: 5 });
+    refuser({ genre: 'quota', tier: 'free', module: 'stats', quota: 5, quota_period: 'month' });
     expect(screen.getByRole('dialog').textContent).toContain('vos 5 recherches gratuites du mois');
     expect(screen.getByRole('link', { name: 'Voir les formules' }).getAttribute('href')).toBe('/pricing.html');
     fireEvent.click(screen.getByRole('button', { name: 'Fermer' }));
     expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it("n'annonce pas de recherches gratuites à un abonné au quota du jour atteint", () => {
+    render(<InvitationAbonnement language="fr" onOpenAuth={vi.fn()} />);
+    refuser({ genre: 'quota', tier: 'starter', module: 'reports', quota: 10, quota_period: 'day' });
+    const texte = screen.getByRole('dialog').textContent;
+    expect(texte).toContain('Quota de votre formule atteint');
+    expect(texte).toContain('les 10 utilisations du jour');
+    expect(texte).not.toContain('gratuites');
   });
 
   it('ouvre la connexion pour un visiteur sans compte', () => {
