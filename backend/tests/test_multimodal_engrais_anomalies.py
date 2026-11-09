@@ -157,3 +157,19 @@ def test_malawi_gateways_are_consistent():
             assert (
                 o["via_port"].lower() in corridor_start.lower()
             ), f"jambe terrestre part de {corridor_start}, mer arrive à {o['via_port']}"
+
+
+def test_fermeture_maghnia_bloque_egalement_le_transit():
+    corridor_id = "CORR-TRANS-MAGHREB-007"
+    for origin, dest in (("MAR", "TUN"), ("TUN", "MAR")):
+        assert corridor_id not in {
+            c["corridor_id"] for c in service._find_all_corridors_for_pair(origin, dest)
+        }
+
+
+def test_prix_maritime_du_lot_et_non_d_un_conteneur():
+    result = _compare("DZA", "ZAF", weight_kg=60_000, bulk=AMMONIA)
+    sea = next(o for o in result["options"] if o["mode"] == "sea")
+    assert sea["containers_needed"] == 3
+    assert sea["cost_basis"] == "shipment"
+    assert sea["total_cost_usd"] == 3 * sea["segments"][0]["cost_usd_per_container"]

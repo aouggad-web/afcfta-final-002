@@ -18,7 +18,7 @@ CO2 emission factors (g CO2-eq per ton-km, well-to-wheel):
 from __future__ import annotations
 
 import logging
-import re
+import math
 from typing import Any, Dict, List, Optional, Tuple
 
 from logistics_air_fees_data import _airport_registry as air_registry
@@ -32,10 +32,13 @@ from logistics_fees_data import (
 )
 from logistics_fees_data import get_total_cost as sea_get_total_cost
 from logistics_land_fees_data import (
+    border_node_pair,
+    crossed_country_pairs,
     get_land_corridors_list,
     get_land_freight_cost,
 )
 from logistics_operators_data import LOGISTICS_OPERATORS
+from services.shipment_estimator import FEU_CAPACITY_KG, TEU_CAPACITY_KG
 
 logger = logging.getLogger(__name__)
 
@@ -273,19 +276,13 @@ def _avg_transit(rmin: Optional[int], rmax: Optional[int]) -> Optional[float]:
 
 
 def _closed_border_between(c: Dict[str, Any], a: str, b: str) -> bool:
-    """True si un poste-frontière du corridor entre exactement les pays a et b est
-    signalé fermé (ex. Maghnia DZA-MAR, « Frontière fermée depuis 1994 ») : le
-    corridor n'est alors pas utilisable pour cette paire, quel que soit son statut."""
-    pair = {a.upper(), b.upper()}
-    for n in c.get("nodes") or []:
-        if n.get("node_type") != "border_crossing":
-            continue
-        if not re.search(r"ferm[ée]", (n.get("notes") or "").lower()):
-            continue
-        m = re.search(r"\(([A-Z]{3})-([A-Z]{3})\)", n.get("node_name") or "")
-        if m and {m.group(1), m.group(2)} == pair:
-            return True
-    return False
+    """Block a corridor if the requested segment crosses a closed border."""
+    pairs = crossed_country_pairs(c, a, b)
+    return any(
+        border_node_pair(node) in pairs
+        and "fermée" in (node.get("notes") or "").casefold()
+        for node in c.get("nodes") or []
+    ) if pairs else False
 
 
 def _pair_leg_km(c: Dict[str, Any], a: str, b: str) -> float:
@@ -481,7 +478,7 @@ def _rail_then_road_option(
             if dest not in road_countries:
                 continue
             # Match by start_node (e.g., "Tamanrasset" == "Tamanrasset")
-            if road.get("start_node") != rail_end_node:
+            if road.get("start_node") != rail_end_node or _closed_border_between(road, origin, dest):
                 continue
             road_data = get_land_freight_cost(
                 road["corridor_id"],
@@ -489,6 +486,7 @@ def _rail_then_road_option(
                 weight_tonnes,
                 cargo_type,
                 length_km=_pair_leg_km(road, origin, dest),
+                country_pair=(origin, dest),
             )
             if not road_data:
                 continue
@@ -1015,6 +1013,7 @@ def _land_option(
             weight_tonnes,
             cargo_type,
             length_km=leg_km,
+            country_pair=(origin_country, destination_country),
         )
         if not land:
             continue
@@ -1146,6 +1145,7 @@ def _sea_then_land_option(
                 weight_tonnes,
                 cargo_type,
                 length_km=_pair_leg_km(corridor, gw_country, dest),
+                country_pair=(gw_country, dest),
             )
             if not land:
                 continue
@@ -1291,6 +1291,7 @@ def _land_then_sea_option(
                 weight_tonnes,
                 cargo_type,
                 length_km=_pair_leg_km(corridor, origin, gw_country),
+                country_pair=(origin, gw_country),
             )
             if not land:
                 continue
@@ -1567,6 +1568,27 @@ def compare_multimodal(
     )
     options.extend(land_sea_opts)
 
+    # Convert only containerized sea legs to shipment cost. Land and air
+    # already price the requested weight, including in mixed itineraries.
+    capacity = TEU_CAPACITY_KG if container_type.lower() == "teu" else FEU_CAPACITY_KG
+    containers = max(1, math.ceil(weight_kg / capacity))
+    for option in options:
+        sea_legs = [
+            leg for leg in option.get("segments", [])
+            if leg.get("mode") == "sea" and leg.get("cost_usd") is not None
+        ]
+        cost = option.get("total_cost_usd")
+        if sea_legs and option.get("mode") != "sea_bulk" and cost is not None:
+            option["containers_needed"] = containers
+            for leg in sea_legs:
+                per_container = leg["cost_usd"]
+                leg["cost_usd_per_container"] = per_container
+                leg["cost_usd"] = round(per_container * containers, 2)
+                cost += leg["cost_usd"] - per_container
+            option["total_cost_usd"] = round(cost, 2)
+        if cost is not None:
+            option["cost_basis"] = "shipment"
+
     # Filter out future options if not requested
     if not include_future:
         options = [o for o in options if not o.get("is_future")]
@@ -1584,7 +1606,10 @@ def compare_multimodal(
 
     # Compute "best of" badges only among OPERATIONAL options to avoid suggesting
     # a planned/under-construction route as "the cheapest right now".
-    operational_idxs = [i for i, o in enumerate(options) if not o.get("is_future")]
+    operational_idxs = [
+        i for i, o in enumerate(options)
+        if o.get("available") and not o.get("is_future") and o.get("total_cost_usd") is not None
+    ]
     if operational_idxs:
         cheapest = min(
             operational_idxs, key=lambda i: options[i].get("total_cost_usd") or float("inf")
@@ -1639,11 +1664,11 @@ def compare_multimodal(
         bf_co2 = options[best_future_co2]
         bf_time = options[best_future_time]
 
-        # Computed savings per TEU
-        cost_saving_per_teu = (ref.get("total_cost_usd") or 0) - (
+        # Computed savings for the full shipment
+        cost_saving_per_shipment = (ref.get("total_cost_usd") or 0) - (
             bf_cost.get("total_cost_usd") or 0
         )
-        co2_saving_per_teu = (ref.get("co2_kg") or 0) - (bf_co2.get("co2_kg") or 0)
+        co2_saving_per_shipment = (ref.get("co2_kg") or 0) - (bf_co2.get("co2_kg") or 0)
         time_saving_days = (ref.get("transit_days_avg") or 0) - (
             bf_time.get("transit_days_avg") or 0
         )
@@ -1663,8 +1688,10 @@ def compare_multimodal(
 
         # Annual projection (assume 100 TEU/year typical SME flow — conservative)
         teu_per_year_default = 100
-        annual_cost_savings = round(cost_saving_per_teu * teu_per_year_default)
-        annual_co2_savings_tonnes = round((co2_saving_per_teu * teu_per_year_default) / 1000.0, 1)
+        shipment_teu = containers * (1 if container_type.lower() == "teu" else 2)
+        shipments_per_year = teu_per_year_default / shipment_teu
+        annual_cost_savings = round(cost_saving_per_shipment * shipments_per_year)
+        annual_co2_savings_tonnes = round(co2_saving_per_shipment * shipments_per_year / 1000.0, 1)
 
         roi = {
             "reference_operational": {
@@ -1692,15 +1719,15 @@ def compare_multimodal(
                 "transit_days_avg": bf_time.get("transit_days_avg"),
             },
             "per_shipment": {
-                "cost_savings_usd": round(cost_saving_per_teu),
+                "cost_savings_usd": round(cost_saving_per_shipment),
                 "cost_savings_pct": (
-                    round((cost_saving_per_teu / ref["total_cost_usd"]) * 100, 1)
+                    round((cost_saving_per_shipment / ref["total_cost_usd"]) * 100, 1)
                     if ref.get("total_cost_usd")
                     else None
                 ),
-                "co2_savings_kg": round(co2_saving_per_teu),
+                "co2_savings_kg": round(co2_saving_per_shipment),
                 "co2_savings_pct": (
-                    round((co2_saving_per_teu / ref["co2_kg"]) * 100, 1)
+                    round((co2_saving_per_shipment / ref["co2_kg"]) * 100, 1)
                     if ref.get("co2_kg")
                     else None
                 ),
@@ -1729,8 +1756,8 @@ def compare_multimodal(
                 bf_cost.get("label"),
                 ref.get("label"),
                 weight_kg,
-                cost_saving_per_teu,
-                co2_saving_per_teu,
+                cost_saving_per_shipment,
+                co2_saving_per_shipment,
                 time_saving_days,
             ),
         }
@@ -1760,7 +1787,7 @@ def compare_multimodal(
         "air_excluded_reason": air_excluded_reason,
         "options": options,
         "options_count": len(options),
-        "operational_count": sum(1 for o in options if not o.get("is_future")),
+        "operational_count": len(operational_idxs),
         "future_count": sum(1 for o in options if o.get("is_future")),
         "roi_infrastructure": roi,
         "co2_methodology": {
