@@ -11,6 +11,7 @@ heading-level CTH rule, not silently fall back to chapter 62's YARN default
 — that exact fallback was the bug in the now-retired dataset.
 """
 
+import asyncio
 import json
 import os
 import sys
@@ -230,3 +231,18 @@ def test_va_threshold_explanation_states_the_specific_percentage():
     result = roo.get_rule_of_origin("840100", "fr")
     assert result["primary_rule"]["code"] == "VA60"
     assert "60" in result["primary_rule"]["explanation"]
+
+
+# --- Legacy `rule` shape read by frontend/.../RulesTab.jsx -----------------
+
+
+def test_endpoint_value_added_threshold_is_null_for_a_cth_rule():
+    # 85.19 is a CTH rule: Appendice IV gives it no value threshold, so the
+    # endpoint must not hand the screen a percentage (it used to send 60).
+    cth = asyncio.run(roo.get_rules_of_origin("851900", lang="fr"))
+    assert cth["rules"]["primary_rule"]["code"] == "CTH"
+    assert cth["rule"]["value_added_threshold"] is None
+
+    # A VA60 rule keeps its implied regional content (100 - 60).
+    va60 = asyncio.run(roo.get_rules_of_origin("840100", lang="fr"))
+    assert va60["rule"]["value_added_threshold"] == 40
