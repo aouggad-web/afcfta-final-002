@@ -812,7 +812,8 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
               </div>
               {/* Seules les règles de valeur ajoutée portent un seuil ; regional_content
                   vaut 100 pour WO sans en porter, d'où la garde sur threshold_pct. */}
-              {rulesOfOrigin.rules.threshold_pct != null ? (
+              {rulesOfOrigin.status !== 'YTB' && rulesOfOrigin.rules.threshold_pct != null &&
+                rulesOfOrigin.rules.regional_content != null ? (
                 <div>
                   <p className="text-xs text-gray-500 mb-1">{t.regionalContent}</p>
                   <div className="flex items-center gap-2">
