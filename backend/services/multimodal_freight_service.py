@@ -1608,7 +1608,7 @@ def compare_multimodal(
     # a planned/under-construction route as "the cheapest right now".
     operational_idxs = [
         i for i, o in enumerate(options)
-        if o.get("available") and not o.get("is_future") and o.get("total_cost_usd") is not None
+        if o.get("available", True) and not o.get("is_future") and o.get("total_cost_usd") is not None
     ]
     if operational_idxs:
         cheapest = min(
