@@ -39,6 +39,17 @@ const texts = {
     ruleType: "Type de règle",
     requirement: "Exigence",
     regionalContent: "Contenu régional",
+    originCriterion: "Critère d'origine",
+    criteria: {
+      CTH: "Changement de position tarifaire",
+      CTSH: "Changement de sous-position tarifaire",
+      CC: "Changement de chapitre",
+      WO: "Produit entièrement obtenu",
+      SP: "Ouvraison spécifique",
+      YARN: "Fabrication à partir de fils",
+      NONE: "Pas de règle d'origine",
+      YTB: "Règle en négociation"
+    },
     viewRules: "Voir les règles",
     section: "Section",
     chapter: "Chapitre",
@@ -71,6 +82,17 @@ const texts = {
     ruleType: "Rule type",
     requirement: "Requirement",
     regionalContent: "Regional content",
+    originCriterion: "Origin criterion",
+    criteria: {
+      CTH: "Change of tariff heading",
+      CTSH: "Change of tariff subheading",
+      CC: "Change of chapter",
+      WO: "Wholly obtained product",
+      SP: "Specific process",
+      YARN: "Manufacture from yarn",
+      NONE: "No rule of origin",
+      YTB: "Rule under negotiation"
+    },
     viewRules: "View rules",
     section: "Section",
     chapter: "Chapter",
@@ -103,6 +125,17 @@ const texts = {
     ruleType: "نوع القاعدة",
     requirement: "الشرط",
     regionalContent: "المحتوى الإقليمي",
+    originCriterion: "معيار المنشأ",
+    criteria: {
+      CTH: "تغيير البند التعريفي",
+      CTSH: "تغيير البند الفرعي التعريفي",
+      CC: "تغيير الفصل",
+      WO: "منتج تم الحصول عليه بالكامل",
+      SP: "عملية تصنيع محددة",
+      YARN: "التصنيع انطلاقًا من الخيوط",
+      NONE: "لا توجد قاعدة منشأ",
+      YTB: "قاعدة قيد التفاوض"
+    },
     viewRules: "عرض القواعد",
     section: "القسم",
     chapter: "الفصل",
@@ -535,6 +568,13 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
     return chapters.find(c => c.code === chapterCode);
   };
 
+  // Critère réel d'une règle sans seuil de valeur ajoutée (même logique que
+  // l'onglet Règles d'origine). Une règle en négociation l'est quel que soit
+  // son code (le chapitre 60 est codé YARN) ; un code sans libellé (HYBRID)
+  // renvoie au texte source de la règle.
+  const getCriterion = (roo) =>
+    t.criteria[roo.status === 'YTB' ? 'YTB' : roo.rules?.primary_rule?.code] || roo.rules?.rule_text_fr;
+
   return (
     <Card className="shadow-lg" data-testid="hs-code-browser">
       <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-t-lg">
@@ -753,7 +793,7 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
 
         {/* Rules of Origin Panel */}
         {showRulesOfOrigin && rulesOfOrigin && (
-          <div className="border-t bg-gradient-to-r from-orange-50 to-amber-50 p-4">
+          <div className="border-t bg-gradient-to-r from-orange-50 to-amber-50 p-4" data-testid="rules-of-origin-panel">
             <div className="flex items-center gap-2 mb-3">
               <FileText className="w-4 h-4 text-orange-600" />
               <h4 className="font-semibold text-orange-800">{t.rulesOfOrigin}</h4>
@@ -764,24 +804,34 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
             <div className="grid grid-cols-3 gap-4 text-sm">
               <div>
                 <p className="text-xs text-gray-500 mb-1">{t.ruleType}</p>
-                <p className="font-medium text-gray-800">{rulesOfOrigin.rules.rule}</p>
+                <p className="font-medium text-gray-800">{rulesOfOrigin.rules.primary_rule.name}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-500 mb-1">{t.requirement}</p>
-                <p className="font-medium text-gray-800">{rulesOfOrigin.rules.requirement}</p>
+                <p className="font-medium text-gray-800">{rulesOfOrigin.rules.rule_text_fr}</p>
               </div>
-              <div>
-                <p className="text-xs text-gray-500 mb-1">{t.regionalContent}</p>
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-gradient-to-r from-green-500 to-green-600 rounded-full"
-                      style={{ width: `${rulesOfOrigin.rules.regional_content}%` }}
-                    />
+              {/* Seules les règles de valeur ajoutée portent un seuil ; regional_content
+                  vaut 100 pour WO sans en porter, d'où la garde sur threshold_pct. */}
+              {rulesOfOrigin.status !== 'YTB' && rulesOfOrigin.rules.threshold_pct != null &&
+                rulesOfOrigin.rules.regional_content != null ? (
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">{t.regionalContent}</p>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden" data-testid="regional-content-bar">
+                      <div
+                        className="h-full bg-gradient-to-r from-green-500 to-green-600 rounded-full"
+                        style={{ width: `${rulesOfOrigin.rules.regional_content}%` }}
+                      />
+                    </div>
+                    <span className="font-bold text-green-700">{rulesOfOrigin.rules.regional_content}%</span>
                   </div>
-                  <span className="font-bold text-green-700">{rulesOfOrigin.rules.regional_content}%</span>
                 </div>
-              </div>
+              ) : (
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">{t.originCriterion}</p>
+                  <p className="font-medium text-gray-800">{getCriterion(rulesOfOrigin)}</p>
+                </div>
+              )}
             </div>
           </div>
         )}

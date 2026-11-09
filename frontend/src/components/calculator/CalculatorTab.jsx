@@ -110,6 +110,20 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [subPositions, setSubPositions] = useState(null);
   const [useSmartSearch, setUseSmartSearch] = useState(true);
   const [ruleOfOrigin, setRuleOfOrigin] = useState(null);
+  const [browserRuleCode, setBrowserRuleCode] = useState(null);
+  useEffect(() => {
+    if (!browserRuleCode || browserRuleCode !== hsCode) return;
+    const controller = new AbortController();
+    axios.get(`${API}/rules-of-origin/${browserRuleCode}`, {
+      params: { lang: language },
+      signal: controller.signal,
+    }).then(({ data }) => {
+      if (!controller.signal.aborted) setRuleOfOrigin(data);
+    }).catch(() => {
+      // A tariff code can still be used when origin data is unavailable.
+    });
+    return () => controller.abort();
+  }, [browserRuleCode, hsCode, language]);
   const [selectedSubPositionDesc, setSelectedSubPositionDesc] = useState(null);
   // Nombre de positions nationales servies sous le SH6 saisi, et pour quel pays.
   const [positionsSh6, setPositionsSh6] = useState(null);
@@ -522,6 +536,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     setShowDetailedBreakdown(false);
     setSubPositions(null);
     setRuleOfOrigin(null);
+    setBrowserRuleCode(null);
     setSelectedSubPositionDesc(null);
     setSelectedSubPositionFormalities(null);
     setRegulatorySelectedPos(null);
@@ -1040,7 +1055,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-xs">
                     {ruleOfOrigin.rules.primary_rule?.name || ruleOfOrigin.rules.primary_rule?.code}
                   </Badge>
-                  {ruleOfOrigin.rules.regional_content != null && (
+                  {ruleOfOrigin.status !== 'YTB' && ruleOfOrigin.rules.threshold_pct != null &&
+                    ruleOfOrigin.rules.regional_content != null && (
                     <Badge className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-xs">
                       {pick(language, 'Contenu régional', 'Regional content', 'المحتوى الإقليمي')}: {ruleOfOrigin.rules.regional_content}%
                     </Badge>
@@ -1051,9 +1067,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </Badge>
                   )}
                 </div>
-                {ruleOfOrigin.rules.primary_rule?.explanation && (
+                {(ruleOfOrigin.rules.rule_text_fr || ruleOfOrigin.rules.primary_rule?.explanation) && (
                   <p className="text-[var(--text)] text-xs leading-relaxed">
-                    {ruleOfOrigin.rules.primary_rule.explanation}
+                    {ruleOfOrigin.rules.rule_text_fr || ruleOfOrigin.rules.primary_rule?.explanation}
                   </p>
                 )}
                 {ruleOfOrigin.rules.alternative_rule && (
@@ -1092,10 +1108,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               <HSCodeBrowser
                 onSelect={(code) => {
                   setHsCode(code.code);
+                  setSelectedSubPositionDesc('');
+                  setSelectedSubPositionFormalities(null);
+                  setRuleOfOrigin(null);
+                  setBrowserRuleCode(code.code);
                   setShowHSBrowser(false);
                 }}
                 language={language}
-                showRulesOfOrigin={true}
+                showRulesOfOrigin={false}
               />
             </div>
           )}
