@@ -1,6 +1,6 @@
 /**
- * Comparaison multi-pays : quand les calculs sans abonnement sont épuisés
- * (429 de tier « anonymous », audit E1), l'invitation à souscrire s'affiche
+ * Comparaison multi-pays : quand les calculs gratuits du mois sont épuisés
+ * (429 d'un compte sans abonnement, 2 calculs par mois), l'invitation à souscrire s'affiche
  * une seule fois, dans la langue de l'interface, et non à chaque pays.
  */
 import React from 'react';
@@ -14,8 +14,8 @@ import MultiCountryComparison from './MultiCountryComparison';
 vi.mock('axios');
 
 const LIMITE = { response: { status: 429, data: { detail: {
-  error: 'quota_exceeded', tier: 'anonymous', module: 'calculator', quota: 10, quota_period: 'day',
-  message: 'Limite de 10 calculs par jour sans abonnement atteinte. Souscrivez un abonnement pour continuer.',
+  error: 'quota_exceeded', tier: 'free', module: 'calculator', quota: 2, quota_period: 'month',
+  message: 'Quota de la formule free atteint.',
 } } } };
 
 describe('MultiCountryComparison', () => {
@@ -24,7 +24,7 @@ describe('MultiCountryComparison', () => {
     axios.get.mockResolvedValue({ data: { pays: {} } });
   });
 
-  it('invite une seule fois à souscrire quand les calculs sans abonnement sont épuisés', async () => {
+  it('invite une seule fois à souscrire quand les calculs gratuits du mois sont épuisés', async () => {
     axios.post.mockRejectedValue(LIMITE);
     render(<MultiCountryComparison language="en" />);
 
@@ -34,7 +34,7 @@ describe('MultiCountryComparison', () => {
     expect(echecs).toHaveTextContent('limit reached');
     expect(screen.getAllByTestId('subscription-notice')).toHaveLength(1);
     expect(screen.getByTestId('subscription-notice'))
-      .toHaveTextContent('Limit of 10 calculations per day without a subscription reached. Subscribe to continue.');
+      .toHaveTextContent('Your 2 free calculations for this month are used up. Subscribe to continue.');
     expect(screen.getByRole('link', { name: 'See the plans' })).toHaveAttribute('href', '/pricing.html');
   });
 

@@ -73,13 +73,17 @@ export function reportsNoticeText(error, language = 'fr') {
 }
 
 /**
- * Calculs sans abonnement épuisés : 429 `quota_exceeded` de tier
- * « anonymous » (audit E1). Libellé local qui invite à souscrire ; `null`
- * pour toute autre erreur, y compris le quota d'un abonné.
+ * Calculs gratuits épuisés : 429 `quota_exceeded` d'un compte sans abonnement
+ * (tier « free », 2 calculs par mois, décision de l'exploitant du 09/11/2026).
+ * Libellé local qui invite à s'abonner ; `null` pour toute autre erreur, y
+ * compris le quota d'un abonné.
  */
-export function anonymousCalculationNoticeText(error, language = 'fr') {
+export function freeCalculationNoticeText(error, language = 'fr') {
   const refusal = entitlementRefusal(error);
-  if (refusal?.kind !== 'quota_exceeded' || refusal.tier !== 'anonymous') return null;
-  const quota = error.response.data.detail.quota;
-  return pick(language, `Limite de ${quota} calculs par jour sans abonnement atteinte. Souscrivez un abonnement pour continuer.`, `Limit of ${quota} calculations per day without a subscription reached. Subscribe to continue.`, `تم بلوغ حدّ ${quota} عمليات حساب يوميًا دون اشتراك. اشترك للمتابعة.`);
+  if (refusal?.kind !== 'quota_exceeded' || refusal.tier !== 'free') return null;
+  const { quota, quota_period: periode } = error.response.data.detail;
+  if (periode === 'day') {
+    return pick(language, `Limite de ${quota} calculs par jour sans abonnement atteinte. Abonnez-vous pour continuer.`, `Limit of ${quota} calculations per day without a subscription reached. Subscribe to continue.`, `تم بلوغ حدّ ${quota} عمليات حساب يوميًا دون اشتراك. اشترك للمتابعة.`);
+  }
+  return pick(language, `Vos ${quota} calculs gratuits du mois sont utilisés. Abonnez-vous pour continuer.`, `Your ${quota} free calculations for this month are used up. Subscribe to continue.`, `استُخدمت حساباتك المجانية الـ${quota} لهذا الشهر. اشترك للمتابعة.`);
 }

@@ -39,7 +39,7 @@ from entitlements import (
 from fastapi import Depends, HTTPException, Request, status
 from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError, PyMongoError
-from services import geo_service, supabase_auth
+from services import supabase_auth
 from services.user_auth_service import decode_access_token
 
 logger = logging.getLogger(__name__)
@@ -206,6 +206,23 @@ def _quota_exceeded(tier: str, module_id: str, access: ModuleAccess) -> HTTPExce
     )
 
 
+def _connexion_requise(module_id: str) -> HTTPException:
+    """Sans compte, seul le tableau de bord d'accueil est consultable (décision
+    de l'exploitant du 09/11/2026)."""
+    return HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail={
+            "error": "login_required",
+            "tier": "anonymous",
+            "module": module_id,
+            "message": (
+                "Créez un compte gratuit et validez votre adresse e-mail pour "
+                "consulter ce module."
+            ),
+        },
+    )
+
+
 def _cle_api(key_doc) -> bool:
     """Vrai pour un vrai document `api_keys` (plan API vendu ou clé admin), et
     non pour le contexte public que `require_auth` rend sans clé ou sans base."""
@@ -333,6 +350,120 @@ def require_module_enabled(module_id: str):
     return _dependency
 
 
+# Paramètres d'une requête qui désignent ce que l'utilisateur cherche (un pays,
+# un produit, un port…). Les autres (langue, page, tri, format, année…) ne
+# font pas une nouvelle recherche.
+_PARAMETRES_DE_RECHERCHE = frozenset({
+    "country", "country_code", "country_iso", "country_iso3", "iso3", "iso", "pays",
+    "hs", "hs_code", "hs6", "code", "product", "produit", "commodity",
+    "q", "query", "search", "port", "port_id", "airport_id", "corridor_id", "operator_id",
+    "origin", "destination", "partner", "reporter", "exporter", "importer",
+})
+_MAX_TERMES = 20
+
+
+def termes_de_recherche(request: Request) -> list:
+    """Ce que cherche une requête : valeurs des paramètres de chemin et des
+    paramètres de recherche (`_PARAMETRES_DE_RECHERCHE`), en majuscules.
+    Sans terme (ouverture du module, listes générales), rien n'est compté."""
+    termes = set()
+    for nom, valeur in {**request.path_params, **request.query_params}.items():
+        if nom in request.path_params or nom.lower() in _PARAMETRES_DE_RECHERCHE:
+            valeur = str(valeur).strip().upper()[:64]
+            if valeur:
+                termes.add(valeur)
+    return sorted(termes)[:_MAX_TERMES]
+
+
+async def compter_recherches(user: dict, module_id: str, termes: list, access: ModuleAccess) -> bool:
+    """Vrai si les `termes` tiennent dans le quota de recherches du module pour
+    la période : un terme déjà cherché dans la période ne compte pas de
+    nouveau, un terme nouveau prend une place parmi `access.quota`."""
+    if _db is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={
+                "error": "entitlements_unavailable",
+                "message": "Vérification des quotas indisponible (base de données non configurée).",
+            },
+        )
+    cle = f"{user['_id']}:{module_id}:{_period_key(access.quota_period, user)}"
+    try:
+        doc = await _db.recherches_modules.find_one({"_id": cle}) or {}
+        deja = set(doc.get("termes") or [])
+        nouveaux = [t for t in termes if t not in deja]
+        if not nouveaux:
+            return True
+        if len(deja) + len(nouveaux) > access.quota:
+            return False
+        await _db.recherches_modules.update_one(
+            {"_id": cle},
+            {"$addToSet": {"termes": {"$each": nouveaux}},
+             "$setOnInsert": {"user_id": user["_id"], "module": module_id}},
+            upsert=True,
+        )
+        return True
+    except PyMongoError:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={"error": "entitlements_unavailable", "message": "Vérification des quotas indisponible."},
+        )
+
+
+def _recherches_epuisees(tier: str, module_id: str, access: ModuleAccess) -> HTTPException:
+    return HTTPException(
+        status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+        detail={
+            "error": "quota_exceeded",
+            "tier": tier,
+            "module": module_id,
+            "quota": access.quota,
+            "quota_period": access.quota_period,
+            "message": (
+                f"Vos {access.quota} recherches gratuites du mois dans ce module sont "
+                "utilisées. Abonnez-vous pour continuer."
+            ),
+        },
+    )
+
+
+def require_module_consultation(module_id: str, *, chemins_publics: tuple = ()):
+    """Module de consultation (Statistiques, Production, Logistique, Règles
+    d'origine, Profils pays), décision de l'exploitant du 09/11/2026 :
+
+    - sans compte : 401 « login_required », sauf les `chemins_publics` (données
+      du tableau de bord d'accueil), une clé API valide, ou l'absence de base
+      (développement, CI) ;
+    - formule sans le module : 403 ;
+    - formule avec un quota de recherches (découverte : 5 par mois) : chaque
+      terme nouveau (pays, produit, port…) est compté, l'ouverture du module
+      et les listes générales ne le sont pas ; au-delà, 429 ;
+    - formules payantes : sans limite."""
+
+    async def _dependency(
+        request: Request,
+        user: Optional[dict] = Depends(get_optional_subscriber),
+        key_doc: dict = Depends(require_auth),
+    ) -> Entitlements:
+        ent = resolve_entitlements(user)
+        if request.url.path.rstrip("/") in chemins_publics:
+            return ent
+        if user is None:
+            if _db is None or _cle_api(key_doc):
+                return ent
+            raise _connexion_requise(module_id)
+        access = ent.module(module_id)
+        if not access.enabled:
+            raise _forbidden(ent.tier, module_id)
+        if access.quota is not None:
+            termes = termes_de_recherche(request)
+            if termes and not await compter_recherches(user, module_id, termes, access):
+                raise _recherches_epuisees(ent.tier, module_id, access)
+        return ent
+
+    return _dependency
+
+
 def require_api_access():
     """FastAPI dependency for `Entitlements.api_access`/`api_monthly_quota`
     (currently only Business: unlocked, 1000 req/month) — a per-tier field,
@@ -369,71 +500,14 @@ def require_api_access():
     return _dependency
 
 
-# Calculs des visiteurs sans session (audit E1) : comptés EN MÉMOIRE seulement,
-# par clé de visiteur (`geo_service.cle_de_comptage` : IPv4, ou préfixe IPv6
-# /64) et par jour UTC. Rien n'est écrit en base : aucune IP n'est conservée,
-# comme le promet la politique de confidentialité. Le compteur est propre au
-# processus : la production tourne avec un seul worker uvicorn (avec N workers,
-# un visiteur aurait N fois le quota), et un redémarrage le remet à zéro.
-_calculs_anonymes: dict[str, int] = {}
-_jour_calculs_anonymes: Optional[str] = None
-# Borne de la mémoire : au-delà, le visiteur le plus ancien est oublié. Tout
-# vider rouvrirait le quota du jour pour tous dès qu'un client inonde le
-# compteur de clés neuves.
-_MAX_VISITEURS_ANONYMES = 100_000
-_compteur_plein_signale = False
-
-
-def _calcul_anonyme_autorise(cle: str, quota: int) -> bool:
-    """Compte un calcul de `cle` pour aujourd'hui ; faux au-delà de `quota`.
-    Sans `await` : sur la boucle asyncio, lecture et écriture ne s'entrelacent
-    pas entre deux requêtes."""
-    global _jour_calculs_anonymes, _compteur_plein_signale
-    jour = _period_key("day", {})
-    if jour != _jour_calculs_anonymes:
-        _calculs_anonymes.clear()
-        _jour_calculs_anonymes = jour
-        _compteur_plein_signale = False
-    elif len(_calculs_anonymes) >= _MAX_VISITEURS_ANONYMES and cle not in _calculs_anonymes:
-        if not _compteur_plein_signale:  # une fois par jour, pas à chaque requête
-            logger.warning(
-                "Compteur des calculs anonymes plein (%d visiteurs) : les plus anciens sont oubliés.",
-                len(_calculs_anonymes),
-            )
-            _compteur_plein_signale = True
-        del _calculs_anonymes[next(iter(_calculs_anonymes))]
-    compte = _calculs_anonymes.get(cle, 0)
-    if compte >= quota:
-        return False
-    _calculs_anonymes[cle] = compte + 1
-    return True
-
-
-def _limite_anonyme_atteinte(quota: int) -> HTTPException:
-    return HTTPException(
-        status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-        detail={
-            "error": "quota_exceeded",
-            "tier": "anonymous",
-            "module": "calculator",
-            "quota": quota,
-            "quota_period": "day",
-            "message": (
-                f"Limite de {quota} calculs par jour sans abonnement atteinte. "
-                "Souscrivez un abonnement pour continuer."
-            ),
-        },
-    )
-
-
 def require_calculations_quota():
-    """FastAPI dependency for the tariff calculator's `daily_calculations`
-    limit — a per-tier field on `Entitlements`, not a `MODULES` entry.
+    """FastAPI dependency for the tariff calculator's limit — a per-tier field
+    on `Entitlements` (`monthly_calculations`, sinon `daily_calculations`), not
+    a `MODULES` entry.
 
-    Sans session : le quota de la formule free, compté en mémoire par visiteur
-    (voir `_calculs_anonymes`). Passent sans être comptés : une clé API valide
-    (comptée par sa `request_quota`), l'absence de base (dev, CI) et un
-    visiteur dont l'IP est inconnue (repli ouvert)."""
+    Sans session : aucun calcul, 401 « login_required » (décision de
+    l'exploitant du 09/11/2026). Passent sans être comptés : une clé API valide
+    (comptée par sa `request_quota`) et l'absence de base (dev, CI)."""
 
     async def _dependency(
         request: Request,
@@ -444,15 +518,14 @@ def require_calculations_quota():
         if user is None:
             if _db is None or _cle_api(key_doc):
                 return ent
-            if ent.daily_calculations is None:
-                return ent
-            cle = geo_service.cle_de_comptage(request)
-            if cle is not None and not _calcul_anonyme_autorise(cle, ent.daily_calculations):
-                raise _limite_anonyme_atteinte(ent.daily_calculations)
+            # Sans compte, aucun calcul (décision de l'exploitant du 09/11/2026).
+            raise _connexion_requise("calculator")
+        if ent.monthly_calculations is not None:
+            access = ModuleAccess(enabled=True, quota=ent.monthly_calculations, quota_period="month")
+        elif ent.daily_calculations is None:
             return ent
-        if ent.daily_calculations is None:
-            return ent
-        access = ModuleAccess(enabled=True, quota=ent.daily_calculations, quota_period="day")
+        else:
+            access = ModuleAccess(enabled=True, quota=ent.daily_calculations, quota_period="day")
         ok = await check_and_increment_usage(user, "calculator", access)
         if not ok:
             raise _quota_exceeded(ent.tier, "calculator", access)

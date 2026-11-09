@@ -25,6 +25,7 @@ from auth import require_admin, require_auth
 from entitlement_guard import (
     require_api_access,
     require_calculations_quota,
+    require_module_consultation,
     require_module_enabled,
     require_paid_module,
 )
@@ -56,10 +57,17 @@ _admin = [Depends(require_admin)]
 # enforced on genuine billable *actions* instead — one tariff calculation
 # (`_calculator_entitlement`) and one generated premium report
 # (`_reports_entitlement`) — not on browsing reference data.
-_stats_entitlement = [Depends(require_module_enabled("stats"))]
-_production_entitlement = [Depends(require_module_enabled("production"))]
-_logistics_entitlement = [Depends(require_module_enabled("logistics"))]
-_roo_entitlement = [Depends(require_module_enabled("roo"))]
+#
+# Décision de l'exploitant du 09/11/2026 : sans compte, seul le tableau de bord
+# d'accueil est consultable ; un compte inscrit sans abonnement a 5 recherches
+# par module et par mois (pays, produit, port… distincts), puis l'invitation à
+# s'abonner — voir entitlement_guard.require_module_consultation.
+# Données du tableau de bord d'accueil, servies par le routeur Statistiques.
+_TABLEAU_DE_BORD = ("/api/statistics", "/api/statistics/afreximbank-atr2026")
+_stats_entitlement = [Depends(require_module_consultation("stats", chemins_publics=_TABLEAU_DE_BORD))]
+_production_entitlement = [Depends(require_module_consultation("production"))]
+_logistics_entitlement = [Depends(require_module_consultation("logistics"))]
+_roo_entitlement = [Depends(require_module_consultation("roo"))]
 _tools_entitlement = [Depends(require_module_enabled("tools"))]
 # Module Opportunités réservé aux abonnements payants (audit E1).
 _reports_entitlement = [Depends(require_paid_module("reports"))]

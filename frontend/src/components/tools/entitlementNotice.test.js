@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
-  anonymousCalculationNoticeText,
+  freeCalculationNoticeText,
   entitlementNoticeText,
   entitlementRefusal,
   PRICING_URL,
@@ -103,12 +103,6 @@ const anonymousReports = {
     data: { detail: { error: 'upgrade_required', tier: 'anonymous', module: 'reports', message: 'Ce module est réservé aux abonnements payants.' } },
   },
 };
-const anonymousCalculations = {
-  response: {
-    status: 429,
-    data: { detail: { error: 'quota_exceeded', tier: 'anonymous', module: 'calculator', quota: 10, quota_period: 'day', message: 'Limite de 10 calculs par jour sans abonnement atteinte.' } },
-  },
-};
 
 describe('reportsNoticeText', () => {
   it('dit, dans la langue de l’interface, que le module est réservé aux abonnements payants', () => {
@@ -134,18 +128,24 @@ describe('reportsNoticeText', () => {
   });
 });
 
-describe('anonymousCalculationNoticeText', () => {
-  it('invite à souscrire, dans la langue de l’interface, avec le quota du serveur', () => {
-    expect(anonymousCalculationNoticeText(anonymousCalculations, 'fr'))
-      .toBe('Limite de 10 calculs par jour sans abonnement atteinte. Souscrivez un abonnement pour continuer.');
-    expect(anonymousCalculationNoticeText(anonymousCalculations, 'en')).toContain('Subscribe to continue');
-    expect(anonymousCalculationNoticeText(anonymousCalculations, 'ar')).toContain('اشترك');
+describe('freeCalculationNoticeText', () => {
+  const gratuits = {
+    response: {
+      status: 429,
+      data: { detail: { error: 'quota_exceeded', tier: 'free', module: 'calculator', quota: 2, quota_period: 'month' } },
+    },
+  };
+
+  it('invite à s’abonner, dans la langue de l’interface, avec le quota du mois', () => {
+    expect(freeCalculationNoticeText(gratuits, 'fr')).toBe('Vos 2 calculs gratuits du mois sont utilisés. Abonnez-vous pour continuer.');
+    expect(freeCalculationNoticeText(gratuits, 'en')).toContain('Subscribe to continue');
+    expect(freeCalculationNoticeText(gratuits, 'ar')).toContain('اشترك');
   });
 
   it('ne concerne ni le quota d’un abonné ni une autre erreur', () => {
-    const abonne = { response: { status: 429, data: { detail: { error: 'quota_exceeded', tier: 'free', quota: 10 } } } };
-    expect(anonymousCalculationNoticeText(abonne, 'fr')).toBeNull();
-    expect(anonymousCalculationNoticeText(anonymousReports, 'fr')).toBeNull();
-    expect(anonymousCalculationNoticeText({ response: { status: 422, data: {} } }, 'fr')).toBeNull();
+    const abonne = { response: { status: 429, data: { detail: { error: 'quota_exceeded', tier: 'starter', quota: 40, quota_period: 'day' } } } };
+    expect(freeCalculationNoticeText(abonne, 'fr')).toBeNull();
+    expect(freeCalculationNoticeText(anonymousReports, 'fr')).toBeNull();
+    expect(freeCalculationNoticeText({ response: { status: 422, data: {} } }, 'fr')).toBeNull();
   });
 });

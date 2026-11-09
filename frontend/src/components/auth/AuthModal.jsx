@@ -631,7 +631,7 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
 }
 
 // « admin » : compte admin amorcé, tous les modules sans quota (hors grille vendue).
-const PLAN_LABELS = { free: 'Free', starter: 'Starter', pro: 'Pro', business: 'Business', admin: 'Admin' };
+const PLAN_LABELS = { free: 'Découverte', starter: 'Starter', pro: 'Pro', business: 'Business', admin: 'Admin' };
 
 function formatDate(value, language) {
   if (!value) return null;
@@ -649,7 +649,11 @@ function SubscriptionBlock({ subscription, language, infoStyle, loading, onManag
   const cycle = subscription.cycle === 'annual' ? (pick(language, 'annuel', 'yearly', 'سنوي')) : pick(language, 'mensuel', 'monthly', 'شهري');
 
   let detail = null;
-  if (isPaid && subscription.status === 'past_due') {
+  if (!isPaid) {
+    // Formule Découverte (ex-Free, décision de l'exploitant du 09/11/2026) :
+    // compte gratuit, ce qu'il permet chaque mois.
+    detail = pick(language, 'Chaque mois : 2 calculs et 5 recherches par module. Abonnez-vous pour un accès sans limite.', 'Every month: 2 calculations and 5 searches per module. Subscribe for unlimited access.', 'كل شهر: حسابان و5 عمليات بحث لكل وحدة. اشترك للوصول دون حدود.');
+  } else if (subscription.status === 'past_due') {
     detail = pick(language, 'Le dernier paiement a échoué : mettez à jour votre carte pour garder votre accès.', 'Your last payment failed: update your card to keep your access.', 'فشلت عملية الدفع الأخيرة: حدِّث بطاقتك للحفاظ على وصولك.');
   } else if (isPaid && subscription.cancel_at_period_end && endDate) {
     detail = pick(language, `Résiliation programmée : accès jusqu'au ${endDate}.`, `Canceled: access until ${endDate}.`, `الإلغاء مُجدول: الوصول متاح حتى ${endDate}.`);
@@ -667,7 +671,7 @@ function SubscriptionBlock({ subscription, language, infoStyle, loading, onManag
       </div>
       <strong>
         {pick(language, 'Formule ', 'Plan ', 'الباقة ')}
-        {PLAN_LABELS[tier] || tier}
+        {isPaid ? PLAN_LABELS[tier] || tier : pick(language, 'Découverte', 'Discovery', 'اكتشاف')}
         {isPaid && tier !== 'admin' ? ` · ${cycle}` : ''}
       </strong>
       {detail && <div style={{ fontSize: 13, marginTop: 4 }}>{detail}</div>}

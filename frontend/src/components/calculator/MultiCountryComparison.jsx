@@ -19,7 +19,7 @@ import { normalizeTaxesDetail } from './taxesDetail';
 import { buildCalculRequestBody, mapCalculToLegacyResult } from './unifiedCalculator';
 import { montant, montantUnite } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
-import { anonymousCalculationNoticeText } from '../tools/entitlementNotice';
+import { freeCalculationNoticeText } from '../tools/entitlementNotice';
 import SubscriptionNotice from '../tools/SubscriptionNotice';
 import { trierPays } from '../../utils/triPays';
 
@@ -302,7 +302,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
             const detail = err.response?.data?.detail;
             // Calculs sans abonnement épuisés (audit E1) : l'avis s'affiche
             // une fois sous la liste, pas à chaque pays.
-            const limite = anonymousCalculationNoticeText(err, language);
+            const limite = freeCalculationNoticeText(err, language);
             if (limite) return { iso3, limite, erreur: pick(language, 'limite atteinte', 'limit reached', 'تم بلوغ الحدّ') };
             return { iso3, erreur: typeof detail === 'string' ? detail : (detail?.message || err.message) };
           })));

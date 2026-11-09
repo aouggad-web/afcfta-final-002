@@ -258,7 +258,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     <button class="nav-link">API</button>
     <button class="nav-link">Rapports</button>
     <button class="nav-link theme-toggle" data-action="toggleTheme" aria-label="Changer de thème (clair / sombre)" title="Thème clair / sombre"><span class="theme-icon"></span></button>
-    <button class="nav-cta" data-href="/#auth=login">Commencer gratuitement</button>
+    <button class="nav-cta" data-href="/#auth=login">Créer un compte</button>
   </div>
 </nav>
 
@@ -266,7 +266,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 <div class="hero">
   <div class="hero-eyebrow">Tarifs & Plans</div>
   <h1>Le commerce africain<br><em>commence ici</em></h1>
-  <p class="hero-sub">Commencez gratuitement. Évoluez quand votre business grandit. Accédez aux données tarifaires de 54 pays AfCFTA en temps réel. <span data-region="intl">Paiement par carte bancaire via Stripe, en euros.</span> <span data-region="dz">Paiement par carte CIB ou Edahabia via Chargily, en dinars.</span></p>
+  <p class="hero-sub">Créez un compte gratuit pour découvrir la plateforme, puis abonnez-vous quand votre business grandit. Accédez aux données tarifaires de 54 pays AfCFTA en temps réel. <span data-region="intl">Paiement par carte bancaire via Stripe, en euros.</span> <span data-region="dz">Paiement par carte CIB ou Edahabia via Chargily, en dinars.</span></p>
   <div class="billing-toggle" role="switch" tabindex="0" aria-checked="false" aria-label="Facturation annuelle" id="billing-switch" data-action="toggleBilling" data-clavier>
     <span id="bill-monthly" style="color:var(--txt);font-weight:500">Mensuel</span>
     <div class="toggle-track" id="toggle-track">
@@ -283,23 +283,22 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 <!-- PLANS -->
 <div class="plans">
 
+  <!-- Formule Découverte (décision de l'exploitant du 09/11/2026) : gratuite, compte à adresse e-mail validée. -->
   <div class="plan">
-    <div class="plan-name">Free</div>
-    <div class="plan-price" id="price-free">0€<span>/mois</span></div>
-    <div class="plan-per">pour toujours · sans carte</div>
-    <div class="annual-price" id="annual-free"></div>
-    <div class="plan-desc">Idéal pour découvrir les opportunités commerciales AfCFTA et faire vos premiers calculs.</div>
-    <div class="plan-items" id="items-free">
-      <div class="plan-item ok">10 calculs de tarifs par jour</div>
-      <div class="plan-item ok">54 pays membres AfCFTA</div>
-      <div class="plan-item ok">Règles d'origine basiques</div>
-      <div class="plan-item ok">Profils pays illimités</div>
+    <div class="plan-name">Découverte</div>
+    <div class="plan-price" id="price-decouverte">0€<span>/mois</span></div>
+    <div class="plan-per">gratuit · compte à adresse e-mail validée</div>
+    <div class="plan-desc">Pour découvrir la plateforme. Sans compte, seul le tableau de bord est en libre accès.</div>
+    <div class="plan-items" id="items-decouverte">
+      <div class="plan-item ok">Tableau de bord : cours, bourses, actualités</div>
+      <div class="plan-item ok">2 calculs de tarifs par mois</div>
+      <div class="plan-item ok">5 recherches par mois dans chaque module</div>
       <div class="plan-item ok">Export PDF</div>
-      <div class="plan-item no">Calculs illimités</div>
-      <div class="plan-item no">Alertes tarifaires</div>
+      <div class="plan-item no">Rapports d'opportunités</div>
+      <div class="plan-item no">Outils</div>
       <div class="plan-item no">Accès API</div>
     </div>
-    <button class="plan-btn secondary" data-href="/#auth=login">Commencer gratuitement</button>
+    <button class="plan-btn secondary" data-href="/#auth=login">Créer un compte</button>
   </div>
 
   <div class="plan">
@@ -602,8 +601,8 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
   <div class="section-title" style="margin-bottom:24px">Tout ce que vous devez savoir</div>
   <div class="faq">
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" data-action="toggleFaq" data-clavier>
-      <div class="faq-q">Comment fonctionne le plan Free ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="faq-a">Le plan Free donne accès à 10 calculs de tarifs par jour sans limite de durée, sans carte de crédit. Vous pouvez consulter les règles d'origine et les profils pays sans limite. Parfait pour explorer la plateforme avant de vous engager.</div>
+      <div class="faq-q">Comment fonctionne la formule Découverte ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Sans compte, le tableau de bord (cours des matières premières, bourses africaines, actualités) est en libre accès. Avec la formule Découverte, gratuite (créez un compte et validez votre adresse e-mail), vous disposez chaque mois de 2 calculs de tarifs et de 5 recherches dans chaque module (statistiques, production, logistique, règles d'origine, profils pays), sans carte bancaire. Le module Opportunités et les outils sont réservés aux abonnés.</div>
     </div>
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" data-action="toggleFaq" data-clavier>
       <div class="faq-q">Puis-je annuler à tout moment ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>

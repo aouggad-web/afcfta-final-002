@@ -1,7 +1,9 @@
-"""Accès sans abonnement (audit E1) : ce qu'un visiteur sans session obtient.
+"""Accès sans abonnement (audit E1, décision de l'exploitant du 09/11/2026).
 
-- POST /api/calcul (et /api/calcul/export) : 10 calculs par jour et par
-  visiteur, comptés en mémoire seulement, jamais en base.
+- Sans compte : seul le tableau de bord d'accueil est consultable ; calculs
+  et modules de consultation renvoient 401 « login_required ».
+- Compte sans abonnement (formule free, e-mail validé) : 2 calculs par mois,
+  5 recherches distinctes par module de consultation et par mois.
 - /api/reports/* (module Opportunités) : réservé aux abonnements payants ;
   les diagnostics /reports/health et /reports/oec-health restent publics.
 - /api/v2/* : refusé sans clé API valide.
@@ -20,13 +22,12 @@ ou sonde montée avec les mêmes dépendances que la production.
 
 import hashlib
 import io
-import logging
 import sys
 from pathlib import Path
 
 import pytest
 from bson import ObjectId
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter, Depends, FastAPI
 from fastapi.testclient import TestClient
 from pymongo.errors import DuplicateKeyError
 
@@ -125,6 +126,23 @@ class _Douane:
         return [dict(self.DOC)]
 
 
+class _Recherches:
+    """recherches_modules : un document par (compte, module, mois)."""
+
+    def __init__(self):
+        self.docs = {}
+
+    async def find_one(self, filtre):
+        doc = self.docs.get(filtre["_id"])
+        return dict(doc) if doc else None
+
+    async def update_one(self, filtre, maj, upsert=False):
+        doc = self.docs.setdefault(filtre["_id"], {"_id": filtre["_id"], "termes": []})
+        for terme in maj["$addToSet"]["termes"]["$each"]:
+            if terme not in doc["termes"]:
+                doc["termes"].append(terme)
+
+
 class _FausseBase:
     def __init__(self, utilisateurs=()):
         self.users = _Utilisateurs(utilisateurs)
@@ -142,6 +160,7 @@ class _FausseBase:
             ]
         )
         self.customs_data = _Douane()
+        self.recherches_modules = _Recherches()
 
     def __getitem__(self, nom):
         return getattr(self, nom)
@@ -172,12 +191,10 @@ def base(monkeypatch):
     auth.set_database(db)
     entitlement_guard.set_database(db)
     export_router.init_db(db)
-    entitlement_guard._calculs_anonymes.clear()
     yield db
     auth.set_database(None)
     entitlement_guard.set_database(None)
     export_router.init_db(None)
-    entitlement_guard._calculs_anonymes.clear()
 
 
 @pytest.fixture(scope="module")
@@ -227,99 +244,140 @@ def _statuts(client, n, methode="post", chemin="/api/calcul"):
     return [getattr(client, methode)(chemin).status_code for _ in range(n)]
 
 
-# ── Calculateur : 10 calculs par jour sans abonnement, en mémoire ──────────
+# ── Calculateur : aucun sans compte, 2 par mois sans abonnement ────────────
 
 
-def test_calcul_anonyme_limite_a_dix_par_jour_puis_429():
-    client = _client(_app_calcul(), ip="41.200.1.1")
+def test_calcul_sans_compte_demande_la_connexion():
+    reponse = _client(_app_calcul(), ip="41.200.1.1").post("/api/calcul")
 
-    assert _statuts(client, 10) == [200] * 10
-    reponse = client.post("/api/calcul")
-
-    assert reponse.status_code == 429
+    assert reponse.status_code == 401
     detail = reponse.json()["detail"]
-    assert detail["error"] == "quota_exceeded"
-    assert detail["tier"] == "anonymous"
-    assert "Souscrivez un abonnement" in detail["message"]
-
-
-def test_calcul_deux_visiteurs_ont_deux_compteurs():
-    app = _app_calcul()
-    assert _statuts(_client(app, ip="41.200.1.1"), 11)[-1] == 429
-
-    assert _statuts(_client(app, ip="41.200.1.2"), 1) == [200]
-
-
-def test_calcul_adresses_ipv6_d_un_meme_slash64_partagent_le_compteur():
-    app = _app_calcul()
-    for i in range(10):
-        assert _client(app, ip=f"2a01:e0a:1:2::{i + 1:x}").post("/api/calcul").status_code == 200
-
-    assert _client(app, ip="2a01:e0a:1:2::ff").post("/api/calcul").status_code == 429
-    assert _client(app, ip="2a01:e0a:1:3::1").post("/api/calcul").status_code == 200
-
-
-def test_calcul_visiteur_sans_ip_identifiable_n_est_pas_bloque():
-    # Pair privé, sans relais : `cle_de_comptage` rend None (repli ouvert).
-    assert _statuts(_client(_app_calcul(), ip="10.0.0.7"), 12) == [200] * 12
+    assert detail["error"] == "login_required"
+    assert detail["module"] == "calculator"
 
 
 def test_calcul_sans_base_reste_ouvert():
     entitlement_guard.set_database(None)
     auth.set_database(None)
 
-    assert _statuts(_client(_app_calcul(), ip="41.200.1.1"), 12) == [200] * 12
+    assert _statuts(_client(_app_calcul(), ip="41.200.1.1"), 3) == [200] * 3
 
 
-def test_calcul_cle_api_valide_n_est_pas_comptee_sur_le_quota_du_visiteur(base):
+def test_calcul_cle_api_valide_passe_sans_compte(base):
     client = _client(_app_calcul(), ip="41.200.1.1", cle=CLE_VENDUE)
 
-    assert _statuts(client, 12) == [200] * 12
-    assert base.api_keys.docs[_hash(CLE_VENDUE)]["request_count"] == 12
-    assert entitlement_guard._calculs_anonymes == {}
+    assert _statuts(client, 3) == [200] * 3
+    assert base.api_keys.docs[_hash(CLE_VENDUE)]["request_count"] == 3
 
 
-def test_calcul_anonyme_n_ecrit_rien_en_base(base):
-    _statuts(_client(_app_calcul(), ip="41.200.1.1"), 11)
+def test_calcul_compte_sans_abonnement_deux_par_mois_puis_invitation(base):
+    client = _client(_app_calcul(), abonne=ABONNES["free"])
 
-    assert base.usage_counters.docs == {}
-    assert entitlement_guard._calculs_anonymes == {"41.200.1.1": 10}
-
-
-def test_calcul_abonne_free_garde_son_propre_quota_en_base(base):
-    app = _app_calcul()
-    assert _statuts(_client(app, ip="41.200.1.1"), 11)[-1] == 429
-
-    # Même IP, mais une session : le compteur de l'abonné, pas celui de l'IP.
-    abonne = _client(app, ip="41.200.1.1", abonne=ABONNES["free"])
-    assert _statuts(abonne, 10) == [200] * 10
-    assert abonne.post("/api/calcul").json()["detail"]["tier"] == "free"
-    assert len(base.usage_counters.docs) == 1
+    assert _statuts(client, 2) == [200, 200]
+    detail = client.post("/api/calcul").json()["detail"]
+    assert (detail["error"], detail["tier"], detail["quota"], detail["quota_period"]) == (
+        "quota_exceeded", "free", 2, "month")
+    (cle,) = base.usage_counters.docs
+    assert cle[1] == "calculator" and len(cle[2]) == 7  # « AAAA-MM » : compteur du mois
 
 
-def test_compteur_anonyme_repart_de_zero_quand_le_jour_change():
-    entitlement_guard._calculs_anonymes["41.200.1.1"] = 10
-    entitlement_guard._jour_calculs_anonymes = "2000-01-01"
-
-    assert _client(_app_calcul(), ip="41.200.1.1").post("/api/calcul").status_code == 200
-    assert entitlement_guard._calculs_anonymes == {"41.200.1.1": 1}
+def test_calcul_abonne_payant_garde_son_quota_du_jour():
+    assert _statuts(_client(_app_calcul(), abonne=ABONNES["starter"]), 3) == [200] * 3
 
 
-def test_compteur_anonyme_borne_en_memoire(monkeypatch, caplog):
-    monkeypatch.setattr(entitlement_guard, "_MAX_VISITEURS_ANONYMES", 3)
-    app = _app_calcul()
-    for ip in ("41.0.0.1", "41.0.0.2", "41.0.0.3"):
-        _client(app, ip=ip).post("/api/calcul")
+# ── Modules de consultation : connexion, puis 5 recherches par mois ─────────
 
-    monkeypatch.setattr(entitlement_guard, "_compteur_plein_signale", False)
-    with caplog.at_level(logging.WARNING, logger="entitlement_guard"):
-        assert _client(app, ip="41.0.0.4").post("/api/calcul").status_code == 200
-        assert _client(app, ip="41.0.0.5").post("/api/calcul").status_code == 200
 
-    # Le plus ancien est oublié, les autres gardent leur compte : le quota du
-    # jour ne se rouvre pas pour tous. Une seule alerte.
-    assert entitlement_guard._calculs_anonymes == {"41.0.0.3": 1, "41.0.0.4": 1, "41.0.0.5": 1}
-    assert caplog.text.count("les plus anciens sont oubliés") == 1
+def _app_consultation(module="production"):
+    """Sonde avec la garde des modules de consultation."""
+    sonde = APIRouter()
+
+    @sonde.get("/sonde")
+    async def liste():
+        return {"ok": True}
+
+    @sonde.get("/sonde/{country_iso3}")
+    async def fiche(country_iso3: str, lang: str = "fr", year: int = 2024):
+        return {"ok": True}
+
+    api = APIRouter(prefix="/api")
+    api.include_router(
+        sonde,
+        dependencies=routes._auth + [Depends(entitlement_guard.require_module_consultation(module))],
+    )
+    app = FastAPI()
+    app.include_router(api)
+    return app
+
+
+def test_consultation_sans_compte_demande_la_connexion():
+    reponse = _client(_app_consultation()).get("/api/sonde/DZA")
+
+    assert reponse.status_code == 401
+    assert reponse.json()["detail"]["error"] == "login_required"
+
+
+@pytest.mark.parametrize(
+    "chemin",
+    ["/api/production/macro/DZA", "/api/logistics/ports", "/api/rules-of-origin/stats",
+     "/api/country-profile/DZA", "/api/statistics/trade-performance"],
+)
+def test_vrais_modules_fermes_sans_compte(app_api, chemin):
+    reponse = _client(app_api).get(chemin)
+
+    assert reponse.status_code == 401, chemin
+    assert reponse.json()["detail"]["error"] == "login_required"
+
+
+def test_tableau_de_bord_reste_public(app_api):
+    # Données du tableau de bord d'accueil servies par le routeur Statistiques.
+    assert _client(app_api).get("/api/statistics/afreximbank-atr2026").status_code != 401
+
+
+def test_cinq_recherches_par_mois_puis_invitation(base):
+    client = _client(_app_consultation(), abonne=ABONNES["free"])
+
+    # Ouvrir le module (listes générales) ne compte pas.
+    assert _statuts(client, 3, "get", "/api/sonde") == [200] * 3
+    for pays in ("DZA", "MAR", "TUN", "EGY", "NGA"):
+        assert client.get(f"/api/sonde/{pays}").status_code == 200
+    # Revoir un pays déjà cherché, même avec d'autres options, ne compte pas.
+    assert client.get("/api/sonde/DZA?lang=en&year=2023").status_code == 200
+
+    reponse = client.get("/api/sonde/KEN")
+    assert reponse.status_code == 429
+    detail = reponse.json()["detail"]
+    assert (detail["error"], detail["tier"], detail["module"], detail["quota"], detail["quota_period"]) == (
+        "quota_exceeded", "free", "production", 5, "month")
+    (doc,) = base.recherches_modules.docs.values()
+    assert doc["termes"] == ["DZA", "MAR", "TUN", "EGY", "NGA"]
+
+
+def test_recherches_comptees_par_module(base):
+    client_prod = _client(_app_consultation("production"), abonne=ABONNES["free"])
+    client_log = _client(_app_consultation("logistics"), abonne=ABONNES["free"])
+    for pays in ("DZA", "MAR", "TUN", "EGY", "NGA"):
+        client_prod.get(f"/api/sonde/{pays}")
+
+    assert client_log.get("/api/sonde/KEN").status_code == 200
+
+
+def test_formules_payantes_sans_limite_de_recherches(base):
+    client = _client(_app_consultation(), abonne=ABONNES["starter"])
+
+    assert all(client.get(f"/api/sonde/P{i}").status_code == 200 for i in range(8))
+    assert base.recherches_modules.docs == {}
+
+
+def test_termes_de_recherche():
+    from starlette.requests import Request
+
+    requete = Request({
+        "type": "http", "method": "GET", "path": "/x/dza", "headers": [],
+        "query_string": b"hs_code=0901&lang=en&page=2&q=cafe",
+        "path_params": {"country_iso3": "dza"},
+    })
+    assert entitlement_guard.termes_de_recherche(requete) == ["0901", "CAFE", "DZA"]
 
 
 # ── Module Opportunités : réservé aux abonnements payants ───────────────────
