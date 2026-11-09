@@ -7,8 +7,9 @@
  * (`GET /logistics/ports/{id}`, `GET /logistics/air/airports/{id}`, un
  * élément de `GET /logistics/land/corridors`).
  *
- * Une valeur que la source ne publie pas s'écrit « non publié », jamais 0
- * (l'écran affiche parfois 0 ou une valeur type ; la fiche, non). Les
+ * Une valeur que la source ne publie pas s'écrit « non publié », jamais 0.
+ * Une valeur estimée (champ `nature` du bloc = « estimation ») porte la
+ * mention « estimé » ; le backend ne sert plus les valeurs générées. Les
  * libellés de données n'existant qu'en une langue restent tels quels, sauf
  * en arabe où trDonnee() les traduit quand le dictionnaire les connaît.
  * Les téléphones sont écrits tels que publiés, seuls dans leur texte : la
@@ -26,8 +27,9 @@ const COMMUN = {
     no: 'non',
     rank: 'rang',
     warning: 'Avertissement',
+    estimated: 'estimé',
     contactsNotice: "Les coordonnées (téléphones, courriels, sites web) sont reproduites telles que publiées par les organismes : les vérifier auprès d'eux avant tout usage. Cette fiche est informative ; elle n'engage ni les organismes cités ni l'éditeur.",
-    u: { t: 't', h: 'h', days: 'jours', km: 'km', teuYear: 'TEU/an', tYear: 't/an', paxYear: 'passagers/an', sqm: 'm²', trucksDay: 'camions/jour', movesH: 'mouvements/heure', m: 'm', ha: 'ha' },
+    u: { t: 't', h: 'h', days: 'jours', km: 'km', teuYear: 'TEU/an', tYear: 't/an', paxYear: 'passagers/an', sqm: 'm²', trucksDay: 'camions/jour', m: 'm', ha: 'ha' },
   },
   en: {
     module: 'LOGISTICS MODULE',
@@ -36,8 +38,9 @@ const COMMUN = {
     no: 'no',
     rank: 'rank',
     warning: 'Disclaimer',
+    estimated: 'estimated',
     contactsNotice: 'Contact details (phone numbers, emails, websites) are reproduced as published by the organisations: check them with the organisation before any use. This profile is for information only; it commits neither the organisations cited nor the publisher.',
-    u: { t: 't', h: 'h', days: 'days', km: 'km', teuYear: 'TEU/yr', tYear: 't/yr', paxYear: 'passengers/yr', sqm: 'm²', trucksDay: 'trucks/day', movesH: 'moves/hour', m: 'm', ha: 'ha' },
+    u: { t: 't', h: 'h', days: 'days', km: 'km', teuYear: 'TEU/yr', tYear: 't/yr', paxYear: 'passengers/yr', sqm: 'm²', trucksDay: 'trucks/day', m: 'm', ha: 'ha' },
   },
   ar: {
     module: 'وحدة اللوجستيك',
@@ -46,8 +49,9 @@ const COMMUN = {
     no: 'لا',
     rank: 'الترتيب',
     warning: 'تنبيه',
+    estimated: 'تقديري',
     contactsNotice: 'بيانات الاتصال (الهواتف، البريد الإلكتروني، المواقع) منقولة كما نشرتها الجهات المعنية: يُرجى التحقق منها لدى الجهة قبل أي استعمال. هذه البطاقة إعلامية ولا تُلزم الجهات المذكورة ولا الناشر.',
-    u: { t: 'طن', h: 'ساعة', days: 'يوم', km: 'كم', teuYear: 'TEU/سنة', tYear: 'طن/سنة', paxYear: 'مسافر/سنة', sqm: 'متر مربع', trucksDay: 'شاحنة/يوم', movesH: 'حركة/ساعة', m: 'م', ha: 'هكتار' },
+    u: { t: 'طن', h: 'ساعة', days: 'يوم', km: 'كم', teuYear: 'TEU/سنة', tYear: 'طن/سنة', paxYear: 'مسافر/سنة', sqm: 'متر مربع', trucksDay: 'شاحنة/يوم', m: 'م', ha: 'هكتار' },
   },
 };
 
@@ -112,7 +116,7 @@ const T_PORT = {
     badge: 'FICHE PORT',
     subtitle: (pays, locode, type) => [pays, locode && `UN/LOCODE ${locode}`, type].filter(Boolean).join(' · '),
     teu: 'Trafic conteneurs', tonnage: 'Tonnage global', calls: 'Escales navires', dwell: 'Dwell time',
-    waiting: 'Attente au mouillage', stay: 'Séjour au port', lsci: 'Connectivité LSCI', grade: "Note d'efficacité",
+    waiting: 'Attente au mouillage', lsci: 'Connectivité LSCI',
     worldRank: (r) => `rang mondial ${r}`,
     identity: 'Identité du port',
     name: 'Nom', country: 'Pays', locode: 'UN/LOCODE', type: 'Type de port', gps: 'Coordonnées GPS',
@@ -127,11 +131,10 @@ const T_PORT = {
     projection: (a) => `Projection ${a}`,
     evolution: 'Évolution du trafic',
     trCols: { year: 'Année', teu: 'TEU', vessels: 'Navires', containerCalls: 'Porte-conteneurs', tons: 'Tonnage (t)', wait: 'Attente (h)', source: 'Source' },
-    trafficText: "TEU (équivalent vingt pieds, EVP) : unité de comptage des conteneurs — un conteneur de 20 pieds vaut 1 TEU, un 40 pieds 2 TEU. Le tonnage global additionne toutes les marchandises (conteneurs, vrac, roulier). Plusieurs années anciennes sont des estimations : la colonne Source le précise.",
+    trafficText: "TEU (équivalent vingt pieds, EVP) : unité de comptage des conteneurs — un conteneur de 20 pieds vaut 1 TEU, un 40 pieds 2 TEU. Le tonnage global additionne toutes les marchandises (conteneurs, vrac, roulier). Une année marquée « estimé » n'est pas publiée par une source : la colonne Source donne la base de l'estimation.",
     perf: 'Performance portuaire',
-    waitingFull: 'Attente au mouillage', waiting2025: 'Attente au mouillage 2025', stayFull: 'Temps total de séjour au port',
-    productivity: 'Productivité à quai', occupancy: (a) => `Taux d'occupation des quais ${a}`, gradeFull: "Note d'efficacité", updated: 'Mise à jour',
-    perfText: "Attente au mouillage : temps moyen entre l'arrivée du navire en rade et son accostage, signe de congestion. Séjour au port : durée totale de l'escale. Productivité : mouvements de conteneurs par heure à quai. La note d'efficacité (A+ à D) est un classement indicatif de la base de données.",
+    waitingFull: 'Attente au mouillage', occupancy: (a) => `Taux d'occupation des quais ${a}`, updated: 'Mise à jour',
+    perfText: "Attente au mouillage : temps moyen entre l'arrivée du navire en rade et son accostage, signe de congestion. Taux d'occupation des quais : part du temps où les postes à quai sont occupés. Une valeur marquée « estimé » n'est pas publiée par une source ; une valeur sans source n'est pas reprise.",
     trs: 'Temps de séjour des conteneurs (dwell time) et TRS',
     dwellFull: 'Dwell time (séjour moyen des conteneurs)', turnaround: 'Rotation navire', clearance: 'Dédouanement',
     vesselWaiting: 'Attente des navires', cppi: 'Rang CPPI (Banque mondiale)', dataYear: 'Année des données',
@@ -165,7 +168,7 @@ const T_PORT = {
     badge: 'PORT PROFILE',
     subtitle: (pays, locode, type) => [pays, locode && `UN/LOCODE ${locode}`, type].filter(Boolean).join(' · '),
     teu: 'Container traffic', tonnage: 'Total tonnage', calls: 'Vessel calls', dwell: 'Dwell time',
-    waiting: 'Anchorage waiting', stay: 'Time in port', lsci: 'LSCI connectivity', grade: 'Efficiency grade',
+    waiting: 'Anchorage waiting', lsci: 'LSCI connectivity',
     worldRank: (r) => `world rank ${r}`,
     identity: 'Port identity',
     name: 'Name', country: 'Country', locode: 'UN/LOCODE', type: 'Port type', gps: 'GPS coordinates',
@@ -180,11 +183,10 @@ const T_PORT = {
     projection: (a) => `${a} projection`,
     evolution: 'Traffic trend',
     trCols: { year: 'Year', teu: 'TEU', vessels: 'Vessels', containerCalls: 'Container ships', tons: 'Tonnage (t)', wait: 'Waiting (h)', source: 'Source' },
-    trafficText: 'TEU (twenty-foot equivalent unit): the unit used to count containers — a 20-foot container is 1 TEU, a 40-foot one 2 TEU. Total tonnage adds up all cargo (containers, bulk, ro-ro). Several earlier years are estimates: the Source column says so.',
+    trafficText: 'TEU (twenty-foot equivalent unit): the unit used to count containers — a 20-foot container is 1 TEU, a 40-foot one 2 TEU. Total tonnage adds up all cargo (containers, bulk, ro-ro). A year marked "estimated" is not published by a source: the Source column gives the basis of the estimate.',
     perf: 'Port performance',
-    waitingFull: 'Anchorage waiting time', waiting2025: 'Anchorage waiting time 2025', stayFull: 'Total time in port',
-    productivity: 'Berth productivity', occupancy: (a) => `Berth occupancy rate ${a}`, gradeFull: 'Efficiency grade', updated: 'Last updated',
-    perfText: 'Anchorage waiting: average time between a ship arriving at the roads and berthing, a sign of congestion. Time in port: total length of the call. Productivity: container moves per hour at the berth. The efficiency grade (A+ to D) is an indicative ranking from the database.',
+    waitingFull: 'Anchorage waiting time', occupancy: (a) => `Berth occupancy rate ${a}`, updated: 'Last updated',
+    perfText: 'Anchorage waiting: average time between a ship arriving at the roads and berthing, a sign of congestion. Berth occupancy rate: share of time the berths are occupied. A value marked "estimated" is not published by a source; a value without a source is left out.',
     trs: 'Container dwell time and TRS',
     dwellFull: 'Dwell time (average container stay)', turnaround: 'Vessel turnaround', clearance: 'Customs clearance',
     vesselWaiting: 'Vessel waiting', cppi: 'CPPI rank (World Bank)', dataYear: 'Data year',
@@ -218,7 +220,7 @@ const T_PORT = {
     badge: 'بطاقة ميناء',
     subtitle: (pays, locode, type) => [pays, locode && `UN/LOCODE ${locode}`, type].filter(Boolean).join(' · '),
     teu: 'حركة الحاويات', tonnage: 'الحمولة الإجمالية', calls: 'توقفات السفن', dwell: 'مدة بقاء الحاويات',
-    waiting: 'الانتظار في المرسى', stay: 'مدة البقاء في الميناء', lsci: 'الربط LSCI', grade: 'درجة الكفاءة',
+    waiting: 'الانتظار في المرسى', lsci: 'الربط LSCI',
     worldRank: (r) => `الترتيب العالمي ${r}`,
     identity: 'هوية الميناء',
     name: 'الاسم', country: 'البلد', locode: 'UN/LOCODE', type: 'نوع الميناء', gps: 'إحداثيات GPS',
@@ -233,11 +235,10 @@ const T_PORT = {
     projection: (a) => `توقع ${a}`,
     evolution: 'تطور الحركة',
     trCols: { year: 'السنة', teu: 'TEU', vessels: 'السفن', containerCalls: 'سفن الحاويات', tons: 'الحمولة (طن)', wait: 'الانتظار (ساعة)', source: 'المصدر' },
-    trafficText: 'TEU (وحدة مكافئة لعشرين قدمًا): وحدة عدّ الحاويات — الحاوية ذات 20 قدمًا تساوي 1 TEU وذات 40 قدمًا 2 TEU. تجمع الحمولة الإجمالية كل البضائع (حاويات، سائبة، دحرجة). بعض السنوات السابقة تقديرات، كما يبيّن عمود المصدر.',
+    trafficText: 'TEU (وحدة مكافئة لعشرين قدمًا): وحدة عدّ الحاويات — الحاوية ذات 20 قدمًا تساوي 1 TEU وذات 40 قدمًا 2 TEU. تجمع الحمولة الإجمالية كل البضائع (حاويات، سائبة، دحرجة). السنة الموسومة «تقديري» لا ينشرها أي مصدر، ويبيّن عمود المصدر أساس التقدير.',
     perf: 'أداء الميناء',
-    waitingFull: 'مدة الانتظار في المرسى', waiting2025: 'مدة الانتظار في المرسى 2025', stayFull: 'إجمالي مدة البقاء في الميناء',
-    productivity: 'إنتاجية الرصيف', occupancy: (a) => `نسبة إشغال الأرصفة ${a}`, gradeFull: 'درجة الكفاءة', updated: 'آخر تحديث',
-    perfText: 'الانتظار في المرسى: متوسط المدة بين وصول السفينة إلى المرسى ورسوّها، وهو مؤشر على الازدحام. مدة البقاء في الميناء: المدة الكاملة للتوقف. الإنتاجية: عدد حركات الحاويات في الساعة عند الرصيف. درجة الكفاءة (من A+ إلى D) تصنيف إرشادي من قاعدة البيانات.',
+    waitingFull: 'مدة الانتظار في المرسى', occupancy: (a) => `نسبة إشغال الأرصفة ${a}`, updated: 'آخر تحديث',
+    perfText: 'الانتظار في المرسى: متوسط المدة بين وصول السفينة إلى المرسى ورسوّها، وهو مؤشر على الازدحام. نسبة إشغال الأرصفة: حصة الوقت الذي تكون فيه الأرصفة مشغولة. القيمة الموسومة «تقديري» لا ينشرها أي مصدر، والقيمة التي لا مصدر لها لا تُدرج.',
     trs: 'مدة بقاء الحاويات ودراسة TRS',
     dwellFull: 'مدة بقاء الحاويات (المتوسط)', turnaround: 'دوران السفينة', clearance: 'التخليص الجمركي',
     vesselWaiting: 'انتظار السفن', cppi: 'ترتيب CPPI (البنك الدولي)', dataYear: 'سنة البيانات',
@@ -282,16 +283,18 @@ export function specFichePortPdf(port, langue = 'fr') {
   const nom = txt(port.port_name);
   const nomPays = pays(port.country_iso, port.country_name);
   const [titre, suite] = decouperTitre(nom);
+  // Bloc dont la source ne publie pas les valeurs telles quelles (champ `nature`
+  // servi par le backend) : chaque valeur porte la mention « estimé ».
+  const estime = (bloc) => (bloc?.nature === 'estimation' ? c.estimated : '');
+  const marque = (texte, bloc) => (estime(bloc) && texte !== na ? `${texte} (${c.estimated})` : texte);
 
   const kpis = [
-    { label: t.teu, value: num(stats.container_throughput_teu), sub: ['TEU', an(stats.year)].filter(Boolean).join(' · '), accent: 'gold' },
-    { label: t.tonnage, value: num(stats.cargo_throughput_tons), sub: [u.t, an(stats.year)].filter(Boolean).join(' · '), accent: 'gold' },
-    { label: t.calls, value: num(stats.vessel_calls), sub: an(stats.year), accent: 'terra' },
-    { label: t.dwell, value: unite(trs.container_dwell_time_days, u.days), sub: an(trs.data_year), accent: 'red' },
-    { label: t.waiting, value: unite(metrics.avg_waiting_time_hours, u.h), accent: 'red' },
-    { label: t.stay, value: unite(metrics.avg_port_stay_hours, u.h), accent: 'terra' },
+    { label: t.teu, value: num(stats.container_throughput_teu), sub: ['TEU', an(stats.year), estime(stats)].filter(Boolean).join(' · '), accent: 'gold' },
+    { label: t.tonnage, value: num(stats.cargo_throughput_tons), sub: [u.t, an(stats.year), estime(stats)].filter(Boolean).join(' · '), accent: 'gold' },
+    { label: t.calls, value: num(stats.vessel_calls), sub: [an(stats.year), estime(stats)].filter(Boolean).join(' · '), accent: 'terra' },
+    { label: t.dwell, value: unite(trs.container_dwell_time_days, u.days), sub: [an(trs.data_year), estime(trs)].filter(Boolean).join(' · '), accent: 'red' },
+    { label: t.waiting, value: unite(metrics.avg_waiting_time_hours, u.h), sub: estime(metrics), accent: 'red' },
     { label: t.lsci, value: num(lsci.value, 2), sub: [lsci.world_rank && t.worldRank(lsci.world_rank), an(lsci.year)].filter(Boolean).join(' · '), accent: 'green' },
-    { label: t.grade, value: publiee(metrics.efficiency_grade) ? propre(metrics.efficiency_grade) : na, accent: 'green' },
   ];
 
   const sections = [];
@@ -352,7 +355,7 @@ export function specFichePortPdf(port, langue = 'fr') {
   // Trafic : chiffres de l'année de référence, puis la série annuelle.
   const proj = stats.year_2025_projection;
   const trafficKv = [
-    { label: t.refYear, value: an(stats.year) || na },
+    { label: t.refYear, value: marque(an(stats.year) || na, stats) },
     estNombre(stats.container_vessel_calls) && { label: t.containerCalls, value: num(stats.container_vessel_calls) },
     publiee(stats.source) && { label: t.source, value: propre(stats.source) },
     publiee(stats.note) && { label: t.note, value: propre(stats.note) },
@@ -363,9 +366,7 @@ export function specFichePortPdf(port, langue = 'fr') {
   ].filter(Boolean);
   sections.push({ title: t.traffic, keyValues: trafficKv });
 
-  const serie = (port.traffic_evolution?.length ? port.traffic_evolution : (port.historical_stats || []).map((h) => ({
-    year: h.year, teu: h.container_throughput_teu, vessels: h.vessel_calls, cargo_tons: h.cargo_throughput_tons,
-  }))).slice().sort((a, b) => a.year - b.year);
+  const serie = (port.traffic_evolution || []).slice().sort((a, b) => a.year - b.year);
   if (serie.length) {
     // Une colonne n'apparaît que si la source la renseigne pour au moins une année.
     const a = (cle) => serie.some((r) => publiee(r[cle]));
@@ -378,28 +379,27 @@ export function specFichePortPdf(port, langue = 'fr') {
       a('avg_wait_time') && { key: 'avg_wait_time', label: t.trCols.wait, width: 0.9, align: 'right', fmt: (v) => num(v, 1) },
       a('source') && { key: 'source', label: t.trCols.source, width: 2.8, fmt: (v) => (publiee(v) ? propre(v) : na) },
     ].filter(Boolean);
-    sections.push({ title: t.evolution, table: { columns, rows: serie.map((r) => ({ ...r, year: String(r.year) })) } });
+    sections.push({ title: t.evolution, table: { columns, rows: serie.map((r) => ({ ...r, year: marque(String(r.year), r) })) } });
   }
   sections.push({ paragraphs: [t.trafficText] });
 
-  const avecLibelle = (v, libelle) => (publiee(v) ? `${unite(v, u.h)}${publiee(libelle) ? ` — ${propre(libelle)}` : ''}` : na);
-  const productivite = estNombre(metrics.berth_productivity) ? metrics.berth_productivity : stats.berth_productivity_moves_per_hour;
+  // Seules les valeurs dont le backend sert la source restent (attente, taux
+  // d'occupation) : séjour au port, productivité à quai et note d'efficacité,
+  // générés, ne sont plus servis.
+  const avecLibelle = (v, libelle) => (publiee(v) ? `${marque(unite(v, u.h), metrics)}${publiee(libelle) ? ` — ${propre(libelle)}` : ''}` : na);
   const perfKv = [
     { label: t.waitingFull, value: avecLibelle(metrics.avg_waiting_time_hours, metrics.avg_waiting_time_label) },
-    publiee(metrics.avg_waiting_time_2025_hours) && { label: t.waiting2025, value: avecLibelle(metrics.avg_waiting_time_2025_hours, metrics.avg_waiting_time_2025_label) },
-    { label: t.stayFull, value: avecLibelle(metrics.avg_port_stay_hours, metrics.avg_port_stay_label) },
-    { label: t.productivity, value: publiee(productivite) ? `${num(productivite, 1)} ${publiee(metrics.berth_productivity_unit) ? propre(metrics.berth_productivity_unit) : u.movesH}` : na },
-    estNombre(metrics.quay_occupancy_rate_2024_pct) && { label: t.occupancy(2024), value: `${num(metrics.quay_occupancy_rate_2024_pct)} %` },
-    estNombre(metrics.quay_occupancy_rate_2025_pct) && { label: t.occupancy(2025), value: `${num(metrics.quay_occupancy_rate_2025_pct)} %` },
-    { label: t.gradeFull, value: publiee(metrics.efficiency_grade) ? `${propre(metrics.efficiency_grade)}${publiee(metrics.efficiency_note) ? ` — ${propre(metrics.efficiency_note)}` : ''}` : na },
+    estNombre(metrics.quay_occupancy_rate_2024_pct) && { label: t.occupancy(2024), value: marque(`${num(metrics.quay_occupancy_rate_2024_pct)} %`, metrics) },
+    estNombre(metrics.quay_occupancy_rate_2025_pct) && { label: t.occupancy(2025), value: marque(`${num(metrics.quay_occupancy_rate_2025_pct)} %`, metrics) },
+    publiee(metrics.source) && { label: t.source, value: propre(metrics.source) },
     publiee(metrics.last_updated) && { label: t.updated, value: propre(metrics.last_updated) },
   ].filter(Boolean);
   sections.push({ title: t.perf, keyValues: perfKv }, { paragraphs: [t.perfText] });
 
   const trsKv = [
-    { label: t.dwellFull, value: unite(trs.container_dwell_time_days, u.days) },
-    { label: t.turnaround, value: unite(trs.vessel_turnaround_hours, u.h) },
-    { label: t.clearance, value: unite(trs.customs_clearance_hours, u.h) },
+    { label: t.dwellFull, value: marque(unite(trs.container_dwell_time_days, u.days), trs) },
+    { label: t.turnaround, value: marque(unite(trs.vessel_turnaround_hours, u.h), trs) },
+    { label: t.clearance, value: marque(unite(trs.customs_clearance_hours, u.h), trs) },
     publiee(trs.vessel_waiting_days) && { label: t.vesselWaiting, value: `${unite(trs.vessel_waiting_days, u.days)}${publiee(trs.vessel_waiting_source) ? ` (${propre(trs.vessel_waiting_source)})` : ''}` },
     { label: t.cppi, value: publiee(trs.cppi_rank) ? `${propre(trs.cppi_rank)}${publiee(trs.cppi_year) ? ` (${trs.cppi_year})` : ''}` : na },
     publiee(trs.best_performance_days) && { label: t.best, value: `${unite(trs.best_performance_days, u.days)}${publiee(trs.best_performance_date) ? ` (${propre(trs.best_performance_date)})` : ''}` },

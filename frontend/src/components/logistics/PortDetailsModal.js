@@ -60,7 +60,6 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
       noShippingLines: "Aucune ligne maritime référencée",
       source: "Source données",
       sourceText: "UNCTAD Maritime Review 2024, WCO TRS Database, World Bank LPI",
-      grade: "Grade",
       location: "Localisation",
       viewOnMaps: "Voir sur Google Maps",
       dataYear: "Année Données",
@@ -73,7 +72,10 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
       trsNotAvailable: "Données TRS Non Disponibles",
       trsNotAvailableDesc: "Aucune étude TRS (Time Release Study) n'a été publiée pour ce port.",
       sourcesFooter: "Sources: Études TRS WCO officielles, TRS nationales (ex: Egypt Customs), Autorités portuaires (KPA, Transnet, PAA), World Bank CPPI.",
-      directConnections: "Connexions directes et rotations"
+      directConnections: "Connexions directes et rotations",
+      estimated: "estimé",
+      estimatedYears: "Années estimées (non publiées par une source)",
+      noSeries: "Aucune série annuelle publiée pour ce port."
     },
     en: {
       overview: "Overview",
@@ -119,7 +121,6 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
       noShippingLines: "No shipping lines referenced",
       source: "Data source",
       sourceText: "UNCTAD Maritime Review 2024, WCO TRS Database, World Bank LPI",
-      grade: "Grade",
       location: "Location",
       viewOnMaps: "View on Google Maps",
       dataYear: "Data Year",
@@ -132,7 +133,10 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
       trsNotAvailable: "TRS Data Not Available",
       trsNotAvailableDesc: "No TRS (Time Release Study) study has been published for this port.",
       sourcesFooter: "Sources: Official WCO TRS studies, National TRS (e.g. Egypt Customs), Port Authorities (KPA, Transnet, PAA), World Bank CPPI.",
-      directConnections: "Direct connections and rotations"
+      directConnections: "Direct connections and rotations",
+      estimated: "estimated",
+      estimatedYears: "Estimated years (not published by a source)",
+      noSeries: "No published annual series for this port."
     },
     ar: {
       overview: "نظرة عامة",
@@ -178,7 +182,6 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
       noShippingLines: "لا توجد خطوط بحرية مسجلة",
       source: "مصدر البيانات",
       sourceText: "استعراض النقل البحري للأونكتاد 2024، قاعدة بيانات TRS لمنظمة الجمارك العالمية، مؤشر LPI للبنك الدولي",
-      grade: "الدرجة",
       location: "الموقع",
       viewOnMaps: "عرض على خرائط Google",
       dataYear: "سنة البيانات",
@@ -191,7 +194,10 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
       trsNotAvailable: "بيانات TRS غير متاحة",
       trsNotAvailableDesc: "لم تُنشر أي دراسة TRS (دراسة زمن الإفراج) لهذا الميناء.",
       sourcesFooter: "المصادر: دراسات TRS الرسمية لمنظمة الجمارك العالمية، ودراسات TRS الوطنية (مثل الجمارك المصرية)، والسلطات المينائية (KPA، Transnet، PAA)، ومؤشر CPPI للبنك الدولي.",
-      directConnections: "الروابط المباشرة والدورات"
+      directConnections: "الروابط المباشرة والدورات",
+      estimated: "تقديري",
+      estimatedYears: "سنوات تقديرية (لا ينشرها أي مصدر)",
+      noSeries: "لا توجد سلسلة سنوية منشورة لهذا الميناء."
     }
   };
 
@@ -199,22 +205,14 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
 
   if (!port) return null;
 
-  const getEfficiencyColor = (grade) => {
-    switch (grade) {
-      case 'A+': return 'bg-emerald-600';
-      case 'A': return 'bg-green-500';
-      case 'B': return 'bg-blue-500';
-      case 'B-': return 'bg-yellow-500';
-      case 'C': return 'bg-orange-500';
-      case 'D': return 'bg-red-500';
-      default: return 'bg-gray-500';
-    }
-  };
-
   const metrics = port.performance_metrics || {};
   const history = port.traffic_evolution || [];
   const authority = port.port_authority;
   const trs = port.trs_analysis;
+  // Bloc que la source ne publie pas tel quel (champ `nature` du backend).
+  const estime = (bloc) => (bloc?.nature === 'estimation' ? ` · ${t.estimated}` : '');
+  const anneesEstimees = history.filter((r) => r.nature === 'estimation').map((r) => r.year);
+  const nombre = (v) => (v == null ? 'N/A' : v.toLocaleString());
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -239,11 +237,6 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
               <Badge className="bg-white/20 hover:bg-white/30 text-white border-0 px-3 py-1">
                 {trDonnee(port.port_type, language)}
               </Badge>
-              {metrics.efficiency_grade && (
-                <Badge className={`${getEfficiencyColor(metrics.efficiency_grade)} text-white font-bold px-4 py-1 text-base shadow-sm border border-white/20`}>
-                  {t.grade} {metrics.efficiency_grade}
-                </Badge>
-              )}
               <OpportunityPdfExport language={language} getSpec={(_, langue) => specFichePortPdf(port, langue)} />
             </div>
           </div>
@@ -342,27 +335,27 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                 <CardContent className="pt-6 text-center">
                   <p className="text-sm font-semibold text-blue-600 mb-1">{t.annualTraffic}</p>
                   <p className="text-3xl font-bold text-blue-800">
-                    {(port.latest_stats?.container_throughput_teu || 0).toLocaleString()}
+                    {nombre(port.latest_stats?.container_throughput_teu)}
                   </p>
-                  <p className="text-xs text-blue-500 mt-1">{port.latest_stats?.year || 2024}</p>
+                  <p className="text-xs text-blue-500 mt-1">{port.latest_stats?.year || 2024}{estime(port.latest_stats)}</p>
                 </CardContent>
               </Card>
               <Card className="bg-indigo-50 border-indigo-200">
                 <CardContent className="pt-6 text-center">
                   <p className="text-sm font-semibold text-indigo-600 mb-1">{t.globalTonnage}</p>
                   <p className="text-3xl font-bold text-indigo-800">
-                    {(port.latest_stats?.cargo_throughput_tons || 0).toLocaleString()}
+                    {nombre(port.latest_stats?.cargo_throughput_tons)}
                   </p>
-                  <p className="text-xs text-indigo-500 mt-1">{t.tons}</p>
+                  <p className="text-xs text-indigo-500 mt-1">{t.tons}{estime(port.latest_stats)}</p>
                 </CardContent>
               </Card>
               <Card className="bg-teal-50 border-teal-200">
                 <CardContent className="pt-6 text-center">
                   <p className="text-sm font-semibold text-teal-600 mb-1">{t.vesselCalls}</p>
                   <p className="text-3xl font-bold text-teal-800">
-                    {(port.latest_stats?.vessel_calls || 0).toLocaleString()}
+                    {nombre(port.latest_stats?.vessel_calls)}
                   </p>
-                  <p className="text-xs text-teal-500 mt-1">{t.ships}</p>
+                  <p className="text-xs text-teal-500 mt-1">{t.ships}{estime(port.latest_stats)}</p>
                 </CardContent>
               </Card>
             </div>
@@ -371,9 +364,15 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg text-gray-700 flex items-center gap-2">
-                  📉 {t.trafficEvolution} (2020-2024)
+                  📉 {t.trafficEvolution}
                 </CardTitle>
+                {anneesEstimees.length > 0 && (
+                  <CardDescription className="text-amber-700">{t.estimatedYears} : {anneesEstimees.join(', ')}</CardDescription>
+                )}
               </CardHeader>
+              {history.length === 0 ? (
+                <CardContent><p className="text-sm text-gray-500 italic">{t.noSeries}</p></CardContent>
+              ) : (
               <CardContent className="h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={history}>
@@ -387,7 +386,7 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                     <XAxis dataKey="year" />
                     <YAxis />
                     <Tooltip 
-                      formatter={(value) => value.toLocaleString()}
+                      formatter={(value, name, item) => [`${value.toLocaleString()}${estime(item?.payload)}`, name]}
                       contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}
                     />
                     <Area 
@@ -401,6 +400,7 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>
+              )}
             </Card>
           </TabsContent>
 
@@ -618,64 +618,37 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
             </Card>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Waiting Times (Ship) */}
+              {/* Attente navire : seulement si le backend la sert, avec sa source */}
+              {metrics.avg_waiting_time_hours != null && (
               <Card className="border-l-4 border-l-yellow-500 shadow-md">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
-                    {pick(language, "⏳ Temps d'Attente Navire", "⏳ Temps d'Attente Navire", '⏳ مدة انتظار السفن')}
+                    {pick(language, "⏳ Temps d'Attente Navire", "⏳ Vessel Waiting Time", '⏳ مدة انتظار السفن')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span className="text-sm font-medium text-gray-700">{pick(language, 'Attente au mouillage', 'Attente au mouillage', 'الانتظار في المرسى')}</span>
-                        <span className="text-sm font-bold text-yellow-700">{metrics.avg_waiting_time_hours || 0} {t.hours}</span>
-                      </div>
-                      <Progress value={Math.min((metrics.avg_waiting_time_hours / 48) * 100, 100)} className="h-3 bg-gray-100" indicatorClassName="bg-yellow-500" />
-                      <p className="text-xs text-gray-500 mt-1">{pick(language, 'Indicateur de congestion nautique', 'Indicateur de congestion nautique', 'مؤشر الازدحام البحري')}</p>
-                    </div>
-                    
-                    <div className="pt-4 border-t bg-gray-50 -mx-6 px-6 pb-2 mt-4">
-                      <div className="flex justify-between items-center py-2">
-                        <span className="text-base font-bold text-gray-700">{pick(language, 'Temps Total de Rotation', 'Temps Total de Rotation', 'إجمالي مدة الدوران')}</span>
-                        <span className="text-2xl font-extrabold text-blue-800">{metrics.avg_port_stay_hours || 0} {pick(language, 'h', 'h', 'ساعة')}</span>
-                      </div>
-                    </div>
+                  <div className="flex justify-between mb-2">
+                    <span className="text-sm font-medium text-gray-700">{pick(language, 'Attente au mouillage', 'Anchorage waiting', 'الانتظار في المرسى')}</span>
+                    <span className="text-sm font-bold text-yellow-700">{metrics.avg_waiting_time_hours} {t.hours}{estime(metrics)}</span>
                   </div>
+                  <Progress value={Math.min((metrics.avg_waiting_time_hours / 48) * 100, 100)} className="h-3 bg-gray-100" indicatorClassName="bg-yellow-500" />
+                  {metrics.source && <p className="text-xs text-gray-500 mt-3">{t.source} : {metrics.source}</p>}
                 </CardContent>
               </Card>
+              )}
 
-              {/* Productivity Indicators */}
+              {/* LSCI : aucune valeur de repli */}
+              {port.lsci?.value != null && (
               <Card className="border-l-4 border-l-green-500 shadow-md">
                 <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    {pick(language, '🏗️ Productivité', '🏗️ Productivité', '🏗️ الإنتاجية')}
-                  </CardTitle>
+                  <CardTitle className="text-lg flex items-center gap-2">🌍 {t.lsciConnectivity}</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="bg-green-50 p-4 rounded-lg flex items-center justify-between border border-green-100">
-                    <div>
-                      <p className="text-sm text-green-800 font-semibold">{pick(language, 'Mouvements / Heure', 'Moves/Hour', 'حركة / ساعة')}</p>
-                      <p className="text-3xl font-bold text-green-900">
-                        {port.latest_stats?.berth_productivity_moves_per_hour || (port.port_type === 'Hub Transhipment' ? '45+' : '25-30')}
-                      </p>
-                    </div>
-                    <div className="text-3xl">🏗️</div>
-                  </div>
-                  
-                  <div className="bg-blue-50 p-4 rounded-lg flex items-center justify-between border border-blue-100">
-                    <div>
-                      <p className="text-sm text-blue-800 font-semibold">{t.lsciConnectivity}</p>
-                      <p className="text-3xl font-bold text-blue-900">
-                        {port.lsci?.value || (port.port_type === 'Hub Transhipment' ? pick(language, 'High', 'High', 'مرتفع') : pick(language, 'Medium', 'Medium', 'متوسط'))}
-                      </p>
-                      {port.lsci?.world_rank && <p className="text-xs text-blue-600">{t.worldRank}: #{port.lsci.world_rank}</p>}
-                    </div>
-                    <div className="text-3xl">🌍</div>
-                  </div>
+                <CardContent>
+                  <p className="text-3xl font-bold text-blue-900">{port.lsci.value}</p>
+                  {port.lsci.world_rank && <p className="text-xs text-blue-600">{t.worldRank}: #{port.lsci.world_rank}</p>}
                 </CardContent>
               </Card>
+              )}
             </div>
           </TabsContent>
 

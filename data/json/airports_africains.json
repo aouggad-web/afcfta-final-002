@@ -150,38 +150,6 @@
         "cargo_aircraft_movements": 2800,
         "source_org": "ACSA",
         "source_url": "https://www.acsa.co.za/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 118750,
-        "mail_throughput_tons": 3990,
-        "cargo_aircraft_movements": 2660,
-        "source_org": "ACSA",
-        "source_url": "https://www.acsa.co.za/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 112500,
-        "mail_throughput_tons": 3780,
-        "cargo_aircraft_movements": 2520,
-        "source_org": "ACSA",
-        "source_url": "https://www.acsa.co.za/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 106250,
-        "mail_throughput_tons": 3570,
-        "cargo_aircraft_movements": 2380,
-        "source_org": "ACSA",
-        "source_url": "https://www.acsa.co.za/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 93750,
-        "mail_throughput_tons": 3150,
-        "cargo_aircraft_movements": 2100,
-        "source_org": "ACSA",
-        "source_url": "https://www.acsa.co.za/"
       }
     ],
     "actors": [
@@ -234,38 +202,6 @@
         "cargo_throughput_tons": 342000,
         "mail_throughput_tons": 18500,
         "cargo_aircraft_movements": 6800,
-        "source_org": "Cairo Airport Authority",
-        "source_url": "https://www.cairo-airport.com/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 324900,
-        "mail_throughput_tons": 17575,
-        "cargo_aircraft_movements": 6460,
-        "source_org": "Cairo Airport Authority",
-        "source_url": "https://www.cairo-airport.com/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 307800,
-        "mail_throughput_tons": 16650,
-        "cargo_aircraft_movements": 6120,
-        "source_org": "Cairo Airport Authority",
-        "source_url": "https://www.cairo-airport.com/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 290700,
-        "mail_throughput_tons": 15725,
-        "cargo_aircraft_movements": 5780,
-        "source_org": "Cairo Airport Authority",
-        "source_url": "https://www.cairo-airport.com/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 256500,
-        "mail_throughput_tons": 13875,
-        "cargo_aircraft_movements": 5100,
         "source_org": "Cairo Airport Authority",
         "source_url": "https://www.cairo-airport.com/"
       }
@@ -344,38 +280,6 @@
         "cargo_aircraft_movements": 650,
         "source_org": "Egyptian Airports",
         "source_url": "https://www.cairo-airport.com/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 26600,
-        "mail_throughput_tons": 1140,
-        "cargo_aircraft_movements": 617,
-        "source_org": "Egyptian Airports",
-        "source_url": "https://www.cairo-airport.com/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 25200,
-        "mail_throughput_tons": 1080,
-        "cargo_aircraft_movements": 585,
-        "source_org": "Egyptian Airports",
-        "source_url": "https://www.cairo-airport.com/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 23800,
-        "mail_throughput_tons": 1020,
-        "cargo_aircraft_movements": 552,
-        "source_org": "Egyptian Airports",
-        "source_url": "https://www.cairo-airport.com/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 21000,
-        "mail_throughput_tons": 900,
-        "cargo_aircraft_movements": 487,
-        "source_org": "Egyptian Airports",
-        "source_url": "https://www.cairo-airport.com/"
       }
     ],
     "actors": [
@@ -405,38 +309,6 @@
         "cargo_throughput_tons": 285000,
         "mail_throughput_tons": 9500,
         "cargo_aircraft_movements": 5200,
-        "source_org": "Kenya Airports Authority",
-        "source_url": "https://www.kaa.go.ke/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 270750,
-        "mail_throughput_tons": 9025,
-        "cargo_aircraft_movements": 4940,
-        "source_org": "Kenya Airports Authority",
-        "source_url": "https://www.kaa.go.ke/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 256500,
-        "mail_throughput_tons": 8550,
-        "cargo_aircraft_movements": 4680,
-        "source_org": "Kenya Airports Authority",
-        "source_url": "https://www.kaa.go.ke/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 242250,
-        "mail_throughput_tons": 8075,
-        "cargo_aircraft_movements": 4420,
-        "source_org": "Kenya Airports Authority",
-        "source_url": "https://www.kaa.go.ke/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 213750,
-        "mail_throughput_tons": 7125,
-        "cargo_aircraft_movements": 3900,
         "source_org": "Kenya Airports Authority",
         "source_url": "https://www.kaa.go.ke/"
       }
@@ -520,38 +392,6 @@
         "cargo_aircraft_movements": 1200,
         "source_org": "Kenya Airports Authority",
         "source_url": "https://www.kaa.go.ke/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 49400,
-        "mail_throughput_tons": 1710,
-        "cargo_aircraft_movements": 1140,
-        "source_org": "Kenya Airports Authority",
-        "source_url": "https://www.kaa.go.ke/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 46800,
-        "mail_throughput_tons": 1620,
-        "cargo_aircraft_movements": 1080,
-        "source_org": "Kenya Airports Authority",
-        "source_url": "https://www.kaa.go.ke/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 44200,
-        "mail_throughput_tons": 1530,
-        "cargo_aircraft_movements": 1020,
-        "source_org": "Kenya Airports Authority",
-        "source_url": "https://www.kaa.go.ke/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 39000,
-        "mail_throughput_tons": 1350,
-        "cargo_aircraft_movements": 900,
-        "source_org": "Kenya Airports Authority",
-        "source_url": "https://www.kaa.go.ke/"
       }
     ],
     "actors": [
@@ -586,38 +426,6 @@
         "cargo_throughput_tons": 520000,
         "mail_throughput_tons": 15200,
         "cargo_aircraft_movements": 12500,
-        "source_org": "Ethiopian Airports Enterprise",
-        "source_url": "https://www.ethiopianairlines.com/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 494000,
-        "mail_throughput_tons": 14440,
-        "cargo_aircraft_movements": 11875,
-        "source_org": "Ethiopian Airports Enterprise",
-        "source_url": "https://www.ethiopianairlines.com/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 468000,
-        "mail_throughput_tons": 13680,
-        "cargo_aircraft_movements": 11250,
-        "source_org": "Ethiopian Airports Enterprise",
-        "source_url": "https://www.ethiopianairlines.com/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 442000,
-        "mail_throughput_tons": 12920,
-        "cargo_aircraft_movements": 10625,
-        "source_org": "Ethiopian Airports Enterprise",
-        "source_url": "https://www.ethiopianairlines.com/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 390000,
-        "mail_throughput_tons": 11400,
-        "cargo_aircraft_movements": 9375,
         "source_org": "Ethiopian Airports Enterprise",
         "source_url": "https://www.ethiopianairlines.com/"
       }
@@ -688,38 +496,6 @@
         "cargo_aircraft_movements": 2800,
         "source_org": "ONDA",
         "source_url": "https://www.onda.ma/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 93100,
-        "mail_throughput_tons": 4940,
-        "cargo_aircraft_movements": 2660,
-        "source_org": "ONDA",
-        "source_url": "https://www.onda.ma/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 88200,
-        "mail_throughput_tons": 4680,
-        "cargo_aircraft_movements": 2520,
-        "source_org": "ONDA",
-        "source_url": "https://www.onda.ma/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 83300,
-        "mail_throughput_tons": 4420,
-        "cargo_aircraft_movements": 2380,
-        "source_org": "ONDA",
-        "source_url": "https://www.onda.ma/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 73500,
-        "mail_throughput_tons": 3900,
-        "cargo_aircraft_movements": 2100,
-        "source_org": "ONDA",
-        "source_url": "https://www.onda.ma/"
       }
     ],
     "actors": [
@@ -783,39 +559,6 @@
         "year": 2024,
         "cargo_throughput_tons": 18000,
         "mail_throughput_tons": 800,
-        "cargo_aircraft_movements": 450,
-        "source_org": "ONDA",
-        "source_url": "https://www.onda.ma/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 17100,
-        "mail_throughput_tons": 760,
-        "cargo_aircraft_movements": 427,
-        "source_org": "ONDA",
-        "source_url": "https://www.onda.ma/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 16200,
-        "mail_throughput_tons": 720,
-        "cargo_aircraft_movements": 405,
-        "source_org": "ONDA",
-        "source_url": "https://www.onda.ma/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 15300,
-        "mail_throughput_tons": 680,
-        "cargo_aircraft_movements": 382,
-        "source_org": "ONDA",
-        "source_url": "https://www.onda.ma/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 13500,
-        "mail_throughput_tons": 600,
-        "cargo_aircraft_movements": 337,
         "source_org": "ONDA",
         "source_url": "https://www.onda.ma/"
       }
@@ -847,38 +590,6 @@
         "cargo_throughput_tons": 32000,
         "mail_throughput_tons": 1200,
         "cargo_aircraft_movements": 750,
-        "source_org": "ONDA",
-        "source_url": "https://www.onda.ma/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 30400,
-        "mail_throughput_tons": 1140,
-        "cargo_aircraft_movements": 712,
-        "source_org": "ONDA",
-        "source_url": "https://www.onda.ma/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 28800,
-        "mail_throughput_tons": 1080,
-        "cargo_aircraft_movements": 675,
-        "source_org": "ONDA",
-        "source_url": "https://www.onda.ma/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 27200,
-        "mail_throughput_tons": 1020,
-        "cargo_aircraft_movements": 637,
-        "source_org": "ONDA",
-        "source_url": "https://www.onda.ma/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 24000,
-        "mail_throughput_tons": 900,
-        "cargo_aircraft_movements": 562,
         "source_org": "ONDA",
         "source_url": "https://www.onda.ma/"
       }
@@ -915,38 +626,6 @@
         "cargo_throughput_tons": 125000,
         "mail_throughput_tons": 6800,
         "cargo_aircraft_movements": 3200,
-        "source_org": "FAAN",
-        "source_url": "https://www.faan.gov.ng/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 118750,
-        "mail_throughput_tons": 6460,
-        "cargo_aircraft_movements": 3040,
-        "source_org": "FAAN",
-        "source_url": "https://www.faan.gov.ng/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 112500,
-        "mail_throughput_tons": 6120,
-        "cargo_aircraft_movements": 2880,
-        "source_org": "FAAN",
-        "source_url": "https://www.faan.gov.ng/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 106250,
-        "mail_throughput_tons": 5780,
-        "cargo_aircraft_movements": 2720,
-        "source_org": "FAAN",
-        "source_url": "https://www.faan.gov.ng/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 93750,
-        "mail_throughput_tons": 5100,
-        "cargo_aircraft_movements": 2400,
         "source_org": "FAAN",
         "source_url": "https://www.faan.gov.ng/"
       }
@@ -1015,38 +694,6 @@
         "cargo_aircraft_movements": 1100,
         "source_org": "FAAN",
         "source_url": "https://www.faan.gov.ng/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 45600,
-        "mail_throughput_tons": 2090,
-        "cargo_aircraft_movements": 1045,
-        "source_org": "FAAN",
-        "source_url": "https://www.faan.gov.ng/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 43200,
-        "mail_throughput_tons": 1980,
-        "cargo_aircraft_movements": 990,
-        "source_org": "FAAN",
-        "source_url": "https://www.faan.gov.ng/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 40800,
-        "mail_throughput_tons": 1870,
-        "cargo_aircraft_movements": 935,
-        "source_org": "FAAN",
-        "source_url": "https://www.faan.gov.ng/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 36000,
-        "mail_throughput_tons": 1650,
-        "cargo_aircraft_movements": 825,
-        "source_org": "FAAN",
-        "source_url": "https://www.faan.gov.ng/"
       }
     ],
     "actors": [
@@ -1080,39 +727,6 @@
         "year": 2024,
         "cargo_throughput_tons": 32000,
         "mail_throughput_tons": 1500,
-        "cargo_aircraft_movements": 800,
-        "source_org": "FAAN",
-        "source_url": "https://www.faan.gov.ng/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 30400,
-        "mail_throughput_tons": 1425,
-        "cargo_aircraft_movements": 760,
-        "source_org": "FAAN",
-        "source_url": "https://www.faan.gov.ng/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 28800,
-        "mail_throughput_tons": 1350,
-        "cargo_aircraft_movements": 720,
-        "source_org": "FAAN",
-        "source_url": "https://www.faan.gov.ng/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 27200,
-        "mail_throughput_tons": 1275,
-        "cargo_aircraft_movements": 680,
-        "source_org": "FAAN",
-        "source_url": "https://www.faan.gov.ng/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 24000,
-        "mail_throughput_tons": 1125,
-        "cargo_aircraft_movements": 600,
         "source_org": "FAAN",
         "source_url": "https://www.faan.gov.ng/"
       }
@@ -1144,38 +758,6 @@
         "cargo_throughput_tons": 82500,
         "mail_throughput_tons": 3800,
         "cargo_aircraft_movements": 2100,
-        "source_org": "AERIA",
-        "source_url": "https://www.aeria-ci.com/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 78375,
-        "mail_throughput_tons": 3610,
-        "cargo_aircraft_movements": 1995,
-        "source_org": "AERIA",
-        "source_url": "https://www.aeria-ci.com/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 74250,
-        "mail_throughput_tons": 3420,
-        "cargo_aircraft_movements": 1890,
-        "source_org": "AERIA",
-        "source_url": "https://www.aeria-ci.com/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 70125,
-        "mail_throughput_tons": 3230,
-        "cargo_aircraft_movements": 1785,
-        "source_org": "AERIA",
-        "source_url": "https://www.aeria-ci.com/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 61875,
-        "mail_throughput_tons": 2850,
-        "cargo_aircraft_movements": 1575,
         "source_org": "AERIA",
         "source_url": "https://www.aeria-ci.com/"
       }
@@ -1244,38 +826,6 @@
         "cargo_aircraft_movements": 1900,
         "source_org": "GACL",
         "source_url": "https://www.gacl.com.gh/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 68400,
-        "mail_throughput_tons": 3040,
-        "cargo_aircraft_movements": 1805,
-        "source_org": "GACL",
-        "source_url": "https://www.gacl.com.gh/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 64800,
-        "mail_throughput_tons": 2880,
-        "cargo_aircraft_movements": 1710,
-        "source_org": "GACL",
-        "source_url": "https://www.gacl.com.gh/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 61200,
-        "mail_throughput_tons": 2720,
-        "cargo_aircraft_movements": 1615,
-        "source_org": "GACL",
-        "source_url": "https://www.gacl.com.gh/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 54000,
-        "mail_throughput_tons": 2400,
-        "cargo_aircraft_movements": 1425,
-        "source_org": "GACL",
-        "source_url": "https://www.gacl.com.gh/"
       }
     ],
     "actors": [
@@ -1330,38 +880,6 @@
         "cargo_aircraft_movements": 1500,
         "source_org": "EGSA Alger",
         "source_url": "https://www.egsa-alger.dz/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 58900,
-        "mail_throughput_tons": 2660,
-        "cargo_aircraft_movements": 1425,
-        "source_org": "EGSA Alger",
-        "source_url": "https://www.egsa-alger.dz/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 55800,
-        "mail_throughput_tons": 2520,
-        "cargo_aircraft_movements": 1350,
-        "source_org": "EGSA Alger",
-        "source_url": "https://www.egsa-alger.dz/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 52700,
-        "mail_throughput_tons": 2380,
-        "cargo_aircraft_movements": 1275,
-        "source_org": "EGSA Alger",
-        "source_url": "https://www.egsa-alger.dz/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 46500,
-        "mail_throughput_tons": 2100,
-        "cargo_aircraft_movements": 1125,
-        "source_org": "EGSA Alger",
-        "source_url": "https://www.egsa-alger.dz/"
       }
     ],
     "actors": [
@@ -1408,39 +926,6 @@
         "year": 2024,
         "cargo_throughput_tons": 22000,
         "mail_throughput_tons": 900,
-        "cargo_aircraft_movements": 550,
-        "source_org": "EGSA Alger",
-        "source_url": "https://www.egsa-alger.dz/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 20900,
-        "mail_throughput_tons": 855,
-        "cargo_aircraft_movements": 522,
-        "source_org": "EGSA Alger",
-        "source_url": "https://www.egsa-alger.dz/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 19800,
-        "mail_throughput_tons": 810,
-        "cargo_aircraft_movements": 495,
-        "source_org": "EGSA Alger",
-        "source_url": "https://www.egsa-alger.dz/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 18700,
-        "mail_throughput_tons": 765,
-        "cargo_aircraft_movements": 467,
-        "source_org": "EGSA Alger",
-        "source_url": "https://www.egsa-alger.dz/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 16500,
-        "mail_throughput_tons": 675,
-        "cargo_aircraft_movements": 412,
         "source_org": "EGSA Alger",
         "source_url": "https://www.egsa-alger.dz/"
       }
@@ -1470,40 +955,7 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 15000,
-        "mail_throughput_tons": 600,
         "cargo_aircraft_movements": 400,
-        "source_org": "EGSA Alger",
-        "source_url": "https://www.egsa-alger.dz/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 14250,
-        "mail_throughput_tons": 570,
-        "cargo_aircraft_movements": 380,
-        "source_org": "EGSA Alger",
-        "source_url": "https://www.egsa-alger.dz/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 13500,
-        "mail_throughput_tons": 540,
-        "cargo_aircraft_movements": 360,
-        "source_org": "EGSA Alger",
-        "source_url": "https://www.egsa-alger.dz/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 12750,
-        "mail_throughput_tons": 510,
-        "cargo_aircraft_movements": 340,
-        "source_org": "EGSA Alger",
-        "source_url": "https://www.egsa-alger.dz/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 11250,
-        "mail_throughput_tons": 450,
-        "cargo_aircraft_movements": 300,
         "source_org": "EGSA Alger",
         "source_url": "https://www.egsa-alger.dz/"
       }
@@ -1535,38 +987,6 @@
         "cargo_throughput_tons": 45000,
         "mail_throughput_tons": 2000,
         "cargo_aircraft_movements": 1100,
-        "source_org": "TAV Tunisie",
-        "source_url": "https://www.tunisair.com/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 42750,
-        "mail_throughput_tons": 1900,
-        "cargo_aircraft_movements": 1045,
-        "source_org": "TAV Tunisie",
-        "source_url": "https://www.tunisair.com/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 40500,
-        "mail_throughput_tons": 1800,
-        "cargo_aircraft_movements": 990,
-        "source_org": "TAV Tunisie",
-        "source_url": "https://www.tunisair.com/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 38250,
-        "mail_throughput_tons": 1700,
-        "cargo_aircraft_movements": 935,
-        "source_org": "TAV Tunisie",
-        "source_url": "https://www.tunisair.com/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 33750,
-        "mail_throughput_tons": 1500,
-        "cargo_aircraft_movements": 825,
         "source_org": "TAV Tunisie",
         "source_url": "https://www.tunisair.com/"
       }
@@ -1603,38 +1023,6 @@
         "cargo_throughput_tons": 78000,
         "mail_throughput_tons": 3500,
         "cargo_aircraft_movements": 1800,
-        "source_org": "AIBD",
-        "source_url": "https://www.aibd.sn/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 74100,
-        "mail_throughput_tons": 3325,
-        "cargo_aircraft_movements": 1710,
-        "source_org": "AIBD",
-        "source_url": "https://www.aibd.sn/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 70200,
-        "mail_throughput_tons": 3150,
-        "cargo_aircraft_movements": 1620,
-        "source_org": "AIBD",
-        "source_url": "https://www.aibd.sn/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 66300,
-        "mail_throughput_tons": 2975,
-        "cargo_aircraft_movements": 1530,
-        "source_org": "AIBD",
-        "source_url": "https://www.aibd.sn/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 58500,
-        "mail_throughput_tons": 2625,
-        "cargo_aircraft_movements": 1350,
         "source_org": "AIBD",
         "source_url": "https://www.aibd.sn/"
       }
@@ -1691,38 +1079,6 @@
         "cargo_aircraft_movements": 2000,
         "source_org": "ENANA",
         "source_url": "https://www.enana.co.ao/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 80750,
-        "mail_throughput_tons": 3040,
-        "cargo_aircraft_movements": 1900,
-        "source_org": "ENANA",
-        "source_url": "https://www.enana.co.ao/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 76500,
-        "mail_throughput_tons": 2880,
-        "cargo_aircraft_movements": 1800,
-        "source_org": "ENANA",
-        "source_url": "https://www.enana.co.ao/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 72250,
-        "mail_throughput_tons": 2720,
-        "cargo_aircraft_movements": 1700,
-        "source_org": "ENANA",
-        "source_url": "https://www.enana.co.ao/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 63750,
-        "mail_throughput_tons": 2400,
-        "cargo_aircraft_movements": 1500,
-        "source_org": "ENANA",
-        "source_url": "https://www.enana.co.ao/"
       }
     ],
     "actors": [
@@ -1772,38 +1128,6 @@
         "cargo_aircraft_movements": 1600,
         "source_org": "TAA",
         "source_url": "https://www.taa.go.tz/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 64600,
-        "mail_throughput_tons": 2660,
-        "cargo_aircraft_movements": 1520,
-        "source_org": "TAA",
-        "source_url": "https://www.taa.go.tz/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 61200,
-        "mail_throughput_tons": 2520,
-        "cargo_aircraft_movements": 1440,
-        "source_org": "TAA",
-        "source_url": "https://www.taa.go.tz/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 57800,
-        "mail_throughput_tons": 2380,
-        "cargo_aircraft_movements": 1360,
-        "source_org": "TAA",
-        "source_url": "https://www.taa.go.tz/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 51000,
-        "mail_throughput_tons": 2100,
-        "cargo_aircraft_movements": 1200,
-        "source_org": "TAA",
-        "source_url": "https://www.taa.go.tz/"
       }
     ],
     "actors": [
@@ -1850,39 +1174,6 @@
         "year": 2024,
         "cargo_throughput_tons": 32000,
         "mail_throughput_tons": 1200,
-        "cargo_aircraft_movements": 800,
-        "source_org": "TAA",
-        "source_url": "https://www.taa.go.tz/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 30400,
-        "mail_throughput_tons": 1140,
-        "cargo_aircraft_movements": 760,
-        "source_org": "TAA",
-        "source_url": "https://www.taa.go.tz/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 28800,
-        "mail_throughput_tons": 1080,
-        "cargo_aircraft_movements": 720,
-        "source_org": "TAA",
-        "source_url": "https://www.taa.go.tz/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 27200,
-        "mail_throughput_tons": 1020,
-        "cargo_aircraft_movements": 680,
-        "source_org": "TAA",
-        "source_url": "https://www.taa.go.tz/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 24000,
-        "mail_throughput_tons": 900,
-        "cargo_aircraft_movements": 600,
         "source_org": "TAA",
         "source_url": "https://www.taa.go.tz/"
       }
@@ -1917,40 +1208,7 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 55000,
-        "mail_throughput_tons": 2200,
         "cargo_aircraft_movements": 1300,
-        "source_org": "CAA Uganda",
-        "source_url": "https://www.caa.co.ug/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 52250,
-        "mail_throughput_tons": 2090,
-        "cargo_aircraft_movements": 1235,
-        "source_org": "CAA Uganda",
-        "source_url": "https://www.caa.co.ug/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 49500,
-        "mail_throughput_tons": 1980,
-        "cargo_aircraft_movements": 1170,
-        "source_org": "CAA Uganda",
-        "source_url": "https://www.caa.co.ug/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 46750,
-        "mail_throughput_tons": 1870,
-        "cargo_aircraft_movements": 1105,
-        "source_org": "CAA Uganda",
-        "source_url": "https://www.caa.co.ug/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 41250,
-        "mail_throughput_tons": 1650,
-        "cargo_aircraft_movements": 975,
         "source_org": "CAA Uganda",
         "source_url": "https://www.caa.co.ug/"
       }
@@ -1994,38 +1252,6 @@
         "cargo_aircraft_movements": 1000,
         "source_org": "RwandAir",
         "source_url": "https://www.rwandair.com/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 39900,
-        "mail_throughput_tons": 1710,
-        "cargo_aircraft_movements": 950,
-        "source_org": "RwandAir",
-        "source_url": "https://www.rwandair.com/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 37800,
-        "mail_throughput_tons": 1620,
-        "cargo_aircraft_movements": 900,
-        "source_org": "RwandAir",
-        "source_url": "https://www.rwandair.com/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 35700,
-        "mail_throughput_tons": 1530,
-        "cargo_aircraft_movements": 850,
-        "source_org": "RwandAir",
-        "source_url": "https://www.rwandair.com/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 31500,
-        "mail_throughput_tons": 1350,
-        "cargo_aircraft_movements": 750,
-        "source_org": "RwandAir",
-        "source_url": "https://www.rwandair.com/"
       }
     ],
     "actors": [
@@ -2065,38 +1291,6 @@
         "cargo_throughput_tons": 38000,
         "mail_throughput_tons": 1600,
         "cargo_aircraft_movements": 900,
-        "source_org": "ADC",
-        "source_url": "https://www.adccameroun.com/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 36100,
-        "mail_throughput_tons": 1520,
-        "cargo_aircraft_movements": 855,
-        "source_org": "ADC",
-        "source_url": "https://www.adccameroun.com/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 34200,
-        "mail_throughput_tons": 1440,
-        "cargo_aircraft_movements": 810,
-        "source_org": "ADC",
-        "source_url": "https://www.adccameroun.com/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 32300,
-        "mail_throughput_tons": 1360,
-        "cargo_aircraft_movements": 765,
-        "source_org": "ADC",
-        "source_url": "https://www.adccameroun.com/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 28500,
-        "mail_throughput_tons": 1200,
-        "cargo_aircraft_movements": 675,
         "source_org": "ADC",
         "source_url": "https://www.adccameroun.com/"
       }
@@ -2140,38 +1334,6 @@
         "cargo_aircraft_movements": 1200,
         "source_org": "RVA",
         "source_url": "https://www.rva.cd/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 49400,
-        "mail_throughput_tons": 1900,
-        "cargo_aircraft_movements": 1140,
-        "source_org": "RVA",
-        "source_url": "https://www.rva.cd/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 46800,
-        "mail_throughput_tons": 1800,
-        "cargo_aircraft_movements": 1080,
-        "source_org": "RVA",
-        "source_url": "https://www.rva.cd/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 44200,
-        "mail_throughput_tons": 1700,
-        "cargo_aircraft_movements": 1020,
-        "source_org": "RVA",
-        "source_url": "https://www.rva.cd/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 39000,
-        "mail_throughput_tons": 1500,
-        "cargo_aircraft_movements": 900,
-        "source_org": "RVA",
-        "source_url": "https://www.rva.cd/"
       }
     ],
     "actors": [
@@ -2208,38 +1370,6 @@
         "cargo_aircraft_movements": 850,
         "source_org": "RVA",
         "source_url": "https://www.rva.cd/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 33250,
-        "mail_throughput_tons": 1140,
-        "cargo_aircraft_movements": 807,
-        "source_org": "RVA",
-        "source_url": "https://www.rva.cd/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 31500,
-        "mail_throughput_tons": 1080,
-        "cargo_aircraft_movements": 765,
-        "source_org": "RVA",
-        "source_url": "https://www.rva.cd/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 29750,
-        "mail_throughput_tons": 1020,
-        "cargo_aircraft_movements": 722,
-        "source_org": "RVA",
-        "source_url": "https://www.rva.cd/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 26250,
-        "mail_throughput_tons": 900,
-        "cargo_aircraft_movements": 637,
-        "source_org": "RVA",
-        "source_url": "https://www.rva.cd/"
       }
     ],
     "actors": [
@@ -2268,39 +1398,6 @@
         "year": 2024,
         "cargo_throughput_tons": 28000,
         "mail_throughput_tons": 1000,
-        "cargo_aircraft_movements": 700,
-        "source_org": "ANAC Gabon",
-        "source_url": "https://www.anac-gabon.org/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 26600,
-        "mail_throughput_tons": 950,
-        "cargo_aircraft_movements": 665,
-        "source_org": "ANAC Gabon",
-        "source_url": "https://www.anac-gabon.org/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 25200,
-        "mail_throughput_tons": 900,
-        "cargo_aircraft_movements": 630,
-        "source_org": "ANAC Gabon",
-        "source_url": "https://www.anac-gabon.org/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 23800,
-        "mail_throughput_tons": 850,
-        "cargo_aircraft_movements": 595,
-        "source_org": "ANAC Gabon",
-        "source_url": "https://www.anac-gabon.org/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 21000,
-        "mail_throughput_tons": 750,
-        "cargo_aircraft_movements": 525,
         "source_org": "ANAC Gabon",
         "source_url": "https://www.anac-gabon.org/"
       }
@@ -2339,38 +1436,6 @@
         "cargo_aircraft_movements": 1000,
         "source_org": "ZACL",
         "source_url": "https://www.zacl.co.zm/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 39900,
-        "mail_throughput_tons": 1520,
-        "cargo_aircraft_movements": 950,
-        "source_org": "ZACL",
-        "source_url": "https://www.zacl.co.zm/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 37800,
-        "mail_throughput_tons": 1440,
-        "cargo_aircraft_movements": 900,
-        "source_org": "ZACL",
-        "source_url": "https://www.zacl.co.zm/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 35700,
-        "mail_throughput_tons": 1360,
-        "cargo_aircraft_movements": 850,
-        "source_org": "ZACL",
-        "source_url": "https://www.zacl.co.zm/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 31500,
-        "mail_throughput_tons": 1200,
-        "cargo_aircraft_movements": 750,
-        "source_org": "ZACL",
-        "source_url": "https://www.zacl.co.zm/"
       }
     ],
     "actors": [
@@ -2403,40 +1468,7 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 35000,
-        "mail_throughput_tons": 1400,
         "cargo_aircraft_movements": 850,
-        "source_org": "CAAZ",
-        "source_url": "https://www.caaz.co.zw/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 33250,
-        "mail_throughput_tons": 1330,
-        "cargo_aircraft_movements": 807,
-        "source_org": "CAAZ",
-        "source_url": "https://www.caaz.co.zw/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 31500,
-        "mail_throughput_tons": 1260,
-        "cargo_aircraft_movements": 765,
-        "source_org": "CAAZ",
-        "source_url": "https://www.caaz.co.zw/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 29750,
-        "mail_throughput_tons": 1190,
-        "cargo_aircraft_movements": 722,
-        "source_org": "CAAZ",
-        "source_url": "https://www.caaz.co.zw/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 26250,
-        "mail_throughput_tons": 1050,
-        "cargo_aircraft_movements": 637,
         "source_org": "CAAZ",
         "source_url": "https://www.caaz.co.zw/"
       }
@@ -2472,39 +1504,6 @@
         "year": 2024,
         "cargo_throughput_tons": 32000,
         "mail_throughput_tons": 1200,
-        "cargo_aircraft_movements": 800,
-        "source_org": "ADM",
-        "source_url": "https://www.aeroportosdemocambique.co.mz/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 30400,
-        "mail_throughput_tons": 1140,
-        "cargo_aircraft_movements": 760,
-        "source_org": "ADM",
-        "source_url": "https://www.aeroportosdemocambique.co.mz/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 28800,
-        "mail_throughput_tons": 1080,
-        "cargo_aircraft_movements": 720,
-        "source_org": "ADM",
-        "source_url": "https://www.aeroportosdemocambique.co.mz/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 27200,
-        "mail_throughput_tons": 1020,
-        "cargo_aircraft_movements": 680,
-        "source_org": "ADM",
-        "source_url": "https://www.aeroportosdemocambique.co.mz/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 24000,
-        "mail_throughput_tons": 900,
-        "cargo_aircraft_movements": 600,
         "source_org": "ADM",
         "source_url": "https://www.aeroportosdemocambique.co.mz/"
       }
@@ -2540,39 +1539,6 @@
         "year": 2024,
         "cargo_throughput_tons": 18000,
         "mail_throughput_tons": 700,
-        "cargo_aircraft_movements": 450,
-        "source_org": "CAAB",
-        "source_url": "https://www.caab.co.bw/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 17100,
-        "mail_throughput_tons": 665,
-        "cargo_aircraft_movements": 427,
-        "source_org": "CAAB",
-        "source_url": "https://www.caab.co.bw/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 16200,
-        "mail_throughput_tons": 630,
-        "cargo_aircraft_movements": 405,
-        "source_org": "CAAB",
-        "source_url": "https://www.caab.co.bw/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 15300,
-        "mail_throughput_tons": 595,
-        "cargo_aircraft_movements": 382,
-        "source_org": "CAAB",
-        "source_url": "https://www.caab.co.bw/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 13500,
-        "mail_throughput_tons": 525,
-        "cargo_aircraft_movements": 337,
         "source_org": "CAAB",
         "source_url": "https://www.caab.co.bw/"
       }
@@ -2603,39 +1569,6 @@
         "year": 2024,
         "cargo_throughput_tons": 24000,
         "mail_throughput_tons": 900,
-        "cargo_aircraft_movements": 600,
-        "source_org": "NAC",
-        "source_url": "https://www.nacsl.com.na/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 22800,
-        "mail_throughput_tons": 855,
-        "cargo_aircraft_movements": 570,
-        "source_org": "NAC",
-        "source_url": "https://www.nacsl.com.na/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 21600,
-        "mail_throughput_tons": 810,
-        "cargo_aircraft_movements": 540,
-        "source_org": "NAC",
-        "source_url": "https://www.nacsl.com.na/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 20400,
-        "mail_throughput_tons": 765,
-        "cargo_aircraft_movements": 510,
-        "source_org": "NAC",
-        "source_url": "https://www.nacsl.com.na/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 18000,
-        "mail_throughput_tons": 675,
-        "cargo_aircraft_movements": 450,
         "source_org": "NAC",
         "source_url": "https://www.nacsl.com.na/"
       }
@@ -2666,39 +1599,6 @@
         "year": 2024,
         "cargo_throughput_tons": 28000,
         "mail_throughput_tons": 1100,
-        "cargo_aircraft_movements": 700,
-        "source_org": "ADEMA",
-        "source_url": "https://www.adema.mg/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 26600,
-        "mail_throughput_tons": 1045,
-        "cargo_aircraft_movements": 665,
-        "source_org": "ADEMA",
-        "source_url": "https://www.adema.mg/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 25200,
-        "mail_throughput_tons": 990,
-        "cargo_aircraft_movements": 630,
-        "source_org": "ADEMA",
-        "source_url": "https://www.adema.mg/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 23800,
-        "mail_throughput_tons": 935,
-        "cargo_aircraft_movements": 595,
-        "source_org": "ADEMA",
-        "source_url": "https://www.adema.mg/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 21000,
-        "mail_throughput_tons": 825,
-        "cargo_aircraft_movements": 525,
         "source_org": "ADEMA",
         "source_url": "https://www.adema.mg/"
       }
@@ -2735,38 +1635,6 @@
         "cargo_throughput_tons": 52000,
         "mail_throughput_tons": 2200,
         "cargo_aircraft_movements": 1200,
-        "source_org": "AML",
-        "source_url": "https://www.aml.mru.aero/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 49400,
-        "mail_throughput_tons": 2090,
-        "cargo_aircraft_movements": 1140,
-        "source_org": "AML",
-        "source_url": "https://www.aml.mru.aero/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 46800,
-        "mail_throughput_tons": 1980,
-        "cargo_aircraft_movements": 1080,
-        "source_org": "AML",
-        "source_url": "https://www.aml.mru.aero/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 44200,
-        "mail_throughput_tons": 1870,
-        "cargo_aircraft_movements": 1020,
-        "source_org": "AML",
-        "source_url": "https://www.aml.mru.aero/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 39000,
-        "mail_throughput_tons": 1650,
-        "cargo_aircraft_movements": 900,
         "source_org": "AML",
         "source_url": "https://www.aml.mru.aero/"
       }
@@ -2807,39 +1675,6 @@
         "year": 2024,
         "cargo_throughput_tons": 22000,
         "mail_throughput_tons": 900,
-        "cargo_aircraft_movements": 550,
-        "source_org": "ADM Mali",
-        "source_url": "https://www.adm.ml/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 20900,
-        "mail_throughput_tons": 855,
-        "cargo_aircraft_movements": 522,
-        "source_org": "ADM Mali",
-        "source_url": "https://www.adm.ml/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 19800,
-        "mail_throughput_tons": 810,
-        "cargo_aircraft_movements": 495,
-        "source_org": "ADM Mali",
-        "source_url": "https://www.adm.ml/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 18700,
-        "mail_throughput_tons": 765,
-        "cargo_aircraft_movements": 467,
-        "source_org": "ADM Mali",
-        "source_url": "https://www.adm.ml/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 16500,
-        "mail_throughput_tons": 675,
-        "cargo_aircraft_movements": 412,
         "source_org": "ADM Mali",
         "source_url": "https://www.adm.ml/"
       }
@@ -2875,39 +1710,6 @@
         "year": 2024,
         "cargo_throughput_tons": 18000,
         "mail_throughput_tons": 750,
-        "cargo_aircraft_movements": 450,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 17100,
-        "mail_throughput_tons": 712,
-        "cargo_aircraft_movements": 427,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 16200,
-        "mail_throughput_tons": 675,
-        "cargo_aircraft_movements": 405,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 15300,
-        "mail_throughput_tons": 637,
-        "cargo_aircraft_movements": 382,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 13500,
-        "mail_throughput_tons": 562,
-        "cargo_aircraft_movements": 337,
         "source_org": "ASECNA",
         "source_url": "https://www.asecna.aero/"
       }
@@ -2942,40 +1744,7 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 25000,
-        "mail_throughput_tons": 1000,
         "cargo_aircraft_movements": 600,
-        "source_org": "ANACIM Guinée",
-        "source_url": "https://www.anacim-guinee.org/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 23750,
-        "mail_throughput_tons": 950,
-        "cargo_aircraft_movements": 570,
-        "source_org": "ANACIM Guinée",
-        "source_url": "https://www.anacim-guinee.org/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 22500,
-        "mail_throughput_tons": 900,
-        "cargo_aircraft_movements": 540,
-        "source_org": "ANACIM Guinée",
-        "source_url": "https://www.anacim-guinee.org/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 21250,
-        "mail_throughput_tons": 850,
-        "cargo_aircraft_movements": 510,
-        "source_org": "ANACIM Guinée",
-        "source_url": "https://www.anacim-guinee.org/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 18750,
-        "mail_throughput_tons": 750,
-        "cargo_aircraft_movements": 450,
         "source_org": "ANACIM Guinée",
         "source_url": "https://www.anacim-guinee.org/"
       }
@@ -3011,39 +1780,6 @@
         "year": 2024,
         "cargo_throughput_tons": 16000,
         "mail_throughput_tons": 650,
-        "cargo_aircraft_movements": 400,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 15200,
-        "mail_throughput_tons": 617,
-        "cargo_aircraft_movements": 380,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 14400,
-        "mail_throughput_tons": 585,
-        "cargo_aircraft_movements": 360,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 13600,
-        "mail_throughput_tons": 552,
-        "cargo_aircraft_movements": 340,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 12000,
-        "mail_throughput_tons": 487,
-        "cargo_aircraft_movements": 300,
         "source_org": "ASECNA",
         "source_url": "https://www.asecna.aero/"
       }
@@ -3079,39 +1815,6 @@
         "year": 2024,
         "cargo_throughput_tons": 28000,
         "mail_throughput_tons": 1100,
-        "cargo_aircraft_movements": 700,
-        "source_org": "ANAT",
-        "source_url": "https://www.anat.tg/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 26600,
-        "mail_throughput_tons": 1045,
-        "cargo_aircraft_movements": 665,
-        "source_org": "ANAT",
-        "source_url": "https://www.anat.tg/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 25200,
-        "mail_throughput_tons": 990,
-        "cargo_aircraft_movements": 630,
-        "source_org": "ANAT",
-        "source_url": "https://www.anat.tg/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 23800,
-        "mail_throughput_tons": 935,
-        "cargo_aircraft_movements": 595,
-        "source_org": "ANAT",
-        "source_url": "https://www.anat.tg/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 21000,
-        "mail_throughput_tons": 825,
-        "cargo_aircraft_movements": 525,
         "source_org": "ANAT",
         "source_url": "https://www.anat.tg/"
       }
@@ -3151,40 +1854,7 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 15000,
-        "mail_throughput_tons": 600,
         "cargo_aircraft_movements": 380,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 14250,
-        "mail_throughput_tons": 570,
-        "cargo_aircraft_movements": 361,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 13500,
-        "mail_throughput_tons": 540,
-        "cargo_aircraft_movements": 342,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 12750,
-        "mail_throughput_tons": 510,
-        "cargo_aircraft_movements": 323,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 11250,
-        "mail_throughput_tons": 450,
-        "cargo_aircraft_movements": 285,
         "source_org": "ASECNA",
         "source_url": "https://www.asecna.aero/"
       }
@@ -3219,40 +1889,6 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 20000,
-        "mail_throughput_tons": 800,
-        "cargo_aircraft_movements": 500,
-        "source_org": "Mauritania Airlines",
-        "source_url": "https://www.mauritaniaairlines.mr/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 19000,
-        "mail_throughput_tons": 760,
-        "cargo_aircraft_movements": 475,
-        "source_org": "Mauritania Airlines",
-        "source_url": "https://www.mauritaniaairlines.mr/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 18000,
-        "mail_throughput_tons": 720,
-        "cargo_aircraft_movements": 450,
-        "source_org": "Mauritania Airlines",
-        "source_url": "https://www.mauritaniaairlines.mr/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 17000,
-        "mail_throughput_tons": 680,
-        "cargo_aircraft_movements": 425,
-        "source_org": "Mauritania Airlines",
-        "source_url": "https://www.mauritaniaairlines.mr/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 15000,
-        "mail_throughput_tons": 600,
-        "cargo_aircraft_movements": 375,
         "source_org": "Mauritania Airlines",
         "source_url": "https://www.mauritaniaairlines.mr/"
       }
@@ -3288,39 +1924,6 @@
         "year": 2024,
         "cargo_throughput_tons": 18000,
         "mail_throughput_tons": 700,
-        "cargo_aircraft_movements": 450,
-        "source_org": "ADAC",
-        "source_url": "https://www.adac.td/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 17100,
-        "mail_throughput_tons": 665,
-        "cargo_aircraft_movements": 427,
-        "source_org": "ADAC",
-        "source_url": "https://www.adac.td/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 16200,
-        "mail_throughput_tons": 630,
-        "cargo_aircraft_movements": 405,
-        "source_org": "ADAC",
-        "source_url": "https://www.adac.td/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 15300,
-        "mail_throughput_tons": 595,
-        "cargo_aircraft_movements": 382,
-        "source_org": "ADAC",
-        "source_url": "https://www.adac.td/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 13500,
-        "mail_throughput_tons": 525,
-        "cargo_aircraft_movements": 337,
         "source_org": "ADAC",
         "source_url": "https://www.adac.td/"
       }
@@ -3356,39 +1959,6 @@
         "year": 2024,
         "cargo_throughput_tons": 22000,
         "mail_throughput_tons": 850,
-        "cargo_aircraft_movements": 550,
-        "source_org": "ANAC Congo",
-        "source_url": "https://www.anac-congo.org/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 20900,
-        "mail_throughput_tons": 807,
-        "cargo_aircraft_movements": 522,
-        "source_org": "ANAC Congo",
-        "source_url": "https://www.anac-congo.org/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 19800,
-        "mail_throughput_tons": 765,
-        "cargo_aircraft_movements": 495,
-        "source_org": "ANAC Congo",
-        "source_url": "https://www.anac-congo.org/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 18700,
-        "mail_throughput_tons": 722,
-        "cargo_aircraft_movements": 467,
-        "source_org": "ANAC Congo",
-        "source_url": "https://www.anac-congo.org/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 16500,
-        "mail_throughput_tons": 637,
-        "cargo_aircraft_movements": 412,
         "source_org": "ANAC Congo",
         "source_url": "https://www.anac-congo.org/"
       }
@@ -3424,39 +1994,6 @@
         "year": 2024,
         "cargo_throughput_tons": 12000,
         "mail_throughput_tons": 500,
-        "cargo_aircraft_movements": 300,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 11400,
-        "mail_throughput_tons": 475,
-        "cargo_aircraft_movements": 285,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 10800,
-        "mail_throughput_tons": 450,
-        "cargo_aircraft_movements": 270,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 10200,
-        "mail_throughput_tons": 425,
-        "cargo_aircraft_movements": 255,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 9000,
-        "mail_throughput_tons": 375,
-        "cargo_aircraft_movements": 225,
         "source_org": "ASECNA",
         "source_url": "https://www.asecna.aero/"
       }
@@ -3488,38 +2025,6 @@
         "cargo_throughput_tons": 38000,
         "mail_throughput_tons": 1500,
         "cargo_aircraft_movements": 900,
-        "source_org": "SOAD",
-        "source_url": "https://www.airport-djibouti.com/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 36100,
-        "mail_throughput_tons": 1425,
-        "cargo_aircraft_movements": 855,
-        "source_org": "SOAD",
-        "source_url": "https://www.airport-djibouti.com/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 34200,
-        "mail_throughput_tons": 1350,
-        "cargo_aircraft_movements": 810,
-        "source_org": "SOAD",
-        "source_url": "https://www.airport-djibouti.com/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 32300,
-        "mail_throughput_tons": 1275,
-        "cargo_aircraft_movements": 765,
-        "source_org": "SOAD",
-        "source_url": "https://www.airport-djibouti.com/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 28500,
-        "mail_throughput_tons": 1125,
-        "cargo_aircraft_movements": 675,
         "source_org": "SOAD",
         "source_url": "https://www.airport-djibouti.com/"
       }
@@ -3559,40 +2064,7 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 15000,
-        "mail_throughput_tons": 600,
         "cargo_aircraft_movements": 400,
-        "source_org": "Somali CAA",
-        "source_url": "https://www.scaa.so/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 14250,
-        "mail_throughput_tons": 570,
-        "cargo_aircraft_movements": 380,
-        "source_org": "Somali CAA",
-        "source_url": "https://www.scaa.so/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 13500,
-        "mail_throughput_tons": 540,
-        "cargo_aircraft_movements": 360,
-        "source_org": "Somali CAA",
-        "source_url": "https://www.scaa.so/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 12750,
-        "mail_throughput_tons": 510,
-        "cargo_aircraft_movements": 340,
-        "source_org": "Somali CAA",
-        "source_url": "https://www.scaa.so/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 11250,
-        "mail_throughput_tons": 450,
-        "cargo_aircraft_movements": 300,
         "source_org": "Somali CAA",
         "source_url": "https://www.scaa.so/"
       }
@@ -3627,40 +2099,6 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 10000,
-        "mail_throughput_tons": 400,
-        "cargo_aircraft_movements": 250,
-        "source_org": "RCA Burundi",
-        "source_url": "https://www.rca.gov.bi/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 9500,
-        "mail_throughput_tons": 380,
-        "cargo_aircraft_movements": 237,
-        "source_org": "RCA Burundi",
-        "source_url": "https://www.rca.gov.bi/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 9000,
-        "mail_throughput_tons": 360,
-        "cargo_aircraft_movements": 225,
-        "source_org": "RCA Burundi",
-        "source_url": "https://www.rca.gov.bi/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 8500,
-        "mail_throughput_tons": 340,
-        "cargo_aircraft_movements": 212,
-        "source_org": "RCA Burundi",
-        "source_url": "https://www.rca.gov.bi/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 7500,
-        "mail_throughput_tons": 300,
-        "cargo_aircraft_movements": 187,
         "source_org": "RCA Burundi",
         "source_url": "https://www.rca.gov.bi/"
       }
@@ -3696,39 +2134,6 @@
         "year": 2024,
         "cargo_throughput_tons": 18000,
         "mail_throughput_tons": 700,
-        "cargo_aircraft_movements": 450,
-        "source_org": "AHL",
-        "source_url": "https://www.airportsmalawi.com/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 17100,
-        "mail_throughput_tons": 665,
-        "cargo_aircraft_movements": 427,
-        "source_org": "AHL",
-        "source_url": "https://www.airportsmalawi.com/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 16200,
-        "mail_throughput_tons": 630,
-        "cargo_aircraft_movements": 405,
-        "source_org": "AHL",
-        "source_url": "https://www.airportsmalawi.com/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 15300,
-        "mail_throughput_tons": 595,
-        "cargo_aircraft_movements": 382,
-        "source_org": "AHL",
-        "source_url": "https://www.airportsmalawi.com/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 13500,
-        "mail_throughput_tons": 525,
-        "cargo_aircraft_movements": 337,
         "source_org": "AHL",
         "source_url": "https://www.airportsmalawi.com/"
       }
@@ -3764,39 +2169,6 @@
         "year": 2024,
         "cargo_throughput_tons": 22000,
         "mail_throughput_tons": 900,
-        "cargo_aircraft_movements": 550,
-        "source_org": "SCAA",
-        "source_url": "https://www.scaa.sc/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 20900,
-        "mail_throughput_tons": 855,
-        "cargo_aircraft_movements": 522,
-        "source_org": "SCAA",
-        "source_url": "https://www.scaa.sc/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 19800,
-        "mail_throughput_tons": 810,
-        "cargo_aircraft_movements": 495,
-        "source_org": "SCAA",
-        "source_url": "https://www.scaa.sc/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 18700,
-        "mail_throughput_tons": 765,
-        "cargo_aircraft_movements": 467,
-        "source_org": "SCAA",
-        "source_url": "https://www.scaa.sc/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 16500,
-        "mail_throughput_tons": 675,
-        "cargo_aircraft_movements": 412,
         "source_org": "SCAA",
         "source_url": "https://www.scaa.sc/"
       }
@@ -3836,40 +2208,7 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 25000,
-        "mail_throughput_tons": 1000,
         "cargo_aircraft_movements": 600,
-        "source_org": "LYCAA",
-        "source_url": "https://www.lycaa.ly/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 23750,
-        "mail_throughput_tons": 950,
-        "cargo_aircraft_movements": 570,
-        "source_org": "LYCAA",
-        "source_url": "https://www.lycaa.ly/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 22500,
-        "mail_throughput_tons": 900,
-        "cargo_aircraft_movements": 540,
-        "source_org": "LYCAA",
-        "source_url": "https://www.lycaa.ly/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 21250,
-        "mail_throughput_tons": 850,
-        "cargo_aircraft_movements": 510,
-        "source_org": "LYCAA",
-        "source_url": "https://www.lycaa.ly/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 18750,
-        "mail_throughput_tons": 750,
-        "cargo_aircraft_movements": 450,
         "source_org": "LYCAA",
         "source_url": "https://www.lycaa.ly/"
       }
@@ -3905,39 +2244,6 @@
         "year": 2024,
         "cargo_throughput_tons": 12000,
         "mail_throughput_tons": 500,
-        "cargo_aircraft_movements": 300,
-        "source_org": "SLCAA",
-        "source_url": "https://www.slcaa.gov.sl/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 11400,
-        "mail_throughput_tons": 475,
-        "cargo_aircraft_movements": 285,
-        "source_org": "SLCAA",
-        "source_url": "https://www.slcaa.gov.sl/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 10800,
-        "mail_throughput_tons": 450,
-        "cargo_aircraft_movements": 270,
-        "source_org": "SLCAA",
-        "source_url": "https://www.slcaa.gov.sl/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 10200,
-        "mail_throughput_tons": 425,
-        "cargo_aircraft_movements": 255,
-        "source_org": "SLCAA",
-        "source_url": "https://www.slcaa.gov.sl/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 9000,
-        "mail_throughput_tons": 375,
-        "cargo_aircraft_movements": 225,
         "source_org": "SLCAA",
         "source_url": "https://www.slcaa.gov.sl/"
       }
@@ -3967,40 +2273,7 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 15000,
-        "mail_throughput_tons": 600,
         "cargo_aircraft_movements": 380,
-        "source_org": "LACAA",
-        "source_url": "https://www.lacaa.gov.lr/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 14250,
-        "mail_throughput_tons": 570,
-        "cargo_aircraft_movements": 361,
-        "source_org": "LACAA",
-        "source_url": "https://www.lacaa.gov.lr/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 13500,
-        "mail_throughput_tons": 540,
-        "cargo_aircraft_movements": 342,
-        "source_org": "LACAA",
-        "source_url": "https://www.lacaa.gov.lr/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 12750,
-        "mail_throughput_tons": 510,
-        "cargo_aircraft_movements": 323,
-        "source_org": "LACAA",
-        "source_url": "https://www.lacaa.gov.lr/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 11250,
-        "mail_throughput_tons": 450,
-        "cargo_aircraft_movements": 285,
         "source_org": "LACAA",
         "source_url": "https://www.lacaa.gov.lr/"
       }
@@ -4036,39 +2309,6 @@
         "year": 2024,
         "cargo_throughput_tons": 18000,
         "mail_throughput_tons": 700,
-        "cargo_aircraft_movements": 450,
-        "source_org": "SOMAGEC",
-        "source_url": "https://www.ceiba-intercontinental.com/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 17100,
-        "mail_throughput_tons": 665,
-        "cargo_aircraft_movements": 427,
-        "source_org": "SOMAGEC",
-        "source_url": "https://www.ceiba-intercontinental.com/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 16200,
-        "mail_throughput_tons": 630,
-        "cargo_aircraft_movements": 405,
-        "source_org": "SOMAGEC",
-        "source_url": "https://www.ceiba-intercontinental.com/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 15300,
-        "mail_throughput_tons": 595,
-        "cargo_aircraft_movements": 382,
-        "source_org": "SOMAGEC",
-        "source_url": "https://www.ceiba-intercontinental.com/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 13500,
-        "mail_throughput_tons": 525,
-        "cargo_aircraft_movements": 337,
         "source_org": "SOMAGEC",
         "source_url": "https://www.ceiba-intercontinental.com/"
       }
@@ -4098,40 +2338,7 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 5000,
-        "mail_throughput_tons": 200,
         "cargo_aircraft_movements": 150,
-        "source_org": "LACAA Lesotho",
-        "source_url": "https://www.lesotho-tourism.com/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 4750,
-        "mail_throughput_tons": 190,
-        "cargo_aircraft_movements": 142,
-        "source_org": "LACAA Lesotho",
-        "source_url": "https://www.lesotho-tourism.com/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 4500,
-        "mail_throughput_tons": 180,
-        "cargo_aircraft_movements": 135,
-        "source_org": "LACAA Lesotho",
-        "source_url": "https://www.lesotho-tourism.com/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 4250,
-        "mail_throughput_tons": 170,
-        "cargo_aircraft_movements": 127,
-        "source_org": "LACAA Lesotho",
-        "source_url": "https://www.lesotho-tourism.com/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 3750,
-        "mail_throughput_tons": 150,
-        "cargo_aircraft_movements": 112,
         "source_org": "LACAA Lesotho",
         "source_url": "https://www.lesotho-tourism.com/"
       }
@@ -4162,39 +2369,6 @@
         "year": 2024,
         "cargo_throughput_tons": 8000,
         "mail_throughput_tons": 300,
-        "cargo_aircraft_movements": 200,
-        "source_org": "ESWACAA",
-        "source_url": "https://www.eswacaa.co.sz/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 7600,
-        "mail_throughput_tons": 285,
-        "cargo_aircraft_movements": 190,
-        "source_org": "ESWACAA",
-        "source_url": "https://www.eswacaa.co.sz/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 7200,
-        "mail_throughput_tons": 270,
-        "cargo_aircraft_movements": 180,
-        "source_org": "ESWACAA",
-        "source_url": "https://www.eswacaa.co.sz/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 6800,
-        "mail_throughput_tons": 255,
-        "cargo_aircraft_movements": 170,
-        "source_org": "ESWACAA",
-        "source_url": "https://www.eswacaa.co.sz/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 6000,
-        "mail_throughput_tons": 225,
-        "cargo_aircraft_movements": 150,
         "source_org": "ESWACAA",
         "source_url": "https://www.eswacaa.co.sz/"
       }
@@ -4224,40 +2398,6 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 10000,
-        "mail_throughput_tons": 400,
-        "cargo_aircraft_movements": 250,
-        "source_org": "ASA Cape Verde",
-        "source_url": "https://www.asa.cv/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 9500,
-        "mail_throughput_tons": 380,
-        "cargo_aircraft_movements": 237,
-        "source_org": "ASA Cape Verde",
-        "source_url": "https://www.asa.cv/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 9000,
-        "mail_throughput_tons": 360,
-        "cargo_aircraft_movements": 225,
-        "source_org": "ASA Cape Verde",
-        "source_url": "https://www.asa.cv/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 8500,
-        "mail_throughput_tons": 340,
-        "cargo_aircraft_movements": 212,
-        "source_org": "ASA Cape Verde",
-        "source_url": "https://www.asa.cv/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 7500,
-        "mail_throughput_tons": 300,
-        "cargo_aircraft_movements": 187,
         "source_org": "ASA Cape Verde",
         "source_url": "https://www.asa.cv/"
       }
@@ -4293,39 +2433,6 @@
         "year": 2024,
         "cargo_throughput_tons": 8000,
         "mail_throughput_tons": 300,
-        "cargo_aircraft_movements": 200,
-        "source_org": "GCAA",
-        "source_url": "https://www.gcaa.gm/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 7600,
-        "mail_throughput_tons": 285,
-        "cargo_aircraft_movements": 190,
-        "source_org": "GCAA",
-        "source_url": "https://www.gcaa.gm/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 7200,
-        "mail_throughput_tons": 270,
-        "cargo_aircraft_movements": 180,
-        "source_org": "GCAA",
-        "source_url": "https://www.gcaa.gm/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 6800,
-        "mail_throughput_tons": 255,
-        "cargo_aircraft_movements": 170,
-        "source_org": "GCAA",
-        "source_url": "https://www.gcaa.gm/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 6000,
-        "mail_throughput_tons": 225,
-        "cargo_aircraft_movements": 150,
         "source_org": "GCAA",
         "source_url": "https://www.gcaa.gm/"
       }
@@ -4355,40 +2462,7 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 5000,
-        "mail_throughput_tons": 200,
         "cargo_aircraft_movements": 150,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 4750,
-        "mail_throughput_tons": 190,
-        "cargo_aircraft_movements": 142,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 4500,
-        "mail_throughput_tons": 180,
-        "cargo_aircraft_movements": 135,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 4250,
-        "mail_throughput_tons": 170,
-        "cargo_aircraft_movements": 127,
-        "source_org": "ASECNA",
-        "source_url": "https://www.asecna.aero/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 3750,
-        "mail_throughput_tons": 150,
-        "cargo_aircraft_movements": 112,
         "source_org": "ASECNA",
         "source_url": "https://www.asecna.aero/"
       }
@@ -4419,39 +2493,6 @@
         "year": 2024,
         "cargo_throughput_tons": 8000,
         "mail_throughput_tons": 300,
-        "cargo_aircraft_movements": 200,
-        "source_org": "CAEA",
-        "source_url": "https://www.eritrea.be/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 7600,
-        "mail_throughput_tons": 285,
-        "cargo_aircraft_movements": 190,
-        "source_org": "CAEA",
-        "source_url": "https://www.eritrea.be/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 7200,
-        "mail_throughput_tons": 270,
-        "cargo_aircraft_movements": 180,
-        "source_org": "CAEA",
-        "source_url": "https://www.eritrea.be/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 6800,
-        "mail_throughput_tons": 255,
-        "cargo_aircraft_movements": 170,
-        "source_org": "CAEA",
-        "source_url": "https://www.eritrea.be/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 6000,
-        "mail_throughput_tons": 225,
-        "cargo_aircraft_movements": 150,
         "source_org": "CAEA",
         "source_url": "https://www.eritrea.be/"
       }
@@ -4482,39 +2523,6 @@
         "year": 2024,
         "cargo_throughput_tons": 4000,
         "mail_throughput_tons": 150,
-        "cargo_aircraft_movements": 100,
-        "source_org": "ENASA",
-        "source_url": "https://www.enasa-stp.com/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 3800,
-        "mail_throughput_tons": 142,
-        "cargo_aircraft_movements": 95,
-        "source_org": "ENASA",
-        "source_url": "https://www.enasa-stp.com/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 3600,
-        "mail_throughput_tons": 135,
-        "cargo_aircraft_movements": 90,
-        "source_org": "ENASA",
-        "source_url": "https://www.enasa-stp.com/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 3400,
-        "mail_throughput_tons": 127,
-        "cargo_aircraft_movements": 85,
-        "source_org": "ENASA",
-        "source_url": "https://www.enasa-stp.com/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 3000,
-        "mail_throughput_tons": 112,
-        "cargo_aircraft_movements": 75,
         "source_org": "ENASA",
         "source_url": "https://www.enasa-stp.com/"
       }
@@ -4545,39 +2553,6 @@
         "year": 2024,
         "cargo_throughput_tons": 16000,
         "mail_throughput_tons": 600,
-        "cargo_aircraft_movements": 400,
-        "source_org": "SSACAA",
-        "source_url": "https://www.ssacaa.org/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 15200,
-        "mail_throughput_tons": 570,
-        "cargo_aircraft_movements": 380,
-        "source_org": "SSACAA",
-        "source_url": "https://www.ssacaa.org/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 14400,
-        "mail_throughput_tons": 540,
-        "cargo_aircraft_movements": 360,
-        "source_org": "SSACAA",
-        "source_url": "https://www.ssacaa.org/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 13600,
-        "mail_throughput_tons": 510,
-        "cargo_aircraft_movements": 340,
-        "source_org": "SSACAA",
-        "source_url": "https://www.ssacaa.org/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 12000,
-        "mail_throughput_tons": 450,
-        "cargo_aircraft_movements": 300,
         "source_org": "SSACAA",
         "source_url": "https://www.ssacaa.org/"
       }
@@ -4612,40 +2587,7 @@
       {
         "year": 2024,
         "cargo_throughput_tons": 35000,
-        "mail_throughput_tons": 1400,
         "cargo_aircraft_movements": 850,
-        "source_org": "SCAA Sudan",
-        "source_url": "https://www.caassudan.gov.sd/"
-      },
-      {
-        "year": 2023,
-        "cargo_throughput_tons": 33250,
-        "mail_throughput_tons": 1330,
-        "cargo_aircraft_movements": 807,
-        "source_org": "SCAA Sudan",
-        "source_url": "https://www.caassudan.gov.sd/"
-      },
-      {
-        "year": 2022,
-        "cargo_throughput_tons": 31500,
-        "mail_throughput_tons": 1260,
-        "cargo_aircraft_movements": 765,
-        "source_org": "SCAA Sudan",
-        "source_url": "https://www.caassudan.gov.sd/"
-      },
-      {
-        "year": 2021,
-        "cargo_throughput_tons": 29750,
-        "mail_throughput_tons": 1190,
-        "cargo_aircraft_movements": 722,
-        "source_org": "SCAA Sudan",
-        "source_url": "https://www.caassudan.gov.sd/"
-      },
-      {
-        "year": 2020,
-        "cargo_throughput_tons": 26250,
-        "mail_throughput_tons": 1050,
-        "cargo_aircraft_movements": 637,
         "source_org": "SCAA Sudan",
         "source_url": "https://www.caassudan.gov.sd/"
       }

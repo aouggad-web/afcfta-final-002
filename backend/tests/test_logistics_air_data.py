@@ -11,11 +11,11 @@ if _backend_dir not in sys.path:
 from logistics_air_data import calculate_air_freight_cost, get_airport_by_id
 
 
-def test_enhanced_airport_fields_are_merged():
+def test_templated_airport_fields_are_not_served():
     airport = get_airport_by_id("ZAF-JNB-001")
     assert airport is not None
-    assert "airport_authority" in airport
-    assert "logistics_network" in airport
+    assert "airport_authority" not in airport
+    assert "logistics_network" not in airport
 
 
 def test_calculate_air_freight_cost_returns_breakdown():
