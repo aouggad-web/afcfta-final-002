@@ -294,7 +294,7 @@ export function specFichePortPdf(port, langue = 'fr') {
     { label: t.calls, value: num(stats.vessel_calls), sub: [an(stats.year), estime(stats)].filter(Boolean).join(' · '), accent: 'terra' },
     { label: t.dwell, value: unite(trs.container_dwell_time_days, u.days), sub: [an(trs.data_year), estime(trs)].filter(Boolean).join(' · '), accent: 'red' },
     { label: t.waiting, value: unite(metrics.avg_waiting_time_hours, u.h), sub: estime(metrics), accent: 'red' },
-    { label: t.lsci, value: num(lsci.value, 2), sub: [lsci.world_rank && t.worldRank(lsci.world_rank), an(lsci.year)].filter(Boolean).join(' · '), accent: 'green' },
+    { label: t.lsci, value: num(lsci.value, 2), sub: an(lsci.year), accent: 'green' },
   ];
 
   const sections = [];
@@ -438,7 +438,6 @@ export function specFichePortPdf(port, langue = 'fr') {
 
   const connectKv = [
     { label: t.lsciValue(an(lsci.year)), value: num(lsci.value, 2) },
-    { label: t.lsciRank, value: num(lsci.world_rank) },
     publiee(lsci.note) && { label: t.note, value: propre(lsci.note) },
     { label: t.lpi(an(lpi.year)), value: num(lpi.overall_score, 2) },
     estNombre(lpi.customs_score) && { label: t.lpiCustoms, value: num(lpi.customs_score, 2) },

@@ -97,3 +97,11 @@ def test_aucune_serie_de_fret_deduite_par_coefficients(client):
         fret = dernier.get("cargo_throughput_tons")
         assert dernier.get("cargo_aircraft_movements", 0) * 40 != fret, a["airport_id"]
         assert dernier.get("mail_throughput_tons", 0) * 25 != fret, a["airport_id"]
+
+
+def test_trafic_conteneurs_source_et_rang_lsci(ports):
+    for port in ports:
+        stats = port.get("latest_stats") or {}
+        if stats.get("container_throughput_teu") is not None:
+            assert str(stats.get("source") or "").strip().upper() not in ("", "NA", "N/A", "UNKNOWN")
+        assert "world_rank" not in (port.get("lsci") or {})

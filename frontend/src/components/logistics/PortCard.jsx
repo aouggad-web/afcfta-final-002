@@ -96,7 +96,7 @@ export default function PortCard({ port, onOpenDetails, language = 'fr' }) {
             <p className="text-base font-bold text-[var(--info)] truncate">
               {formatNumber(stats?.container_throughput_teu)}
             </p>
-            <p className="text-xs text-[var(--afcfta-muted)]">{stats?.year || 2024}{estime(stats)}</p>
+            <p className="text-xs text-[var(--afcfta-muted)]">{stats?.year ?? '—'}{estime(stats)}</p>
           </div>
           <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] p-2 rounded-lg border-l-4 border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
             <p className="text-xs font-semibold text-[var(--success)] mb-0.5">⚖️ {t.tonsYear.split('/')[0]}</p>
@@ -146,7 +146,6 @@ export default function PortCard({ port, onOpenDetails, language = 'fr' }) {
             <div className="bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] p-1.5 rounded text-center">
               <p className="text-xs font-semibold text-[var(--violet)]">LSCI</p>
               <p className="text-sm font-bold text-[var(--violet)]">{lsci.value}</p>
-              <p className="text-xs text-[var(--afcfta-muted)]">#{lsci.world_rank}</p>
             </div>
           )}
           {lpi && (

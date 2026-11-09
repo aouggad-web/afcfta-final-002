@@ -337,7 +337,7 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                   <p className="text-3xl font-bold text-blue-800">
                     {nombre(port.latest_stats?.container_throughput_teu)}
                   </p>
-                  <p className="text-xs text-blue-500 mt-1">{port.latest_stats?.year || 2024}{estime(port.latest_stats)}</p>
+                  <p className="text-xs text-blue-500 mt-1">{port.latest_stats?.year ?? '—'}{estime(port.latest_stats)}</p>
                 </CardContent>
               </Card>
               <Card className="bg-indigo-50 border-indigo-200">
@@ -645,7 +645,6 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                 </CardHeader>
                 <CardContent>
                   <p className="text-3xl font-bold text-blue-900">{port.lsci.value}</p>
-                  {port.lsci.world_rank && <p className="text-xs text-blue-600">{t.worldRank}: #{port.lsci.world_rank}</p>}
                 </CardContent>
               </Card>
               )}
