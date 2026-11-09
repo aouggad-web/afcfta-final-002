@@ -8,6 +8,7 @@ import TableauManager, { EVENEMENT_FIL } from './TableauManager';
 const serie = (debut, avantDernier, dernier) => [debut, ...Array(10).fill(debut), avantDernier, dernier];
 
 const APERCU = {
+  brent_jour: { prix: 107.03, date: '2026-11-03', source: 'EIA' },
   cours: {
     mois: '2026-10',
     mois_serie: [],
@@ -58,11 +59,17 @@ describe('TableauManager', () => {
     const brent = await screen.findByTestId('tuile-brent');
     expect(espaces(brent.textContent)).toContain('125,0');
     expect(espaces(brent.textContent)).toContain('7,0 %');
-    expect(within(brent).getByText(/7,0/).closest('[data-sens]').dataset.sens).toBe('hausse');
+    expect(brent.querySelector('[data-sens]').dataset.sens).toBe('hausse');
     expect(within(screen.getByTestId('tuile-or')).getByText(/5,0/).closest('[data-sens]').dataset.sens).toBe('baisse');
     // Cacao absent de l'aperçu : pas de tuile vide.
     expect(screen.queryByTestId('tuile-cacao')).toBeNull();
-    expect(screen.getByText(/octobre 2026/)).toBeTruthy();
+    expect(screen.getAllByText(/octobre 2026/).length).toBeGreaterThan(0);
+    // Moyenne du mois annoncée sur la tuile, dernier cours quotidien du Brent à part.
+    expect(espaces(brent.textContent)).toContain('Moyenne mensuelle · octobre 2026');
+    const jour = screen.getByTestId('brent-jour');
+    expect(espaces(jour.textContent)).toContain('Dernier cours : 107,03 $/baril');
+    expect(espaces(jour.textContent)).toContain('3 nov. · EIA');
+    expect(screen.getByTestId('tuile-or').querySelector('[data-testid="brent-jour"]')).toBeNull();
   });
 
   it("donne les points d'ouverture et de clôture de chaque bourse", async () => {

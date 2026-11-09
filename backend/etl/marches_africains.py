@@ -71,7 +71,12 @@ INDICES = ["dzair", "brvm_c", "ngx_asi", "nse20"]
 DUREE_COURS_S = 12 * 3600
 DUREE_INDICES_S = 30 * 60
 NOUVEL_ESSAI_S = 5 * 60  # après un échec, la source est redemandée plus tôt
-DELAIS = {"cours": DUREE_COURS_S, **{c: DUREE_INDICES_S for c in INDICES}}
+# Dernier prix quotidien du Brent (spot, Europe), publié chaque semaine par
+# l'EIA (administration américaine, domaine public) : les cours de la Banque
+# mondiale sont des moyennes mensuelles, ce prix dit où en est le marché.
+PAGE_BRENT_EIA = "https://www.eia.gov/dnav/pet/hist/RBRTEd.htm"
+DUREE_BRENT_S = 6 * 3600
+DELAIS = {"cours": DUREE_COURS_S, "brent_jour": DUREE_BRENT_S, **{c: DUREE_INDICES_S for c in INDICES}}
 
 # Bourse de Lagos : séance de 10 h à 14 h 30, heure du Nigeria (UTC+1 toute
 # l'année, sans heure d'été).
@@ -267,6 +272,27 @@ def suivre_ngx(lu: Dict, memoire: Optional[Dict], maintenant: Optional[datetime]
     return {**lu, "ouverture": ouverture, "date": seance.isoformat()}, memoire
 
 
+_MOIS_EN = {m: i for i, m in enumerate(
+    ("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"), 1)}
+
+
+def lire_brent_eia(html: str) -> Dict:
+    """Page des prix quotidiens du Brent (EIA) : une ligne par semaine
+    (« 2026 Nov- 2 to Nov- 6 »), puis un prix par jour du lundi au vendredi.
+    Rend le dernier prix publié et sa date."""
+    dernier = None
+    for annee, mois, jour, cellules in re.findall(
+        r"<td class='B6'>[^<]*?(\d{4}) (\w{3})-\s*(\d+) to [^<]*</td>((?:\s*<td class='B3'>[^<]*</td>)+)", html
+    ):
+        debut = date(int(annee), _MOIS_EN[mois], int(jour))
+        for i, prix in enumerate(re.findall(r"<td class='B3'>\s*([\d.]*)\s*</td>", cellules)):
+            if prix:
+                dernier = {"prix": float(prix), "date": (debut + timedelta(days=i)).isoformat()}
+    if not dernier:
+        raise ValueError("prix du Brent introuvable")
+    return dernier
+
+
 LECTEURS = {"dzair": lire_sgbv, "brvm_c": lire_brvm, "ngx_asi": lire_ngx, "nse20": lire_nse}
 
 
@@ -280,6 +306,7 @@ class Marches:
     def __init__(self):
         self.cours: Optional[Dict] = None
         self.indices: Dict[str, Dict] = {}
+        self.brent_jour: Optional[Dict] = None
         self.memoire_ngx: Optional[Dict] = None
         self.lus_a: Dict[str, float] = {}  # source → heure de la dernière lecture
         self._etat_charge = False
@@ -305,6 +332,9 @@ class Marches:
             contenu = await r.read()
             modifie_le = r.headers.get("Last-Modified")
         self.cours = {**lire_pink_sheet(contenu), "lien": lien, "modifie_le": modifie_le}
+
+    async def _rafraichir_brent(self, session):
+        self.brent_jour = {**lire_brent_eia(await self._texte(session, PAGE_BRENT_EIA)), "source": "EIA"}
 
     async def _rafraichir_indice(self, session, cle):
         lu = LECTEURS[cle](await self._texte(session, SOURCES_INDICES[cle]))
@@ -339,6 +369,8 @@ class Marches:
         self.indices = {**doc.get("indices", {}), **self.indices}
         if self.cours is None and doc.get("cours"):
             self.cours = doc["cours"]
+        if self.brent_jour is None and doc.get("brent_jour"):
+            self.brent_jour = doc["brent_jour"]
         self._etat_charge = True
 
     async def _enregistrer(self, db):
@@ -349,7 +381,8 @@ class Marches:
         try:
             await db.marches_africains.replace_one(
                 {"_id": "etat"},
-                {"_id": "etat", "memoire_ngx": self.memoire_ngx, "indices": self.indices, "cours": self.cours},
+                {"_id": "etat", "memoire_ngx": self.memoire_ngx, "indices": self.indices, "cours": self.cours,
+                 "brent_jour": self.brent_jour},
                 upsert=True,
             )
         except Exception as e:
@@ -365,7 +398,9 @@ class Marches:
                 try:
                     resultats = await asyncio.gather(
                         *[
-                            self._rafraichir_cours(session) if c == "cours" else self._rafraichir_indice(session, c)
+                            self._rafraichir_cours(session) if c == "cours"
+                            else self._rafraichir_brent(session) if c == "brent_jour"
+                            else self._rafraichir_indice(session, c)
                             for c in taches
                         ],
                         return_exceptions=True,
@@ -389,8 +424,10 @@ class Marches:
             return {
                 "cours": cours,
                 "indices": [{"cle": c, **self.indices[c]} for c in INDICES if c in self.indices],
+                "brent_jour": self.brent_jour,
                 "sources": {
                     "cours": "Banque mondiale, Pink Sheet (CC BY 4.0)",
+                    "brent_jour": "EIA (U.S. Energy Information Administration), Brent spot",
                     "indices": "SGBV (Alger), BRVM (Abidjan), NGX (Lagos), NSE (Nairobi)",
                 },
             }
