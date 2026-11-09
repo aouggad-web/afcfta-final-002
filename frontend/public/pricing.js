@@ -71,10 +71,13 @@ const MODULE_LABELS = {
   production: 'Données de production',
   logistics: 'Données logistiques (ports, corridors)',
   roo: "Règles d'origine",
+  profiles: 'Profils pays',
   tools: 'Outils (positions tarifaires nationales, suivi de la collecte)',
   reports: 'Rapports d\'opportunités'
 };
-const PLAN_TO_ITEMS_ID = { free: 'items-free', starter: 'items-starter', pro: 'items-pro', business: 'items-business' };
+// Pas de formule Free (décision de l'exploitant du 09/11/2026) : le compte
+// sans abonnement est décrit au-dessus des formules.
+const PLAN_TO_ITEMS_ID = { starter: 'items-starter', pro: 'items-pro', business: 'items-business' };
 
 function formatQuota(quota, period) {
   if (quota === null || quota === undefined) return 'illimité';
@@ -363,7 +366,6 @@ function renderPrices() {
   const symbol = currentCurrency === 'DZD' ? ' DZD' : '€';
   // Formatage FR : séparateur de milliers en DZD (18 750 DZD lisible), rien en EUR.
   const fmt = (n) => currentCurrency === 'DZD' ? n.toLocaleString('fr-FR') : String(n);
-  document.getElementById('price-free').innerHTML = '0' + symbol + '<span>/mois</span>';
   const productAmount = (id) => {
     const p = productPrices[id];
     return p ? (currentCurrency === 'DZD' ? p.dzd : p.eur) : null;

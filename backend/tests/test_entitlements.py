@@ -125,7 +125,10 @@ def test_no_user_grants_free_tier():
     ent = resolve_entitlements(None)
 
     assert ent.tier == "free"
-    assert ent.daily_calculations == 10
+    # Compte sans abonnement (décision de l'exploitant du 09/11/2026) :
+    # 2 calculs par mois, plus de quota quotidien.
+    assert ent.daily_calculations is None
+    assert ent.monthly_calculations == 2
     assert ent.export_formats == ("pdf",)
     assert ent.api_access is False
 
@@ -346,21 +349,19 @@ def test_every_tier_declares_every_module():
 def test_free_tier_module_caps_and_denials():
     ent = resolve_entitlements(None)
 
-    # stats/production/logistics/roo are browse/reference modules — gated by
-    # require_module_enabled() (on/off only, never metered), so their
-    # published quota must be unlimited to match runtime enforcement.
-    stats = ent.module("stats")
-    assert stats.enabled is True
-    assert stats.quota is None
-    assert stats.quota_period is None
+    # Modules de consultation : 5 recherches distinctes par mois
+    # (entitlement_guard.require_module_consultation), pas un quota de requêtes.
+    for module_id in ("stats", "production", "logistics", "roo", "profiles"):
+        access = ent.module(module_id)
+        assert (access.enabled, access.quota, access.quota_period) == (True, 5, "month"), module_id
 
     assert ent.module("tools").enabled is False
     # Module Opportunités réservé aux abonnements payants (audit E1).
     assert ent.module("reports").enabled is False
-    roo = ent.module("roo")
-    assert roo.enabled is True
-    assert roo.quota is None
-    assert roo.quota_period is None
+    # Les formules payantes gardent les modules de consultation sans limite.
+    starter = resolve_entitlements({"subscription_tier": "starter", "subscription_status": "active"})
+    assert starter.module("profiles").quota is None
+    assert starter.monthly_calculations is None
 
 
 def test_pro_tier_mixes_unlimited_and_capped_modules():

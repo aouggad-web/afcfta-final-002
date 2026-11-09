@@ -132,6 +132,9 @@ def _public_user(doc: dict) -> dict:
         # CSV et JSON que si « csv » y figure, Excel que si « excel » y figure,
         # c'est-à-dire pour l'admin seulement (voir entitlements.py).
         "export_formats": list(resolve_entitlements(doc).export_formats),
+        # Formule effective (« free » = compte sans abonnement, en découverte ;
+        # « admin » = accès illimité) : l'écran adapte ses invitations.
+        "tier": resolve_entitlements(doc).tier,
     }
 
 

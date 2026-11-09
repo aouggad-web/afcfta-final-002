@@ -29,10 +29,15 @@ import OpportunityReportTab from './components/reports/OpportunityReportTab';
 import ContactTab from './components/contact/ContactTab';
 import AuthModal from './components/auth/AuthModal';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ConnexionRequise, InvitationAbonnement, ONGLETS_PUBLICS, installerInterceptionAcces } from './components/acces/AccesModules';
 import { trierPays } from './utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
+
+// Refus d'accès du serveur (connexion requise, quota du mois atteint, module
+// réservé aux abonnés) : une seule invitation, quel que soit le module.
+installerInterceptionAcces();
 
 axios.interceptors.response.use(
   (response) => {
@@ -101,7 +106,7 @@ function App() {
   // ── Gestion du thème (sombre / clair) ──
   const [theme, setTheme] = useState(() => localStorage.getItem('zlecaf_theme') || 'dark');
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const { recovery, lienEnAttente } = useAuth() || {};
+  const { recovery, lienEnAttente, user } = useAuth() || {};
 
   // Arrivée par le lien « mot de passe oublié » : ouvrir la modale sur le
   // formulaire de nouveau mot de passe. Lien d'e-mail non attendu par ce
@@ -241,7 +246,19 @@ function App() {
     }
   };
 
+  // Sans compte, seul le tableau de bord d'accueil est consultable (décision de
+  // l'exploitant du 09/11/2026) ; le serveur refuse de toute façon les données.
   const renderContent = () => {
+    if (!ONGLETS_PUBLICS.includes(activeTab)) {
+      if (user === undefined) return null; // session en cours de vérification
+      if (user === null) {
+        return <ConnexionRequise language={language} onOpenAuth={() => setAuthModalOpen(true)} />;
+      }
+    }
+    return renderModule();
+  };
+
+  const renderModule = () => {
     switch (activeTab) {
       case 'dashboard':
         return (
@@ -423,6 +440,7 @@ function App() {
       <div className="kente-band" />
       <div className="afcfta-layout-v2">
         <Toaster />
+        <InvitationAbonnement language={language} onOpenAuth={() => setAuthModalOpen(true)} />
         <AuthModal
           open={authModalOpen}
           onClose={() => {

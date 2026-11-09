@@ -21,7 +21,7 @@ TIERS = ("free", "starter", "pro", "business")
 
 # Feature modules gated per tier (mirrors the app's sidebar). Each tier grants
 # or denies each module and, when granted, may cap its usage over a period.
-MODULES = ("stats", "production", "logistics", "roo", "tools", "reports")
+MODULES = ("stats", "production", "logistics", "roo", "profiles", "tools", "reports")
 
 # Reset window a module quota is counted over.
 #   "day"   — rolling/calendar day, reset nightly
@@ -59,13 +59,16 @@ def _capped(quota: int, period: str) -> ModuleAccess:
 @dataclass(frozen=True)
 class Entitlements:
     tier: str
-    daily_calculations: Optional[int]  # None = unlimited
+    daily_calculations: Optional[int]  # None = unlimited (sauf monthly_calculations)
     monthly_country_profiles: Optional[int]  # None = unlimited (all 54)
     export_formats: tuple[str, ...]
     api_access: bool
     api_monthly_quota: Optional[int]
     seats_included: int
     modules: Mapping[str, ModuleAccess] = field(default_factory=dict)
+    # Calculs par mois civil (formule de découverte) ; None = pas de plafond
+    # mensuel, seul daily_calculations s'applique.
+    monthly_calculations: Optional[int] = None
 
     def __post_init__(self) -> None:
         # These instances are shared singletons (resolve_entitlements returns
@@ -83,9 +86,17 @@ class Entitlements:
 
 
 _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
+    # « free » n'est plus une formule proposée (décision de l'exploitant du
+    # 09/11/2026) : c'est la découverte d'un compte inscrit, e-mail validé, sans
+    # abonnement payant. Sans compte, seul le tableau de bord d'accueil est
+    # consultable (entitlement_guard : 401 « login_required » ailleurs).
+    # Chaque mois civil : 2 calculs, et 5 recherches par module de consultation
+    # (un pays, un produit, un port… choisi ; ouvrir le module ne compte pas),
+    # puis invitation à s'abonner. Opportunités et outils restent payants.
     "free": Entitlements(
         tier="free",
-        daily_calculations=10,
+        daily_calculations=None,
+        monthly_calculations=2,
         monthly_country_profiles=None,
         # Exports (décision de l'exploitant du 06/11/2026) : le PDF pour toutes
         # les formules ; CSV et Excel pour aucune, réservés au compte admin
@@ -95,28 +106,16 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
         api_monthly_quota=None,
         seats_included=1,
         modules={
-            # stats/production/logistics/roo are browse/reference modules gated
-            # by entitlement_guard.require_module_enabled() — the tier on/off
-            # switch only, never metered per request (a single screen fans out
-            # to many GETs; metering broke the very first page load — see the
-            # module docstring). Publishing a quota here that enforcement never
-            # checks would let this grid, and the pricing page built from it,
-            # advertise limits nobody hits. "unlimited when enabled" below is
-            # therefore the true runtime behavior, not an aspirational cap.
-            "stats": _UNLIMITED,
-            "production": _UNLIMITED,
-            "logistics": _UNLIMITED,
-            "roo": _UNLIMITED,
-            # "tools" (tariff data downloads) is gated the same way as the
-            # browse modules above: entitlement_guard.require_module_enabled()
-            # is mounted on the router (see routes/__init__.py,
-            # _tools_entitlement), an on/off switch per tier, not metered per
-            # request. It is _DENIED here for free, not _capped(...), because
-            # the module is withheld outright rather than rate-limited.
+            # Modules de consultation : compteur de recherches distinctes
+            # (entitlement_guard.require_module_consultation), pas de requêtes —
+            # un écran envoie beaucoup de GET.
+            "stats": _capped(5, "month"),
+            "production": _capped(5, "month"),
+            "logistics": _capped(5, "month"),
+            "roo": _capped(5, "month"),
+            "profiles": _capped(5, "month"),
             "tools": _DENIED,
             # Module Opportunités réservé aux abonnements payants (audit E1).
-            # Un visiteur sans session reçoit lui aussi le 403, sauf clé API
-            # valide : voir entitlement_guard.require_paid_module.
             "reports": _DENIED,
         },
     ),
@@ -133,6 +132,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "production": _UNLIMITED,
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
+            "profiles": _UNLIMITED,
             "tools": _capped(10, "day"),
             "reports": _capped(10, "day"),
         },
@@ -150,6 +150,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "production": _UNLIMITED,
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
+            "profiles": _UNLIMITED,
             "tools": _UNLIMITED,
             "reports": _capped(30, "day"),
         },
@@ -167,6 +168,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "production": _UNLIMITED,
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
+            "profiles": _UNLIMITED,
             "tools": _UNLIMITED,
             "reports": _capped(200, "day"),
         },

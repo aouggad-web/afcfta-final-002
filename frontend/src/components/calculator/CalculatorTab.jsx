@@ -61,7 +61,7 @@ import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { specCalculPdf } from '../../utils/calculPdf';
 import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
 import { pick } from '../../i18n/lang';
-import { anonymousCalculationNoticeText } from '../tools/entitlementNotice';
+import { freeCalculationNoticeText } from '../tools/entitlementNotice';
 import SubscriptionNotice from '../tools/SubscriptionNotice';
 import './calculator.css';
 
@@ -772,13 +772,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         });
         return;
       }
-      // Calculs sans abonnement épuisés (audit E1) : inviter à souscrire,
+      // Calculs gratuits du mois épuisés (compte sans abonnement) : inviter à s'abonner,
       // dans la langue de l'interface.
-      const limiteAnonyme = anonymousCalculationNoticeText(error, language);
-      if (limiteAnonyme) {
+      const limiteGratuite = freeCalculationNoticeText(error, language);
+      if (limiteGratuite) {
         toast({
           title: pick(language, 'Limite de calculs atteinte', 'Calculation limit reached', 'تم بلوغ حدّ الحسابات'),
-          description: <SubscriptionNotice text={limiteAnonyme} language={language} />,
+          description: <SubscriptionNotice text={limiteGratuite} language={language} />,
           variant: 'destructive',
         });
         return;
