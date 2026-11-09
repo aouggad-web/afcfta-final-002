@@ -37,6 +37,17 @@ const T = {
     'You have used your {quota} free calculations this month. Subscribe to continue.',
     'استخدمت حساباتك المجانية الـ{quota} لهذا الشهر. اشترك للمتابعة.',
   ],
+  titreQuotaFormule: ['Quota de votre formule atteint', 'Your plan quota is reached', 'بلغت حصة اشتراكك'],
+  texteQuotaJour: [
+    'Vous avez atteint les {quota} utilisations du jour incluses dans votre formule pour ce module. Le quota se renouvelle demain ; une formule supérieure en offre davantage.',
+    'You have reached the {quota} uses per day included in your plan for this module. The quota renews tomorrow; a higher plan includes more.',
+    'بلغت {quota} استخدامات اليوم المشمولة في اشتراكك لهذه الوحدة. تتجدد الحصة غدًا، وتتيح الباقات الأعلى المزيد.',
+  ],
+  texteQuotaMois: [
+    'Vous avez atteint les {quota} utilisations du mois incluses dans votre formule pour ce module. Le quota se renouvelle le mois prochain ; une formule supérieure en offre davantage.',
+    'You have reached the {quota} uses per month included in your plan for this module. The quota renews next month; a higher plan includes more.',
+    'بلغت {quota} استخدامات الشهر المشمولة في اشتراكك لهذه الوحدة. تتجدد الحصة الشهر المقبل، وتتيح الباقات الأعلى المزيد.',
+  ],
   titreAbonnes: ['Réservé aux abonnés', 'Subscribers only', 'مخصص للمشتركين'],
   texteAbonnes: [
     'Ce module est inclus dans les formules payantes. Abonnez-vous pour y accéder.',
@@ -116,6 +127,11 @@ function textes(refus, language) {
   const avecQuota = (modele) => tr(language, modele).replace('{quota}', String(refus.quota ?? ''));
   if (refus.genre === 'connexion') return [tr(language, T.titreConnexion), tr(language, T.texteConnexion)];
   if (refus.genre === 'quota') {
+    // Formule Découverte : quotas du mois. Formules payantes : leur propre
+    // quota (rapports : par jour), qui se renouvelle.
+    if (refus.tier !== 'free') {
+      return [tr(language, T.titreQuotaFormule), avecQuota(refus.quota_period === 'day' ? T.texteQuotaJour : T.texteQuotaMois)];
+    }
     return refus.module === 'calculator'
       ? [tr(language, T.titreCalculs), avecQuota(T.texteCalculs)]
       : [tr(language, T.titreQuota), avecQuota(T.texteQuota)];

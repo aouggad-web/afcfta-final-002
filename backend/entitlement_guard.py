@@ -360,18 +360,19 @@ _PARAMETRES_DE_RECHERCHE = frozenset({
     "origin", "destination", "partner", "reporter", "exporter", "importer",
 })
 _MAX_TERMES = 20
+_ESSAIS_RECHERCHES = 5
 
 
 def termes_de_recherche(request: Request) -> list:
     """Ce que cherche une requête : valeurs des paramètres de chemin et des
     paramètres de recherche (`_PARAMETRES_DE_RECHERCHE`), en majuscules.
     Sans terme (ouverture du module, listes générales), rien n'est compté."""
-    termes = set()
-    for nom, valeur in {**request.path_params, **request.query_params}.items():
-        if nom in request.path_params or nom.lower() in _PARAMETRES_DE_RECHERCHE:
-            valeur = str(valeur).strip().upper()[:64]
-            if valeur:
-                termes.add(valeur)
+    # Chemin et requête lus séparément : un paramètre de requête homonyme
+    # (`?country_code=`) ne remplace pas la valeur du chemin.
+    valeurs = list(request.path_params.values()) + [
+        v for nom, v in request.query_params.multi_items() if nom.lower() in _PARAMETRES_DE_RECHERCHE
+    ]
+    termes = {str(v).strip().upper()[:64] for v in valeurs} - {""}
     return sorted(termes)[:_MAX_TERMES]
 
 
@@ -389,20 +390,32 @@ async def compter_recherches(user: dict, module_id: str, termes: list, access: M
         )
     cle = f"{user['_id']}:{module_id}:{_period_key(access.quota_period, user)}"
     try:
-        doc = await _db.recherches_modules.find_one({"_id": cle}) or {}
-        deja = set(doc.get("termes") or [])
-        nouveaux = [t for t in termes if t not in deja]
-        if not nouveaux:
-            return True
-        if len(deja) + len(nouveaux) > access.quota:
-            return False
-        await _db.recherches_modules.update_one(
-            {"_id": cle},
-            {"$addToSet": {"termes": {"$each": nouveaux}},
-             "$setOnInsert": {"user_id": user["_id"], "module": module_id}},
-            upsert=True,
-        )
-        return True
+        # Lecture puis écriture conditionnelle : l'écriture n'a lieu que si la
+        # liste lue n'a pas changé entre-temps, sinon on relit. Deux recherches
+        # simultanées ne peuvent donc pas dépasser le quota à elles deux.
+        for _ in range(_ESSAIS_RECHERCHES):
+            doc = await _db.recherches_modules.find_one({"_id": cle})
+            deja = list((doc or {}).get("termes") or [])
+            nouveaux = [t for t in termes if t not in deja]
+            if not nouveaux:
+                return True
+            if len(deja) + len(nouveaux) > access.quota:
+                return False
+            if doc is None:
+                try:
+                    await _db.recherches_modules.insert_one(
+                        {"_id": cle, "termes": nouveaux, "user_id": user["_id"], "module": module_id}
+                    )
+                    return True
+                except DuplicateKeyError:
+                    continue
+            res = await _db.recherches_modules.update_one(
+                {"_id": cle, "termes": deja},
+                {"$push": {"termes": {"$each": nouveaux}}},
+            )
+            if res.matched_count:
+                return True
+        raise PyMongoError("recherches_modules : trop d'écritures concurrentes")
     except PyMongoError:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,

@@ -20,9 +20,11 @@ Hermétique : base Mongo en mémoire, vrai routeur `/api` (routes.register_route
 ou sonde montée avec les mêmes dépendances que la production.
 """
 
+import asyncio
 import hashlib
 import io
 import sys
+from types import SimpleNamespace
 from pathlib import Path
 
 import pytest
@@ -133,14 +135,21 @@ class _Recherches:
         self.docs = {}
 
     async def find_one(self, filtre):
+        await asyncio.sleep(0)  # laisse passer les requêtes simultanées
         doc = self.docs.get(filtre["_id"])
         return dict(doc) if doc else None
 
-    async def update_one(self, filtre, maj, upsert=False):
-        doc = self.docs.setdefault(filtre["_id"], {"_id": filtre["_id"], "termes": []})
-        for terme in maj["$addToSet"]["termes"]["$each"]:
-            if terme not in doc["termes"]:
-                doc["termes"].append(terme)
+    async def insert_one(self, doc):
+        if doc["_id"] in self.docs:
+            raise DuplicateKeyError("doublon")
+        self.docs[doc["_id"]] = {**doc, "termes": list(doc["termes"])}
+
+    async def update_one(self, filtre, maj):
+        doc = self.docs.get(filtre["_id"])
+        if doc is None or doc["termes"] != filtre["termes"]:
+            return SimpleNamespace(matched_count=0)
+        doc["termes"].extend(maj["$push"]["termes"]["$each"])
+        return SimpleNamespace(matched_count=1)
 
 
 class _FausseBase:
@@ -378,6 +387,31 @@ def test_termes_de_recherche():
         "path_params": {"country_iso3": "dza"},
     })
     assert entitlement_guard.termes_de_recherche(requete) == ["0901", "CAFE", "DZA"]
+
+
+def test_parametre_de_requete_homonyme_ne_masque_pas_le_chemin(base):
+    client = _client(_app_consultation(), abonne=ABONNES["free"])
+    for pays in ("DZA", "MAR", "TUN", "EGY", "NGA"):
+        client.get(f"/api/sonde/{pays}")
+
+    assert client.get("/api/sonde/KEN?country_iso3=").status_code == 429
+    assert client.get("/api/sonde/KEN?country_iso3=DZA").status_code == 429
+
+
+def test_recherches_simultanees_ne_depassent_pas_le_quota(base):
+    utilisateur = ABONNES["free"]
+    acces = entitlement_guard.resolve_entitlements(utilisateur).module("production")
+
+    async def scenario():
+        await entitlement_guard.compter_recherches(utilisateur, "production", ["A", "B", "C", "D"], acces)
+        return await asyncio.gather(*(
+            entitlement_guard.compter_recherches(utilisateur, "production", [terme], acces)
+            for terme in ("E", "F", "G")
+        ))
+
+    assert sorted(asyncio.run(scenario())) == [False, False, True]
+    (doc,) = base.recherches_modules.docs.values()
+    assert len(doc["termes"]) == 5
 
 
 # ── Module Opportunités : réservé aux abonnements payants ───────────────────
