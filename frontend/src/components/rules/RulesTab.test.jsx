@@ -7,7 +7,7 @@
  * pourcentage de contenu régional.
  */
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { act, render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import axios from 'axios';
 
@@ -25,11 +25,11 @@ vi.mock('../HSCodeSelector', () => ({
 }));
 
 // Réponse de GET /api/rules-of-origin/{code}, réduite aux champs que lit l'écran.
-const reponse = ({ code, status = 'AGREED', seuil = null }) => ({
+const reponse = ({ code, status = 'AGREED', seuil = null, psr = '' }) => ({
   hs_code: '851900',
   status,
   rules: { primary_rule: { code }, alternative_rule: null },
-  rule: { psr: '', value_added_threshold: seuil, category: code, notes: '' },
+  rule: { psr, value_added_threshold: seuil, category: code },
   match_type: 'heading',
   source: 'AfCFTA Appendix IV (PSR) - Décembre 2023',
 });
@@ -64,4 +64,36 @@ describe("Règles d'origine — critère d'une règle", () => {
     expect(screen.getByRole('progressbar')).toBeInTheDocument();
     expect(screen.queryByText("Critère d'origine")).not.toBeInTheDocument();
   });
+});
+
+describe("Règles d'origine — exigence", () => {
+  it('« Exigence » affiche le texte de la règle ; plus de bloc « Informations Administratives »', async () => {
+    // Texte de la règle de 85.19 dans l'appendice IV (raw_fr).
+    const regle = 'Fabrication à partir de matières de toute position autre que celle du produit';
+    consulter(reponse({ code: 'CTH', psr: regle }));
+
+    const bloc = (await screen.findByText('Exigence')).parentElement;
+    expect(bloc).toHaveTextContent(regle);
+    expect(screen.queryByText('Informations Administratives')).not.toBeInTheDocument();
+  });
+});
+
+
+it("écarte une réponse tardive pour un code précédent", async () => {
+  let terminerAncienneRequete;
+  axios.get
+    .mockImplementationOnce(() => new Promise((resolve) => { terminerAncienneRequete = resolve; }))
+    .mockResolvedValueOnce({ data: reponse({ code: 'CTH', psr: 'Règle récente' }) });
+
+  render(<RulesTab language="fr" />);
+  const saisie = screen.getByLabelText('Code SH');
+  fireEvent.change(saisie, { target: { value: '040310' } });
+  fireEvent.change(saisie, { target: { value: '851900' } });
+  expect(await screen.findByText('Règle récente')).toBeInTheDocument();
+
+  await act(async () => {
+    terminerAncienneRequete({ data: reponse({ code: 'WO', psr: 'Règle précédente' }) });
+  });
+  expect(screen.getByText('Règle récente')).toBeInTheDocument();
+  expect(screen.queryByText('Règle précédente')).not.toBeInTheDocument();
 });

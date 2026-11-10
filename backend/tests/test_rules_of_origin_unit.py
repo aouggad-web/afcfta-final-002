@@ -246,3 +246,87 @@ def test_endpoint_value_added_threshold_is_null_for_a_cth_rule():
     # A VA60 rule keeps its implied regional content (100 - 60).
     va60 = asyncio.run(roo.get_rules_of_origin("840100", lang="fr"))
     assert va60["rule"]["value_added_threshold"] == 40
+
+
+def test_endpoint_requirement_is_the_rule_text_not_the_product_designation():
+    # In the dataset, description_fr is the product designation (85.19:
+    # "Appareils d'enregistrement du son…") and raw_fr the Appendice IV rule.
+    # raw_fr exists in French only, so English gets that same text too.
+    for hs6, heading in (("851981", "8519"), ("040310", "0403")):
+        entry = roo.RULES_DATA["headings"][heading]
+        for lang in ("fr", "en"):
+            result = asyncio.run(roo.get_rules_of_origin(hs6, lang=lang))
+            assert result["matched_code"] == heading
+            assert result["rule"]["psr"] == entry["raw_fr"]
+            assert result["rules"]["primary_rule"]["description"] == entry["raw_fr"]
+            assert entry["description_fr"] not in result["rule"].values()
+
+
+def test_endpoint_has_no_english_rule_text_to_offer():
+    # No English version of the rule exists in the dataset: rule_text_en is
+    # empty, not the English product name (04.03: "Buttermilk, curdled
+    # milk, yogurt, kephir").
+    result = asyncio.run(roo.get_rules_of_origin("040310", lang="en"))
+    assert result["rules"]["rule_text_en"] == ""
+
+
+def test_endpoint_distinguishes_designation_and_negotiated_requirement():
+    result = asyncio.run(roo.get_rules_of_origin("600110", lang="ar"))
+    assert result["status"] == "YTB"
+    assert result["product_description_fr"]
+    assert result["rule"]["psr"] == ""
+    assert result["rule"]["value_added_threshold"] is None
+
+
+def test_endpoint_exposes_note_25_without_claiming_an_effective_threshold():
+    for code in ("841410", "841911"):
+        result = asyncio.run(roo.get_rules_of_origin(code, lang="fr"))
+        assert result["rules"]["threshold_note_fr"].startswith("Note 2.5")
+        assert result["rules"]["threshold_pct"] is None
+        assert result["rule"]["value_added_threshold"] is None
+
+
+def test_internal_origin_summary_matches_api_when_threshold_is_unconfirmed():
+    for code in ("841410", "841911", "600110"):
+        public = asyncio.run(roo.get_rules_of_origin(code, lang="fr"))
+        internal = roo.get_rule_of_origin(code, "fr")
+        assert public["rules"]["regional_content"] is None
+        assert internal["regional_content"] is None
+        assert not public["rules"]["primary_rule"]["explanation"]
+        assert not internal["primary_rule"]["explanation"]
+    assert roo.get_rule_of_origin("840100", "fr")["regional_content"] == 40
+
+
+def test_calculator_legal_reference_cites_the_resolved_row():
+    for requested, kind, matched in (
+        ("851981", "heading", "8519"),
+        ("620719", "subheading", "620719"),
+        ("600110", "chapter", "60"),
+    ):
+        result = asyncio.run(roo.get_rules_of_origin(requested, lang="fr"))
+        reference = result["legal_reference"]
+        assert reference["match_type"] == kind
+        assert reference["matched_code"] == matched
+        assert "Annexe 2" in reference["instrument_fr"]
+        assert reference["source_version"]
+    pending = asyncio.run(roo.get_rules_of_origin("600110", lang="fr"))
+    assert any("2.4" in note for note in pending["legal_reference"]["notes_fr"])
+    qualified = asyncio.run(roo.get_rules_of_origin("841410", lang="fr"))
+    assert any("2.5" in note for note in qualified["legal_reference"]["notes_fr"])
+
+
+def test_legal_reference_cites_the_annexe_2_article_of_the_criterion():
+    # Each article is the one the rule type's own explanation already cites.
+    for code, article in roo._CRITERION_ARTICLES.items():
+        assert article in roo.ORIGIN_TYPES[code]["explanation"]["fr"], code
+
+    cth = asyncio.run(roo.get_rules_of_origin("851981", lang="fr"))["legal_reference"]
+    assert cth["articles_fr"] == ["Annexe 2, article 6(1)(c) (Changement de Position Tarifaire)"]
+    assert cth["location_fr"] == "position 85.19"
+
+    wo = asyncio.run(roo.get_rules_of_origin("040110", lang="fr"))["legal_reference"]
+    assert wo["articles_fr"] == ["Annexe 2, art. 4(a) et art. 5 (Entièrement Obtenu)"]
+
+    pending = asyncio.run(roo.get_rules_of_origin("600110", lang="fr"))["legal_reference"]
+    assert pending["articles_fr"] == ["Annexe 2, article 42(3) (règle non encore adoptée)"]
+    assert "article 42(3)" in roo.ORIGIN_TYPES["YTB"]["explanation"]["fr"]
