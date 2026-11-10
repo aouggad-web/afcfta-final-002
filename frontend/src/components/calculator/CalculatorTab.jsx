@@ -110,6 +110,20 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [subPositions, setSubPositions] = useState(null);
   const [useSmartSearch, setUseSmartSearch] = useState(true);
   const [ruleOfOrigin, setRuleOfOrigin] = useState(null);
+  const [browserRuleCode, setBrowserRuleCode] = useState(null);
+  useEffect(() => {
+    if (!browserRuleCode || browserRuleCode !== hsCode) return;
+    const controller = new AbortController();
+    axios.get(`${API}/rules-of-origin/${browserRuleCode}`, {
+      params: { lang: language },
+      signal: controller.signal,
+    }).then(({ data }) => {
+      if (!controller.signal.aborted) setRuleOfOrigin(data);
+    }).catch(() => {
+      // A tariff code can still be used when origin data is unavailable.
+    });
+    return () => controller.abort();
+  }, [browserRuleCode, hsCode, language]);
   const [selectedSubPositionDesc, setSelectedSubPositionDesc] = useState(null);
   // Nombre de positions nationales servies sous le SH6 saisi, et pour quel pays.
   const [positionsSh6, setPositionsSh6] = useState(null);
@@ -522,6 +536,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     setShowDetailedBreakdown(false);
     setSubPositions(null);
     setRuleOfOrigin(null);
+    setBrowserRuleCode(null);
     setSelectedSubPositionDesc(null);
     setSelectedSubPositionFormalities(null);
     setRegulatorySelectedPos(null);
@@ -1102,10 +1117,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               <HSCodeBrowser
                 onSelect={(code) => {
                   setHsCode(code.code);
+                  setSelectedSubPositionDesc('');
+                  setSelectedSubPositionFormalities(null);
+                  setRuleOfOrigin(null);
+                  setBrowserRuleCode(code.code);
                   setShowHSBrowser(false);
                 }}
                 language={language}
-                showRulesOfOrigin={true}
+                showRulesOfOrigin={false}
               />
             </div>
           )}
