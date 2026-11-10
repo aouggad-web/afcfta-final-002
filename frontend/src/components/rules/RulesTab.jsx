@@ -5,7 +5,6 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { Progress } from '../ui/progress';
-import { Separator } from '../ui/separator';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import { FileText, ChevronDown, ChevronUp, Globe, CheckCircle, AlertTriangle, Info } from 'lucide-react';
 
@@ -42,7 +41,6 @@ export default function RulesTab({ language = 'fr' }) {
         YTB: "Règle en négociation"
       },
       requiredDocumentation: "Documentation Requise",
-      adminInfo: "Informations Administratives",
       validityPeriod: "Période de validité",
       issuingAuthority: "Autorité émettrice",
       errorLoading: "Erreur lors du chargement des règles d'origine",
@@ -78,7 +76,6 @@ export default function RulesTab({ language = 'fr' }) {
         YTB: "Rule under negotiation"
       },
       requiredDocumentation: "Required Documentation",
-      adminInfo: "Administrative Information",
       validityPeriod: "Validity period",
       issuingAuthority: "Issuing authority",
       errorLoading: "Error loading rules of origin",
@@ -114,7 +111,6 @@ export default function RulesTab({ language = 'fr' }) {
         YTB: "قاعدة قيد التفاوض"
       },
       requiredDocumentation: "الوثائق المطلوبة",
-      adminInfo: "معلومات إدارية",
       validityPeriod: "فترة الصلاحية",
       issuingAuthority: "الجهة المُصدِرة",
       errorLoading: "خطأ أثناء تحميل قواعد المنشأ",
@@ -321,16 +317,6 @@ export default function RulesTab({ language = 'fr' }) {
                 <h4 className="font-semibold mb-2 text-[var(--text)]">{t.originCriterion}</h4>
                 <p className="text-sm font-medium text-[var(--text)]">{getCriterion(rulesOfOrigin)}</p>
               </div>
-            )}
-
-            {rulesOfOrigin.rule.notes && (
-              <>
-                <Separator />
-                <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
-                  <h4 className="font-semibold text-[var(--info)] mb-2">{t.adminInfo}</h4>
-                  <p className="text-sm text-[var(--info)]">{rulesOfOrigin.rule.notes}</p>
-                </div>
-              </>
             )}
 
             {rulesOfOrigin.source && (

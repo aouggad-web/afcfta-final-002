@@ -25,11 +25,11 @@ vi.mock('../HSCodeSelector', () => ({
 }));
 
 // Réponse de GET /api/rules-of-origin/{code}, réduite aux champs que lit l'écran.
-const reponse = ({ code, status = 'AGREED', seuil = null }) => ({
+const reponse = ({ code, status = 'AGREED', seuil = null, psr = '' }) => ({
   hs_code: '851900',
   status,
   rules: { primary_rule: { code }, alternative_rule: null },
-  rule: { psr: '', value_added_threshold: seuil, category: code, notes: '' },
+  rule: { psr, value_added_threshold: seuil, category: code },
   match_type: 'heading',
   source: 'AfCFTA Appendix IV (PSR) - Décembre 2023',
 });
@@ -63,5 +63,17 @@ describe("Règles d'origine — critère d'une règle", () => {
     expect(screen.getByText('40%')).toBeInTheDocument();
     expect(screen.getByRole('progressbar')).toBeInTheDocument();
     expect(screen.queryByText("Critère d'origine")).not.toBeInTheDocument();
+  });
+});
+
+describe("Règles d'origine — exigence", () => {
+  it('« Exigence » affiche le texte de la règle ; plus de bloc « Informations Administratives »', async () => {
+    // Texte de la règle de 85.19 dans l'appendice IV (raw_fr).
+    const regle = 'Fabrication à partir de matières de toute position autre que celle du produit';
+    consulter(reponse({ code: 'CTH', psr: regle }));
+
+    const bloc = (await screen.findByText('Exigence')).parentElement;
+    expect(bloc).toHaveTextContent(regle);
+    expect(screen.queryByText('Informations Administratives')).not.toBeInTheDocument();
   });
 });

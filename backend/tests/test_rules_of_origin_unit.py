@@ -246,3 +246,25 @@ def test_endpoint_value_added_threshold_is_null_for_a_cth_rule():
     # A VA60 rule keeps its implied regional content (100 - 60).
     va60 = asyncio.run(roo.get_rules_of_origin("840100", lang="fr"))
     assert va60["rule"]["value_added_threshold"] == 40
+
+
+def test_endpoint_requirement_is_the_rule_text_not_the_product_designation():
+    # In the dataset, description_fr is the product designation (85.19:
+    # "Appareils d'enregistrement du son…") and raw_fr the Appendice IV rule.
+    # raw_fr exists in French only, so English gets that same text too.
+    for hs6, heading in (("851981", "8519"), ("040310", "0403")):
+        entry = roo.RULES_DATA["headings"][heading]
+        for lang in ("fr", "en"):
+            result = asyncio.run(roo.get_rules_of_origin(hs6, lang=lang))
+            assert result["matched_code"] == heading
+            assert result["rule"]["psr"] == entry["raw_fr"]
+            assert result["rules"]["primary_rule"]["description"] == entry["raw_fr"]
+            assert entry["description_fr"] not in result["rule"].values()
+
+
+def test_endpoint_has_no_english_rule_text_to_offer():
+    # No English version of the rule exists in the dataset: rule_text_en is
+    # empty, not the English product name (04.03: "Buttermilk, curdled
+    # milk, yogurt, kephir").
+    result = asyncio.run(roo.get_rules_of_origin("040310", lang="en"))
+    assert result["rules"]["rule_text_en"] == ""

@@ -89,15 +89,16 @@ def _entry_to_response(
     alt_code = entry.get("alt_code")
 
     primary_rule = _build_rule_obj(primary_code, lang) or {"code": "UNKNOWN", "name": ""}
-    # Attach the raw rule text to the primary rule object for richer detail
-    primary_rule["description"] = entry.get(f"description_{lang}") or entry.get("raw_fr") or ""
+    # The Appendice IV rule text is raw_fr (description_fr is the product
+    # designation). It exists in French only: no translation, whatever lang.
+    rule_text = entry.get("raw_fr") or ""
+    primary_rule["description"] = rule_text
 
     alternative_rule = _build_rule_obj(alt_code, lang)
 
     threshold = entry.get("threshold")
     regional_content = _regional_content(primary_code, threshold)
     is_wholly_obtained = primary_code == "WO"
-    rule_text = entry.get(f"description_{lang}") or entry.get("raw_fr") or ""
 
     return {
         "hs_code": hs_code,
@@ -111,7 +112,7 @@ def _entry_to_response(
             "time_phase": entry.get("time_phase"),
             "applicable_notes": entry.get("notes", []),
             "rule_text_fr": entry.get("raw_fr", ""),
-            "rule_text_en": entry.get("description_en") or entry.get("name_en", ""),
+            "rule_text_en": "",  # no English version of the rule in the dataset
         },
         # Legacy shape kept for frontend/src/components/rules/RulesTab.jsx,
         # which reads rule.psr / rule.value_added_threshold directly.
@@ -125,7 +126,6 @@ def _entry_to_response(
             "primary_rule": primary_code,
             "alternative_rule": alt_code,
             "max_non_originating": threshold,
-            "notes": rule_text,
             "status": entry.get("status", "AGREED"),
         },
         "match_type": match_type,
