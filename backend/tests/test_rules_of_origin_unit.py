@@ -295,3 +295,21 @@ def test_internal_origin_summary_matches_api_when_threshold_is_unconfirmed():
         assert not public["rules"]["primary_rule"]["explanation"]
         assert not internal["primary_rule"]["explanation"]
     assert roo.get_rule_of_origin("840100", "fr")["regional_content"] == 40
+
+
+def test_calculator_legal_reference_cites_the_resolved_row():
+    for requested, kind, matched in (
+        ("851981", "heading", "8519"),
+        ("620719", "subheading", "620719"),
+        ("600110", "chapter", "60"),
+    ):
+        result = asyncio.run(roo.get_rules_of_origin(requested, lang="fr"))
+        reference = result["legal_reference"]
+        assert reference["match_type"] == kind
+        assert reference["matched_code"] == matched
+        assert "Annexe 2" in reference["instrument_fr"]
+        assert reference["source_version"]
+    pending = asyncio.run(roo.get_rules_of_origin("600110", lang="fr"))
+    assert any("2.4" in note for note in pending["legal_reference"]["notes_fr"])
+    qualified = asyncio.run(roo.get_rules_of_origin("841410", lang="fr"))
+    assert any("2.5" in note for note in qualified["legal_reference"]["notes_fr"])

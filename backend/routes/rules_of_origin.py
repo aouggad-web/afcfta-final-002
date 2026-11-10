@@ -93,6 +93,32 @@ def _threshold_for_display(entry: dict, status: str, notes: list) -> tuple:
     return threshold, threshold_note
 
 
+def _legal_reference(entry: dict, match_type: str, matched_code: str) -> dict:
+    """Cite the actual Appendix IV row selected by the resolver."""
+    labels = {"chapter": "chapitre", "heading": "position", "subheading": "sous-position"}
+    code = str(matched_code)
+    display_code = code[:4] + "." + code[4:] if len(code) == 6 else code
+    if len(code) == 4:
+        display_code = code[:2] + "." + code[2:]
+    scope = "ex " if entry.get("ex") else ""
+    notes = []
+    if entry.get("status") == "YTB":
+        notes.append("Appendice IV, note 2.4 (texte non adopté)")
+    if any(note.startswith("Note 2.5 de l'Appendice IV:") for note in entry.get("notes") or []):
+        notes.append("Appendice IV, note 2.5 (clause transitoire)")
+    return {
+        "instrument_fr": (
+            "Accord portant création de la ZLECAf — Protocole sur le commerce des marchandises, "
+            "Annexe 2 sur les règles d'origine, Appendice IV"
+        ),
+        "location_fr": f"{scope}{labels[match_type]} {display_code}",
+        "matched_code": matched_code,
+        "match_type": match_type,
+        "source_version": entry.get("source") or DEFAULT_SOURCE,
+        "notes_fr": notes,
+    }
+
+
 def _entry_to_response(
     hs_code: str, entry: dict, match_type: str, matched_code: str, chapter: str, lang: str
 ) -> dict:
@@ -148,6 +174,7 @@ def _entry_to_response(
         },
         "match_type": match_type,
         "matched_code": matched_code,
+        "legal_reference": _legal_reference(entry, match_type, matched_code),
         "source": entry.get("source", DEFAULT_SOURCE),
     }
 
@@ -250,6 +277,7 @@ async def get_rules_of_origin(
         "rule": None,
         "match_type": "none",
         "matched_code": None,
+        "legal_reference": None,
         "source": DEFAULT_SOURCE,
     }
 

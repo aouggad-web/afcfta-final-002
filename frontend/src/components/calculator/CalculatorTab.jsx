@@ -1086,6 +1086,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     {pick(language, 'Règle alternative', 'Alternative rule', 'قاعدة بديلة')}: {ruleOfOrigin.rules.alternative_rule.name}
                   </p>
                 )}
+                {ruleOfOrigin.legal_reference && (
+                  <div className="border-t border-[var(--afcfta-border)] pt-2 space-y-1 text-xs text-[var(--afcfta-muted)]" data-testid="origin-legal-reference">
+                    <p className="font-semibold text-[var(--text)]">
+                      {pick(language, 'Base légale et référence', 'Legal basis and reference', 'الأساس القانوني والمرجع')}
+                    </p>
+                    <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.instrument_fr}</bdi></p>
+                    <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.location_fr}</bdi></p>
+                    {ruleOfOrigin.legal_reference.notes_fr.map((note) => (
+                      <p key={note}><bdi lang="fr" dir="ltr">{note}</bdi></p>
+                    ))}
+                    <p>
+                      {pick(language, 'Source consultée', 'Source consulted', 'المصدر المعتمد')} ·{' '}
+                      <bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.source_version}</bdi>
+                    </p>
+                  </div>
+                )}
+
               </div>
             )}
 
