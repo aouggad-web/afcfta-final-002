@@ -1092,6 +1092,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       {pick(language, 'Base légale et référence', 'Legal basis and reference', 'الأساس القانوني والمرجع')}
                     </p>
                     <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.instrument_fr}</bdi></p>
+                    {(ruleOfOrigin.legal_reference.articles_fr || []).map((article) => (
+                      <p key={article}><bdi lang="fr" dir="ltr">{article}</bdi></p>
+                    ))}
                     <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.location_fr}</bdi></p>
                     {ruleOfOrigin.legal_reference.notes_fr.map((note) => (
                       <p key={note}><bdi lang="fr" dir="ltr">{note}</bdi></p>

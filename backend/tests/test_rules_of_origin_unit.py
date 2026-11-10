@@ -313,3 +313,20 @@ def test_calculator_legal_reference_cites_the_resolved_row():
     assert any("2.4" in note for note in pending["legal_reference"]["notes_fr"])
     qualified = asyncio.run(roo.get_rules_of_origin("841410", lang="fr"))
     assert any("2.5" in note for note in qualified["legal_reference"]["notes_fr"])
+
+
+def test_legal_reference_cites_the_annexe_2_article_of_the_criterion():
+    # Each article is the one the rule type's own explanation already cites.
+    for code, article in roo._CRITERION_ARTICLES.items():
+        assert article in roo.ORIGIN_TYPES[code]["explanation"]["fr"], code
+
+    cth = asyncio.run(roo.get_rules_of_origin("851981", lang="fr"))["legal_reference"]
+    assert cth["articles_fr"] == ["Annexe 2, article 6(1)(c) (Changement de Position Tarifaire)"]
+    assert cth["location_fr"] == "position 85.19"
+
+    wo = asyncio.run(roo.get_rules_of_origin("040110", lang="fr"))["legal_reference"]
+    assert wo["articles_fr"] == ["Annexe 2, art. 4(a) et art. 5 (Entièrement Obtenu)"]
+
+    pending = asyncio.run(roo.get_rules_of_origin("600110", lang="fr"))["legal_reference"]
+    assert pending["articles_fr"] == ["Annexe 2, article 42(3) (règle non encore adoptée)"]
+    assert "article 42(3)" in roo.ORIGIN_TYPES["YTB"]["explanation"]["fr"]

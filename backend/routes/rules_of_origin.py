@@ -93,6 +93,38 @@ def _threshold_for_display(entry: dict, status: str, notes: list) -> tuple:
     return threshold, threshold_note
 
 
+# Annexe 2 article founding each rule code's criterion, as already cited in
+# that code's origin_types explanation (a test keeps the two in step).
+# HYBRID and NONE have no explanation, hence no article here.
+_CRITERION_ARTICLES = {
+    "WO": "art. 4(a) et art. 5",
+    "CC": "article 6(1)(c)",
+    "CTH": "article 6(1)(c)",
+    "CTSH": "article 6(1)(d)",
+    "VA": "article 6(1)(a)-(b)",
+    "VA15": "article 6(1)(a)-(b)",
+    "VA40": "article 6(1)(a)-(b)",
+    "VA50": "article 6(1)(a)-(b)",
+    "VA60": "article 6(1)(a)-(b)",
+    "VA65": "article 6(1)(a)-(b)",
+    "RVC": "article 6(1)(a)-(b)",
+    "SP": "article 6(1)(e)",
+    "YARN": "art. 6(1)(e)",
+}
+
+
+def _criterion_articles(entry: dict) -> list:
+    """Annexe 2 articles behind the rule: pending rules fall under art. 42(3)."""
+    if entry.get("status") == "YTB":
+        return ["Annexe 2, article 42(3) (règle non encore adoptée)"]
+    articles = []
+    for code in (entry.get("code"), entry.get("alt_code")):
+        article = _CRITERION_ARTICLES.get(code)
+        if article:
+            articles.append(f"Annexe 2, {article} ({_rule_name(code, 'fr')})")
+    return articles
+
+
 def _legal_reference(entry: dict, match_type: str, matched_code: str) -> dict:
     """Cite the actual Appendix IV row selected by the resolver."""
     labels = {"chapter": "chapitre", "heading": "position", "subheading": "sous-position"}
@@ -112,6 +144,7 @@ def _legal_reference(entry: dict, match_type: str, matched_code: str) -> dict:
             "Annexe 2 sur les règles d'origine, Appendice IV"
         ),
         "location_fr": f"{scope}{labels[match_type]} {display_code}",
+        "articles_fr": _criterion_articles(entry),
         "matched_code": matched_code,
         "match_type": match_type,
         "source_version": entry.get("source") or DEFAULT_SOURCE,
