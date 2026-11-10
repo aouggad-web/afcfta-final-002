@@ -118,9 +118,9 @@ def _entry_to_response(
         "rule": {
             "psr": rule_text,
             "wholly_obtained": is_wholly_obtained,
-            "value_added_threshold": (
-                regional_content if regional_content is not None else (threshold or 60)
-            ),
+            # Only value-content rules (VA*) carry a threshold; CTH, WO, SP,
+            # YTB... get None, never a defaulted percentage.
+            "value_added_threshold": regional_content if threshold is not None else None,
             "category": primary_rule.get("name", ""),
             "primary_rule": primary_code,
             "alternative_rule": alt_code,

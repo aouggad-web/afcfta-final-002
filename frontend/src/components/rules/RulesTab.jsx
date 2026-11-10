@@ -30,6 +30,17 @@ export default function RulesTab({ language = 'fr' }) {
       requirement: "Exigence",
       minRegionalContent: "Contenu Régional Minimum",
       regionalContentRequired: "de contenu africain requis",
+      originCriterion: "Critère d'origine",
+      criteria: {
+        CTH: "Changement de position tarifaire",
+        CTSH: "Changement de sous-position tarifaire",
+        CC: "Changement de chapitre",
+        WO: "Produit entièrement obtenu",
+        SP: "Ouvraison spécifique",
+        YARN: "Fabrication à partir de fils",
+        NONE: "Pas de règle d'origine",
+        YTB: "Règle en négociation"
+      },
       requiredDocumentation: "Documentation Requise",
       adminInfo: "Informations Administratives",
       validityPeriod: "Période de validité",
@@ -55,6 +66,17 @@ export default function RulesTab({ language = 'fr' }) {
       requirement: "Requirement",
       minRegionalContent: "Minimum Regional Content",
       regionalContentRequired: "African content required",
+      originCriterion: "Origin criterion",
+      criteria: {
+        CTH: "Change of tariff heading",
+        CTSH: "Change of tariff subheading",
+        CC: "Change of chapter",
+        WO: "Wholly obtained product",
+        SP: "Specific process",
+        YARN: "Manufacture from yarn",
+        NONE: "No rule of origin",
+        YTB: "Rule under negotiation"
+      },
       requiredDocumentation: "Required Documentation",
       adminInfo: "Administrative Information",
       validityPeriod: "Validity period",
@@ -80,6 +102,17 @@ export default function RulesTab({ language = 'fr' }) {
       requirement: "الشرط",
       minRegionalContent: "الحد الأدنى للمحتوى الإقليمي",
       regionalContentRequired: "من المحتوى الأفريقي مطلوب",
+      originCriterion: "معيار المنشأ",
+      criteria: {
+        CTH: "تغيير البند التعريفي",
+        CTSH: "تغيير البند الفرعي التعريفي",
+        CC: "تغيير الفصل",
+        WO: "منتج تم الحصول عليه بالكامل",
+        SP: "عملية تصنيع محددة",
+        YARN: "التصنيع انطلاقًا من الخيوط",
+        NONE: "لا توجد قاعدة منشأ",
+        YTB: "قاعدة قيد التفاوض"
+      },
       requiredDocumentation: "الوثائق المطلوبة",
       adminInfo: "معلومات إدارية",
       validityPeriod: "فترة الصلاحية",
@@ -132,6 +165,12 @@ export default function RulesTab({ language = 'fr' }) {
     const sector = code.substring(0, 2);
     return `${t.sector} ${sector}`; 
   };
+
+  // Real criterion of a rule without a value threshold. A rule still under
+  // negotiation shows as such whatever its code (chapter 60 is YARN/YTB);
+  // a code with no label here (HYBRID) falls back to the source rule text.
+  const getCriterion = (roo) =>
+    t.criteria[roo.status === 'YTB' ? 'YTB' : roo.rules?.primary_rule?.code] || roo.rules?.rule_text_fr;
 
   return (
     <div className="space-y-6">
@@ -262,20 +301,27 @@ export default function RulesTab({ language = 'fr' }) {
               </div>
             )}
 
-            <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
-              <h4 className="font-semibold mb-3 text-[var(--success)]">{t.minRegionalContent}</h4>
-              <div className="flex items-center gap-4">
-                <div className="flex-1">
-                  <Progress value={rulesOfOrigin.rule.value_added_threshold || 30} className="w-full h-4" />
+            {rulesOfOrigin.rule.value_added_threshold != null ? (
+              <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
+                <h4 className="font-semibold mb-3 text-[var(--success)]">{t.minRegionalContent}</h4>
+                <div className="flex items-center gap-4">
+                  <div className="flex-1">
+                    <Progress value={rulesOfOrigin.rule.value_added_threshold} className="w-full h-4" />
+                  </div>
+                  <span className="text-2xl font-bold text-[var(--success)]">
+                    {rulesOfOrigin.rule.value_added_threshold}%
+                  </span>
                 </div>
-                <span className="text-2xl font-bold text-[var(--success)]">
-                  {rulesOfOrigin.rule.value_added_threshold || 30}%
-                </span>
+                <p className="text-sm text-[var(--success)] mt-2">
+                  {rulesOfOrigin.rule.value_added_threshold}% {t.regionalContentRequired}
+                </p>
               </div>
-              <p className="text-sm text-[var(--success)] mt-2">
-                {rulesOfOrigin.rule.value_added_threshold || 30}% {t.regionalContentRequired}
-              </p>
-            </div>
+            ) : (
+              <div className="bg-[var(--afcfta-card)] p-4 rounded-lg border border-[var(--afcfta-border)] shadow-sm">
+                <h4 className="font-semibold mb-2 text-[var(--text)]">{t.originCriterion}</h4>
+                <p className="text-sm font-medium text-[var(--text)]">{getCriterion(rulesOfOrigin)}</p>
+              </div>
+            )}
 
             {rulesOfOrigin.rule.notes && (
               <>
