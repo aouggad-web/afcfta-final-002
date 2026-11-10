@@ -82,6 +82,17 @@ def _regional_content(primary_code: Optional[str], threshold: Optional[int]) -> 
     return None
 
 
+def _threshold_for_display(entry: dict, status: str, notes: list) -> tuple:
+    # A dated source note qualifies the printed threshold. Expose it separately
+    # until the applicable tariff-line version and effective rate are validated.
+    threshold_note = next(
+        (note for note in notes if note.startswith("Note 2.5 de l'Appendice IV:")),
+        None,
+    )
+    threshold = None if status == "YTB" or threshold_note else entry.get("threshold")
+    return threshold, threshold_note
+
+
 def _entry_to_response(
     hs_code: str, entry: dict, match_type: str, matched_code: str, chapter: str, lang: str
 ) -> dict:
@@ -99,13 +110,9 @@ def _entry_to_response(
     alternative_rule = _build_rule_obj(alt_code, lang)
 
     notes = entry.get("notes") or []
-    # A dated source note qualifies the printed threshold. Expose it separately
-    # until the applicable tariff-line version and effective rate are validated.
-    threshold_note = next(
-        (note for note in notes if note.startswith("Note 2.5 de l'Appendice IV:")),
-        None,
-    )
-    threshold = None if status == "YTB" or threshold_note else entry.get("threshold")
+    threshold, threshold_note = _threshold_for_display(entry, status, notes)
+    if status == "YTB" or threshold_note:
+        primary_rule["explanation"] = ""
     regional_content = None if status == "YTB" else _regional_content(primary_code, threshold)
     is_wholly_obtained = status != "YTB" and primary_code == "WO"
 
@@ -317,9 +324,10 @@ def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
 
     primary_code = entry.get("code")
     alt_code = entry.get("alt_code")
-    threshold = entry.get("threshold")
-    regional_content = _regional_content(primary_code, threshold)
+    status = entry.get("status", "AGREED")
     notes = entry.get("notes") or []
+    threshold, threshold_note = _threshold_for_display(entry, status, notes)
+    regional_content = None if status == "YTB" else _regional_content(primary_code, threshold)
 
     return {
         "hs6_code": hs6,
@@ -332,7 +340,9 @@ def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
             "type": primary_code,
             "name": _rule_name(primary_code, lang),
             "description": entry.get(f"description_{lang}") or entry.get("raw_fr", ""),
-            "explanation": _rule_explanation(primary_code, lang),
+            "explanation": (
+                "" if status == "YTB" or threshold_note else _rule_explanation(primary_code, lang)
+            ),
         },
         "alternative_rule": (
             {

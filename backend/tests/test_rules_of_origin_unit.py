@@ -284,3 +284,14 @@ def test_endpoint_exposes_note_25_without_claiming_an_effective_threshold():
         assert result["rules"]["threshold_note_fr"].startswith("Note 2.5")
         assert result["rules"]["threshold_pct"] is None
         assert result["rule"]["value_added_threshold"] is None
+
+
+def test_internal_origin_summary_matches_api_when_threshold_is_unconfirmed():
+    for code in ("841410", "841911", "600110"):
+        public = asyncio.run(roo.get_rules_of_origin(code, lang="fr"))
+        internal = roo.get_rule_of_origin(code, "fr")
+        assert public["rules"]["regional_content"] is None
+        assert internal["regional_content"] is None
+        assert not public["rules"]["primary_rule"]["explanation"]
+        assert not internal["primary_rule"]["explanation"]
+    assert roo.get_rule_of_origin("840100", "fr")["regional_content"] == 40
