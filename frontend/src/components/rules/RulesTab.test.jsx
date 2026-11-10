@@ -7,7 +7,7 @@
  * pourcentage de contenu régional.
  */
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { act, render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import axios from 'axios';
 
@@ -76,4 +76,24 @@ describe("Règles d'origine — exigence", () => {
     expect(bloc).toHaveTextContent(regle);
     expect(screen.queryByText('Informations Administratives')).not.toBeInTheDocument();
   });
+});
+
+
+it("écarte une réponse tardive pour un code précédent", async () => {
+  let terminerAncienneRequete;
+  axios.get
+    .mockImplementationOnce(() => new Promise((resolve) => { terminerAncienneRequete = resolve; }))
+    .mockResolvedValueOnce({ data: reponse({ code: 'CTH', psr: 'Règle récente' }) });
+
+  render(<RulesTab language="fr" />);
+  const saisie = screen.getByLabelText('Code SH');
+  fireEvent.change(saisie, { target: { value: '040310' } });
+  fireEvent.change(saisie, { target: { value: '851900' } });
+  expect(await screen.findByText('Règle récente')).toBeInTheDocument();
+
+  await act(async () => {
+    terminerAncienneRequete({ data: reponse({ code: 'WO', psr: 'Règle précédente' }) });
+  });
+  expect(screen.getByText('Règle récente')).toBeInTheDocument();
+  expect(screen.queryByText('Règle précédente')).not.toBeInTheDocument();
 });

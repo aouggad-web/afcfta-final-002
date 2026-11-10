@@ -92,32 +92,43 @@ def _entry_to_response(
     # The Appendice IV rule text is raw_fr (description_fr is the product
     # designation). It exists in French only: no translation, whatever lang.
     rule_text = entry.get("raw_fr") or ""
-    primary_rule["description"] = rule_text
+    status = entry.get("status", "AGREED")
+    requirement = "" if status == "YTB" else rule_text
+    primary_rule["description"] = requirement
 
     alternative_rule = _build_rule_obj(alt_code, lang)
 
-    threshold = entry.get("threshold")
-    regional_content = _regional_content(primary_code, threshold)
-    is_wholly_obtained = primary_code == "WO"
+    notes = entry.get("notes") or []
+    # A dated source note qualifies the printed threshold. Expose it separately
+    # until the applicable tariff-line version and effective rate are validated.
+    threshold_note = next(
+        (note for note in notes if note.startswith("Note 2.5 de l'Appendice IV:")),
+        None,
+    )
+    threshold = None if status == "YTB" or threshold_note else entry.get("threshold")
+    regional_content = None if status == "YTB" else _regional_content(primary_code, threshold)
+    is_wholly_obtained = status != "YTB" and primary_code == "WO"
 
     return {
         "hs_code": hs_code,
         "chapter": chapter,
-        "status": entry.get("status", "AGREED"),
+        "status": status,
+        "product_description_fr": entry.get("product_description_fr") or entry.get("description_fr") or "",
         "rules": {
             "primary_rule": primary_rule,
             "alternative_rule": alternative_rule,
             "regional_content": regional_content,
             "threshold_pct": threshold,
             "time_phase": entry.get("time_phase"),
-            "applicable_notes": entry.get("notes", []),
+            "applicable_notes": notes,
+            "threshold_note_fr": threshold_note,
             "rule_text_fr": entry.get("raw_fr", ""),
             "rule_text_en": "",  # no English version of the rule in the dataset
         },
         # Legacy shape kept for frontend/src/components/rules/RulesTab.jsx,
         # which reads rule.psr / rule.value_added_threshold directly.
         "rule": {
-            "psr": rule_text,
+            "psr": requirement,
             "wholly_obtained": is_wholly_obtained,
             # Only value-content rules (VA*) carry a threshold; CTH, WO, SP,
             # YTB... get None, never a defaulted percentage.

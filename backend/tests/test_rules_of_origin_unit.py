@@ -268,3 +268,19 @@ def test_endpoint_has_no_english_rule_text_to_offer():
     # milk, yogurt, kephir").
     result = asyncio.run(roo.get_rules_of_origin("040310", lang="en"))
     assert result["rules"]["rule_text_en"] == ""
+
+
+def test_endpoint_distinguishes_designation_and_negotiated_requirement():
+    result = asyncio.run(roo.get_rules_of_origin("600110", lang="ar"))
+    assert result["status"] == "YTB"
+    assert result["product_description_fr"]
+    assert result["rule"]["psr"] == ""
+    assert result["rule"]["value_added_threshold"] is None
+
+
+def test_endpoint_exposes_note_25_without_claiming_an_effective_threshold():
+    for code in ("841410", "841911"):
+        result = asyncio.run(roo.get_rules_of_origin(code, lang="fr"))
+        assert result["rules"]["threshold_note_fr"].startswith("Note 2.5")
+        assert result["rules"]["threshold_pct"] is None
+        assert result["rule"]["value_added_threshold"] is None
