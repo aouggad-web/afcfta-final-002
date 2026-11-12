@@ -1052,9 +1052,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <span className="text-[var(--gold)] text-xs font-semibold">
                     {pick(language, "Règle d'origine ZLECAf", 'AfCFTA Rule of Origin', "قاعدة المنشأ في إطار زليكاف")}
                   </span>
-                  <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-xs">
-                    {ruleOfOrigin.rules.primary_rule?.name || ruleOfOrigin.rules.primary_rule?.code}
-                  </Badge>
+                  {ruleOfOrigin.status !== 'YTB' && (
+                    <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-xs">
+                      {ruleOfOrigin.rules.primary_rule?.name || ruleOfOrigin.rules.primary_rule?.code}
+                    </Badge>
+                  )}
                   {ruleOfOrigin.status !== 'YTB' && ruleOfOrigin.rules.threshold_pct != null &&
                     ruleOfOrigin.rules.regional_content != null && (
                     <Badge className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-xs">
@@ -1067,16 +1069,43 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </Badge>
                   )}
                 </div>
-                {(ruleOfOrigin.rules.rule_text_fr || ruleOfOrigin.rules.primary_rule?.explanation) && (
+                {ruleOfOrigin.status !== 'YTB' && (ruleOfOrigin.rules.threshold_note_fr ? (
+                  <div className="text-[var(--text)] text-xs leading-relaxed">
+                    <p className="font-semibold">{pick(language, 'Seuil applicable à confirmer', 'Applicable threshold to be confirmed', 'الحد المطبق يحتاج إلى تأكيد')}</p>
+                    <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.rules.threshold_note_fr}</bdi></p>
+                  </div>
+                ) : (ruleOfOrigin.rule.psr || ruleOfOrigin.rules.primary_rule?.explanation) && (
                   <p className="text-[var(--text)] text-xs leading-relaxed">
-                    {ruleOfOrigin.rules.rule_text_fr || ruleOfOrigin.rules.primary_rule?.explanation}
+                    {ruleOfOrigin.rule.psr ?
+                      <bdi lang="fr" dir="ltr">{ruleOfOrigin.rule.psr}</bdi> :
+                      ruleOfOrigin.rules.primary_rule.explanation}
                   </p>
-                )}
-                {ruleOfOrigin.rules.alternative_rule && (
+                ))}
+                {ruleOfOrigin.status !== 'YTB' && ruleOfOrigin.rules.alternative_rule && (
                   <p className="text-[var(--afcfta-muted)] text-xs">
                     {pick(language, 'Règle alternative', 'Alternative rule', 'قاعدة بديلة')}: {ruleOfOrigin.rules.alternative_rule.name}
                   </p>
                 )}
+                {ruleOfOrigin.legal_reference && (
+                  <div className="border-t border-[var(--afcfta-border)] pt-2 space-y-1 text-xs text-[var(--afcfta-muted)]" data-testid="origin-legal-reference">
+                    <p className="font-semibold text-[var(--text)]">
+                      {pick(language, 'Base légale et référence', 'Legal basis and reference', 'الأساس القانوني والمرجع')}
+                    </p>
+                    <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.instrument_fr}</bdi></p>
+                    {(ruleOfOrigin.legal_reference.articles_fr || []).map((article) => (
+                      <p key={article}><bdi lang="fr" dir="ltr">{article}</bdi></p>
+                    ))}
+                    <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.location_fr}</bdi></p>
+                    {ruleOfOrigin.legal_reference.notes_fr.map((note) => (
+                      <p key={note}><bdi lang="fr" dir="ltr">{note}</bdi></p>
+                    ))}
+                    <p>
+                      {pick(language, 'Source consultée', 'Source consulted', 'المصدر المعتمد')} ·{' '}
+                      <bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.source_version}</bdi>
+                    </p>
+                  </div>
+                )}
+
               </div>
             )}
 

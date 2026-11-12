@@ -82,6 +82,76 @@ def _regional_content(primary_code: Optional[str], threshold: Optional[int]) -> 
     return None
 
 
+def _threshold_for_display(entry: dict, status: str, notes: list) -> tuple:
+    # A dated source note qualifies the printed threshold. Expose it separately
+    # until the applicable tariff-line version and effective rate are validated.
+    threshold_note = next(
+        (note for note in notes if note.startswith("Note 2.5 de l'Appendice IV:")),
+        None,
+    )
+    threshold = None if status == "YTB" or threshold_note else entry.get("threshold")
+    return threshold, threshold_note
+
+
+# Annexe 2 article founding each rule code's criterion, as already cited in
+# that code's origin_types explanation (a test keeps the two in step).
+# HYBRID and NONE have no explanation, hence no article here.
+_CRITERION_ARTICLES = {
+    "WO": "art. 4(a) et art. 5",
+    "CC": "article 6(1)(c)",
+    "CTH": "article 6(1)(c)",
+    "CTSH": "article 6(1)(d)",
+    "VA": "article 6(1)(a)-(b)",
+    "VA15": "article 6(1)(a)-(b)",
+    "VA40": "article 6(1)(a)-(b)",
+    "VA50": "article 6(1)(a)-(b)",
+    "VA60": "article 6(1)(a)-(b)",
+    "VA65": "article 6(1)(a)-(b)",
+    "RVC": "article 6(1)(a)-(b)",
+    "SP": "article 6(1)(e)",
+    "YARN": "art. 6(1)(e)",
+}
+
+
+def _criterion_articles(entry: dict) -> list:
+    """Annexe 2 articles behind the rule: pending rules fall under art. 42(3)."""
+    if entry.get("status") == "YTB":
+        return ["Annexe 2, article 42(3) (règle non encore adoptée)"]
+    articles = []
+    for code in (entry.get("code"), entry.get("alt_code")):
+        article = _CRITERION_ARTICLES.get(code)
+        if article:
+            articles.append(f"Annexe 2, {article} ({_rule_name(code, 'fr')})")
+    return articles
+
+
+def _legal_reference(entry: dict, match_type: str, matched_code: str) -> dict:
+    """Cite the actual Appendix IV row selected by the resolver."""
+    labels = {"chapter": "chapitre", "heading": "position", "subheading": "sous-position"}
+    code = str(matched_code)
+    display_code = code[:4] + "." + code[4:] if len(code) == 6 else code
+    if len(code) == 4:
+        display_code = code[:2] + "." + code[2:]
+    scope = "ex " if entry.get("ex") else ""
+    notes = []
+    if entry.get("status") == "YTB":
+        notes.append("Appendice IV, note 2.4 (texte non adopté)")
+    if any(note.startswith("Note 2.5 de l'Appendice IV:") for note in entry.get("notes") or []):
+        notes.append("Appendice IV, note 2.5 (clause transitoire)")
+    return {
+        "instrument_fr": (
+            "Accord portant création de la ZLECAf — Protocole sur le commerce des marchandises, "
+            "Annexe 2 sur les règles d'origine, Appendice IV"
+        ),
+        "location_fr": f"{scope}{labels[match_type]} {display_code}",
+        "articles_fr": _criterion_articles(entry),
+        "matched_code": matched_code,
+        "match_type": match_type,
+        "source_version": entry.get("source") or DEFAULT_SOURCE,
+        "notes_fr": notes,
+    }
+
+
 def _entry_to_response(
     hs_code: str, entry: dict, match_type: str, matched_code: str, chapter: str, lang: str
 ) -> dict:
@@ -89,47 +159,55 @@ def _entry_to_response(
     alt_code = entry.get("alt_code")
 
     primary_rule = _build_rule_obj(primary_code, lang) or {"code": "UNKNOWN", "name": ""}
-    # Attach the raw rule text to the primary rule object for richer detail
-    primary_rule["description"] = entry.get(f"description_{lang}") or entry.get("raw_fr") or ""
+    # The Appendice IV rule text is raw_fr (description_fr is the product
+    # designation). It exists in French only: no translation, whatever lang.
+    rule_text = entry.get("raw_fr") or ""
+    status = entry.get("status", "AGREED")
+    requirement = "" if status == "YTB" else rule_text
+    primary_rule["description"] = requirement
 
     alternative_rule = _build_rule_obj(alt_code, lang)
 
-    threshold = entry.get("threshold")
-    regional_content = _regional_content(primary_code, threshold)
-    is_wholly_obtained = primary_code == "WO"
-    rule_text = entry.get(f"description_{lang}") or entry.get("raw_fr") or ""
+    notes = entry.get("notes") or []
+    threshold, threshold_note = _threshold_for_display(entry, status, notes)
+    if status == "YTB" or threshold_note:
+        primary_rule["explanation"] = ""
+    regional_content = None if status == "YTB" else _regional_content(primary_code, threshold)
+    is_wholly_obtained = status != "YTB" and primary_code == "WO"
 
     return {
         "hs_code": hs_code,
         "chapter": chapter,
-        "status": entry.get("status", "AGREED"),
+        "status": status,
+        "product_description_fr": entry.get("product_description_fr") or entry.get("description_fr") or "",
         "rules": {
             "primary_rule": primary_rule,
             "alternative_rule": alternative_rule,
             "regional_content": regional_content,
             "threshold_pct": threshold,
             "time_phase": entry.get("time_phase"),
-            "applicable_notes": entry.get("notes", []),
+            "applicable_notes": notes,
+            "threshold_note_fr": threshold_note,
             "rule_text_fr": entry.get("raw_fr", ""),
-            "rule_text_en": entry.get("description_en") or entry.get("name_en", ""),
+            "rule_text_en": "",  # no English version of the rule in the dataset
         },
         # Legacy shape kept for frontend/src/components/rules/RulesTab.jsx,
         # which reads rule.psr / rule.value_added_threshold directly.
         "rule": {
-            "psr": rule_text,
+            "psr": requirement,
             "wholly_obtained": is_wholly_obtained,
-            "value_added_threshold": (
-                regional_content if regional_content is not None else (threshold or 60)
-            ),
+            # Only value-content rules (VA*) carry a threshold; CTH, WO, SP,
+            # YTB... get None, never a defaulted percentage.
+            "value_added_threshold": regional_content if threshold is not None else None,
             "category": primary_rule.get("name", ""),
             "primary_rule": primary_code,
             "alternative_rule": alt_code,
             "max_non_originating": threshold,
-            "notes": rule_text,
             "status": entry.get("status", "AGREED"),
         },
         "match_type": match_type,
         "matched_code": matched_code,
+        "legal_reference": _legal_reference(entry, match_type, matched_code),
         "source": entry.get("source", DEFAULT_SOURCE),
     }
 
@@ -232,6 +310,7 @@ async def get_rules_of_origin(
         "rule": None,
         "match_type": "none",
         "matched_code": None,
+        "legal_reference": None,
         "source": DEFAULT_SOURCE,
     }
 
@@ -306,9 +385,10 @@ def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
 
     primary_code = entry.get("code")
     alt_code = entry.get("alt_code")
-    threshold = entry.get("threshold")
-    regional_content = _regional_content(primary_code, threshold)
+    status = entry.get("status", "AGREED")
     notes = entry.get("notes") or []
+    threshold, threshold_note = _threshold_for_display(entry, status, notes)
+    regional_content = None if status == "YTB" else _regional_content(primary_code, threshold)
 
     return {
         "hs6_code": hs6,
@@ -321,7 +401,9 @@ def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
             "type": primary_code,
             "name": _rule_name(primary_code, lang),
             "description": entry.get(f"description_{lang}") or entry.get("raw_fr", ""),
-            "explanation": _rule_explanation(primary_code, lang),
+            "explanation": (
+                "" if status == "YTB" or threshold_note else _rule_explanation(primary_code, lang)
+            ),
         },
         "alternative_rule": (
             {
