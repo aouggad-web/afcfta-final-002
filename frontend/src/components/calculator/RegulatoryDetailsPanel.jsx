@@ -104,6 +104,12 @@ const texts = {
     chapter: 'Chapitre',
     unit: 'Unité',
     noDescription: 'Désignation non publiée',
+    borrowedLabel: {
+      intro: 'Libellé du SH6 emprunté à un autre tarif :',
+      quote: (texte) => `« ${texte} »`,
+      source: 'Source :',
+      caveat: 'Il décrit le SH6, pas cette ligne nationale, et peut viser une subdivision plus étroite : le texte publié par le tarif du pays fait foi.'
+    },
     codeSubstituted: (saisi, servi, hs6) => (hs6
       ? `Le code ${saisi} n'existe pas au tarif de ce pays : la ligne affichée est celle du SH6 ${servi}.`
       : `Le code ${saisi} n'existe pas au tarif de ce pays : la ligne affichée est celle de la position ${servi}.`),
@@ -159,6 +165,12 @@ const texts = {
     chapter: 'Chapter',
     unit: 'Unit',
     noDescription: 'Designation not published',
+    borrowedLabel: {
+      intro: 'SH6 label borrowed from another tariff:',
+      quote: (texte) => `“${texte}”`,
+      source: 'Source:',
+      caveat: "It describes the HS6 heading, not this national line, and may refer to a narrower subdivision: the text published by the country's own tariff prevails."
+    },
     codeSubstituted: (saisi, servi, hs6) => (hs6
       ? `Code ${saisi} is not in this country's tariff: the line shown is the one for HS6 ${servi}.`
       : `Code ${saisi} is not in this country's tariff: the line shown is the one for position ${servi}.`),
@@ -220,6 +232,12 @@ const texts = {
     chapter: 'الفصل',
     unit: 'الوحدة',
     noDescription: 'التسمية غير منشورة',
+    borrowedLabel: {
+      intro: 'تسمية SH6 مستعارة من تعريفة أخرى:',
+      quote: (texte) => `«${texte}»`,
+      source: 'المصدر:',
+      caveat: 'تصف هذه التسمية رمز SH6 لا هذا السطر الوطني، وقد تشير إلى تقسيم فرعي أضيق؛ والنص المنشور في تعريفة البلد هو المعتمد.'
+    },
     codeSubstituted: (saisi, servi, hs6) => (hs6
       ? `الرمز ${saisi} غير موجود في تعريفة هذا البلد: السطر المعروض هو سطر SH6 ${servi}.`
       : `الرمز ${saisi} غير موجود في تعريفة هذا البلد: السطر المعروض هو سطر البند ${servi}.`),
@@ -482,6 +500,11 @@ export default function RegulatoryDetailsPanel({
     data.description_en,
     data.description_fr
   ].find(aDesLettres);
+  // Le libellé SH6 que le socle emprunte à d'autres tarifs (AGO, EGY, MOZ), dans la
+  // langue de l'écran (l'anglais pour l'arabe, qu'aucun emprunt ne porte). Il se
+  // lit à part : la désignation du pays est celle de description_*.
+  const emprunt = data.libelle_sh6_emprunte;
+  const langueEmprunt = emprunt && [pick(language, 'fr', 'en', 'en'), 'en', 'fr'].find((l) => aDesLettres(emprunt[l]));
   const listeFormalites = formalites?.formalities || [];
   // Le français du statut est celui du serveur ; les autres langues le traduisent.
   const reserveFormalites = (language !== 'fr' && t.formalityStatus?.[formalites?.statut]) || formalites?.reserve;
@@ -592,6 +615,17 @@ export default function RegulatoryDetailsPanel({
               <p className="text-[var(--text)] text-lg leading-relaxed whitespace-pre-line break-words" dir="auto">{description}</p>
             ) : (
               <p className="text-[var(--afcfta-muted)] text-lg italic" data-testid="regulatory-no-description">{t.noDescription}</p>
+            )}
+            {langueEmprunt && (
+              <div className="flex items-start gap-2 mt-3" data-testid="regulatory-borrowed-label">
+                <Info className="w-4 h-4 text-[var(--gold)] mt-0.5 shrink-0" />
+                <div className="text-sm break-words">
+                  <p className="text-[var(--afcfta-muted)]">{t.borrowedLabel.intro}</p>
+                  <p className="text-[var(--text)] font-medium my-1"><bdi>{t.borrowedLabel.quote(emprunt[langueEmprunt])}</bdi></p>
+                  <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.borrowedLabel.source} <bdi>{emprunt[`${langueEmprunt}_source`]}</bdi></p>
+                  <p className="text-[var(--afcfta-muted)]">{t.borrowedLabel.caveat}</p>
+                </div>
+              </div>
             )}
           </div>
 
