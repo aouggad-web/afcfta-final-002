@@ -343,9 +343,8 @@ def test_opportunities_cache_key_includes_model(monkeypatch):
     assert captured["params"]["model"] == "claude-opus-4-8"
     # v4 : l'ancrage production relaie le caveat méthodologique par commodité
     # (banane/plantain : production ≠ capacité d'export) — invalide les analyses
-    # en cache générées sans ce garde-fou. v5 : la note des hubs de réexportation
-    # cite le texte d'une règle propre à sa ligne de l'Appendice IV.
-    assert captured["params"]["pv"] == 5
+    # en cache générées sans ce garde-fou.
+    assert captured["params"]["pv"] == 4
 
 
 def test_industrial_oec_year_uses_first_flow_not_last(monkeypatch):

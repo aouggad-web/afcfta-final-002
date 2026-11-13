@@ -1098,13 +1098,14 @@ STRICT DATA RULES:
         # pv=4 : l'ancrage production relaie désormais le caveat méthodologique
         # par commodité (banane/plantain : production ≠ capacité d'export) —
         # invalide les analyses en cache générées sans ce garde-fou.
-        # pv=5 : pour une règle propre à sa ligne de l'Appendice IV, la note des
-        # hubs de réexportation cite le texte de la ligne, pas un nom de critère.
+        # Pas d'incrément pour la note des hubs de réexportation qui cite le
+        # texte d'une règle propre à sa ligne : choix de ne pas recalculer les
+        # analyses en cache ; elles prennent la nouvelle note à leur expiration.
         cache_params = {
             "country": country_name,
             "mode": mode,
             "lang": lang,
-            "pv": 5,
+            "pv": 4,
             "model": self.MODEL,
         }
         # Stamp de version des données de production : pour les modes enrichis
