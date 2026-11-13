@@ -220,9 +220,7 @@ def test_options_expose_exact_corridor_operators():
         for o in multimodal
         if any(s.get("corridor_id") == "CORR-DAKAR-BAMAKO-006" for s in o["segments"])
     )
-    land_seg = [
-        s for s in dakar_bamako["segments"] if s["mode"] in ("road", "rail", "multimodal")
-    ]
+    land_seg = [s for s in dakar_bamako["segments"] if s["mode"] in ("road", "rail", "multimodal")]
     assert land_seg, "multimodal option must have a land leg"
     assert "Transrail" in (
         land_seg[0].get("carriers") or []

@@ -138,7 +138,13 @@ LANDLOCKED_GATEWAYS: Dict[str, List[Dict[str, str]]] = {
     ],
     "ZWE": [
         {"port": "ZADUR", "port_country": "ZAF", "via": "Harare-Durban (North-South)"},
-        {"port": "MZMPM", "port_country": "MOZ", "via": "Harare-Maputo (Beira Corridor)"},
+        # Le corridor de Beira part du port de Beira (et non de Maputo).
+        {
+            "port": "MZBEW",
+            "port_country": "MOZ",
+            "via": "Harare-Beira (Corridor de Beira)",
+            "corridor_ids": ["CORR-BEIRA-010"],
+        },
     ],
     "MWI": [
         # Le corridor de Nacala part du port de Nacala : la jambe maritime doit y
@@ -278,19 +284,19 @@ def _avg_transit(rmin: Optional[int], rmax: Optional[int]) -> Optional[float]:
 def _closed_border_between(c: Dict[str, Any], a: str, b: str) -> bool:
     """Block a corridor if the requested segment crosses a closed border."""
     pairs = crossed_country_pairs(c, a, b)
-    return any(
-        border_node_pair(node) in pairs
-        and "fermée" in (node.get("notes") or "").casefold()
-        for node in c.get("nodes") or []
-    ) if pairs else False
+    return (
+        any(
+            border_node_pair(node) in pairs and "fermée" in (node.get("notes") or "").casefold()
+            for node in c.get("nodes") or []
+        )
+        if pairs
+        else False
+    )
 
 
 def _pair_leg_km(c: Dict[str, Any], a: str, b: str) -> float:
-    """Distance facturée entre les pays a et b sur le corridor c.
-
-    RÈGLE : les données ne donnent que la longueur totale et la liste ordonnée des
-    pays traversés. Pour un corridor de plus de deux pays, le tronçon de la paire
-    est la longueur totale au prorata du nombre d'intervalles de pays parcourus
+    """Repli de _leg_km quand une extrémité n'a pas de coordonnées : longueur
+    totale au prorata du nombre d'intervalles de pays parcourus
     (|rang(a) − rang(b)| / (nombre de pays − 1)). Un corridor à deux pays, ou dont
     un pays est absent, est facturé sur toute sa longueur."""
     full = float(c.get("length_km") or 0)
@@ -299,6 +305,67 @@ def _pair_leg_km(c: Dict[str, Any], a: str, b: str) -> float:
     if len(countries) <= 2 or a not in countries or b not in countries or a == b:
         return full
     return full * abs(countries.index(a) - countries.index(b)) / (len(countries) - 1)
+
+
+def _haversine_km(p: Tuple[float, float], q: Tuple[float, float]) -> float:
+    (la1, lo1), (la2, lo2) = p, q
+    r = math.radians
+    h = (
+        math.sin(r(la2 - la1) / 2) ** 2
+        + math.cos(r(la1)) * math.cos(r(la2)) * math.sin(r(lo2 - lo1) / 2) ** 2
+    )
+    return 2 * 6371.0 * math.asin(math.sqrt(h))
+
+
+def _country_point(iso: str) -> Optional[Tuple[float, float]]:
+    """Point de référence d'un pays : son aéroport principal (COUNTRY_DEFAULT_AIRPORT)."""
+    airport = air_registry().get(COUNTRY_DEFAULT_AIRPORT.get(iso.upper(), ""))
+    return (airport["lat"], airport["lon"]) if airport else None
+
+
+def _port_point(locode: str) -> Optional[Tuple[float, float]]:
+    port = PORTS.get(locode)
+    return (port["lat"], port["lon"]) if port and port.get("lat") is not None else None
+
+
+_LEG_RULE_LABELS = {
+    "straight_line_x_sinuosity": "vol d'oiseau entre les extrémités × sinuosité du corridor",
+    "pair_leg_pro_rata": "prorata des pays traversés",
+}
+
+
+def _leg_km(
+    c: Dict[str, Any],
+    a: str,
+    b: str,
+    start: Optional[Tuple[float, float]],
+    end: Optional[Tuple[float, float]],
+) -> Tuple[float, str]:
+    """Distance facturée sur le corridor c pour un tronçon entre les pays a et b,
+    et la règle appliquée.
+
+    RÈGLE (les données donnent la longueur routière du corridor, la liste ordonnée
+    de ses pays et son tracé ``coordinates``) :
+
+    1. « full » : le tronçon relie le premier et le dernier pays du corridor (donc
+       tout corridor à deux pays) — toute la longueur est facturée.
+    2. « straight_line_x_sinuosity » : sinon, distance à vol d'oiseau entre les
+       extrémités du tronçon (port passerelle ou aéroport principal du pays) ×
+       sinuosité du corridor (longueur ÷ longueur du tracé, au moins 1),
+       plafonnée à la longueur du corridor. Jamais sous le vol d'oiseau.
+    3. « pair_leg_pro_rata » : sans coordonnées, prorata des pays (_pair_leg_km).
+    """
+    full = float(c.get("length_km") or 0)
+    countries = [x.upper() for x in c.get("countries", [])]
+    if {a.upper(), b.upper()} == {countries[0], countries[-1]}:
+        return round(full), "full"
+    pts = c.get("coordinates") or []
+    traced = sum(_haversine_km(pts[i], pts[i + 1]) for i in range(len(pts) - 1))
+    if not (start and end and traced > 0):
+        km = _pair_leg_km(c, a, b)
+        return round(km), ("full" if km >= full else "pair_leg_pro_rata")
+    km = min(full, _haversine_km(start, end) * max(1.0, full / traced))
+    return round(km), ("full" if km >= full else "straight_line_x_sinuosity")
 
 
 def _is_detached_from(c: Dict[str, Any], origin: str) -> bool:
@@ -323,9 +390,7 @@ def _is_detached_from(c: Dict[str, Any], origin: str) -> bool:
             continue
         if d.get("end_node") == start:
             return True
-        if any(
-            (n.get("node_name") or "").startswith(start) for n in d.get("nodes") or []
-        ):
+        if any((n.get("node_name") or "").startswith(start) for n in d.get("nodes") or []):
             return True
     return False
 
@@ -482,14 +547,22 @@ def _rail_then_road_option(
             if dest not in road_countries:
                 continue
             # Match by start_node (e.g., "Tamanrasset" == "Tamanrasset")
-            if road.get("start_node") != rail_end_node or _closed_border_between(road, origin, dest):
+            if road.get("start_node") != rail_end_node or _closed_border_between(
+                road, origin, dest
+            ):
                 continue
             road_data = get_land_freight_cost(
                 road["corridor_id"],
                 "road",
                 weight_tonnes,
                 cargo_type,
-                length_km=_pair_leg_km(road, origin, dest),
+                length_km=_leg_km(
+                    road,
+                    origin,
+                    dest,
+                    tuple(road["coordinates"][0]) if road.get("coordinates") else None,
+                    _country_point(dest),
+                )[0],
                 country_pair=(origin, dest),
             )
             if not road_data:
@@ -1010,7 +1083,13 @@ def _land_option(
             continue
         # For planned/under-construction corridors, still compute the modeled cost
         # so the user sees the projected economics.
-        leg_km = _pair_leg_km(corridor, origin_country, destination_country)
+        leg_km, leg_rule = _leg_km(
+            corridor,
+            origin_country,
+            destination_country,
+            _country_point(origin_country),
+            _country_point(destination_country),
+        )
         land = get_land_freight_cost(
             corridor["corridor_id"],
             corridor.get("type", "road"),
@@ -1077,15 +1156,13 @@ def _land_option(
                     )
                     + (
                         f" Distance facturée : {round(dist_km)} km sur "
-                        f"{round(corridor.get('length_km') or 0)} km (tronçon de la paire, "
-                        "prorata des pays traversés)."
-                        if dist_km < (corridor.get("length_km") or 0)
+                        f"{round(corridor.get('length_km') or 0)} km "
+                        f"({_LEG_RULE_LABELS[leg_rule]})."
+                        if leg_rule in _LEG_RULE_LABELS
                         else ""
                     )
                 ),
-                "distance_rule": (
-                    "pair_leg_pro_rata" if dist_km < (corridor.get("length_km") or 0) else "full"
-                ),
+                "distance_rule": leg_rule,
                 "source": corridor.get("source_org") or "Banque Mondiale SSATP / UNECA / AfDB",
             }
         )
@@ -1097,13 +1174,16 @@ def _gateway_corridors(gw: Dict[str, Any], country_a: str, country_b: str) -> Li
 
     Si l'entrée de LANDLOCKED_GATEWAYS nomme ses ``corridor_ids``, seuls ceux-ci
     sont retenus (le corridor part du port de la passerelle). Sinon, tous les
-    corridors de la paire, sauf ceux qui partent d'un autre port que la
-    passerelle (ex. un corridor « Port de Nacala » après une arrivée à Maputo)."""
+    corridors de la paire dont le départ ou l'arrivée est le port de la passerelle
+    (ex. pas de corridor « Port de Beira » après une arrivée à Maputo)."""
     found = _find_all_corridors_for_pair(country_a, country_b)
     ids = gw.get("corridor_ids")
     if ids:
         return [c for c in found if c["corridor_id"] in ids]
-    return found
+    city = ((PORTS.get(gw["port"]) or {}).get("name") or "").split(" (")[0].lower()
+    return [
+        c for c in found if city in f"{c.get('start_node') or ''} {c.get('end_node') or ''}".lower()
+    ]
 
 
 def _sea_then_land_option(
@@ -1148,7 +1228,9 @@ def _sea_then_land_option(
                 corridor.get("type", "road"),
                 weight_tonnes,
                 cargo_type,
-                length_km=_pair_leg_km(corridor, gw_country, dest),
+                length_km=_leg_km(
+                    corridor, gw_country, dest, _port_point(gw_port), _country_point(dest)
+                )[0],
                 country_pair=(gw_country, dest),
             )
             if not land:
@@ -1294,7 +1376,9 @@ def _land_then_sea_option(
                 corridor.get("type", "road"),
                 weight_tonnes,
                 cargo_type,
-                length_km=_pair_leg_km(corridor, origin, gw_country),
+                length_km=_leg_km(
+                    corridor, origin, gw_country, _country_point(origin), _port_point(gw_port)
+                )[0],
                 country_pair=(origin, gw_country),
             )
             if not land:
@@ -1578,7 +1662,8 @@ def compare_multimodal(
     containers = max(1, math.ceil(weight_kg / capacity))
     for option in options:
         sea_legs = [
-            leg for leg in option.get("segments", [])
+            leg
+            for leg in option.get("segments", [])
             if leg.get("mode") == "sea" and leg.get("cost_usd") is not None
         ]
         cost = option.get("total_cost_usd")
@@ -1611,8 +1696,11 @@ def compare_multimodal(
     # Compute "best of" badges only among OPERATIONAL options to avoid suggesting
     # a planned/under-construction route as "the cheapest right now".
     operational_idxs = [
-        i for i, o in enumerate(options)
-        if o.get("available", True) and not o.get("is_future") and o.get("total_cost_usd") is not None
+        i
+        for i, o in enumerate(options)
+        if o.get("available", True)
+        and not o.get("is_future")
+        and o.get("total_cost_usd") is not None
     ]
     if operational_idxs:
         cheapest = min(

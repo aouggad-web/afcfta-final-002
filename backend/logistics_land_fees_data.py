@@ -110,6 +110,7 @@ def _corridor_index() -> Dict[str, Dict[str, Any]]:
             "source_org": c.get("source_org"),
             "infra_details": c.get("infra_details"),
             "nodes": c.get("nodes", []) or [],
+            "coordinates": c.get("coordinates", []) or [],
             "borders": borders,
             "osbp": osbp,
             "modes": _modes_for(c.get("corridor_type", "road")),

@@ -105,7 +105,8 @@ def test_land_distance_is_pair_leg_not_whole_corridor():
     land = [o for o in res["options"] if o["mode"] == "land" and o["available"]]
     assert land
     assert land[0]["distance_km"] < 4504
-    assert "pro rata" in land[0]["notes"].lower() or land[0].get("distance_rule")
+    assert land[0]["distance_rule"] == "straight_line_x_sinuosity"
+    assert "vol d'oiseau" in land[0]["notes"]
 
 
 def test_detached_derivation_not_offered_as_land_from_origin():
@@ -179,9 +180,7 @@ def test_prix_maritime_du_lot_et_non_d_un_conteneur():
 def test_shared_terminus_does_not_detach_corridors_starting_there():
     # Durban-Dar es Salaam aboutit à Dar es Salaam : Central et TAZARA y partent
     # légitimement pour une origine tanzanienne.
-    ids = lambda a, b: {
-        o["segments"][0]["corridor_id"] for o in service._land_option(a, b, 26.4)
-    }
+    ids = lambda a, b: {o["segments"][0]["corridor_id"] for o in service._land_option(a, b, 26.4)}
     assert "CORR-CENTRAL-009" in ids("TZA", "BDI")
     assert "CORR-TAZARA-008" in ids("TZA", "ZMB")
 
@@ -203,3 +202,100 @@ def test_every_osbp_border_node_resolves_its_country_pair():
         for node in corridor["nodes"]:
             if node.get("node_type") == "border_crossing" and node.get("is_osbp"):
                 assert land.border_node_pair(node), f"{cid}: OSBP sans couple de pays"
+
+
+# ── Vérification finale : règle de distance ────────────────────────────────
+def _straight_km(p, q):
+    import math
+
+    (la1, lo1), (la2, lo2) = p, q
+    r = math.radians
+    h = (
+        math.sin(r(la2 - la1) / 2) ** 2
+        + math.cos(r(la1)) * math.cos(r(la2)) * math.sin(r(lo2 - lo1) / 2) ** 2
+    )
+    return 2 * 6371 * math.asin(math.sqrt(h))
+
+
+def _capital(iso):
+    from logistics_air_fees_data import _airport_registry
+
+    airport = _airport_registry().get(service.COUNTRY_DEFAULT_AIRPORT.get(iso, ""))
+    return (airport["lat"], airport["lon"]) if airport else None
+
+
+def test_land_leg_never_shorter_than_straight_line():
+    # Un tronçon facturé ne peut pas être plus court que la distance à vol
+    # d'oiseau entre ses extrémités, sauf si tout le corridor est facturé (le
+    # corridor n'atteint alors pas la capitale de destination).
+    from logistics_fees_data import PORTS
+
+    lengths = {c["corridor_id"]: c["length_km"] for c in service.get_land_corridors_list()}
+    checked = []
+    for dest, gateways in service.LANDLOCKED_GATEWAYS.items():
+        for o in _compare("DZA", dest)["options"]:
+            if o["mode"] != "multimodal" or o["segments"][0]["mode"] != "sea":
+                continue
+            port, leg = PORTS[o["segments"][0]["to_locode"]], o["segments"][1]
+            checked.append((dest, leg, (port["lat"], port["lon"]), _capital(dest)))
+    for c in service.get_land_corridors_list():
+        for a in c["countries"]:
+            for b in c["countries"]:
+                if a == b or not _capital(a) or not _capital(b):
+                    continue
+                for o in service._land_option(a, b, 26.4):
+                    checked.append((f"{a}>{b}", o["segments"][0], _capital(a), _capital(b)))
+    assert len(checked) > 100
+    for label, leg, start, end in checked:
+        floor = min(lengths[leg["corridor_id"]], _straight_km(start, end))
+        assert leg["distance_km"] >= floor - 1, f"{label} {leg['corridor_id']}: {leg}"
+
+
+def test_mombasa_uganda_leg_between_straight_line_and_whole_corridor():
+    res = _compare("DZA", "UGA")
+    leg = next(
+        o["segments"][1]
+        for o in res["options"]
+        if o.get("via_port_locode") == "KEMBA"
+        and o["segments"][1]["corridor_id"] == "CORR-MOMBASA-NAIROBI-003"
+    )
+    assert 922 < leg["distance_km"] < 1720
+
+
+def test_leg_spanning_corridor_ends_is_billed_full_length():
+    # Tamanrasset → Ouagadougou passe par Agadez et Niamey : la ligne droite
+    # raccourcirait ce coude ; entre les deux pays extrêmes, tout le corridor.
+    res = _compare("DZA", "BFA")
+    road = next(
+        o["segments"][1]
+        for o in res["options"]
+        if o.get("corridor_mode") == "rail_road"
+        and o["segments"][1]["corridor_id"] == "CORR-TRANSSAH-OUAGA-021"
+    )
+    assert road["distance_km"] == 2150
+    assert any(
+        o["segments"][1]["distance_km"] == 1035
+        for o in _compare("DZA", "NER")["options"]
+        if o.get("via_port_locode") == "BJCOO"
+    )
+
+
+def test_gateway_land_leg_starts_or_ends_at_gateway_port():
+    # Même défaut que Malawi (anomalie 4) : la jambe terrestre doit partir du port
+    # où arrive la jambe maritime (ou y aboutir), pas d'un autre port.
+    for dest in service.LANDLOCKED_GATEWAYS:
+        for o in _compare("DZA", dest)["options"]:
+            if o["mode"] != "multimodal" or o["segments"][0]["mode"] != "sea":
+                continue
+            city = o["via_port"].split(" (")[0].lower()
+            leg = o["segments"][1]
+            assert city in f"{leg['from']} {leg['to']}".lower(), f"{dest}: {o['label']}"
+
+
+def test_zimbabwe_gateway_uses_beira_port_for_beira_corridor():
+    ports = {g["port"] for g in service.LANDLOCKED_GATEWAYS["ZWE"]}
+    assert "MZBEW" in ports and "MZMPM" not in ports
+    assert any(
+        o.get("via_port_locode") == "MZBEW" and o["segments"][1]["corridor_id"] == "CORR-BEIRA-010"
+        for o in _compare("DZA", "ZWE")["options"]
+    )
