@@ -1027,11 +1027,11 @@
       "source": "AfCFTA Appendix IV (PSR) - December 2023, 12th Council of Ministers"
     },
     "71": {
-      "code": "SP",
-      "alt_code": null,
+      "code": "CTH",
+      "alt_code": "VA60",
       "threshold": null,
       "ex": false,
-      "raw_fr": "Fabrication à partir de matières de toute position autre que celle du produit (règles spécifiques par sous-position: perles, pierres gemmes, métaux précieux)",
+      "raw_fr": "Fabrication à partir de matières de toute position autre que celle du produit Ou Fabrication dans laquelle la valeur de toutes les matières utilisées n'excède pas 60 % du prix départ usine du produit",
       "name_en": "Natural or cultured pearls, precious or semi-precious stones, precious metals",
       "description_fr": "Perles fines ou de culture, pierres gemmes ou similaires, métaux précieux, plaqués ou doublés de métaux précieux et ouvrages en ces matières; bijouterie de fantaisie; monnaies",
       "time_phase": null,

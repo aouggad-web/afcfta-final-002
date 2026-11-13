@@ -556,3 +556,19 @@ def test_row_specific_rule_comes_with_its_row_text_outside_the_endpoint():
     assert roo.get_rule_of_origin("270900", "fr")["primary_rule"]["matches_text"] is True
     pending = roo.get_rule_of_origin("870323", "fr")["primary_rule"]  # 87.03: À déterminer
     assert pending["matches_text"] is False and pending["rule_text_fr"] == ""
+
+
+def test_chapter_71_row_is_the_official_text():
+    # Appendix IV pp. 77-78: change of heading Ou value of all materials
+    # <= 60 %. The dataset text had a summary of its own in place of the
+    # value alternative, and row-specific rules are now quoted as such.
+    assert roo.RULES_DATA["chapters"]["71"]["raw_fr"] == (
+        "Fabrication à partir de matières de toute position autre que celle du produit "
+        "Ou Fabrication dans laquelle la valeur de toutes les matières utilisées "
+        "n'excède pas 60 % du prix départ usine du produit"
+    )
+    rule = roo.get_rule_of_origin("711319", "fr")
+    assert rule["primary_rule"]["name"] == "Changement de Position Tarifaire"
+    assert rule["primary_rule"]["matches_text"] is True
+    assert rule["alternative_rule"]["code"] == "VA60"
+    assert rule["alternative_rule"]["explanation"] != ""

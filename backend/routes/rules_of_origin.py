@@ -118,8 +118,7 @@ _CRITERION_ARTICLES = {
 # A rule code (WO, CTH, VA60...) only describes a row whose own Appendix IV
 # text states that criterion and nothing more. Many rows do not: a "WO" row may
 # only require the materials of chapters 17 and 18 to be wholly obtained, a CTH
-# row may add a proviso on certain materials, chapter 71 is coded SP but its
-# text is a change of heading. For those rows the code's name, explanation,
+# row may add a proviso on certain materials. For those rows the code's name, explanation,
 # article and implied regional content would contradict or truncate the rule
 # text, so only the text (which alone is authoritative) is shown.
 _REVIEW_CLAUSE = (
