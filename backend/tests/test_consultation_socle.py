@@ -325,11 +325,101 @@ def test_fiche_dit_quand_la_source_ne_publie_pas_la_tva(client):
     assert client.get("/consultation/DZA/position/0201101100").json()["couverture"]["tva"] is True
 
 
+def _requiert_socle(*pays):
+    """Saute le test si l'un de ces pays n'est pas construit (le module ne garde
+    que six pays) : un socle partiel ne doit pas faire échouer ce qu'il ne sert pas."""
+    return pytest.mark.skipif(
+        not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in pays),
+        reason=f"socle absent : {' '.join(pays)}",
+    )
+
+
 def test_fiche_les_restrictions_sont_servies_telles_que_publiees(client):
     corps = client.get("/consultation/EGY/position/0101210000").json()
     assert len(corps["restrictions"]) == 1
-    assert corps["restrictions"][0]["text_verbatim"] and corps["restrictions"][0]["source"]
+    restriction = corps["restrictions"][0]
+    assert restriction["texte"].startswith("ق3034") and restriction["source"]
     assert client.get("/consultation/DZA/position/0201101100").json()["restrictions"] == []
+
+
+@_requiert_socle("LBY")
+def test_fiche_une_interdiction_d_importation_se_lit(client):
+    """La Libye écrit ses restrictions sous une autre forme que l'Égypte
+    (type / verbatim / libelle_fr / portee). Lue sous une seule forme, la
+    seconde donnait une carte vide : une position interdite se présentait comme
+    une position aux taux incomplets."""
+    corps = client.get("/consultation/LBY/position/01031000").json()
+    assert corps["restrictions"] == [
+        {
+            "type": "IMPORTATION_INTERDITE",
+            "libelle": "Importation interdite",
+            "texte": "ممنوع استيراده",
+            "portee": "NPF et Ligue arabe",
+            "source": corps["restrictions"][0]["source"],
+        }
+    ]
+    assert corps["restrictions"][0]["source"].startswith("customs.gov.ly")
+
+
+@_requiert_socle("LBY")
+def test_fiche_toutes_les_restrictions_ont_la_meme_forme_et_un_texte(client):
+    """Toutes les interdictions libyennes (62) et un échantillon des restrictions
+    égyptiennes : mêmes clés, et un texte à afficher — une restriction sans
+    texte serait invisible. Les positions viennent du socle, pas d'une liste."""
+    cles = {"type", "libelle", "texte", "portee", "source"}
+    a_verifier = []
+    for iso3, limite in (("LBY", None), ("EGY", 60)):
+        avec = [c for c, p in socle.charger(iso3)["positions"].items() if p.get("restrictions")]
+        a_verifier += [(iso3, c) for c in (avec if limite is None else avec[:limite])]
+    assert sum(1 for iso3, _ in a_verifier if iso3 == "LBY") == 62
+    for iso3, code in a_verifier:
+        for restriction in client.get(f"/consultation/{iso3}/position/{code}").json()["restrictions"]:
+            assert set(restriction) == cles and restriction["texte"], (iso3, code, restriction)
+
+
+@_requiert_socle("LBY")
+def test_fiche_la_designation_arabe_est_servie(client):
+    """LBY : le « verbatim » français et anglais est le code lui-même ; la
+    désignation existe en arabe, et elle se sert."""
+    corps = client.get("/consultation/LBY/position/01031000").json()
+    assert re.search(r"[\u0600-\u06FF]", corps["description_ar"])
+
+
+def test_fiche_un_code_national_inexistant_sert_la_ligne_sh6_sous_son_vrai_code(client):
+    """ZAF publie des lignes SH6 : un code national qui n'existe pas retombe sur
+    la ligne du SH6, et le dit — « code » est celui de la ligne servie, pas le
+    code saisi, que le tarif ne publie pas."""
+    corps = client.get("/consultation/ZAF/position/0101210000").json()
+    assert corps["niveau"] == "hs6" and corps["code"] == "010121" and corps["hs6"] == "010121"
+
+
+def test_fiche_une_position_nationale_garde_son_code(client):
+    corps = client.get("/consultation/DZA/position/0201101100").json()
+    assert corps["niveau"] == "national" and corps["code"] == "0201101100"
+    # TUN : la clé de contrôle saisie avec la position ne change pas la position.
+    tunisie = client.get("/consultation/TUN/position/01012100015").json()
+    assert tunisie["niveau"] == "national" and tunisie["code"] == "0101210001"
+
+
+@_requiert_socle("COM")
+def test_fiche_une_moyenne_statistique_n_est_pas_un_taux_publie(client):
+    """Comores, Soudan, Sao Tomé : le « droit de douane » est une moyenne WITS/
+    UNCTAD-TRAINS au SH6, pas le tarif national. Le calcul le déclare INDICATIF ;
+    la fiche le marque, avec le même prédicat."""
+    droits = {d["code"]: d for d in client.get("/consultation/COM/position/010121").json()["droits"]}
+    assert droits["DD"]["base_statistique"] is True
+    national = client.get("/consultation/DZA/position/0201101100").json()["droits"]
+    assert not any(d["base_statistique"] for d in national)
+
+
+def test_fiche_les_usages_qui_substituent_un_regime_sont_nommes(client):
+    """EGY 3401.19.00.10 : pour l'usage domestique, une taxe de Table de 5 %
+    remplace la TVA de 14 %. Les lignes servies sont celles du régime courant ;
+    la fiche nomme l'usage qui en change."""
+    corps = client.get("/consultation/EGY/position/3401190010").json()
+    assert [u["code"] for u in corps["usages"]] == ["USAGE_DOMESTIQUE"]
+    assert corps["usages"][0]["libelle"] and corps["usages"][0]["texte"]
+    assert client.get("/consultation/DZA/position/0201101100").json()["usages"] == []
 
 
 def test_fiche_un_sh6_a_plusieurs_positions_demande_le_choix(client):

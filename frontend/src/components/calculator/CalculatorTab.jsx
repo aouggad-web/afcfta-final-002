@@ -222,6 +222,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
   const handleDestinationChange = useCallback((value) => {
     setDestinationCountry(value);
+    // Une position choisie dans l'onglet Réglementation vaut pour son pays : la
+    // garder servirait la fiche d'un autre tarif sous la désignation du premier.
+    setRegulatorySelectedPos(null);
+    setRegulatorySelectedPosDesc(null);
   }, []);
 
   const handleRegulatoryHsCodeChange = useCallback((e) => {

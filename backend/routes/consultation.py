@@ -17,7 +17,7 @@ from collections import OrderedDict
 from fastapi import APIRouter, HTTPException, Query
 
 from services import socle
-from services.calcul import droits_a_la_date
+from services.calcul import _est_moyenne_statistique, droits_a_la_date
 from services.designation import texte_designation
 from services.formalites import (
     FORMALITES_AUCUNE_PARTICULIERE,
@@ -44,6 +44,21 @@ def _taux_publie(droit: dict) -> dict:
     return {
         "taux": None if deux_composantes else droit.get("taux"),
         "expression": droit.get("expression_brute") or specifique.get("brut"),
+    }
+
+
+def _restriction(restriction: dict) -> dict:
+    """Une restriction sous une forme unique. La source l'écrit de deux façons
+    (Égypte : ``kind`` / ``text_verbatim`` ; Libye : ``type`` / ``verbatim`` /
+    ``libelle_fr`` / ``portee``) : lue sous une seule, l'autre devenait une carte
+    vide, et une interdiction d'importation ne se voyait pas. Le texte reste celui
+    de la source ; seule la forme est unifiée."""
+    return {
+        "type": restriction.get("type") or restriction.get("kind"),
+        "libelle": restriction.get("libelle_fr"),
+        "texte": restriction.get("text_verbatim") or restriction.get("verbatim"),
+        "portee": restriction.get("portee"),
+        "source": restriction.get("source"),
     }
 
 
@@ -101,9 +116,13 @@ def fiche_position(iso3: str, code: str):
 
     Ni total ni taux préférentiel : le total des droits et taxes est celui de
     POST /calcul, et la préférence dépend d'une origine que cette consultation
-    ne connaît pas. Un taux que la source ne porte pas reste ``null`` — jamais
-    un zéro — et ``couverture`` dit quelles familles la source ne publie pas
-    pour ce pays, pour qu'une liste incomplète ne se lise pas comme complète.
+    ne connaît pas. Les mesures temporaires (gazettes EAC) et le choix d'un
+    usage restent au calcul : ``usages`` nomme les régimes qui en dépendent.
+    Un taux que la source ne porte pas reste ``null`` — jamais un zéro — et
+    ``couverture`` dit quelles familles la source ne publie pas pour ce pays,
+    pour qu'une liste incomplète ne se lise pas comme complète. Une ligne dont
+    le taux est une moyenne statistique (WITS/TRAINS) le dit (``base_statistique``),
+    comme le calcul : ce n'est pas le droit applicable à une marchandise.
     """
     try:
         position, provenance = socle.position(iso3, code)
@@ -132,16 +151,22 @@ def fiche_position(iso3: str, code: str):
 
     designation = position.get("designation")
     couverture = provenance.get("couverture") or {}
+    niveau = provenance["niveau"]
+    # Le code de la ligne servie. À défaut de position nationale à ce code, c'est
+    # la ligne du SH6 qui répond : annoncer le code saisi ferait lire, sous
+    # « code national », une position que le tarif ne publie pas.
+    code_servi = provenance["code_demande"] if niveau == "national" else provenance["code_demande"][:6]
     return {
         "success": True,
         "country_iso3": provenance["iso3"],
-        "code": provenance["code_demande"],
-        "niveau": provenance["niveau"],
+        "code": code_servi,
+        "niveau": niveau,
         "hs6": position.get("hs6"),
         "chapitre": position.get("chapitre"),
         "unite": position.get("unite"),
         "description_fr": texte_designation(designation, "fr"),
         "description_en": texte_designation(designation, "en"),
+        "description_ar": texte_designation(designation, "ar"),
         "droits": [
             {
                 "code": droit.get("code"),
@@ -151,10 +176,18 @@ def fiche_position(iso3: str, code: str):
                 "assiette": droit.get("assiette"),
                 "note": droit.get("note"),
                 "source": droit.get("source"),
+                "base_statistique": _est_moyenne_statistique(droit.get("source")),
             }
             for droit in position.get("droits") or []
         ],
-        "restrictions": position.get("restrictions") or [],
+        "restrictions": [_restriction(r) for r in position.get("restrictions") or []],
+        # Les régimes que l'usage déclaré peut substituer (Égypte : taxe de Table
+        # à la place de la TVA, par exemple). Les lignes ci-dessus sont celles du
+        # régime courant ; le calcul applique l'usage choisi.
+        "usages": [
+            {"code": usage.get("code"), "libelle": usage.get("libelle"), "texte": usage.get("texte")}
+            for usage in position.get("usages") or []
+        ],
         "couverture": {
             "etat": couverture.get("etat"),
             "motif": couverture.get("motif"),
