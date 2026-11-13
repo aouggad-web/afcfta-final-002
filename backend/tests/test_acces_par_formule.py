@@ -332,6 +332,64 @@ def test_la_fiche_est_la_seule_route_de_consultation_comptee(app_api):
     } <= toutes
 
 
+# Les routes que le calculateur partage : connexion exigée, rien de décompté.
+ROUTES_PARTAGEES = [
+    "/api/consultation/DZA/sous-positions/020110",
+    "/api/consultation/DZA/recherche?q=veaux",
+    "/api/consultation/DZA/formalites/0201101100",
+    "/api/calcul/pays",
+]
+
+
+@pytest.mark.parametrize("chemin", ROUTES_PARTAGEES)
+def test_routes_partagees_demandent_la_connexion(app_api, chemin):
+    reponse = _client(app_api).get(chemin)
+
+    assert reponse.status_code == 401
+    detail = reponse.json()["detail"]
+    assert (detail["error"], detail["module"]) == ("login_required", "calculator")
+
+
+@pytest.mark.parametrize("chemin", ROUTES_PARTAGEES)
+def test_routes_partagees_ne_comptent_rien_pour_un_compte_gratuit(app_api, base, chemin):
+    """Les compter ferait échouer un calcul gratuit avant son premier résultat."""
+    client = _client(app_api, abonne=ABONNES["free"])
+
+    statuts = {client.get(chemin).status_code for _ in range(8)}
+
+    assert statuts.isdisjoint({401, 403, 429})
+    assert base.recherches_modules.docs == {}
+    assert base.usage_counters.docs == {}
+
+
+@pytest.mark.parametrize("chemin", ROUTES_PARTAGEES)
+def test_routes_partagees_cle_api_valide_et_absence_de_base(app_api, base, chemin):
+    assert _client(app_api, cle=CLE_VENDUE).get(chemin).status_code != 401
+    assert base.recherches_modules.docs == {}
+
+    entitlement_guard.set_database(None)
+    auth.set_database(None)
+    assert _client(app_api).get(chemin).status_code != 401
+
+
+def test_chaque_route_partagee_porte_la_garde_de_connexion_et_aucune_garde_comptee(app_api):
+    partagees = {
+        route.path: route
+        for route in routes_api(app_api)
+        if route.path in {
+            "/api/consultation/{iso3}/sous-positions/{hs6}",
+            "/api/consultation/{iso3}/recherche",
+            "/api/consultation/{iso3}/formalites/{code}",
+            "/api/calcul/pays",
+        }
+    }
+    assert len(partagees) == 4
+    for chemin, route in partagees.items():
+        assert _porte(route, "require_login."), chemin
+        assert not _porte(route, "require_module_consultation."), chemin
+        assert not _porte(route, "require_calculations_quota."), chemin
+
+
 def test_fiche_reglementation_cinq_recherches_par_mois_puis_invitation(app_api, base):
     client = _client(app_api, abonne=ABONNES["free"])
 

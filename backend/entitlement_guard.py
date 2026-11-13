@@ -477,6 +477,24 @@ def require_module_consultation(module_id: str, *, chemins_publics: tuple = ()):
     return _dependency
 
 
+def require_login(module_id: str):
+    """Connexion exigée, rien de décompté : les routes que le calculateur
+    partage (positions, recherche, formalités, pays servis) servent l'écran
+    d'un module dont l'usage est compté ailleurs, au calcul ou à la fiche.
+
+    Sans compte : 401 « login_required » (décision de l'exploitant du
+    09/11/2026), sauf une clé API valide et l'absence de base (dev, CI)."""
+
+    async def _dependency(
+        user: Optional[dict] = Depends(get_optional_subscriber),
+        key_doc: dict = Depends(require_auth),
+    ) -> None:
+        if user is None and _db is not None and not _cle_api(key_doc):
+            raise _connexion_requise(module_id)
+
+    return _dependency
+
+
 def require_api_access():
     """FastAPI dependency for `Entitlements.api_access`/`api_monthly_quota`
     (currently only Business: unlocked, 1000 req/month) — a per-tier field,
