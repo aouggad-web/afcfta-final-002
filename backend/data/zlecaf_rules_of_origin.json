@@ -5802,6 +5802,14 @@
         "en": "Non-originating-content criterion set out in Art. 6(1)(b) of Annex 2 on Rules of Origin: the value of non-originating materials used in manufacture must not exceed 50% of the product's ex-works price (Art. 1(k))."
       }
     },
+    "VA55": {
+      "en": "Max 55% non-originating value",
+      "fr": "Max 55% valeur non-originaire",
+      "explanation": {
+        "fr": "Critère de la teneur des matières non originaires prévu à l'article 6(1)(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 55 % du prix départ usine (art. 1(k)) du produit fini. Sur une ligne marquée d'un astérisque, la note 2.5 de l'Appendice IV ramène automatiquement le seuil imprimé de 60 % à 55 % à la fin d'une période de cinq ans à compter du 1er janvier 2021, soit depuis le 1er janvier 2026.",
+        "en": "Non-originating-content criterion set out in Art. 6(1)(b) of Annex 2 on Rules of Origin: the value of non-originating materials used in manufacture must not exceed 55% of the product's ex-works price (Art. 1(k)). On a row marked with an asterisk, Appendix IV note 2.5 automatically lowers the printed 60% ceiling to 55% at the end of a five-year period from 1 January 2021, i.e. since 1 January 2026."
+      }
+    },
     "VA60": {
       "en": "Max 60% non-originating value",
       "fr": "Max 60% valeur non-originaire",

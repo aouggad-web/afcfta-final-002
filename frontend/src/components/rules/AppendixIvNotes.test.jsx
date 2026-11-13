@@ -1,6 +1,6 @@
 /**
  * Notes de l'Appendice IV de la ligne appliquée : notes de source seulement,
- * la note 2.5 (déjà montrée comme seuil à confirmer) n'est pas répétée.
+ * la note 2.5 (déjà montrée avec le seuil applicable) n'est pas répétée.
  */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
@@ -30,7 +30,7 @@ describe("Notes de l'Appendice IV", () => {
     expect(screen.getByText(CH61)).toBeInTheDocument();
   });
 
-  it('ne répète pas la note 2.5, déjà montrée comme seuil à confirmer (84.14)', () => {
+  it('ne répète pas la note 2.5, déjà montrée avec le seuil applicable (84.14)', () => {
     const roo = { rules: { threshold_note_fr: NOTE_25, applicable_notes: [NOTE_25] } };
     const { container } = render(<AppendixIvNotes roo={roo} language="fr" />);
     expect(container).toBeEmptyDOMElement();

@@ -28,7 +28,7 @@ const position8414 = {
     matched_code: '8414',
     match_type: 'heading',
     source_version: SOURCE,
-    notes_fr: ['Appendice IV, note 2.5 (clause transitoire)'],
+    notes_fr: ['Appendice IV, note 2.5 (60 % ramené à 55 % depuis le 1er janvier 2026)'],
   },
 };
 
@@ -59,7 +59,7 @@ describe("Base légale d'une règle d'origine", () => {
     );
     expect(screen.getByText("Annexe 2, article 6(2) (règles de l'Appendice IV)")).toBeInTheDocument();
     expect(screen.getByText('Annexe 2, article 6(1)(b) (Teneur des matières non originaires)')).toBeInTheDocument();
-    expect(screen.getByText('Appendice IV, note 2.5 (clause transitoire)')).toBeInTheDocument();
+    expect(screen.getByText('Appendice IV, note 2.5 (60 % ramené à 55 % depuis le 1er janvier 2026)')).toBeInTheDocument();
     expect(screen.getByText(INSTRUMENT)).toBeInTheDocument();
     expect(screen.getByText(SOURCE)).toBeInTheDocument();
     expect(screen.queryByTestId('origin-ex-description')).not.toBeInTheDocument();

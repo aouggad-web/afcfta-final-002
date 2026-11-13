@@ -278,27 +278,31 @@ def test_endpoint_distinguishes_designation_and_negotiated_requirement():
     assert result["rule"]["value_added_threshold"] is None
 
 
-def test_endpoint_exposes_note_25_without_claiming_an_effective_threshold():
+def test_endpoint_applies_note_25_threshold_of_55_since_2026():
+    # Note 2.5 (p. 2): 60 % "automatiquement ramenée … à 55 % à la fin d'une
+    # période de cinq (5) ans, à compter du 1er janvier 2021".
     for code in ("841410", "841911"):
         result = asyncio.run(roo.get_rules_of_origin(code, lang="fr"))
         assert result["rules"]["threshold_note_fr"].startswith("Note 2.5")
-        assert result["rules"]["threshold_pct"] is None
-        assert result["rule"]["value_added_threshold"] is None
+        assert result["rules"]["threshold_pct"] == 55
+        assert result["rules"]["regional_content"] == 45
+        assert result["rule"]["value_added_threshold"] == 45
+        assert "60 %" in result["rules"]["rule_text_fr"]  # the row text stays as printed
 
 
-def test_internal_origin_summary_matches_api_when_threshold_is_unconfirmed():
-    for code in ("841410", "841911", "600110"):
+def test_internal_origin_summary_matches_api_for_note_25_and_pending_rules():
+    for code, regional, expected in (
+        ("841410", 45, "VA55"),
+        ("841911", 45, "VA55"),
+        ("600110", None, "YTB"),
+    ):
         public = asyncio.run(roo.get_rules_of_origin(code, lang="fr"))
         internal = roo.get_rule_of_origin(code, "fr")
-        assert public["rules"]["regional_content"] is None
-        assert internal["regional_content"] is None
+        assert public["rules"]["regional_content"] == regional
+        assert internal["regional_content"] == regional
         explanation = public["rules"]["primary_rule"]["explanation"]
         assert explanation == internal["primary_rule"]["explanation"]
-        # Pending rule: Appendix IV note 2.4 explanation. Note 2.5: the generic value
-        # criterion, which names no percentage (never the disputed 60 %).
-        expected = "YTB" if public["status"] == "YTB" else "VA"
         assert explanation == roo.ORIGIN_TYPES[expected]["explanation"]["fr"]
-        assert "60 %" not in explanation
     assert roo.get_rule_of_origin("840100", "fr")["regional_content"] == 40
 
 
@@ -409,18 +413,20 @@ def test_glued_ou_alternatives_are_split():
     assert len(roo._rule_branches(roo.RULES_DATA["headings"]["8525"]["raw_fr"])) == 2
 
 
-def test_pending_and_note_25_rules_are_never_named_by_the_disputed_criterion():
+def test_pending_rules_are_named_as_such_and_note_25_rules_by_their_55_percent():
     # Chapter 60 is coded YARN but not adopted: named as pending, not "fils".
     pending = asyncio.run(roo.get_rules_of_origin("600110", lang="fr"))["rules"]["primary_rule"]
     assert pending["name"] == roo.ORIGIN_TYPES["YTB"]["fr"]
-    # Note 2.5 rows: named by the value criterion, never "Max 60 %".
+    # Note 2.5 rows: the 60 % printed in the row became 55 % on 1 January 2026.
     for code in ("841410", "841911"):
         result = asyncio.run(roo.get_rules_of_origin(code, lang="fr"))
-        assert result["rules"]["primary_rule"]["name"] == roo.ORIGIN_TYPES["VA"]["fr"]
-        assert all("60" not in a for a in result["legal_reference"]["articles_fr"])
+        assert result["rules"]["primary_rule"]["name"] == "Max 55% valeur non-originaire"
+        assert result["legal_reference"]["articles_fr"][-1] == (
+            "Annexe 2, article 6(1)(b) (Max 55% valeur non-originaire)"
+        )
         assert (
             roo.get_rule_of_origin(code, "fr")["primary_rule"]["name"]
-            == roo.ORIGIN_TYPES["VA"]["fr"]
+            == "Max 55% valeur non-originaire"
         )
 
 

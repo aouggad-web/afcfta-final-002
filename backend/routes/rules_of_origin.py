@@ -83,15 +83,19 @@ def _regional_content(primary_code: Optional[str], threshold: Optional[int]) -> 
     return None
 
 
+# Appendix IV note 2.5: on a row marked with an asterisk, the value of
+# non-originating materials "sera automatiquement ramenée de 60 % à 55 % à la
+# fin d'une période de cinq (5) ans, à compter du 1er janvier 2021", i.e. 55 %
+# since 1 January 2026. The row text keeps its printed 60 %.
+_NOTE_25 = "Note 2.5 de l'Appendice IV:"
+_NOTE_25_THRESHOLD = 55
+
+
 def _threshold_for_display(entry: dict, status: str, notes: list) -> tuple:
-    # A dated source note qualifies the printed threshold. Expose it separately
-    # until the applicable tariff-line version and effective rate are validated.
-    threshold_note = next(
-        (note for note in notes if note.startswith("Note 2.5 de l'Appendice IV:")),
-        None,
-    )
-    threshold = None if status == "YTB" or threshold_note else entry.get("threshold")
-    return threshold, threshold_note
+    threshold_note = next((note for note in notes if note.startswith(_NOTE_25)), None)
+    if status == "YTB":
+        return None, threshold_note
+    return (_NOTE_25_THRESHOLD if threshold_note else entry.get("threshold")), threshold_note
 
 
 # Annexe 2 article founding each rule code's criterion, as already cited in
@@ -186,9 +190,9 @@ _NO_RULE = {"fr": "Pas de règle d'origine", "en": "No rule of origin"}
 
 def _displayed_name(entry: dict, status: str, threshold_note, lang: str) -> str:
     """Rule name shown: a pending rule is named as such, a Note 2.5 rule by its
-    criterion only (never the disputed "60 %"), a row whose text does not state
-    its code's criterion by the neutral row-specific label, a "Pas de règle"
-    row as having no rule of origin."""
+    55 % ceiling, a row whose text does not state its code's criterion by the
+    neutral row-specific label, a "Pas de règle" row as having no rule of
+    origin."""
     if status == "YTB":
         return _rule_name("YTB", lang)
     if not _criterion_fits(entry):
@@ -196,7 +200,7 @@ def _displayed_name(entry: dict, status: str, threshold_note, lang: str) -> str:
     if entry.get("code") == "NONE":
         return _NO_RULE.get(lang, _NO_RULE["fr"])
     if threshold_note:
-        return _rule_name("VA", lang)
+        return _rule_name(f"VA{_NOTE_25_THRESHOLD}", lang)
     return _rule_name(entry.get("code"), lang)
 
 
@@ -210,13 +214,12 @@ def _criterion_articles(entry: dict) -> list:
     if entry.get("status") == "YTB":
         return ["Annexe 2, article 42, alinéas 1(c) et 3 (dispositions en suspens)"]
     articles = ["Annexe 2, article 6(2) (règles de l'Appendice IV)"]
-    threshold_note = any(
-        note.startswith("Note 2.5 de l'Appendice IV:") for note in entry.get("notes") or []
-    )
+    threshold_note = any(note.startswith(_NOTE_25) for note in entry.get("notes") or [])
     for code, alternative in ((entry.get("code"), False), (entry.get("alt_code"), True)):
         article = _CRITERION_ARTICLES.get(code)
         if article and _criterion_fits(entry, alternative):
-            name = _rule_name("VA" if threshold_note and not alternative else code, "fr")
+            lowered = threshold_note and not alternative
+            name = _rule_name(f"VA{_NOTE_25_THRESHOLD}" if lowered else code, "fr")
             articles.append(f"Annexe 2, {article} ({name})")
     return articles
 
@@ -235,8 +238,8 @@ def _legal_reference(entry: dict, match_type: str, matched_code: str) -> dict:
             "Appendice IV, note 2.4 (règle pas encore adoptée par les institutions "
             "de négociation de la ZLECAf)"
         )
-    if any(note.startswith("Note 2.5 de l'Appendice IV:") for note in entry.get("notes") or []):
-        notes.append("Appendice IV, note 2.5 (clause transitoire)")
+    if any(note.startswith(_NOTE_25) for note in entry.get("notes") or []):
+        notes.append("Appendice IV, note 2.5 (60 % ramené à 55 % depuis le 1er janvier 2026)")
     return {
         "instrument_fr": (
             "Accord portant création de la ZLECAf — Protocole sur le commerce des marchandises, "
@@ -256,14 +259,13 @@ def _displayed_explanation(entry: dict, status: str, threshold_note, lang: str) 
     """Explanation shown for a rule. A pending rule gets the YTB explanation
     (Appendix IV note 2.4); a row whose text does not state its
     code's criterion gets none (its text alone is authoritative); a rule whose
-    printed threshold is qualified by Note 2.5 gets the generic value-content
-    explanation, which names no percentage."""
+    printed 60 % is lowered by Note 2.5 gets the 55 % explanation."""
     if status == "YTB":
         return _rule_explanation("YTB", lang)
     if not _criterion_fits(entry):
         return ""
     if threshold_note:
-        return _rule_explanation("VA", lang)
+        return _rule_explanation(f"VA{_NOTE_25_THRESHOLD}", lang)
     return _rule_explanation(entry.get("code"), lang)
 
 

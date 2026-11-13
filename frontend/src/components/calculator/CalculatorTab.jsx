@@ -1123,7 +1123,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 )}
                 {ruleOfOrigin.status !== 'YTB' && ruleOfOrigin.rules.threshold_note_fr && (
                   <div className="text-[var(--text)] text-xs leading-relaxed">
-                    <p className="font-semibold">{pick(language, 'Seuil applicable à confirmer', 'Applicable threshold to be confirmed', 'الحد المطبق يحتاج إلى تأكيد')}</p>
+                    <p className="font-semibold">{pick(language, 'Seuil applicable : 55 % depuis le 1er janvier 2026 (note 2.5)', 'Applicable threshold: 55% since 1 January 2026 (note 2.5)', 'الحد المطبق: 55% منذ 1 يناير 2026 (الملاحظة 2.5)')}</p>
                     <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.rules.threshold_note_fr}</bdi></p>
                   </div>
                 )}

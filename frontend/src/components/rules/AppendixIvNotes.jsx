@@ -7,7 +7,7 @@ import { pick } from '../../i18n/lang';
  * numérotées ou renvois à ces notes, notes de bas de page, ligne « Ex. » de
  * 2009.89. Les notes internes de construction du jeu de données et les
  * reformulations du texte de la ligne ne sont jamais servies. La note 2.5 est déjà
- * montrée comme « seuil applicable à confirmer » : elle n'est pas répétée.
+ * montrée avec le seuil applicable (55 %) : elle n'est pas répétée.
  */
 export default function AppendixIvNotes({ roo, language = 'fr', className = '' }) {
   const thresholdNote = roo?.rules?.threshold_note_fr;

@@ -98,6 +98,21 @@ it("écarte une réponse tardive pour un code précédent", async () => {
   expect(screen.queryByText('Règle précédente')).not.toBeInTheDocument();
 });
 
+describe("Règles d'origine — note 2.5 (84.14)", () => {
+  it('seuil de 55 % depuis le 1er janvier 2026, contenu régional de 45 % et texte de la note', async () => {
+    const note25 = "Note 2.5 de l'Appendice IV: la valeur des matières non originaires sera automatiquement ramenée de 60 % à 55 % à la fin d'une période de cinq (5) ans, à compter du 1er janvier 2021.";
+    const data = reponse({ code: 'VA60', seuil: 45 });
+    data.rules.threshold_note_fr = note25;
+    consulter(data);
+
+    const bloc = await screen.findByTestId('note-25-threshold');
+    expect(bloc).toHaveTextContent('Seuil applicable : 55 % depuis le 1er janvier 2026 (note 2.5)');
+    expect(bloc).toHaveTextContent(note25);
+    expect(screen.getByText('Contenu Régional Minimum')).toBeInTheDocument();
+    expect(screen.getByText('45%')).toBeInTheDocument();
+  });
+});
+
 describe("Règles d'origine — explication et base légale", () => {
   it('règle en négociation : explication (note 2.4) et base légale affichées', async () => {
     const explication = "La règle d'origine de ce produit n'est pas encore adoptée : l'Appendice IV la laisse « à déterminer » ou entre crochets ; selon sa note 2.4, une règle entre crochets « n'a pas encore été adoptée par les institutions de négociation de la ZLECAf ». L'article 42 de l'Annexe 2 range parmi les dispositions en suspens l'« Elaboration de règles hybrides à l'Appendice IV de l'annexe 2 sur les règles d'origine » (alinéa 1(c)) et dispose : « En attendant l'adoption des dispositions en suspens, les États parties conviennent que les Règles d'Origine des régimes commerciaux existants sont applicables. » (alinéa 3).";

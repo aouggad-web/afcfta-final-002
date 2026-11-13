@@ -119,15 +119,15 @@ describe("AIAnalysis — règle d'origine officielle d'une opportunité", () => 
     rules: {
       primary_rule: {
         code: 'VA60',
-        name: 'Teneur des matières non originaires',
+        name: 'Max 55% valeur non-originaire',
         explanation:
-          "Critère de la teneur des matières non originaires prévu à l'article 6(1)(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées (telle que définie à l'art. 1(y)) ne doit pas dépasser le pourcentage du prix départ usine (art. 1(k)) fixé par la règle.",
+          "Critère de la teneur des matières non originaires prévu à l'article 6(1)(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 55 % du prix départ usine (art. 1(k)) du produit fini. Sur une ligne marquée d'un astérisque, la note 2.5 de l'Appendice IV ramène automatiquement le seuil imprimé de 60 % à 55 % à la fin d'une période de cinq ans à compter du 1er janvier 2021, soit depuis le 1er janvier 2026.",
       },
       threshold_note_fr: NOTE_25,
     },
   };
 
-  it('note 2.5 : la carte nomme le critère sans « 60 % » et cite la note', async () => {
+  it('note 2.5 : la carte nomme le seuil de 55 % et cite la note', async () => {
     axios.get.mockImplementation((url) => {
       if (url.includes('/substitution/countries')) {
         return Promise.resolve({ data: { countries: [{ iso3: 'KEN', name: 'Kenya' }] } });
@@ -152,7 +152,7 @@ describe("AIAnalysis — règle d'origine officielle d'une opportunité", () => 
     await lancerAnalyse();
 
     expect(await screen.findByTestId('official-rule-threshold-note')).toHaveTextContent(NOTE_25);
-    expect(screen.getByText('Teneur des matières non originaires')).toBeInTheDocument();
+    expect(screen.getByText('Max 55% valeur non-originaire')).toBeInTheDocument();
     expect(screen.queryByText(/Max 60/)).not.toBeInTheDocument();
   });
 

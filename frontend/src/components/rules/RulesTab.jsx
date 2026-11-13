@@ -31,7 +31,7 @@ export default function RulesTab({ language = 'fr' }) {
       ruleType: "Type de Règle",
       requirement: "Exigence",
       productDescription: "Désignation du produit",
-      thresholdToConfirm: "Seuil applicable à confirmer",
+      note25Threshold: "Seuil applicable : 55 % depuis le 1er janvier 2026 (note 2.5)",
       minRegionalContent: "Contenu Régional Minimum",
       regionalContentRequired: "de contenu africain requis",
       originCriterion: "Critère d'origine",
@@ -69,7 +69,7 @@ export default function RulesTab({ language = 'fr' }) {
       ruleType: "Rule Type",
       requirement: "Requirement",
       productDescription: "Product description",
-      thresholdToConfirm: "Applicable threshold to be confirmed",
+      note25Threshold: "Applicable threshold: 55% since 1 January 2026 (note 2.5)",
       minRegionalContent: "Minimum Regional Content",
       regionalContentRequired: "African content required",
       originCriterion: "Origin criterion",
@@ -107,7 +107,7 @@ export default function RulesTab({ language = 'fr' }) {
       ruleType: "نوع القاعدة",
       requirement: "الشرط",
       productDescription: "وصف المنتج",
-      thresholdToConfirm: "الحد المطبق يحتاج إلى تأكيد",
+      note25Threshold: "الحد المطبق: 55% منذ 1 يناير 2026 (الملاحظة 2.5)",
       minRegionalContent: "الحد الأدنى للمحتوى الإقليمي",
       regionalContentRequired: "من المحتوى الأفريقي مطلوب",
       originCriterion: "معيار المنشأ",
@@ -338,12 +338,14 @@ export default function RulesTab({ language = 'fr' }) {
               </div>
             )}
 
-            {rulesOfOrigin.rules?.threshold_note_fr ? (
-              <div className="text-sm text-[var(--text)]">
-                <h4 className="font-semibold">{t.thresholdToConfirm}</h4>
+            {rulesOfOrigin.rules?.threshold_note_fr && (
+              <div className="text-sm text-[var(--text)]" data-testid="note-25-threshold">
+                <h4 className="font-semibold">{t.note25Threshold}</h4>
                 <p><bdi lang="fr" dir="ltr">{rulesOfOrigin.rules.threshold_note_fr}</bdi></p>
               </div>
-            ) : rulesOfOrigin.status !== 'YTB' && rulesOfOrigin.rule.value_added_threshold != null ? (
+            )}
+
+            {rulesOfOrigin.status !== 'YTB' && rulesOfOrigin.rule.value_added_threshold != null ? (
               <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
                 <h4 className="font-semibold mb-3 text-[var(--success)]">{t.minRegionalContent}</h4>
                 <div className="flex items-center gap-4">
