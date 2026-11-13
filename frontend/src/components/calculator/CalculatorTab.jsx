@@ -63,6 +63,7 @@ import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
 import { pick } from '../../i18n/lang';
 import { freeCalculationNoticeText } from '../tools/entitlementNotice';
 import SubscriptionNotice from '../tools/SubscriptionNotice';
+import OriginLegalReference from '../rules/OriginLegalReference';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -656,6 +657,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         usage: usageFor === `${destISO3}|${cleanHsCode}` ? usage : null,
         producteur: saisieAntidumping ? producteur : null,
       }))).data;
+      // Règle d'origine de la position calculée (saisie en mode simple) :
+      // chargée une fois par code calculé, jamais à chaque frappe, car chaque
+      // code consulté compte dans le quota de recherches du module.
+      if (ruleOfOrigin?.hs_code !== cleanHsCode) setBrowserRuleCode(cleanHsCode);
       const legacyResult = mapCalculToLegacyResult(calcul, {
         originCountry,
         destinationCountry,
@@ -1069,42 +1074,45 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </Badge>
                   )}
                 </div>
-                {ruleOfOrigin.status !== 'YTB' && (ruleOfOrigin.rules.threshold_note_fr ? (
+                <div className="text-xs leading-relaxed" data-testid="origin-rule-text">
+                  <p className="font-semibold text-[var(--text)]">
+                    {pick(language, 'Texte de la règle (Appendice IV)', 'Rule text (Appendix IV)', 'نص القاعدة (التذييل الرابع)')}
+                  </p>
+                  <p className="text-[var(--text)]">
+                    {ruleOfOrigin.status === 'YTB'
+                      ? pick(language, 'Règle non encore adoptée', 'Rule not yet adopted', 'قاعدة لم تُعتمد بعد')
+                      : <bdi lang="fr" dir="ltr">{ruleOfOrigin.rule.psr}</bdi>}
+                  </p>
+                </div>
+                {ruleOfOrigin.rules.primary_rule?.explanation && (
+                  <div className="text-xs leading-relaxed" data-testid="origin-rule-explanation">
+                    <p className="font-semibold text-[var(--text)]">
+                      {pick(language, 'Ce que la règle exige', 'What the rule requires', 'ما تشترطه القاعدة')}
+                    </p>
+                    <p className="text-[var(--text)]">{ruleOfOrigin.rules.primary_rule.explanation}</p>
+                  </div>
+                )}
+                {ruleOfOrigin.status !== 'YTB' && ruleOfOrigin.rules.threshold_note_fr && (
                   <div className="text-[var(--text)] text-xs leading-relaxed">
                     <p className="font-semibold">{pick(language, 'Seuil applicable à confirmer', 'Applicable threshold to be confirmed', 'الحد المطبق يحتاج إلى تأكيد')}</p>
                     <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.rules.threshold_note_fr}</bdi></p>
                   </div>
-                ) : (ruleOfOrigin.rule.psr || ruleOfOrigin.rules.primary_rule?.explanation) && (
-                  <p className="text-[var(--text)] text-xs leading-relaxed">
-                    {ruleOfOrigin.rule.psr ?
-                      <bdi lang="fr" dir="ltr">{ruleOfOrigin.rule.psr}</bdi> :
-                      ruleOfOrigin.rules.primary_rule.explanation}
-                  </p>
-                ))}
-                {ruleOfOrigin.status !== 'YTB' && ruleOfOrigin.rules.alternative_rule && (
-                  <p className="text-[var(--afcfta-muted)] text-xs">
-                    {pick(language, 'Règle alternative', 'Alternative rule', 'قاعدة بديلة')}: {ruleOfOrigin.rules.alternative_rule.name}
-                  </p>
                 )}
-                {ruleOfOrigin.legal_reference && (
-                  <div className="border-t border-[var(--afcfta-border)] pt-2 space-y-1 text-xs text-[var(--afcfta-muted)]" data-testid="origin-legal-reference">
+                {ruleOfOrigin.status !== 'YTB' && ruleOfOrigin.rules.alternative_rule && (
+                  <div className="text-xs leading-relaxed">
                     <p className="font-semibold text-[var(--text)]">
-                      {pick(language, 'Base légale et référence', 'Legal basis and reference', 'الأساس القانوني والمرجع')}
+                      {pick(language, 'Règle alternative', 'Alternative rule', 'قاعدة بديلة')} : {ruleOfOrigin.rules.alternative_rule.name}
                     </p>
-                    <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.instrument_fr}</bdi></p>
-                    {(ruleOfOrigin.legal_reference.articles_fr || []).map((article) => (
-                      <p key={article}><bdi lang="fr" dir="ltr">{article}</bdi></p>
-                    ))}
-                    <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.location_fr}</bdi></p>
-                    {ruleOfOrigin.legal_reference.notes_fr.map((note) => (
-                      <p key={note}><bdi lang="fr" dir="ltr">{note}</bdi></p>
-                    ))}
-                    <p>
-                      {pick(language, 'Source consultée', 'Source consulted', 'المصدر المعتمد')} ·{' '}
-                      <bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.source_version}</bdi>
-                    </p>
+                    {ruleOfOrigin.rules.alternative_rule.explanation && (
+                      <p className="text-[var(--afcfta-muted)]">{ruleOfOrigin.rules.alternative_rule.explanation}</p>
+                    )}
                   </div>
                 )}
+                <OriginLegalReference
+                  roo={ruleOfOrigin}
+                  language={language}
+                  className="border-t border-[var(--afcfta-border)] pt-2 text-xs text-[var(--afcfta-muted)]"
+                />
 
               </div>
             )}

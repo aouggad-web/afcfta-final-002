@@ -292,8 +292,13 @@ def test_internal_origin_summary_matches_api_when_threshold_is_unconfirmed():
         internal = roo.get_rule_of_origin(code, "fr")
         assert public["rules"]["regional_content"] is None
         assert internal["regional_content"] is None
-        assert not public["rules"]["primary_rule"]["explanation"]
-        assert not internal["primary_rule"]["explanation"]
+        explanation = public["rules"]["primary_rule"]["explanation"]
+        assert explanation == internal["primary_rule"]["explanation"]
+        # Pending rule: art. 42(3) explanation. Note 2.5: the generic value
+        # criterion, which names no percentage (never the disputed 60 %).
+        expected = "YTB" if public["status"] == "YTB" else "VA"
+        assert explanation == roo.ORIGIN_TYPES[expected]["explanation"]["fr"]
+        assert "60 %" not in explanation
     assert roo.get_rule_of_origin("840100", "fr")["regional_content"] == 40
 
 

@@ -6,6 +6,7 @@ import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { Progress } from '../ui/progress';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
+import OriginLegalReference from './OriginLegalReference';
 import { FileText, ChevronDown, ChevronUp, Globe, CheckCircle, AlertTriangle, Info } from 'lucide-react';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -53,8 +54,7 @@ export default function RulesTab({ language = 'fr' }) {
       loadingRules: "Chargement des règles...",
       explanation: "Ce que cela implique",
       alternativeRule: "Règle alternative",
-      ytbWarning: "Cette règle est encore en cours de négociation (statut À Déterminer) entre les États membres",
-      source: "Source"
+      ytbWarning: "Cette règle est encore en cours de négociation (statut À Déterminer) entre les États membres"
     },
     en: {
       title: "AfCFTA Rules of Origin",
@@ -90,8 +90,7 @@ export default function RulesTab({ language = 'fr' }) {
       loadingRules: "Loading rules...",
       explanation: "What this means",
       alternativeRule: "Alternative rule",
-      ytbWarning: "This rule is still under negotiation (Yet To Be agreed) between member states",
-      source: "Source"
+      ytbWarning: "This rule is still under negotiation (Yet To Be agreed) between member states"
     },
     ar: {
       title: "قواعد المنشأ في منطقة التجارة الحرة القارية الأفريقية",
@@ -127,8 +126,7 @@ export default function RulesTab({ language = 'fr' }) {
       loadingRules: "جارٍ تحميل القواعد…",
       explanation: "ما يعنيه ذلك",
       alternativeRule: "قاعدة بديلة",
-      ytbWarning: "لا تزال هذه القاعدة قيد التفاوض (لم يُتفق عليها بعد) بين الدول الأعضاء",
-      source: "المصدر"
+      ytbWarning: "لا تزال هذه القاعدة قيد التفاوض (لم يُتفق عليها بعد) بين الدول الأعضاء"
     }
   };
 
@@ -297,8 +295,7 @@ export default function RulesTab({ language = 'fr' }) {
               </div>
             </div>
 
-            {rulesOfOrigin.status !== 'YTB' && !rulesOfOrigin.rules?.threshold_note_fr &&
-              rulesOfOrigin.rules?.primary_rule?.explanation && (
+            {rulesOfOrigin.rules?.primary_rule?.explanation && (
               <div className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] flex items-start gap-2">
                 <Info className="w-4 h-4 mt-0.5 text-[var(--gold)] shrink-0" />
                 <div>
@@ -347,9 +344,11 @@ export default function RulesTab({ language = 'fr' }) {
               </div>
             )}
 
-            {rulesOfOrigin.source && (
-              <p className="text-xs text-[var(--afcfta-muted)] text-right">{t.source}: {rulesOfOrigin.source}</p>
-            )}
+            <OriginLegalReference
+              roo={rulesOfOrigin}
+              language={language}
+              className="bg-[var(--afcfta-card)] p-4 rounded-lg border border-[var(--afcfta-border)] text-sm text-[var(--afcfta-muted)]"
+            />
           </CardContent>
         </Card>
       )}

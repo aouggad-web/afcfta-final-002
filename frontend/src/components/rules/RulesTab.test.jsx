@@ -97,3 +97,24 @@ it("écarte une réponse tardive pour un code précédent", async () => {
   expect(screen.getByText('Règle récente')).toBeInTheDocument();
   expect(screen.queryByText('Règle précédente')).not.toBeInTheDocument();
 });
+
+describe("Règles d'origine — explication et base légale", () => {
+  it('règle en négociation : explication (art. 42(3)) et base légale affichées', async () => {
+    const explication = "en attendant son adoption, l'article 42(3) de l'Annexe 2 prévoit que les règles d'origine des régimes commerciaux existants s'appliquent.";
+    const data = reponse({ code: 'YTB', status: 'YTB' });
+    data.rules.primary_rule.explanation = explication;
+    data.legal_reference = {
+      instrument_fr: "Accord portant création de la ZLECAf — Annexe 2, Appendice IV",
+      location_fr: 'chapitre 60',
+      articles_fr: ['Annexe 2, article 42(3) (règle non encore adoptée)'],
+      match_type: 'chapter',
+      notes_fr: ['Appendice IV, note 2.4 (texte non adopté)'],
+      source_version: 'AfCFTA Appendix IV (PSR) - December 2023',
+    };
+    consulter(data);
+
+    expect(await screen.findByText(explication)).toBeInTheDocument();
+    expect(screen.getByTestId('origin-applied-to')).toHaveTextContent('règle par défaut du chapitre');
+    expect(screen.getByText(/article 42\(3\) \(règle non encore adoptée\)/)).toBeInTheDocument();
+  });
+});

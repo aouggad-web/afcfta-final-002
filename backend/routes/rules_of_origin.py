@@ -152,6 +152,18 @@ def _legal_reference(entry: dict, match_type: str, matched_code: str) -> dict:
     }
 
 
+def _displayed_explanation(primary_code, status: str, threshold_note, lang: str) -> str:
+    """Explanation shown for a rule. A pending rule gets the YTB explanation
+    (art. 42(3): existing regimes apply); a rule whose printed threshold is
+    qualified by Note 2.5 gets the generic value-content explanation, which
+    names no percentage."""
+    if status == "YTB":
+        return _rule_explanation("YTB", lang)
+    if threshold_note:
+        return _rule_explanation("VA", lang)
+    return _rule_explanation(primary_code, lang)
+
+
 def _entry_to_response(
     hs_code: str, entry: dict, match_type: str, matched_code: str, chapter: str, lang: str
 ) -> dict:
@@ -170,8 +182,7 @@ def _entry_to_response(
 
     notes = entry.get("notes") or []
     threshold, threshold_note = _threshold_for_display(entry, status, notes)
-    if status == "YTB" or threshold_note:
-        primary_rule["explanation"] = ""
+    primary_rule["explanation"] = _displayed_explanation(primary_code, status, threshold_note, lang)
     regional_content = None if status == "YTB" else _regional_content(primary_code, threshold)
     is_wholly_obtained = status != "YTB" and primary_code == "WO"
 
@@ -401,9 +412,7 @@ def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
             "type": primary_code,
             "name": _rule_name(primary_code, lang),
             "description": entry.get(f"description_{lang}") or entry.get("raw_fr", ""),
-            "explanation": (
-                "" if status == "YTB" or threshold_note else _rule_explanation(primary_code, lang)
-            ),
+            "explanation": _displayed_explanation(primary_code, status, threshold_note, lang),
         },
         "alternative_rule": (
             {
