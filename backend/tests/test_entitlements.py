@@ -351,7 +351,7 @@ def test_free_tier_module_caps_and_denials():
 
     # Modules de consultation : 5 recherches distinctes par mois
     # (entitlement_guard.require_module_consultation), pas un quota de requêtes.
-    for module_id in ("stats", "production", "logistics", "roo", "profiles"):
+    for module_id in ("stats", "production", "logistics", "roo", "profiles", "reglementation"):
         access = ent.module(module_id)
         assert (access.enabled, access.quota, access.quota_period) == (True, 5, "month"), module_id
 
@@ -361,6 +361,7 @@ def test_free_tier_module_caps_and_denials():
     # Les formules payantes gardent les modules de consultation sans limite.
     starter = resolve_entitlements({"subscription_tier": "starter", "subscription_status": "active"})
     assert starter.module("profiles").quota is None
+    assert starter.module("reglementation").quota is None
     assert starter.monthly_calculations is None
 
 

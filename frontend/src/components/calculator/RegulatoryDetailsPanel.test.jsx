@@ -743,6 +743,56 @@ describe('RegulatoryDetailsPanel', () => {
       expect(screen.queryByTestId('regulatory-details-choice')).not.toBeInTheDocument();
     });
 
+    describe("refus d'accès (décision d'accès du 09/11/2026)", () => {
+      // La forme exacte que le serveur renvoie (entitlement_guard) : le détail est un objet.
+      const connexion = refus(401, { error: 'login_required', module: 'reglementation' });
+      const quota = refus(429, { error: 'quota_exceeded', tier: 'free', module: 'reglementation', quota: 5, quota_period: 'month' });
+      const abonnes = refus(403, { error: 'upgrade_required', tier: 'free', module: 'reglementation' });
+
+      it("le quota de recherches du mois épuisé se dit, avec le lien vers les formules, et ne passe pas pour une panne", async () => {
+        repondre({ position: quota, formalite: formalites() });
+        await rendre();
+
+        const carte = await screen.findByTestId('regulatory-details-access');
+        expect(carte).toHaveTextContent('Vos recherches gratuites du mois sont utilisées');
+        expect(carte.querySelector('a')).toHaveAttribute('href', '/pricing.html');
+        expect(screen.queryByText(/indisponible/)).not.toBeInTheDocument();
+        expect(screen.queryByTestId('regulatory-details-error')).not.toBeInTheDocument();
+        expect(console.error).not.toHaveBeenCalled();
+      });
+
+      it("sans compte, la carte demande de se connecter, sans lien vers les formules", async () => {
+        repondre({ position: connexion, formalite: formalites() });
+        await rendre();
+
+        const carte = await screen.findByTestId('regulatory-details-access');
+        expect(carte).toHaveTextContent('Connectez-vous');
+        expect(carte.querySelector('a')).toBeNull();
+      });
+
+      it("une consultation réservée aux abonnés se dit réservée", async () => {
+        repondre({ position: abonnes, formalite: formalites() });
+        await rendre();
+
+        expect(await screen.findByTestId('regulatory-details-access')).toHaveTextContent('réservée aux abonnés');
+      });
+
+      it("le refus suit la langue de l'écran", async () => {
+        repondre({ position: quota, formalite: formalites() });
+        await rendre({ language: 'en' });
+
+        expect(await screen.findByTestId('regulatory-details-access')).toHaveTextContent('Your free searches for this month are used up');
+      });
+
+      it("un 403 sans détail d'accès (jeton CSRF) n'est pas un refus d'accès : le tarif est indisponible", async () => {
+        repondre({ position: refus(403, 'CSRF token missing'), formalite: formalites() });
+        await rendre();
+
+        expect(await screen.findByText('Tarif de ce pays indisponible')).toBeInTheDocument();
+        expect(screen.queryByTestId('regulatory-details-access')).not.toBeInTheDocument();
+      });
+    });
+
     it('un tarif indisponible se dit indisponible, sans promettre son retour', async () => {
       repondre({ position: refus(503, 'DZA n\'est pas au socle'), formalite: refus(503, '') });
       await rendre();

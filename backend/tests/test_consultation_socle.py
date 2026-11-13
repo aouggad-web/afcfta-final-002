@@ -23,19 +23,23 @@ pytestmark = pytest.mark.skipif(
 )
 
 
-def _route(nom):
+def _module(nom):
     spec = importlib.util.spec_from_file_location(f"routes_{nom}_test", os.path.join(BACKEND, "routes", f"{nom}.py"))
     module = importlib.util.module_from_spec(spec)
     sys.modules[f"routes_{nom}_test"] = module
     spec.loader.exec_module(module)
-    return module.router
+    return module
 
 
 @pytest.fixture(scope="module")
 def client():
+    # Sans la garde d'accès, posée à l'inclusion dans routes/__init__.py : ces
+    # tests lisent le tarif, pas le contrôle d'accès (test_acces_par_formule.py).
     app = FastAPI()
-    app.include_router(_route("consultation"))
-    app.include_router(_route("calcul"))
+    consultation = _module("consultation")
+    app.include_router(consultation.router)
+    app.include_router(consultation.router_reglementation)
+    app.include_router(_module("calcul").router)
     return TestClient(app)
 
 

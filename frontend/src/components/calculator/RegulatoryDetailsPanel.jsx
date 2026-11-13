@@ -36,6 +36,7 @@ import {
   Ban
 } from 'lucide-react';
 import { pick } from '../../i18n/lang';
+import { refusAcces, PRICING_URL } from '../acces/AccesModules';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -132,6 +133,12 @@ const texts = {
     positionAbsent: 'Position introuvable dans les données servies pour ce pays',
     tariffUnavailable: 'Tarif de ce pays indisponible',
     chooseHint: 'Vérifiez le code HS ou essayez un autre pays',
+    access: {
+      connexion: "Connectez-vous pour consulter la réglementation d'une position.",
+      quota: 'Vos recherches gratuites du mois sont utilisées. Abonnez-vous pour continuer sans limite.',
+      abonnes: 'Cette consultation est réservée aux abonnés.'
+    },
+    seePlans: 'Voir les formules',
     chooseNational: (n) => `Ce code SH6 couvre ${n} positions nationales : choisissez-en une dans la liste ci-dessus.`,
     loading: 'Chargement des données...'
   },
@@ -180,6 +187,12 @@ const texts = {
     positionAbsent: 'Position not found in the data served for this country',
     tariffUnavailable: "This country's tariff is unavailable",
     chooseHint: 'Check the HS code or try another country',
+    access: {
+      connexion: "Sign in to look up a position's regulation.",
+      quota: 'Your free searches for this month are used up. Subscribe to continue without limits.',
+      abonnes: 'This lookup is reserved for subscribers.'
+    },
+    seePlans: 'See plans',
     chooseNational: (n) => `This HS6 code covers ${n} national positions: pick one in the list above.`,
     loading: 'Loading data...'
   },
@@ -227,6 +240,12 @@ const texts = {
     positionAbsent: 'البند غير موجود في البيانات المتاحة لهذا البلد',
     tariffUnavailable: 'تعريفة هذا البلد غير متاحة',
     chooseHint: 'تحقق من رمز SH أو جرّب بلدًا آخر',
+    access: {
+      connexion: 'سجّل الدخول للاطلاع على التنظيم المتعلق بالبند.',
+      quota: 'استُنفدت عمليات بحثك المجانية لهذا الشهر. اشترك للمتابعة دون حدود.',
+      abonnes: 'هذه الخدمة مخصصة للمشتركين.'
+    },
+    seePlans: 'عرض الاشتراكات',
     chooseNational: (n) => `يشمل رمز SH6 هذا ${n} بندًا وطنيًا: اختر أحدها من القائمة أعلاه.`,
     loading: 'جارٍ تحميل البيانات…'
   }
@@ -251,6 +270,9 @@ const aDesLettres = (texte) => /\p{L}/u.test(texte || '');
 // pas une panne, c'est un choix à faire. Le message se construit au rendu, dans
 // la langue du moment : le stocker figerait celle de la requête.
 const erreurLisible = (err) => {
+  // Connexion, quota de recherches ou formule : la décision d'accès, pas une panne.
+  const refus = refusAcces(err);
+  if (refus) return { kind: 'acces', genre: refus.genre };
   const statut = err.response?.status;
   const detail = err.response?.data?.detail;
   if (statut === 422 && detail?.code === 'POSITION_NATIONALE_REQUISE') {
@@ -261,6 +283,7 @@ const erreurLisible = (err) => {
 };
 
 const messageErreur = (erreur, t) => {
+  if (erreur.kind === 'acces') return t.access[erreur.genre] || t.access.abonnes;
   if (erreur.kind === 'choix') return t.chooseNational(erreur.total);
   if (erreur.kind === 'absente') return t.positionAbsent;
   return t.tariffUnavailable;
@@ -332,8 +355,9 @@ export default function RegulatoryDetailsPanel({
       } catch (err) {
         if (annule) return;
         const erreur = erreurLisible(err);
-        // Un SH6 à plusieurs positions est un choix à faire, pas une erreur.
-        if (erreur.kind !== 'choix') console.error('Error fetching regulatory data:', err);
+        // Un SH6 à plusieurs positions est un choix à faire, un refus d'accès une
+        // décision : ni l'un ni l'autre n'est une erreur.
+        if (erreur.kind !== 'choix' && erreur.kind !== 'acces') console.error('Error fetching regulatory data:', err);
         setData(null);
         setFormalites(null);
         setError(erreur);
@@ -379,6 +403,26 @@ export default function RegulatoryDetailsPanel({
             <Info className="w-8 h-8 text-[var(--info)]" />
           </div>
           <p className="text-[var(--text)] text-lg">{messageErreur(error, t)}</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Refus d'accès : la fenêtre d'abonnement s'ouvre déjà (intercepteur global) ;
+  // la carte dit la même chose et reste lisible une fois la fenêtre fermée.
+  if (error?.kind === 'acces') {
+    return (
+      <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]" data-testid="regulatory-details-access">
+        <CardContent className="p-8 text-center">
+          <div className="w-16 h-16 mx-auto mb-4 bg-[var(--overlay)] rounded-full flex items-center justify-center">
+            <Info className="w-8 h-8 text-[var(--gold)]" />
+          </div>
+          <p className="text-[var(--text)] text-lg">{messageErreur(error, t)}</p>
+          {error.genre !== 'connexion' && (
+            <a href={PRICING_URL} className="inline-block mt-4 text-[var(--gold)] font-semibold underline">
+              {t.seePlans}
+            </a>
+          )}
         </CardContent>
       </Card>
     );

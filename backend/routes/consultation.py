@@ -29,6 +29,13 @@ from services.formalites import (
 )
 
 router = APIRouter(prefix="/consultation")
+#: La fiche d'une position (droits, taxes, restrictions) est le module de
+#: consultation « reglementation » de la décision d'accès du 09/11/2026 : connexion,
+#: puis 5 recherches par mois en formule Découverte (routes/__init__.py). Elle a son
+#: propre routeur, comme la couverture du calcul : la garde ne doit pas peser sur
+#: les routes que le calculateur partage (sous-positions, recherche, formalités),
+#: dont l'usage est déjà compté au calcul.
+router_reglementation = APIRouter(prefix="/consultation")
 
 DONNEES = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 
@@ -107,7 +114,7 @@ def sous_positions(iso3: str, hs6: str):
     }
 
 
-@router.get(
+@router_reglementation.get(
     "/{iso3}/position/{code}",
     summary="Droits, taxes et restrictions publiés pour une position, lus au socle",
 )
