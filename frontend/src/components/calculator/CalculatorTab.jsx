@@ -143,6 +143,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       setPaysServis(Object.entries(data.pays || {}).filter(([, p]) => p.positions > 0).map(([iso3]) => iso3));
     }).catch(() => {});
   }, []);
+  // Une position choisie dans l'onglet Réglementation vaut pour un pays et un code
+  // SH. En changer — ici, ou dans l'onglet Calculateur, qui partage ces deux
+  // champs — la rend caduque : la garder servirait la fiche d'un autre tarif, ou
+  // d'un autre produit, sous la désignation de la première.
+  useEffect(() => {
+    setRegulatorySelectedPos(null);
+    setRegulatorySelectedPosDesc(null);
+  }, [hsCode, destinationCountry]);
   const [searchResetKey, setSearchResetKey] = useState(0);
   const [kenyaRemission, setKenyaRemission] = useState({
     answer: 'unknown',
@@ -222,10 +230,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
   const handleDestinationChange = useCallback((value) => {
     setDestinationCountry(value);
-    // Une position choisie dans l'onglet Réglementation vaut pour son pays : la
-    // garder servirait la fiche d'un autre tarif sous la désignation du premier.
-    setRegulatorySelectedPos(null);
-    setRegulatorySelectedPosDesc(null);
   }, []);
 
   const handleRegulatoryHsCodeChange = useCallback((e) => {

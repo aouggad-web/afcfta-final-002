@@ -363,18 +363,22 @@ def test_fiche_une_interdiction_d_importation_se_lit(client):
 
 @_requiert_socle("LBY")
 def test_fiche_toutes_les_restrictions_ont_la_meme_forme_et_un_texte(client):
-    """Toutes les interdictions libyennes (62) et un échantillon des restrictions
+    """Toutes les interdictions libyennes et un échantillon des restrictions
     égyptiennes : mêmes clés, et un texte à afficher — une restriction sans
-    texte serait invisible. Les positions viennent du socle, pas d'une liste."""
+    texte serait invisible. Les positions viennent du socle, pas d'une liste, et
+    le nombre de restrictions vues est celui du socle : un balayage qui ne verrait
+    rien (route qui n'en sert plus) passerait sinon pour réussi."""
     cles = {"type", "libelle", "texte", "portee", "source"}
-    a_verifier = []
+    attendues = vues = 0
     for iso3, limite in (("LBY", None), ("EGY", 60)):
-        avec = [c for c, p in socle.charger(iso3)["positions"].items() if p.get("restrictions")]
-        a_verifier += [(iso3, c) for c in (avec if limite is None else avec[:limite])]
-    assert sum(1 for iso3, _ in a_verifier if iso3 == "LBY") == 62
-    for iso3, code in a_verifier:
-        for restriction in client.get(f"/consultation/{iso3}/position/{code}").json()["restrictions"]:
-            assert set(restriction) == cles and restriction["texte"], (iso3, code, restriction)
+        positions = socle.charger(iso3)["positions"]
+        avec = [c for c, p in positions.items() if p.get("restrictions")]
+        for code in avec if limite is None else avec[:limite]:
+            attendues += len(positions[code]["restrictions"])
+            for restriction in client.get(f"/consultation/{iso3}/position/{code}").json()["restrictions"]:
+                vues += 1
+                assert set(restriction) == cles and restriction["texte"], (iso3, code, restriction)
+    assert vues == attendues > 0
 
 
 @_requiert_socle("LBY")
@@ -412,6 +416,28 @@ def test_fiche_une_moyenne_statistique_n_est_pas_un_taux_publie(client):
     assert not any(d["base_statistique"] for d in national)
 
 
+@_requiert_socle("STP")
+def test_fiche_un_droit_national_d_un_pays_a_moyennes_n_est_pas_marque(client):
+    """Sao Tomé : 140 positions portent un droit national (Lei n.º 04/2023) sous
+    un libellé « WITS/TRAINS ». C'est la source qui décide, pas le libellé."""
+    positions = socle.charger("STP")["positions"]
+    code = next(
+        (
+            c
+            for c, p in positions.items()
+            if any(
+                d.get("code") == "DD" and "Lei" in (d.get("source") or "") and "WITS" not in (d.get("source") or "")
+                for d in p["droits"]
+            )
+        ),
+        None,
+    )
+    if code is None:
+        pytest.skip("aucun droit national à Sao Tomé dans ce socle")
+    droits = {d["code"]: d for d in client.get(f"/consultation/STP/position/{code}").json()["droits"]}
+    assert droits["DD"]["base_statistique"] is False
+
+
 def test_fiche_les_usages_qui_substituent_un_regime_sont_nommes(client):
     """EGY 3401.19.00.10 : pour l'usage domestique, une taxe de Table de 5 %
     remplace la TVA de 14 %. Les lignes servies sont celles du régime courant ;
@@ -438,3 +464,34 @@ def test_fiche_position_absente_code_invalide_et_pays_hors_socle(client):
     assert absente.json()["detail"].startswith("DZA/9999999999 : position absente du socle")
     assert client.get("/consultation/DZA/position/abc").status_code == 422
     assert client.get("/consultation/XXX/position/020110").status_code == 503
+
+
+def test_fiche_porte_les_champs_de_la_position_du_socle(client):
+    """Chapitre, unité, désignation anglaise, assiette et note de chaque ligne :
+    ce que le socle porte, ni plus ni moins. Les valeurs viennent du socle, pas
+    d'un tarif figé qu'un nouveau crawl ferait changer."""
+    for iso3, code in (("DZA", "0201101100"), ("ZAF", "19019010"), ("EGY", "0101210000")):
+        position, _ = socle.position(iso3, code)
+        corps = client.get(f"/consultation/{iso3}/position/{code}").json()
+        assert corps["chapitre"] == position["chapitre"] and corps["hs6"] == position["hs6"]
+        assert corps["unite"] == position.get("unite")
+        assert corps["description_en"] == texte_designation(position.get("designation"), "en")
+        assert [d["note"] for d in corps["droits"]] == [d.get("note") for d in position["droits"]]
+        assert [d["assiette"] for d in corps["droits"]] == [d.get("assiette") for d in position["droits"]]
+
+
+def test_fiche_une_mesure_de_defense_commerciale_n_est_pas_un_taux_manquant(client):
+    """ZAF : un droit antidumping ou de sauvegarde n'a pas de taux unique, il
+    dépend de l'origine, du producteur ou du produit. Servi sans taux ni drapeau,
+    il se lisait « la source ne publie pas de taux » : un manque, là où il y a une
+    mesure conditionnelle. La position vient du socle (ces mesures ont un terme)."""
+    positions = socle.charger("ZAF")["positions"]
+    code, ligne = next(
+        ((c, d) for c, p in positions.items() for d in p["droits"] if d.get("defense_commerciale")),
+        (None, None),
+    )
+    if code is None:
+        pytest.skip("aucune mesure de défense commerciale à ce jour dans le socle ZAF")
+    droits = client.get(f"/consultation/ZAF/position/{code}").json()["droits"]
+    assert next(d for d in droits if d["code"] == ligne["code"])["conditionnel"] is True
+    assert not any(d["conditionnel"] for d in client.get("/consultation/DZA/position/0201101100").json()["droits"])

@@ -112,9 +112,11 @@ const texts = {
     rate: 'Taux publié',
     statisticalRate: 'Moyenne statistique SH6',
     statisticalBadge: 'Indicatif',
-    statisticalNote: "Les taux de ce pays sont des moyennes statistiques au niveau SH6 (WITS/UNCTAD-TRAINS, Banque mondiale), pas son tarif national : ils sont indicatifs.",
+    statisticalNote: "Les lignes marquées « Indicatif » sont des moyennes statistiques au niveau SH6 (WITS/UNCTAD-TRAINS, Banque mondiale), pas le tarif national du pays.",
     toComplete: 'À compléter',
     toCompleteHint: 'La source ne publie pas de taux pour cette ligne',
+    conditional: "Selon l'origine ou le produit",
+    conditionalHint: "Mesure de défense commerciale : le taux dépend de l'origine, du producteur ou du produit. Il se calcule dans l'onglet Calculateur.",
     vatMissing: "La source du tarif de ce pays ne publie pas la TVA : cette liste est incomplète. Le calculateur la complète quand une fiche officielle la documente.",
     usagesTitle: "Régime selon l'usage déclaré",
     usagesHint: "Les droits ci-dessus sont ceux du régime courant ; le calculateur applique l'usage que vous déclarez.",
@@ -150,11 +152,13 @@ const texts = {
     measuresDesc: 'Measures published by the tariff, line by line',
     base: 'Base',
     rate: 'Published rate',
-    statisticalRate: 'SH6 statistical average',
+    statisticalRate: 'HS6 statistical average',
     statisticalBadge: 'Indicative',
-    statisticalNote: "This country's rates are SH6-level statistical averages (WITS/UNCTAD-TRAINS, World Bank), not its national tariff: they are indicative.",
+    statisticalNote: "Lines marked “Indicative” are HS6-level statistical averages (WITS/UNCTAD-TRAINS, World Bank), not the country's national tariff.",
     toComplete: 'To be completed',
     toCompleteHint: 'The source does not publish a rate for this line',
+    conditional: 'Depends on origin or product',
+    conditionalHint: 'Trade remedy: the rate depends on the origin, the producer or the product. It is computed in the Calculator tab.',
     vatMissing: "This country's tariff source does not publish VAT: this list is incomplete. The calculator completes it when an official record documents it.",
     usagesTitle: 'Regime depending on the declared use',
     usagesHint: 'The duties above are those of the current regime; the calculator applies the use you declare.',
@@ -198,9 +202,11 @@ const texts = {
     rate: 'المعدل المنشور',
     statisticalRate: 'متوسط إحصائي على مستوى SH6',
     statisticalBadge: 'إرشادي',
-    statisticalNote: 'معدلات هذا البلد متوسطات إحصائية على مستوى SH6 (WITS/UNCTAD-TRAINS، البنك الدولي) وليست تعريفته الوطنية: وهي إرشادية.',
+    statisticalNote: 'الأسطر المشار إليها بعبارة «إرشادي» هي متوسطات إحصائية على مستوى SH6 (WITS/UNCTAD-TRAINS، البنك الدولي) وليست التعريفة الوطنية للبلد.',
     toComplete: 'قيد الاستكمال',
     toCompleteHint: 'لا ينشر المصدر معدلًا لهذا السطر',
+    conditional: 'بحسب المنشأ أو المنتج',
+    conditionalHint: 'إجراء دفاع تجاري: يتوقف المعدل على المنشأ أو المنتِج أو المنتج، ويُحسب في تبويب الحاسبة.',
     vatMissing: 'لا ينشر مصدر تعريفة هذا البلد ضريبة القيمة المضافة: هذه القائمة ناقصة. تستكملها الحاسبة عندما توثّقها وثيقة رسمية.',
     usagesTitle: 'النظام بحسب الاستخدام المصرَّح به',
     usagesHint: 'الرسوم أعلاه هي رسوم النظام الجاري؛ وتطبّق الحاسبة الاستخدام الذي تصرّح به.',
@@ -226,10 +232,14 @@ const texts = {
   }
 };
 
+// Certaines sources (WITS) portent des flottants simples : 16.6666660308838.
+// Quatre décimales au plus ; 0 reste 0.
+const arrondi = (taux) => (typeof taux === 'number' ? Number(taux.toFixed(4)) : taux);
+
 // Taux d'une ligne : le pourcentage, ou l'expression d'un droit spécifique ou
 // composé (« 10% or 55c/kg less 90% »), ou rien. Jamais 0 % faute de taux.
 const tauxAffiche = (droit) => {
-  if (droit.taux !== null && droit.taux !== undefined) return `${droit.taux}%`;
+  if (droit.taux !== null && droit.taux !== undefined) return `${arrondi(droit.taux)}%`;
   return droit.expression || null;
 };
 
@@ -287,7 +297,7 @@ export default function RegulatoryDetailsPanel({
   };
 
   useEffect(() => {
-    const cleanCode = (hsCode || '').replace(/[.\s]/g, '');
+    const cleanCode = (hsCode || '').replace(/\D/g, '');
     if (!countryCode || cleanCode.length < 6) {
       setData(null);
       setFormalites(null);
@@ -401,7 +411,7 @@ export default function RegulatoryDetailsPanel({
   const listeFormalites = formalites?.formalities || [];
   // Le français du statut est celui du serveur ; les autres langues le traduisent.
   const reserveFormalites = (language !== 'fr' && t.formalityStatus?.[formalites?.statut]) || formalites?.reserve;
-  const saisi = (hsCode || '').replace(/[.\s]/g, '');
+  const saisi = (hsCode || '').replace(/\D/g, '');
   // Le code saisi n'est pas une ligne du tarif : la ligne du SH6, ou une autre
   // position, a répondu. Un code saisi avec sa clé de contrôle (TUN) ou plus
   // court que la position servie en est le préfixe : rien à signaler.
@@ -415,6 +425,8 @@ export default function RegulatoryDetailsPanel({
   // ordinaire (Égypte : les instructions de la position, longues et nombreuses)
   // vient après les taux, qu'elle ne doit pas enfouir.
   const interdit = restrictions.some((restriction) => TYPES_RESTRICTION[restriction.type]);
+  // L'état replié survit d'une recherche à l'autre : il ne doit jamais masquer une interdiction.
+  const restrictionsOuvertes = interdit || expandedSections.restrictions;
   const carteRestrictions = restrictions.length > 0 && (
     <Card className="bg-[var(--overlay)] border-[color-mix(in_srgb,var(--danger)_30%,transparent)] overflow-hidden" data-testid="regulatory-restrictions">
       <CardHeader
@@ -431,14 +443,14 @@ export default function RegulatoryDetailsPanel({
               <CardDescription className="text-[var(--afcfta-muted)]">{t.restrictionsDesc}</CardDescription>
             </div>
           </div>
-          {expandedSections.restrictions ?
+          {restrictionsOuvertes ?
             <ChevronUp className="w-5 h-5 text-[var(--afcfta-muted)]" /> :
             <ChevronDown className="w-5 h-5 text-[var(--afcfta-muted)]" />
           }
         </div>
       </CardHeader>
 
-      {expandedSections.restrictions && (
+      {restrictionsOuvertes && (
         <CardContent className="pt-0">
           <div className="space-y-3">
             {restrictions.map((restriction, idx) => {
@@ -455,12 +467,12 @@ export default function RegulatoryDetailsPanel({
                     <p className="text-[var(--danger)] font-semibold">{libelle}</p>
                   )}
                   {/* Texte tel qu'écrit par la source, souvent en arabe. */}
-                  <p className="text-[var(--text)]" dir="auto">{restriction.texte}</p>
+                  <p className="text-[var(--text)] break-words" dir="auto">{restriction.texte}</p>
                   {restriction.portee && (
-                    <p className="text-[var(--afcfta-muted)] text-xs mt-2">{t.scope} : {restriction.portee}</p>
+                    <p className="text-[var(--afcfta-muted)] text-xs mt-2 break-words">{t.scope} : {restriction.portee}</p>
                   )}
                   {restriction.source && (
-                    <p className="text-[var(--afcfta-muted)] text-xs mt-1">{restriction.source}</p>
+                    <p className="text-[var(--afcfta-muted)] text-xs mt-1 break-words">{restriction.source}</p>
                   )}
                 </div>
               );
@@ -503,7 +515,7 @@ export default function RegulatoryDetailsPanel({
           {/* Description du produit */}
           <div className="bg-[var(--overlay)] rounded-lg p-4 mb-4 border-l-4 border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
             {description ? (
-              <p className="text-[var(--text)] text-lg leading-relaxed whitespace-pre-line" dir="auto">{description}</p>
+              <p className="text-[var(--text)] text-lg leading-relaxed whitespace-pre-line break-words" dir="auto">{description}</p>
             ) : (
               <p className="text-[var(--afcfta-muted)] text-lg italic" data-testid="regulatory-no-description">{t.noDescription}</p>
             )}
@@ -513,12 +525,12 @@ export default function RegulatoryDetailsPanel({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-[var(--overlay)] rounded-lg p-3">
               <p className="text-[var(--afcfta-muted)] text-xs mb-1">{data.niveau === 'hs6' ? t.hs6Line : t.nationalCode}</p>
-              <p className="text-[var(--text)] font-mono text-lg font-semibold">{data.code}</p>
+              <p className="text-[var(--text)] font-mono text-lg font-semibold break-words">{data.code}</p>
             </div>
             {data.niveau !== 'hs6' && (
               <div className="bg-[var(--overlay)] rounded-lg p-3">
                 <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.hs6Code}</p>
-                <p className="text-[var(--text)] font-mono text-lg">{data.hs6}</p>
+                <p className="text-[var(--text)] font-mono text-lg break-words">{data.hs6}</p>
               </div>
             )}
             <div className="bg-[var(--overlay)] rounded-lg p-3">
@@ -602,12 +614,12 @@ export default function RegulatoryDetailsPanel({
                             <p className="text-[var(--text)] text-sm">{droit.libelle}</p>
                           )}
                           {droit.assiette && (
-                            <p className="text-[var(--afcfta-muted)] text-xs mt-1">
+                            <p className="text-[var(--afcfta-muted)] text-xs mt-1 break-words">
                               {t.base} : <span className="font-mono">{droit.assiette}</span>
                             </p>
                           )}
                           {droit.note && (
-                            <p className="text-[var(--afcfta-muted)] text-xs mt-1">{droit.note}</p>
+                            <p className="text-[var(--afcfta-muted)] text-xs mt-1 break-words">{droit.note}</p>
                           )}
                         </div>
                       </div>
@@ -618,6 +630,10 @@ export default function RegulatoryDetailsPanel({
                         </p>
                         {taux ? (
                           <p className="text-lg font-bold text-[var(--text)] break-words">{taux}</p>
+                        ) : droit.conditionnel ? (
+                          <p className="text-sm font-semibold text-[var(--afcfta-muted)]" title={t.conditionalHint}>
+                            {t.conditional}
+                          </p>
                         ) : (
                           <p className="text-sm font-semibold text-[var(--afcfta-muted)]" title={t.toCompleteHint}>
                             {t.toComplete}
@@ -655,7 +671,7 @@ export default function RegulatoryDetailsPanel({
                       <li key={`${usage.code}-${idx}`} className="text-sm">
                         <span className="text-[var(--text)] font-medium">{usage.libelle || usage.code}</span>
                         {usage.texte && (
-                          <p className="text-[var(--afcfta-muted)] text-xs mt-0.5" dir="auto">{usage.texte}</p>
+                          <p className="text-[var(--afcfta-muted)] text-xs mt-0.5 break-words" dir="auto">{usage.texte}</p>
                         )}
                       </li>
                     ))}
@@ -726,11 +742,11 @@ export default function RegulatoryDetailsPanel({
                         {/* Égypte : le texte officiel est l'arabe ; la traduction,
                             reprise d'un autre fichier, se dit non officielle. */}
                         {formalite.traduction_non_officielle && (
-                          <p className="text-[var(--text)] font-medium text-base mt-1" dir="auto">{formalite.texte}</p>
+                          <p className="text-[var(--text)] font-medium text-base mt-1 break-words" dir="auto">{formalite.texte}</p>
                         )}
                         <p className={formalite.traduction_non_officielle
-                          ? 'text-[var(--afcfta-muted)] text-xs mt-1'
-                          : 'text-[var(--text)] font-medium text-base mt-1'}
+                          ? 'text-[var(--afcfta-muted)] text-xs mt-1 break-words'
+                          : 'text-[var(--text)] font-medium text-base mt-1 break-words'}
                         >
                           {pick(
                             language,
@@ -743,10 +759,10 @@ export default function RegulatoryDetailsPanel({
                           )}
                         </p>
                         {formalite.base_legale && (
-                          <p className="text-[var(--afcfta-muted)] text-xs mt-1">{formalite.base_legale}</p>
+                          <p className="text-[var(--afcfta-muted)] text-xs mt-1 break-words">{formalite.base_legale}</p>
                         )}
                         {formalite.issuing_authority && (
-                          <p className="text-[var(--afcfta-muted)] text-xs mt-1">{formalite.issuing_authority}</p>
+                          <p className="text-[var(--afcfta-muted)] text-xs mt-1 break-words">{formalite.issuing_authority}</p>
                         )}
                       </div>
                     </div>
@@ -759,7 +775,7 @@ export default function RegulatoryDetailsPanel({
             {reserveFormalites && (
               <div className={`flex items-start gap-2 ${listeFormalites.length > 0 ? 'mt-4' : ''}`} data-testid="regulatory-formalities-status">
                 <Info className="w-4 h-4 text-[var(--info)] mt-0.5 shrink-0" />
-                <p className="text-[var(--afcfta-muted)] text-sm">{reserveFormalites}</p>
+                <p className="text-[var(--afcfta-muted)] text-sm break-words">{reserveFormalites}</p>
               </div>
             )}
             {!formalites && (

@@ -177,6 +177,10 @@ def fiche_position(iso3: str, code: str):
                 "note": droit.get("note"),
                 "source": droit.get("source"),
                 "base_statistique": _est_moyenne_statistique(droit.get("source")),
+                # Mesure de défense commerciale (antidumping, sauvegarde) : le taux
+                # existe mais dépend de l'origine, du producteur ou du produit. Servi
+                # sans taux, il se lirait « la source n'en publie pas ».
+                "conditionnel": bool(droit.get("defense_commerciale")),
             }
             for droit in position.get("droits") or []
         ],

@@ -54,18 +54,29 @@ def test_le_producteur_porte_la_cle_canonique():
     assert "reduced_rate:" not in src, "l'ancienne clé « reduced_rate » ne doit pas revenir"
 
 
+def _sans_commentaires(src):
+    """Le code, sans commentaires : l'en-tête du panneau raconte pourquoi il a
+    changé, et cite le moteur. Seul compte ce que le code appelle."""
+    src = re.sub(r"/\*.*?\*/", "", src, flags=re.S)  # blocs, y compris les {/* … */} de JSX
+    return re.sub(r"(?m)(^|\s)//.*$", r"\1", src)  # lignes (« https:// » n'est pas précédé d'une espace)
+
+
 def test_le_panneau_lit_le_socle_et_non_le_moteur_sans_donnees():
     """Le panneau interroge la source du calcul, jamais `/regulatory-engine`.
 
     Ce dernier lit `engine/output/*_canonical.jsonl`, absents du dépôt et de
     l'image : toute consultation y répond « Pays … non disponible ». Ce test lit
-    le SOURCE du panneau : il tombe si le panneau y retourne, au lieu de laisser
-    un onglet qui ne livre aucun résultat arriver jusqu'à l'opérateur.
+    le CODE du panneau, commentaires retirés : il tombe si le nom de la route y
+    réapparaît, quelle que soit la façon de bâtir l'URL (constante, autre base,
+    autre client), au lieu de laisser un onglet qui ne livre aucun résultat
+    arriver jusqu'à l'opérateur. Il exige aussi que les deux appels du socle y
+    soient : un commentaire ne suffit pas à le satisfaire.
     """
-    src = _source(PANNEAU)
-    assert "/consultation/" in src and "/position/" in src, "le panneau doit lire la fiche du socle"
-    assert "/formalites/" in src, "le panneau doit lire les formalités du socle"
-    # L'APPEL, pas la mention : l'en-tête du panneau raconte pourquoi il a changé.
-    assert not re.search(r"\$\{API\}/regulatory-engine", src), (
-        "le panneau ne doit plus interroger le moteur réglementaire"
+    code = _sans_commentaires(_source(PANNEAU))
+    assert "regulatory-engine" not in code, "le panneau ne doit plus interroger le moteur réglementaire"
+    assert re.search(r"axios\.get\(\s*`\$\{API\}/consultation/[^`]*/position/", code), (
+        "le panneau doit lire la fiche du socle"
+    )
+    assert re.search(r"axios\.get\(\s*`\$\{API\}/consultation/[^`]*/formalites/", code), (
+        "le panneau doit lire les formalités du socle"
     )
