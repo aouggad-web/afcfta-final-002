@@ -173,3 +173,33 @@ def test_prix_maritime_du_lot_et_non_d_un_conteneur():
     assert sea["containers_needed"] == 3
     assert sea["cost_basis"] == "shipment"
     assert sea["total_cost_usd"] == 3 * sea["segments"][0]["cost_usd_per_container"]
+
+
+# ── Revue Codex (#802) ──────────────────────────────────────────────────────
+def test_shared_terminus_does_not_detach_corridors_starting_there():
+    # Durban-Dar es Salaam aboutit à Dar es Salaam : Central et TAZARA y partent
+    # légitimement pour une origine tanzanienne.
+    ids = lambda a, b: {
+        o["segments"][0]["corridor_id"] for o in service._land_option(a, b, 26.4)
+    }
+    assert "CORR-CENTRAL-009" in ids("TZA", "BDI")
+    assert "CORR-TAZARA-008" in ids("TZA", "ZMB")
+
+
+def test_osbp_crossing_keeps_osbp_cost_for_pair_leg():
+    import logistics_land_fees_data as land
+
+    res = land.get_land_freight_cost(
+        "CORR-ABIDJAN-OUAGA-001", "road", 26.4, "container", country_pair=("CIV", "BFA")
+    )
+    assert res["border_crossings"] == 1 and res["osbp_crossings"] == 1
+    assert res["border_cost_usd"] == 250
+
+
+def test_every_osbp_border_node_resolves_its_country_pair():
+    import logistics_land_fees_data as land
+
+    for cid, corridor in land._corridor_index().items():
+        for node in corridor["nodes"]:
+            if node.get("node_type") == "border_crossing" and node.get("is_osbp"):
+                assert land.border_node_pair(node), f"{cid}: OSBP sans couple de pays"

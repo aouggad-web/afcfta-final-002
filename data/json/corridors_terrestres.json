@@ -52,7 +52,7 @@
         },
         {
           "node_id": "NODE-OUANGOLO-001",
-          "node_name": "Poste Frontière OSBP Ouangolodougou",
+          "node_name": "Poste Frontière OSBP Ouangolodougou (CIV-BFA)",
           "node_type": "border_crossing",
           "country_iso": "CIV",
           "geo_lat": 9.96,
@@ -1213,6 +1213,7 @@
           "notes": "Port sec saharien, terminus phase 1 du rail Alger-Tamanrasset"
         },
         {
+          "node_name": "Poste Frontière In Guezzam (DZA-NER)",
           "node_type": "border_crossing",
           "geo_lat": 19.5667,
           "geo_lon": 5.7833,
@@ -1291,6 +1292,7 @@
       ],
       "nodes": [
         {
+          "node_name": "Poste Frontière Bordj Mokhtar (DZA-MLI)",
           "node_type": "border_crossing",
           "geo_lat": 21.3284,
           "geo_lon": 0.9544,
@@ -1534,6 +1536,7 @@
           "notes": "Hub sahélien"
         },
         {
+          "node_name": "Poste Frontière Niger-Burkina Faso (NER-BFA)",
           "node_type": "border_crossing",
           "geo_lat": 12.0613,
           "geo_lon": 0.3686,

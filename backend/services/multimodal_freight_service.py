@@ -302,10 +302,13 @@ def _pair_leg_km(c: Dict[str, Any], a: str, b: str) -> float:
 
 
 def _is_detached_from(c: Dict[str, Any], origin: str) -> bool:
-    """True si le nœud de départ de c n'est pas relié à l'origine : il est le
-    terminus d'un corridor de l'origine (ex. rail Alger-Tamanrasset) ou un nœud
-    intermédiaire d'un autre corridor qui part ailleurs (ex. Tamanrasset sur la
-    Transsaharienne). Une telle dérivation exige la jambe origine → nœud."""
+    """True si le nœud de départ de c n'est pas relié à l'origine : un autre
+    corridor PARTANT du pays d'origine passe par ce nœud (terminus, ex. rail
+    Alger-Tamanrasset, ou nœud intermédiaire, ex. Tamanrasset sur la
+    Transsaharienne). Une telle dérivation exige la jambe origine → nœud.
+
+    Un corridor qui se contente d'aboutir à ce nœud depuis un autre pays (ex.
+    Durban-Dar es Salaam pour TZA) ne détache pas les corridors qui y partent."""
     start = c.get("start_node")
     if not start:
         return False
@@ -313,7 +316,8 @@ def _is_detached_from(c: Dict[str, Any], origin: str) -> bool:
     for d in get_land_corridors_list():
         if d["corridor_id"] == c["corridor_id"]:
             continue
-        if origin not in [x.upper() for x in d.get("countries", [])]:
+        d_countries = [x.upper() for x in d.get("countries", [])]
+        if d_countries[:1] != [origin]:
             continue
         if d.get("start_node") == start:
             continue
