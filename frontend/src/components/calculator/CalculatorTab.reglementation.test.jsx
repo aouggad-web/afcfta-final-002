@@ -17,6 +17,7 @@ const POSITIONS = [
 const COUNTRIES = [
   { code: 'DZA', iso2: 'DZ', name: 'Algérie' },
   { code: 'TUN', iso2: 'TN', name: 'Tunisie' },
+  { code: 'KEN', iso2: 'KE', name: 'Kenya' },
 ];
 
 const fiche = (code) => ({
@@ -39,6 +40,10 @@ const repondre = ({ pays = Promise.resolve({ data: { pays: PAYS } }) } = {}) => 
   });
   axios.post.mockResolvedValue({ data: {} });
 };
+
+const originesDemandees = () => axios.get.mock.calls
+  .filter(([url]) => url.includes('/position/'))
+  .map(([, config]) => config?.params?.origine);
 
 const appelsRegulatoires = () => axios.get.mock.calls.map(([url]) => url).filter((url) => /\/(position|formalites)\//.test(url));
 
@@ -138,5 +143,58 @@ describe('CalculatorTab — onglet Réglementation', () => {
 
     expect(await screen.findByRole('option', { name: /Algérie/ })).toBeInTheDocument();
     expect(screen.queryByText('Disponible')).not.toBeInTheDocument();
+  });
+
+  describe("pays d'origine", () => {
+    // Pays de destination et code SH6 saisis, sans position choisie : la fiche est celle du SH6.
+    const ouvrir = async () => {
+      render(<CalculatorTab countries={COUNTRIES} language="fr" />);
+      await user.click(screen.getByTestId('calculator-regulatory-tab'));
+      await user.click(await screen.findByTestId('regulatory-country-select'));
+      await user.click(await screen.findByRole('option', { name: /Algérie/ }));
+      await user.type(screen.getByTestId('regulatory-hs-input'), '030211');
+      await avancer(600);
+      await screen.findByText('FICHE-030211');
+    };
+    const choisirOrigine = async (nom) => {
+      await user.click(screen.getByTestId('regulatory-origin-select'));
+      await user.click(await screen.findByRole('option', { name: nom }));
+      await avancer(600);
+    };
+
+    it("l'origine est facultative : sans elle, la fiche se demande sans origine", async () => {
+      repondre();
+      await ouvrir();
+
+      expect(screen.getByTestId('regulatory-origin-select')).toBeInTheDocument();
+      expect(screen.getByText(/Aucune : tarif seul/)).toBeInTheDocument();
+      expect(originesDemandees()).toEqual([undefined]);
+    });
+
+    it("choisir une origine redemande la fiche avec cette origine", async () => {
+      repondre();
+      await ouvrir();
+      await choisirOrigine(/Kenya/);
+
+      expect(originesDemandees()).toEqual([undefined, 'KEN']);
+    });
+
+    it("« Aucune » efface l'origine : la fiche revient au tarif seul", async () => {
+      repondre();
+      await ouvrir();
+      await choisirOrigine(/Kenya/);
+      await choisirOrigine(/Aucune : tarif seul/);
+
+      expect(originesDemandees()).toEqual([undefined, 'KEN', undefined]);
+    });
+
+    it("l'origine choisie ici est celle du Calculateur : un seul pays d'origine dans l'onglet", async () => {
+      repondre();
+      await ouvrir();
+      await choisirOrigine(/Kenya/);
+
+      await user.click(screen.getByTestId('calculator-single-tab'));
+      expect(await screen.findByTestId('origin-country-select')).toHaveTextContent('Kenya');
+    });
   });
 });

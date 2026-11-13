@@ -122,6 +122,13 @@ const texts = {
     usagesTitle: "Régime selon l'usage déclaré",
     usagesHint: "Les droits ci-dessus sont ceux du régime courant ; le calculateur applique l'usage que vous déclarez.",
     preferenceNote: "Le taux préférentiel ZLECAf, les exonérations d'origine, les mesures temporaires et le total à payer dépendent de l'origine et de la date : ils se calculent dans l'onglet Calculateur.",
+    preferenceNoteOrigin: "Le taux préférentiel suppose que l'origine du produit est justifiée (règles d'origine). Les mesures temporaires et le total à payer dépendent de la date : ils se calculent dans l'onglet Calculateur.",
+    originRegime: (origine, regime) => `Origine ${origine} : régime ${regime}`,
+    originNoPreference: (origine) => `Origine ${origine} : aucune préférence applicable, le taux publié (NPF) s'applique.`,
+    originSameCountry: (origine) => `Origine ${origine} : c'est le pays de destination, aucune préférence n'est à chercher.`,
+    preferentialRate: (origine) => `Taux préférentiel (origine ${origine})`,
+    preferentialSpecific: 'Droit spécifique : voir le Calculateur',
+    preferentialFloor: (taux) => `La préférence (${taux}) dépasserait le taux publié : le taux publié s'applique.`,
     requirements: 'Formalités',
     requirementsDesc: "Documents et formalités à l'importation",
     unofficialTranslation: ' — traduction non officielle',
@@ -170,6 +177,13 @@ const texts = {
     usagesTitle: 'Regime depending on the declared use',
     usagesHint: 'The duties above are those of the current regime; the calculator applies the use you declare.',
     preferenceNote: 'The AfCFTA preferential rate, origin exemptions, temporary measures and the total payable depend on the origin and the date: they are computed in the Calculator tab.',
+    preferenceNoteOrigin: 'The preferential rate assumes the origin of the product is justified (rules of origin). Temporary measures and the total payable depend on the date: they are computed in the Calculator tab.',
+    originRegime: (origine, regime) => `Origin ${origine}: ${regime} regime`,
+    originNoPreference: (origine) => `Origin ${origine}: no preference applies, the published rate (MFN) applies.`,
+    originSameCountry: (origine) => `Origin ${origine}: this is the destination country, there is no preference to look for.`,
+    preferentialRate: (origine) => `Preferential rate (origin ${origine})`,
+    preferentialSpecific: 'Specific duty: see the Calculator',
+    preferentialFloor: (taux) => `The preference (${taux}) would exceed the published rate: the published rate applies.`,
     requirements: 'Formalities',
     requirementsDesc: 'Documents and formalities for import',
     unofficialTranslation: ' — unofficial translation',
@@ -224,6 +238,13 @@ const texts = {
     usagesTitle: 'النظام بحسب الاستخدام المصرَّح به',
     usagesHint: 'الرسوم أعلاه هي رسوم النظام الجاري؛ وتطبّق الحاسبة الاستخدام الذي تصرّح به.',
     preferenceNote: 'يتوقف معدل زليكاف التفضيلي والإعفاءات المرتبطة بالمنشأ والتدابير المؤقتة والمجموع المستحق على بلد المنشأ وعلى التاريخ، وتُحسب في تبويب الحاسبة.',
+    preferenceNoteOrigin: 'يفترض المعدل التفضيلي إثبات منشأ المنتج (قواعد المنشأ). وتتوقف التدابير المؤقتة والمجموع المستحق على التاريخ، وتُحسب في تبويب الحاسبة.',
+    originRegime: (origine, regime) => `المنشأ ${origine}: نظام ${regime}`,
+    originNoPreference: (origine) => `المنشأ ${origine}: لا يوجد تفضيل منطبق، ويسري المعدل المنشور (الدولة الأولى بالرعاية).`,
+    originSameCountry: (origine) => `المنشأ ${origine}: هو بلد المقصد نفسه، فلا تفضيل يُطلب.`,
+    preferentialRate: (origine) => `المعدل التفضيلي (المنشأ ${origine})`,
+    preferentialSpecific: 'رسم نوعي: انظر الحاسبة',
+    preferentialFloor: (taux) => `التفضيل (${taux}) يتجاوز المعدل المنشور: يسري المعدل المنشور.`,
     requirements: 'الإجراءات',
     requirementsDesc: 'الوثائق والإجراءات عند الاستيراد',
     unofficialTranslation: ' — ترجمة غير رسمية',
@@ -262,6 +283,10 @@ const tauxAffiche = (droit) => {
   return droit.expression || null;
 };
 
+// Le régime d'une préférence, tel que le serveur le nomme : la ZLECAf n'a pas de
+// libellé de bloc, les unions et zones de libre-échange en ont un.
+const libelleRegime = (preference) => (preference.regime === 'ZLECAF' ? 'ZLECAf' : (preference.libelle_bloc || preference.regime));
+
 // Une désignation qui ne dit rien du produit : vide, ou réduite à un code
 // (Libye : le « verbatim » français et anglais de la source est le code).
 const aDesLettres = (texte) => /\p{L}/u.test(texte || '');
@@ -292,6 +317,7 @@ const messageErreur = (erreur, t) => {
 export default function RegulatoryDetailsPanel({
   countryCode,
   hsCode,
+  originCode,
   language = 'fr'
 }) {
   const [data, setData] = useState(null);
@@ -330,6 +356,8 @@ export default function RegulatoryDetailsPanel({
     }
 
     const iso3 = countryCode.length === 2 ? convertToISO3(countryCode) : countryCode;
+    // Le pays d'origine est facultatif : sans lui, la fiche est celle du tarif seul.
+    const origine = originCode ? (originCode.length === 2 ? convertToISO3(originCode) : originCode) : null;
     // Une réponse tardive d'un code déjà remplacé ne doit pas écraser la
     // réponse du code affiché : chaque nouvelle saisie annule la précédente.
     let annule = false;
@@ -344,7 +372,9 @@ export default function RegulatoryDetailsPanel({
     const timeoutId = setTimeout(async () => {
       try {
         const [fiche, reponseFormalites] = await Promise.all([
-          axios.get(`${API}/consultation/${iso3}/position/${cleanCode}`),
+          origine
+            ? axios.get(`${API}/consultation/${iso3}/position/${cleanCode}`, { params: { origine } })
+            : axios.get(`${API}/consultation/${iso3}/position/${cleanCode}`),
           // Les formalités manquantes ne font pas tomber les droits et taxes :
           // elles se disent indisponibles, pas absentes.
           axios.get(`${API}/consultation/${iso3}/formalites/${cleanCode}`).catch(() => null)
@@ -370,7 +400,7 @@ export default function RegulatoryDetailsPanel({
       annule = true;
       clearTimeout(timeoutId);
     };
-  }, [countryCode, hsCode]);
+  }, [countryCode, hsCode, originCode]);
 
   const toggleSection = (section) => {
     setExpandedSections(prev => ({
@@ -443,7 +473,7 @@ export default function RegulatoryDetailsPanel({
     );
   }
 
-  const { droits = [], restrictions = [], usages = [], couverture = {} } = data;
+  const { droits = [], restrictions = [], usages = [], couverture = {}, preference = null } = data;
   // La désignation dans la langue de l'écran ; à défaut, la première qui dise
   // quelque chose du produit.
   const description = [
@@ -630,12 +660,30 @@ export default function RegulatoryDetailsPanel({
 
           {expandedSections.measures && (
             <CardContent className="pt-0">
+              {preference && (
+                <div className="flex items-start gap-2 mb-4 p-3 rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)] bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))]" data-testid="regulatory-preference">
+                  <Info className="w-4 h-4 text-[var(--info)] mt-0.5 shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-[var(--text)] text-sm font-semibold break-words">
+                      {preference.statut === 'MEME_PAYS'
+                        ? t.originSameCountry(preference.origine)
+                        : preference.applique
+                          ? t.originRegime(preference.origine, libelleRegime(preference))
+                          : t.originNoPreference(preference.origine)}
+                    </p>
+                    {preference.statut !== 'MEME_PAYS' && preference.note && (
+                      <p className="text-[var(--afcfta-muted)] text-xs mt-1 break-words" dir="auto">{preference.note}</p>
+                    )}
+                  </div>
+                </div>
+              )}
               <div className="space-y-2">
                 {droits.map((droit, idx) => {
                   const famille = FAMILLES[droit.famille] || FAMILLES.autre;
                   const style = measureStyles[famille.style];
                   const Icon = style.icon;
                   const taux = tauxAffiche(droit);
+                  const pref = droit.preference;
 
                   return (
                     <div
@@ -688,6 +736,21 @@ export default function RegulatoryDetailsPanel({
                             {t.statisticalBadge}
                           </Badge>
                         )}
+                        {pref?.regime === 'preference' && (
+                          <div className="mt-2 pt-2 border-t border-[var(--afcfta-border)]" data-testid="regulatory-preferential-rate">
+                            <p className="text-[var(--afcfta-muted)] text-xs">{t.preferentialRate(preference.origine)}</p>
+                            {pref.taux !== null && pref.taux !== undefined ? (
+                              <p className="text-lg font-bold text-[var(--success)] break-words">{`${arrondi(pref.taux)}%`}</p>
+                            ) : (
+                              <p className="text-sm font-semibold text-[var(--afcfta-muted)]">{t.preferentialSpecific}</p>
+                            )}
+                          </div>
+                        )}
+                        {pref?.regime === 'npf_plancher' && pref.taux_ecarte !== null && pref.taux_ecarte !== undefined && (
+                          <p className="text-[var(--afcfta-muted)] text-xs mt-2" data-testid="regulatory-preferential-floor">
+                            {t.preferentialFloor(`${arrondi(pref.taux_ecarte)}%`)}
+                          </p>
+                        )}
                       </div>
                     </div>
                   );
@@ -724,7 +787,7 @@ export default function RegulatoryDetailsPanel({
               )}
               <div className="flex items-start gap-2 mt-3">
                 <Info className="w-4 h-4 text-[var(--info)] mt-0.5 shrink-0" />
-                <p className="text-[var(--afcfta-muted)] text-sm">{t.preferenceNote}</p>
+                <p className="text-[var(--afcfta-muted)] text-sm">{preference ? t.preferenceNoteOrigin : t.preferenceNote}</p>
               </div>
             </CardContent>
           )}

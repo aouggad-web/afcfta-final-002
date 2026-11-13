@@ -13,11 +13,12 @@ import os
 import re
 import unicodedata
 from collections import OrderedDict
+from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Query
 
 from services import socle
-from services.calcul import _est_moyenne_statistique, droits_a_la_date
+from services.calcul import _est_moyenne_statistique, calculer, droits_a_la_date
 from services.designation import texte_designation
 from services.formalites import (
     FORMALITES_AUCUNE_PARTICULIERE,
@@ -27,6 +28,7 @@ from services.formalites import (
     RESERVES_FORMALITES,
     SOURCES_EXHAUSTIVES_FORMALITES,
 )
+from services.preference import taux_preferentiels
 
 router = APIRouter(prefix="/consultation")
 #: La fiche d'une position (droits, taxes, restrictions) est le module de
@@ -114,16 +116,64 @@ def sous_positions(iso3: str, hs6: str):
     }
 
 
+def _preference(position: dict, provenance: dict, destination: str, code: str, origine: str):
+    """La préférence qu'une origine ouvre sur cette position : un bloc qui dit le
+    régime et, quand il est refusé, pourquoi, et ce que chaque ligne devient.
+
+    Le taux de chaque ligne est celui que POST /calcul liquiderait : la table
+    ``{code: taux}`` du moteur passe par ``calculer`` lui-même, qui applique la
+    règle du plancher (aucun importateur n'invoque un régime plus cher que le
+    NPF : KEN vers DZA, la table donne 26,25 % pour un NPF de 5 %, et c'est 5 %
+    qui est retenu). Les réécrire ici donnerait deux règles qui divergeraient.
+    Aucune valeur en douane : seuls les taux sont lus, jamais un montant."""
+    if origine == destination:
+        return {"origine": origine, "applique": False, "statut": "MEME_PAYS", "regime": None,
+                "libelle_bloc": None, "note": None, "perimetre": None}, {}
+    pref = taux_preferentiels(position, destination, origine, code)
+    lignes = {}
+    if pref.get("taux"):
+        resultat = calculer(
+            position, 0, taux_preferentiels=pref["taux"],
+            devise_position=provenance.get("devise_nationale"), couverture=provenance.get("couverture"),
+        )
+        for ligne in resultat["preference"]["lignes"]:
+            if ligne.get("regime_applique") and ligne["code"] not in lignes:
+                lignes[ligne["code"]] = {
+                    "regime": ligne["regime_applique"],
+                    "taux": ligne.get("taux_pct"),
+                    "taux_ecarte": (ligne.get("plancher_npf") or {}).get("taux_preferentiel_ecarte_pct"),
+                }
+    bloc = {
+        "origine": origine,
+        "applique": bool(pref.get("applique")),
+        "statut": pref.get("statut"),
+        "regime": pref.get("regime"),
+        "libelle_bloc": pref.get("libelle_bloc"),
+        "note": pref.get("note"),
+        "perimetre": pref.get("perimetre") or None,
+    }
+    return bloc, lignes
+
+
 @router_reglementation.get(
     "/{iso3}/position/{code}",
     summary="Droits, taxes et restrictions publiés pour une position, lus au socle",
 )
-def fiche_position(iso3: str, code: str):
+def fiche_position(
+    iso3: str,
+    code: str,
+    origine: Optional[str] = Query(
+        None,
+        pattern="^[A-Za-z]{3}$",
+        description="Pays d'origine (ISO-3), facultatif : ajoute la préférence qu'il ouvre (ZLECAf, union douanière, zone arabe).",
+    ),
+):
     """Ce que le tarif publie pour la position, ligne à ligne, sans rien calculer.
 
-    Ni total ni taux préférentiel : le total des droits et taxes est celui de
-    POST /calcul, et la préférence dépend d'une origine que cette consultation
-    ne connaît pas. Les mesures temporaires (gazettes EAC) et le choix d'un
+    Ni total : le total des droits et taxes est celui de POST /calcul. Sans
+    ``origine``, ni taux préférentiel, qui en dépend ; avec elle, ``preference`` dit
+    le régime que l'origine ouvre et chaque ligne porte le taux qu'il lui donne.
+    Les mesures temporaires (gazettes EAC) et le choix d'un
     usage restent au calcul : ``usages`` nomme les régimes qui en dépendent.
     Un taux que la source ne porte pas reste ``null`` — jamais un zéro — et
     ``couverture`` dit quelles familles la source ne publie pas pour ce pays,
@@ -159,6 +209,9 @@ def fiche_position(iso3: str, code: str):
     designation = position.get("designation")
     couverture = provenance.get("couverture") or {}
     niveau = provenance["niveau"]
+    preference, preferentiels = (
+        _preference(position, provenance, provenance["iso3"], code, origine.upper()) if origine else (None, {})
+    )
     # Le code de la ligne servie. À défaut de position nationale à ce code, c'est
     # la ligne du SH6 qui répond : annoncer le code saisi ferait lire, sous
     # « code national », une position que le tarif ne publie pas.
@@ -188,6 +241,8 @@ def fiche_position(iso3: str, code: str):
                 # existe mais dépend de l'origine, du producteur ou du produit. Servi
                 # sans taux, il se lirait « la source n'en publie pas ».
                 "conditionnel": bool(droit.get("defense_commerciale")),
+                # Ce que l'origine change à cette ligne ; None quand elle n'y change rien.
+                "preference": preferentiels.get(droit.get("code")),
             }
             for droit in position.get("droits") or []
         ],
@@ -195,6 +250,7 @@ def fiche_position(iso3: str, code: str):
         # Les régimes que l'usage déclaré peut substituer (Égypte : taxe de Table
         # à la place de la TVA, par exemple). Les lignes ci-dessus sont celles du
         # régime courant ; le calcul applique l'usage choisi.
+        "preference": preference,
         "usages": [
             {"code": usage.get("code"), "libelle": usage.get("libelle"), "texte": usage.get("texte")}
             for usage in position.get("usages") or []

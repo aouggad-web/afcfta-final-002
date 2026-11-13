@@ -499,3 +499,85 @@ def test_fiche_une_mesure_de_defense_commerciale_n_est_pas_un_taux_manquant(clie
     droits = client.get(f"/consultation/ZAF/position/{code}").json()["droits"]
     assert next(d for d in droits if d["code"] == ligne["code"])["conditionnel"] is True
     assert not any(d["conditionnel"] for d in client.get("/consultation/DZA/position/0201101100").json()["droits"])
+
+
+# ── Fiche avec un pays d'origine : la préférence qu'il ouvre ─────────────────
+# Le taux ZLECAf dépend de l'origine, du calendrier national de la destination et
+# de l'année : ces tests ne figent aucun taux, ils comparent la fiche à POST /calcul
+# (le même moteur) et vérifient les règles qui ne changent pas d'une année à l'autre.
+
+COUPLES = [("DZA", "0201101100", "KEN"), ("DZA", "0201101100", "TUN"), ("ZAF", "19019010", "KEN"), ("ZAF", "19019010", "BWA")]
+
+
+def _fiche_origine(client, destination, code, origine):
+    reponse = client.get(f"/consultation/{destination}/position/{code}", params={"origine": origine})
+    assert reponse.status_code == 200, (destination, code, origine, reponse.text)
+    return reponse.json()
+
+
+def test_fiche_sans_origine_ne_porte_aucune_preference(client):
+    corps = client.get("/consultation/DZA/position/0201101100").json()
+    assert corps["preference"] is None
+    assert all(d["preference"] is None for d in corps["droits"])
+
+
+@pytest.mark.parametrize("destination,code,origine", COUPLES)
+def test_fiche_les_taux_preferentiels_sont_ceux_que_le_calcul_retient(client, destination, code, origine):
+    """Une seule règle : la fiche passe par le même moteur que POST /calcul."""
+    fiche = _fiche_origine(client, destination, code, origine)
+    calcul = client.post(
+        "/calcul", json={"destination": destination, "origine": origine, "code_sh": code, "valeur_cif": 1000}
+    ).json()
+
+    attendus = {l["code"]: l["taux_pct"] for l in calcul["preference"]["lignes"] if l.get("regime_applique")}
+    servis = {d["code"]: d["preference"]["taux"] for d in fiche["droits"] if d["preference"]}
+    assert servis == attendus and servis
+    assert fiche["preference"]["statut"] == calcul["regime_commercial"]["statut"]
+    assert fiche["preference"]["regime"] == calcul["regime_commercial"]["regime"]
+
+
+@pytest.mark.parametrize("destination,code,origine", COUPLES)
+def test_fiche_aucune_preference_ne_depasse_le_npf(client, destination, code, origine):
+    """Une préférence est une faculté : KEN vers DZA, la table brute donne un taux
+    supérieur au NPF ; c'est le NPF qui est servi, et l'écart est dit."""
+    for droit in _fiche_origine(client, destination, code, origine)["droits"]:
+        pref = droit["preference"]
+        if pref and pref["regime"] == "preference" and pref["taux"] is not None and droit["taux"] is not None:
+            assert pref["taux"] <= droit["taux"], droit
+        if pref and pref["regime"] == "npf_plancher":
+            assert pref["taux"] == droit["taux"] and pref["taux_ecarte"] > droit["taux"], droit
+
+
+def test_fiche_la_zone_arabe_exonere_le_droit_de_douane(client):
+    """DZA importe de TUN sous la Grande zone arabe : le droit de douane seul passe
+    à 0 %, les autres lignes ne bougent pas."""
+    corps = _fiche_origine(client, "DZA", "0201101100", "TUN")
+    assert (corps["preference"]["applique"], corps["preference"]["regime"]) == (True, "GZALE")
+    avec = {d["code"]: d["preference"] for d in corps["droits"] if d["preference"]}
+    assert avec["DD"]["taux"] == 0.0
+    assert not {"TVA", "TCS", "PRCT"} & set(avec)
+
+
+def test_fiche_une_origine_non_admise_dit_pourquoi_et_ne_change_aucune_ligne(client):
+    """TUN n'admet pas MAR à la ZLECAf : pas de préférence, et le motif est servi."""
+    corps = _fiche_origine(client, "TUN", "0101210001", "MAR")
+    assert corps["preference"]["applique"] is False
+    assert corps["preference"]["statut"] == "NOT_AVAILABLE" and corps["preference"]["note"]
+    assert all(d["preference"] is None for d in corps["droits"])
+
+
+def test_fiche_une_origine_ne_change_pas_les_taux_npf(client):
+    sans = client.get("/consultation/DZA/position/0201101100").json()["droits"]
+    avec = _fiche_origine(client, "DZA", "0201101100", "KEN")["droits"]
+    assert [(d["code"], d["taux"], d["expression"]) for d in avec] == [(d["code"], d["taux"], d["expression"]) for d in sans]
+
+
+def test_fiche_l_origine_est_le_pays_de_destination(client):
+    corps = _fiche_origine(client, "DZA", "0201101100", "dza")  # casse indifférente
+    assert (corps["preference"]["origine"], corps["preference"]["applique"], corps["preference"]["statut"]) == (
+        "DZA", False, "MEME_PAYS")
+
+
+@pytest.mark.parametrize("origine", ["XX", "KENYA", "D1A", "", "K N"])
+def test_fiche_une_origine_invalide_est_refusee(client, origine):
+    assert client.get("/consultation/DZA/position/0201101100", params={"origine": origine}).status_code == 422

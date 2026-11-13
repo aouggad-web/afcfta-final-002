@@ -820,4 +820,173 @@ describe('RegulatoryDetailsPanel', () => {
     expect(screen.getByText('Duties and Taxes')).toBeInTheDocument();
     expect(screen.getByText('Import declaration')).toBeInTheDocument();
   });
+
+  describe("pays d'origine", () => {
+    const bloc = (surcharge = {}) => ({
+      origine: 'KEN', applique: true, statut: 'APPLIED', regime: 'ZLECAF', libelle_bloc: null,
+      note: 'Neuf origines admises (circulaire 482/2024).', perimetre: null, ...surcharge,
+    });
+    const avecOrigine = (preference, lignes = {}) => fiche({
+      droits: [
+        droit({ preference: lignes.DD ?? null }),
+        droit({ code: 'TVA', famille: 'tva', taux: 19, assiette: 'CIF+DD', preference: lignes.TVA ?? null }),
+      ],
+      preference,
+    });
+    const urlsFiche = () => axios.get.mock.calls.filter(([url]) => url.includes('/position/'));
+
+    it("sans origine, la requête reste celle du tarif seul et aucune préférence n'est montrée", async () => {
+      repondre({ position: fiche(), formalite: formalites() });
+      await rendre();
+      await screen.findByText('De veaux');
+
+      expect(urlsFiche()).toHaveLength(1);
+      expect(urlsFiche()[0][1]).toBeUndefined();
+      expect(screen.queryByTestId('regulatory-preference')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('regulatory-preferential-rate')).not.toBeInTheDocument();
+      expect(screen.getByText(/Le taux préférentiel ZLECAf, les exonérations/)).toBeInTheDocument();
+    });
+
+    it("demande la fiche avec l'origine en ISO3, y compris quand elle arrive en ISO2", async () => {
+      repondre({ position: avecOrigine(bloc()), formalite: formalites() });
+      await rendre({ originCode: 'KE' });
+      await screen.findByText('De veaux');
+
+      expect(urlsFiche()[0][1]).toEqual({ params: { origine: 'KEN' } });
+    });
+
+    it('montre le taux préférentiel sur la ligne que la préférence touche, pas sur les autres', async () => {
+      repondre({
+        position: avecOrigine(bloc(), { DD: { regime: 'preference', taux: 2.5, taux_ecarte: null } }),
+        formalite: formalites(),
+      });
+      await rendre({ originCode: 'KEN' });
+      await screen.findByText('De veaux');
+
+      const taux = screen.getAllByTestId('regulatory-preferential-rate');
+      expect(taux).toHaveLength(1);
+      expect(taux[0]).toHaveTextContent('Taux préférentiel (origine KEN)');
+      expect(taux[0]).toHaveTextContent('2.5%');
+      // Le taux publié reste visible à côté : la préférence ne le remplace pas.
+      const lignes = screen.getAllByTestId('regulatory-measure');
+      expect(lignes[0]).toHaveTextContent('5%');
+      expect(lignes[1]).not.toHaveTextContent('Taux préférentiel');
+    });
+
+    it('un taux préférentiel de 0 % se montre : 0 est un taux, pas une absence', async () => {
+      repondre({
+        position: avecOrigine(bloc({ origine: 'TUN', regime: 'GZALE', libelle_bloc: 'Grande zone arabe de libre-échange', statut: 'FRANCHISE_ZONE_LIBRE_ECHANGE' }), { DD: { regime: 'preference', taux: 0, taux_ecarte: null } }),
+        formalite: formalites(),
+      });
+      await rendre({ originCode: 'TUN' });
+      await screen.findByText('De veaux');
+
+      expect(screen.getByTestId('regulatory-preferential-rate')).toHaveTextContent('0%');
+    });
+
+    it('un droit spécifique préférentiel renvoie au Calculateur, jamais à 0 %', async () => {
+      repondre({
+        position: avecOrigine(bloc(), { DD: { regime: 'preference', taux: null, taux_ecarte: null } }),
+        formalite: formalites(),
+      });
+      await rendre({ originCode: 'KEN' });
+      await screen.findByText('De veaux');
+
+      const taux = screen.getByTestId('regulatory-preferential-rate');
+      expect(taux).toHaveTextContent('Droit spécifique : voir le Calculateur');
+      expect(taux).not.toHaveTextContent('0%');
+    });
+
+    it("quand la préférence dépasserait le taux publié, dit que le taux publié s'applique", async () => {
+      repondre({
+        position: avecOrigine(bloc(), { DD: { regime: 'npf_plancher', taux: 5, taux_ecarte: 7.5 } }),
+        formalite: formalites(),
+      });
+      await rendre({ originCode: 'KEN' });
+      await screen.findByText('De veaux');
+
+      expect(screen.queryByTestId('regulatory-preferential-rate')).not.toBeInTheDocument();
+      expect(screen.getByTestId('regulatory-preferential-floor')).toHaveTextContent('La préférence (7.5%) dépasserait le taux publié');
+    });
+
+    it('le bandeau nomme le régime : ZLECAf, ou le libellé du bloc que le serveur donne', async () => {
+      repondre({ position: avecOrigine(bloc()), formalite: formalites() });
+      const { rerender } = await rendre({ originCode: 'KEN' });
+      expect(await screen.findByTestId('regulatory-preference')).toHaveTextContent('Origine KEN : régime ZLECAf');
+      expect(screen.getByTestId('regulatory-preference')).toHaveTextContent('Neuf origines admises');
+
+      repondre({
+        position: avecOrigine(bloc({ origine: 'BWA', regime: 'UNION_DOUANIERE', libelle_bloc: "Union douanière d'Afrique australe (SACU)", statut: 'LIBRE_CIRCULATION' })),
+        formalite: formalites(),
+      });
+      rerender(panneau({ originCode: 'BWA' }));
+      await avancer(500);
+      expect(await screen.findByText(/Origine BWA : régime Union douanière d'Afrique australe \(SACU\)/)).toBeInTheDocument();
+    });
+
+    it("une origine sans préférence le dit, avec le motif du serveur, et laisse le taux publié", async () => {
+      repondre({
+        position: avecOrigine(bloc({ origine: 'FRA', applique: false, statut: 'NOT_AVAILABLE', note: "FRA ne figure pas dans la liste officielle des origines admises — taux NPF appliqué." })),
+        formalite: formalites(),
+      });
+      await rendre({ originCode: 'FRA' });
+      await screen.findByText('De veaux');
+
+      const bandeau = screen.getByTestId('regulatory-preference');
+      expect(bandeau).toHaveTextContent("Origine FRA : aucune préférence applicable, le taux publié (NPF) s'applique.");
+      expect(bandeau).toHaveTextContent('ne figure pas dans la liste officielle');
+      expect(screen.queryByTestId('regulatory-preferential-rate')).not.toBeInTheDocument();
+    });
+
+    it("l'origine égale à la destination ne cherche aucune préférence", async () => {
+      repondre({
+        position: avecOrigine(bloc({ origine: 'DZA', applique: false, statut: 'MEME_PAYS', regime: null, note: null })),
+        formalite: formalites(),
+      });
+      await rendre({ originCode: 'DZA' });
+      await screen.findByText('De veaux');
+
+      expect(screen.getByTestId('regulatory-preference')).toHaveTextContent("c'est le pays de destination");
+    });
+
+    it("avec une origine, la note ne promet plus un taux ZLECAf à calculer ailleurs : elle rappelle les règles d'origine", async () => {
+      repondre({ position: avecOrigine(bloc()), formalite: formalites() });
+      await rendre({ originCode: 'KEN' });
+      await screen.findByText('De veaux');
+
+      expect(screen.getByText(/suppose que l'origine du produit est justifiée/)).toBeInTheDocument();
+      expect(screen.queryByText(/Le taux préférentiel ZLECAf, les exonérations/)).not.toBeInTheDocument();
+    });
+
+    it("changer l'origine refait la requête et efface la préférence de l'ancienne", async () => {
+      repondre({
+        position: avecOrigine(bloc(), { DD: { regime: 'preference', taux: 2.5, taux_ecarte: null } }),
+        formalite: formalites(),
+      });
+      const { rerender } = await rendre({ originCode: 'KEN' });
+      await screen.findByTestId('regulatory-preferential-rate');
+
+      repondre({ position: fiche(), formalite: formalites() });
+      rerender(panneau({ originCode: '' }));
+      await avancer(500);
+
+      await screen.findByText('De veaux');
+      expect(urlsFiche()).toHaveLength(2);
+      expect(urlsFiche()[1][1]).toBeUndefined();
+      expect(screen.queryByTestId('regulatory-preference')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('regulatory-preferential-rate')).not.toBeInTheDocument();
+    });
+
+    it('parle la langue de l\'interface', async () => {
+      repondre({
+        position: avecOrigine(bloc(), { DD: { regime: 'preference', taux: 2.5, taux_ecarte: null } }),
+        formalite: formalites(),
+      });
+      await rendre({ originCode: 'KEN', language: 'en' });
+      await screen.findByText('Of calves');
+
+      expect(screen.getByTestId('regulatory-preference')).toHaveTextContent('Origin KEN: ZLECAf regime');
+      expect(screen.getByTestId('regulatory-preferential-rate')).toHaveTextContent('Preferential rate (origin KEN)');
+    });
+  });
 });

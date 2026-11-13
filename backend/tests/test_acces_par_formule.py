@@ -350,6 +350,18 @@ def test_fiche_reglementation_cinq_recherches_par_mois_puis_invitation(app_api, 
     assert sorted(doc["termes"]) == sorted(["DZA", "0201101100", "0201101900", "MAR", "0101210000"])
 
 
+def test_fiche_reglementation_l_origine_est_une_option_de_la_meme_recherche(app_api, base):
+    """Le pays d'origine précise la recherche d'un produit, il n'en ouvre pas une
+    autre : les mêmes pays et produit, avec ou sans origine, comptent une fois."""
+    client = _client(app_api, abonne=ABONNES["free"])
+
+    for origine in (None, "TUN", "KEN", "MAR", "GHA", "ZAF"):
+        reponse = client.get("/api/consultation/DZA/position/0201101100", params={"origine": origine} if origine else None)
+        assert reponse.status_code != 429, origine
+    (doc,) = base.recherches_modules.docs.values()
+    assert sorted(doc["termes"]) == ["0201101100", "DZA"]
+
+
 @pytest.mark.parametrize("formule", ["starter", "pro", "business"])
 def test_fiche_reglementation_sans_limite_en_formule_payante(app_api, base, formule):
     client = _client(app_api, abonne=ABONNES[formule])
