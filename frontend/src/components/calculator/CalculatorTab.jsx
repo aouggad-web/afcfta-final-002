@@ -839,23 +839,26 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       {/* Bandeau statut des données — par pays importateur si sélectionné */}
       <DataStatusBanner countryIso3={destinationCountry || undefined} />
 
-      {/* Onglets Principal */}
-      <Tabs defaultValue="calculator" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-4">
-          <TabsTrigger value="calculator" className="flex items-center gap-2" data-testid="calculator-single-tab">
-            <Calculator className="w-4 h-4" />
+      {/* Onglets Principal. Les pastilles décoratives (blur-3xl) des panneaux se posent sur cette
+          barre : elles ne doivent pas capter les appuis. */}
+      <Tabs defaultValue="calculator" className="w-full [&_.blur-3xl]:pointer-events-none">
+        {/* Sous md : grille 2×2, libellés à la ligne, sans icône. Dès md : une rangée de 4 colonnes
+            égales, dont aucune n'est plus étroite que son libellé (« Comparaison Multi-Pays »). */}
+        <TabsList className="grid h-auto w-full grid-cols-2 items-stretch gap-1 md:grid-cols-[repeat(4,minmax(max-content,1fr))] md:gap-0 mb-4">
+          <TabsTrigger value="calculator" className="flex items-center gap-2 whitespace-normal text-balance px-2 md:px-3" data-testid="calculator-single-tab">
+            <Calculator className="hidden w-4 h-4 sm:block" />
             {pick(language, 'Calculateur', 'Calculator', 'الحاسبة')}
           </TabsTrigger>
-          <TabsTrigger value="regulatory" className="flex items-center gap-2" data-testid="calculator-regulatory-tab">
-            <Scale className="w-4 h-4" />
+          <TabsTrigger value="regulatory" className="flex items-center gap-2 whitespace-normal text-balance px-2 md:px-3" data-testid="calculator-regulatory-tab">
+            <Scale className="hidden w-4 h-4 sm:block" />
             {pick(language, 'Réglementation', 'Regulations', 'التنظيم')}
           </TabsTrigger>
-          <TabsTrigger value="compare" className="flex items-center gap-2" data-testid="calculator-compare-tab">
-            <Globe className="w-4 h-4" />
+          <TabsTrigger value="compare" className="flex items-center gap-2 whitespace-normal text-balance px-2 md:px-3" data-testid="calculator-compare-tab">
+            <Globe className="hidden w-4 h-4 sm:block" />
             {pick(language, 'Comparaison Multi-Pays', 'Multi-Country Comparison', 'مقارنة متعددة البلدان')}
           </TabsTrigger>
-          <TabsTrigger value="export" className="flex items-center gap-2" data-testid="calculator-export-tab">
-            <Package className="w-4 h-4" />
+          <TabsTrigger value="export" className="flex items-center gap-2 whitespace-normal text-balance px-2 md:px-3" data-testid="calculator-export-tab">
+            <Package className="hidden w-4 h-4 sm:block" />
             {pick(language, 'Export', 'Export', 'التصدير')}
           </TabsTrigger>
         </TabsList>
