@@ -33,19 +33,25 @@ router = APIRouter(prefix="/consultation")
 DONNEES = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 
 
-def _droit_de_douane(position: dict) -> dict:
-    """Le droit de douane tel que le socle le porte : un taux, ou l'expression
+def _taux_publie(droit: dict) -> dict:
+    """Le taux d'un droit tel que le socle le porte : un taux, ou l'expression
     d'un droit spécifique, ou rien (« à compléter »)."""
-    dd = next((d for d in droits_a_la_date(position.get("droits") or []) if d.get("code") == "DD"), None) or {}
-    specifique = dd.get("specifique") or {}
+    specifique = droit.get("specifique") or {}
     # « 40% or 240c/kg », « 40% + US$0.50/L » : le pourcentage n'est qu'une
     # composante. Le servir comme LE taux afficherait 40 % là où la part
     # spécifique peut l'emporter ; c'est l'expression entière qui se lit.
-    deux_composantes = dd.get("taux") is not None and bool(dd.get("specifique"))
+    deux_composantes = droit.get("taux") is not None and bool(droit.get("specifique"))
     return {
-        "dd_rate": None if deux_composantes else dd.get("taux"),
-        "dd_expression": dd.get("expression_brute") or specifique.get("brut"),
+        "taux": None if deux_composantes else droit.get("taux"),
+        "expression": droit.get("expression_brute") or specifique.get("brut"),
     }
+
+
+def _droit_de_douane(position: dict) -> dict:
+    """Le droit de douane tel que le socle le porte."""
+    dd = next((d for d in droits_a_la_date(position.get("droits") or []) if d.get("code") == "DD"), None) or {}
+    publie = _taux_publie(dd)
+    return {"dd_rate": publie["taux"], "dd_expression": publie["expression"]}
 
 
 @router.get(
@@ -82,6 +88,78 @@ def sous_positions(iso3: str, hs6: str):
         "hs6": socle.normaliser_code(hs6)[:6],
         "total": len(lignes),
         "sub_positions": lignes,
+        "source": "socle",
+    }
+
+
+@router.get(
+    "/{iso3}/position/{code}",
+    summary="Droits, taxes et restrictions publiés pour une position, lus au socle",
+)
+def fiche_position(iso3: str, code: str):
+    """Ce que le tarif publie pour la position, ligne à ligne, sans rien calculer.
+
+    Ni total ni taux préférentiel : le total des droits et taxes est celui de
+    POST /calcul, et la préférence dépend d'une origine que cette consultation
+    ne connaît pas. Un taux que la source ne porte pas reste ``null`` — jamais
+    un zéro — et ``couverture`` dit quelles familles la source ne publie pas
+    pour ce pays, pour qu'une liste incomplète ne se lise pas comme complète.
+    """
+    try:
+        position, provenance = socle.position(iso3, code)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except socle.SocleIndisponible as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except KeyError as exc:
+        # Même réponse que POST /calcul : un SH6 qui porte plusieurs positions
+        # nationales n'en désigne aucune, et le choix revient à l'opérateur.
+        normalise = socle.normaliser_code(code)
+        sous = socle.positions_nationales(iso3, normalise) if len(normalise) == 6 else []
+        if sous:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "POSITION_NATIONALE_REQUISE",
+                    "message": (
+                        f"{iso3.upper()}/{normalise} : {len(sous)} positions nationales "
+                        "sous ce SH6 — choisir la position."
+                    ),
+                    "positions": sous,
+                },
+            ) from exc
+        raise HTTPException(status_code=404, detail=exc.args[0]) from exc
+
+    designation = position.get("designation")
+    couverture = provenance.get("couverture") or {}
+    return {
+        "success": True,
+        "country_iso3": provenance["iso3"],
+        "code": provenance["code_demande"],
+        "niveau": provenance["niveau"],
+        "hs6": position.get("hs6"),
+        "chapitre": position.get("chapitre"),
+        "unite": position.get("unite"),
+        "description_fr": texte_designation(designation, "fr"),
+        "description_en": texte_designation(designation, "en"),
+        "droits": [
+            {
+                "code": droit.get("code"),
+                "libelle": droit.get("libelle"),
+                "famille": droit.get("famille"),
+                **_taux_publie(droit),
+                "assiette": droit.get("assiette"),
+                "note": droit.get("note"),
+                "source": droit.get("source"),
+            }
+            for droit in position.get("droits") or []
+        ],
+        "restrictions": position.get("restrictions") or [],
+        "couverture": {
+            "etat": couverture.get("etat"),
+            "motif": couverture.get("motif"),
+            "tva": couverture.get("tva"),
+        },
         "source": "socle",
     }
 

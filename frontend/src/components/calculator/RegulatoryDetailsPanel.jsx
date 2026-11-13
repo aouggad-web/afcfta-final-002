@@ -1,37 +1,38 @@
 /**
- * RegulatoryDetailsPanel - Panneau des Détails Réglementaires (Version Améliorée)
- * 
- * Affiche les données du Moteur Réglementaire v3 avec une UX optimisée :
- * - Design moderne et épuré
- * - Visualisation claire des économies ZLECAf
- * - Sections collapsibles
- * - Indicateurs visuels colorés
+ * RegulatoryDetailsPanel - Panneau des Détails Réglementaires
+ *
+ * Ce que le tarif du pays de destination publie pour une position : droits et
+ * taxes ligne à ligne, restrictions, formalités. Tout est lu au socle — la
+ * source de POST /calcul — par GET /consultation/{iso3}/position/{code} et
+ * GET /consultation/{iso3}/formalites/{code}.
+ *
+ * Le panneau ne totalise rien et n'affiche aucun taux ZLECAf : le total des
+ * droits et taxes est celui du calcul, et la préférence dépend d'une origine
+ * que cet onglet ne connaît pas. Un taux que la source ne porte pas s'affiche
+ * « à compléter », jamais 0 %.
+ *
+ * Il lisait auparavant /regulatory-engine/details, dont les fichiers de lignes
+ * ne sont pas livrés : il répondait « Pays … non disponible » pour tous les pays.
  */
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { Separator } from '../ui/separator';
-import { 
-  FileText, 
-  Shield, 
-  Percent, 
-  Building2, 
-  CheckCircle2, 
+import {
+  FileText,
+  Percent,
+  Building2,
   AlertCircle,
   Package,
   FileCheck,
   Banknote,
-  Clock,
   ChevronDown,
   ChevronUp,
   Sparkles,
-  TrendingDown,
   Info,
-  Landmark,
   ScrollText,
-  Award
+  Ban
 } from 'lucide-react';
 import { pick } from '../../i18n/lang';
 
@@ -40,167 +41,169 @@ const API = `${BACKEND_URL}/api`;
 
 // Couleurs par type de mesure
 const measureStyles = {
-  'CUSTOMS_DUTY': { 
-    icon: Banknote, 
-    color: 'text-[var(--gold)]', 
-    bg: 'bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))]', 
-    border: 'border-[color-mix(in_srgb,var(--gold)_30%,transparent)]',
-    label: 'Droit de Douane'
+  'CUSTOMS_DUTY': {
+    icon: Banknote,
+    color: 'text-[var(--gold)]',
+    bg: 'bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))]',
+    border: 'border-[color-mix(in_srgb,var(--gold)_30%,transparent)]'
   },
-  'VAT': { 
-    icon: Percent, 
-    color: 'text-[var(--info)]', 
-    bg: 'bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))]', 
-    border: 'border-[color-mix(in_srgb,var(--info)_30%,transparent)]',
-    label: 'TVA'
+  'VAT': {
+    icon: Percent,
+    color: 'text-[var(--info)]',
+    bg: 'bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))]',
+    border: 'border-[color-mix(in_srgb,var(--info)_30%,transparent)]'
   },
-  'LEVY': { 
-    icon: Building2, 
-    color: 'text-[var(--violet)]', 
-    bg: 'bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))]', 
-    border: 'border-[color-mix(in_srgb,var(--violet)_30%,transparent)]',
-    label: 'Prélèvement'
+  'LEVY': {
+    icon: Building2,
+    color: 'text-[var(--violet)]',
+    bg: 'bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))]',
+    border: 'border-[color-mix(in_srgb,var(--violet)_30%,transparent)]'
   },
-  'EXCISE': { 
-    icon: AlertCircle, 
-    color: 'text-[var(--danger)]', 
-    bg: 'bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))]', 
-    border: 'border-[color-mix(in_srgb,var(--danger)_30%,transparent)]',
-    label: 'Accise'
+  'EXCISE': {
+    icon: AlertCircle,
+    color: 'text-[var(--danger)]',
+    bg: 'bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))]',
+    border: 'border-[color-mix(in_srgb,var(--danger)_30%,transparent)]'
   },
-  'OTHER_TAX': { 
-    icon: FileText, 
-    color: 'text-[var(--afcfta-muted)]', 
-    bg: 'bg-[var(--overlay)]', 
-    border: 'border-[var(--afcfta-border)]',
-    label: 'Autre taxe'
+  'OTHER_TAX': {
+    icon: FileText,
+    color: 'text-[var(--afcfta-muted)]',
+    bg: 'bg-[var(--overlay)]',
+    border: 'border-[var(--afcfta-border)]'
   }
+};
+
+// Famille d'un droit du socle → style, et libellé dans les trois langues.
+const FAMILLES = {
+  droit: { style: 'CUSTOMS_DUTY', label: ['Droit de douane', 'Customs duty', 'رسم جمركي'] },
+  tva: { style: 'VAT', label: ['TVA', 'VAT', 'ضريبة القيمة المضافة'] },
+  post_tva: { style: 'VAT', label: ['Après TVA', 'After VAT', 'بعد ضريبة القيمة المضافة'] },
+  accise: { style: 'EXCISE', label: ['Accise', 'Excise', 'ضريبة استهلاك'] },
+  communautaire: { style: 'LEVY', label: ['Prélèvement communautaire', 'Community levy', 'مقتطع مجموعة إقليمية'] },
+  redevance: { style: 'LEVY', label: ['Redevance', 'Fee', 'إتاوة'] },
+  fonds: { style: 'LEVY', label: ['Fonds', 'Fund', 'صندوق'] },
+  autre: { style: 'OTHER_TAX', label: ['Autre taxe', 'Other tax', 'ضريبة أخرى'] }
 };
 
 const texts = {
   fr: {
     title: 'Détails Réglementaires',
-    subtitle: 'Moteur Réglementaire AfCFTA v3',
+    subtitle: 'Tarif de destination publié par le pays — mêmes données que le calculateur',
     productInfo: 'Informations Produit',
     nationalCode: 'Code national',
     hs6Code: 'Code HS6',
     chapter: 'Chapitre',
-    category: 'Catégorie',
     unit: 'Unité',
-    sensitivity: 'Sensibilité ZLECAf',
     measures: 'Droits et Taxes',
-    measuresDesc: 'Détail des mesures tarifaires applicables',
-    taxCode: 'Code',
-    taxName: 'Intitulé',
-    taxRate: 'Taux NPF',
-    zlecafRate: 'Taux ZLECAf',
-    requirements: 'Documents Requis',
-    requirementsDesc: 'Formalités administratives à l\'importation',
-    document: 'Document',
-    authority: 'Autorité émettrice',
-    mandatory: 'Obligatoire',
-    fiscalAdvantages: 'Avantages ZLECAf',
-    fiscalAdvantagesDesc: 'Exonérations et réductions tarifaires',
-    condition: 'Condition',
-    reduction: 'Réduction',
-    totalNPF: 'Total NPF',
-    totalZLECAf: 'Total ZLECAf',
-    savings: 'Économie',
+    measuresDesc: 'Mesures publiées par le tarif, ligne à ligne',
+    base: 'Assiette',
+    rate: 'Taux publié',
+    toComplete: 'À compléter',
+    toCompleteHint: 'La source ne publie pas de taux pour cette ligne',
+    vatMissing: "La source du tarif de ce pays ne publie pas la TVA : cette liste est incomplète. Le calculateur la complète quand une fiche officielle la documente.",
+    preferenceNote: "Le taux préférentiel ZLECAf, les exonérations d'origine et le total à payer dépendent de l'origine : ils se calculent dans l'onglet Calculateur.",
+    requirements: 'Formalités',
+    requirementsDesc: "Documents et formalités à l'importation",
+    formalitiesUnavailable: "Les formalités n'ont pas pu être consultées. Une absence d'information n'est pas une absence d'obligation : vérifier auprès de l'administration douanière de destination.",
+    restrictions: 'Restrictions',
+    restrictionsDesc: 'Interdictions et restrictions publiées avec la position, telles qu’écrites par la source',
     noData: 'Données non disponibles pour ce code',
-    loading: 'Chargement des données...',
-    notAvailable: 'Pays non disponible dans le moteur réglementaire',
-    normal: 'Normal',
-    sensitive: 'Sensible',
-    excluded: 'Exclu',
-    exoneration: 'Exonération'
+    positionAbsent: 'Position introuvable dans les données servies pour ce pays',
+    tariffUnavailable: 'Tarif de ce pays momentanément indisponible',
+    chooseHint: 'Vérifiez le code HS ou essayez un autre pays',
+    chooseNational: (n) => `Ce code SH6 couvre ${n} positions nationales : choisissez-en une dans la liste ci-dessus.`,
+    loading: 'Chargement des données...'
   },
   en: {
     title: 'Regulatory Details',
-    subtitle: 'AfCFTA Regulatory Engine v3',
+    subtitle: "Destination tariff as published by the country — same data as the calculator",
     productInfo: 'Product Information',
     nationalCode: 'National code',
     hs6Code: 'HS6 code',
     chapter: 'Chapter',
-    category: 'Category',
     unit: 'Unit',
-    sensitivity: 'AfCFTA sensitivity',
     measures: 'Duties and Taxes',
-    measuresDesc: 'Applicable tariff measures breakdown',
-    taxCode: 'Code',
-    taxName: 'Name',
-    taxRate: 'MFN rate',
-    zlecafRate: 'AfCFTA rate',
-    requirements: 'Required Documents',
-    requirementsDesc: 'Administrative formalities for import',
-    document: 'Document',
-    authority: 'Issuing authority',
-    mandatory: 'Mandatory',
-    fiscalAdvantages: 'AfCFTA Advantages',
-    fiscalAdvantagesDesc: 'Tariff exemptions and reductions',
-    condition: 'Condition',
-    reduction: 'Reduction',
-    totalNPF: 'Total MFN',
-    totalZLECAf: 'Total AfCFTA',
-    savings: 'Savings',
+    measuresDesc: 'Measures published by the tariff, line by line',
+    base: 'Base',
+    rate: 'Published rate',
+    toComplete: 'To be completed',
+    toCompleteHint: 'The source does not publish a rate for this line',
+    vatMissing: "This country's tariff source does not publish VAT: this list is incomplete. The calculator completes it when an official record documents it.",
+    preferenceNote: 'The AfCFTA preferential rate, origin exemptions and the total payable depend on the origin: they are computed in the Calculator tab.',
+    requirements: 'Formalities',
+    requirementsDesc: 'Documents and formalities for import',
+    formalitiesUnavailable: 'Formalities could not be retrieved. No information is not the same as no obligation: check with the destination customs administration.',
+    restrictions: 'Restrictions',
+    restrictionsDesc: 'Prohibitions and restrictions published with the position, as written by the source',
     noData: 'No data available for this code',
-    loading: 'Loading data...',
-    notAvailable: 'Country not available in regulatory engine',
-    normal: 'Normal',
-    sensitive: 'Sensitive',
-    excluded: 'Excluded',
-    exoneration: 'Exemption'
+    positionAbsent: 'Position not found in the data served for this country',
+    tariffUnavailable: "This country's tariff is temporarily unavailable",
+    chooseHint: 'Check the HS code or try another country',
+    chooseNational: (n) => `This HS6 code covers ${n} national positions: pick one in the list above.`,
+    loading: 'Loading data...'
   },
   ar: {
     title: 'التفاصيل التنظيمية',
-    subtitle: 'المحرك التنظيمي لزليكاف v3',
+    subtitle: 'التعريفة المنشورة لبلد المقصد — نفس بيانات الحاسبة',
     productInfo: 'معلومات المنتج',
     nationalCode: 'الرمز الوطني',
     hs6Code: 'رمز SH6',
     chapter: 'الفصل',
-    category: 'الفئة',
     unit: 'الوحدة',
-    sensitivity: 'الحساسية في إطار زليكاف',
     measures: 'الرسوم والضرائب',
-    measuresDesc: 'تفصيل التدابير التعريفية المطبقة',
-    taxCode: 'الرمز',
-    taxName: 'التسمية',
-    taxRate: 'معدل NPF',
-    zlecafRate: 'معدل زليكاف',
-    requirements: 'الوثائق المطلوبة',
-    requirementsDesc: 'الإجراءات الإدارية عند الاستيراد',
-    document: 'الوثيقة',
-    authority: 'الجهة المُصدِرة',
-    mandatory: 'إلزامي',
-    fiscalAdvantages: 'مزايا زليكاف',
-    fiscalAdvantagesDesc: 'الإعفاءات والتخفيضات التعريفية',
-    condition: 'الشرط',
-    reduction: 'التخفيض',
-    totalNPF: 'مجموع NPF',
-    totalZLECAf: 'مجموع زليكاف',
-    savings: 'الوفورات',
+    measuresDesc: 'التدابير التي تنشرها التعريفة، سطرًا بسطر',
+    base: 'الوعاء',
+    rate: 'المعدل المنشور',
+    toComplete: 'قيد الاستكمال',
+    toCompleteHint: 'لا ينشر المصدر معدلًا لهذا السطر',
+    vatMissing: 'لا ينشر مصدر تعريفة هذا البلد ضريبة القيمة المضافة: هذه القائمة ناقصة. تستكملها الحاسبة عندما توثّقها وثيقة رسمية.',
+    preferenceNote: 'يتوقف معدل زليكاف التفضيلي والإعفاءات المرتبطة بالمنشأ والمجموع المستحق على بلد المنشأ، وتُحسب في تبويب الحاسبة.',
+    requirements: 'الإجراءات',
+    requirementsDesc: 'الوثائق والإجراءات عند الاستيراد',
+    formalitiesUnavailable: 'تعذّر الاطلاع على الإجراءات. غياب المعلومة لا يعني غياب الالتزام: تحقق لدى إدارة الجمارك في بلد المقصد.',
+    restrictions: 'القيود',
+    restrictionsDesc: 'المنع والقيود المنشورة مع البند، كما كتبها المصدر',
     noData: 'لا توجد بيانات لهذا الرمز',
-    loading: 'جارٍ تحميل البيانات…',
-    notAvailable: 'البلد غير متاح في المحرك التنظيمي',
-    normal: 'عادي',
-    sensitive: 'حساس',
-    excluded: 'مستثنى',
-    exoneration: 'إعفاء'
+    positionAbsent: 'البند غير موجود في البيانات المتاحة لهذا البلد',
+    tariffUnavailable: 'تعريفة هذا البلد غير متاحة مؤقتًا',
+    chooseHint: 'تحقق من رمز SH أو جرّب بلدًا آخر',
+    chooseNational: (n) => `يشمل رمز SH6 هذا ${n} بندًا وطنيًا: اختر أحدها من القائمة أعلاه.`,
+    loading: 'جارٍ تحميل البيانات…'
   }
 };
 
-export default function RegulatoryDetailsPanel({ 
-  countryCode, 
-  hsCode, 
-  language = 'fr',
-  onDataLoaded = () => {}
+// Taux d'une ligne : le pourcentage, ou l'expression d'un droit spécifique ou
+// composé (« 10% or 55c/kg less 90% »), ou rien. Jamais 0 % faute de taux.
+const tauxAffiche = (droit) => {
+  if (droit.taux !== null && droit.taux !== undefined) return `${droit.taux}%`;
+  return droit.expression || null;
+};
+
+// Une erreur de la consultation, dite à l'opérateur : un SH6 à plusieurs
+// positions n'est pas une panne, c'est un choix à faire.
+const erreurLisible = (err, t) => {
+  const statut = err.response?.status;
+  const detail = err.response?.data?.detail;
+  if (statut === 422 && detail?.code === 'POSITION_NATIONALE_REQUISE') {
+    return { choix: true, message: t.chooseNational(detail.positions?.length ?? 0) };
+  }
+  if (statut === 404 || statut === 422) return { choix: false, message: t.positionAbsent };
+  return { choix: false, message: t.tariffUnavailable };
+};
+
+export default function RegulatoryDetailsPanel({
+  countryCode,
+  hsCode,
+  language = 'fr'
 }) {
   const [data, setData] = useState(null);
+  const [formalites, setFormalites] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [expandedSections, setExpandedSections] = useState({
     measures: true,
     requirements: true,
-    advantages: true
+    restrictions: true
   });
 
   const t = texts[language] || texts.fr;
@@ -219,66 +222,58 @@ export default function RegulatoryDetailsPanel({
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!countryCode || !hsCode || hsCode.length < 6) {
-        setData(null);
-        setError(null);
-        return;
-      }
-
-      const iso3 = countryCode.length === 2 ? convertToISO3(countryCode) : countryCode;
-
-      setLoading(true);
+    const cleanCode = (hsCode || '').replace(/[.\s]/g, '');
+    if (!countryCode || cleanCode.length < 6) {
+      setData(null);
+      setFormalites(null);
       setError(null);
+      setLoading(false);
+      return undefined;
+    }
 
-      try {
-        const cleanCode = hsCode.replace(/[.\s]/g, '');
-        const searchType = cleanCode.length > 6 ? 'national' : 'hs6';
-        
-        const response = await axios.get(
-          `${API}/regulatory-engine/details?country=${iso3}&code=${cleanCode}&search_type=${searchType}`
-        );
-
-        if (response.data.success) {
-          setData(response.data);
-          // Call onDataLoaded only if it's a function
-          if (typeof onDataLoaded === 'function') {
-            onDataLoaded(response.data);
-          }
-        } else {
-          setError(response.data.error || t.noData);
-          setData(null);
-        }
-      } catch (err) {
-        console.error('Error fetching regulatory data:', err);
-        setError(err.response?.data?.error || t.noData);
-        setData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const iso3 = countryCode.length === 2 ? convertToISO3(countryCode) : countryCode;
+    // Une réponse tardive d'un code déjà remplacé ne doit pas écraser la
+    // réponse du code affiché : chaque nouvelle saisie annule la précédente.
+    let annule = false;
 
     // Debounce the API call to prevent excessive requests
-    const timeoutId = setTimeout(() => {
-      fetchData();
+    const timeoutId = setTimeout(async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const [fiche, reponseFormalites] = await Promise.all([
+          axios.get(`${API}/consultation/${iso3}/position/${cleanCode}`),
+          // Les formalités manquantes ne font pas tomber les droits et taxes :
+          // elles se disent indisponibles, pas absentes.
+          axios.get(`${API}/consultation/${iso3}/formalites/${cleanCode}`).catch(() => null)
+        ]);
+        if (annule) return;
+        setData(fiche.data);
+        setFormalites(reponseFormalites?.data || null);
+      } catch (err) {
+        if (annule) return;
+        const lisible = erreurLisible(err, t);
+        // Un SH6 à plusieurs positions est un choix à faire, pas une erreur.
+        if (!lisible.choix) console.error('Error fetching regulatory data:', err);
+        setData(null);
+        setFormalites(null);
+        setError(lisible);
+      } finally {
+        if (!annule) setLoading(false);
+      }
     }, 500);
 
-    return () => clearTimeout(timeoutId);
-  }, [countryCode, hsCode, t.noData]); // Remove onDataLoaded from dependencies to prevent re-render loops
+    return () => {
+      annule = true;
+      clearTimeout(timeoutId);
+    };
+  }, [countryCode, hsCode, t]);
 
   const toggleSection = (section) => {
     setExpandedSections(prev => ({
       ...prev,
       [section]: !prev[section]
     }));
-  };
-
-  const getSensitivityStyle = (sensitivity) => {
-    switch (sensitivity) {
-      case 'sensitive': return { bg: 'bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))]', text: 'text-[var(--terra)]', border: 'border-[color-mix(in_srgb,var(--terra)_30%,transparent)]' };
-      case 'excluded': return { bg: 'bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))]', text: 'text-[var(--danger)]', border: 'border-[color-mix(in_srgb,var(--danger)_30%,transparent)]' };
-      default: return { bg: 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))]', text: 'text-[var(--success)]', border: 'border-[color-mix(in_srgb,var(--success)_30%,transparent)]' };
-    }
   };
 
   // Loading state
@@ -296,141 +291,101 @@ export default function RegulatoryDetailsPanel({
     );
   }
 
-  // Error state
-  if (error || !data) {
+  // Un SH6 à plusieurs positions : un choix à faire, pas une panne.
+  if (error?.choix) {
     return (
-      <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]">
-        <CardContent className="p-12 text-center">
+      <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]" data-testid="regulatory-details-choice">
+        <CardContent className="p-8 text-center">
           <div className="w-16 h-16 mx-auto mb-4 bg-[var(--overlay)] rounded-full flex items-center justify-center">
-            <AlertCircle className="w-8 h-8 text-[var(--afcfta-muted)]" />
+            <Info className="w-8 h-8 text-[var(--info)]" />
           </div>
-          <p className="text-[var(--afcfta-muted)] text-lg">{error || t.noData}</p>
-          <p className="text-[var(--afcfta-muted)] text-sm mt-2">
-            {pick(language, 'Vérifiez le code HS ou essayez un autre pays', 'Check the HS code or try another country', 'تحقق من رمز SH أو جرّب بلدًا آخر')}
-          </p>
+          <p className="text-[var(--text)] text-lg">{error.message}</p>
         </CardContent>
       </Card>
     );
   }
 
-  const { commodity, measures, requirements, fiscal_advantages, total_npf_pct, total_zlecaf_pct, savings_pct, processing_time_ms } = data;
-  const sensStyle = getSensitivityStyle(commodity?.sensitivity);
+  // Error state
+  if (error || !data) {
+    return (
+      <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]" data-testid="regulatory-details-error">
+        <CardContent className="p-12 text-center">
+          <div className="w-16 h-16 mx-auto mb-4 bg-[var(--overlay)] rounded-full flex items-center justify-center">
+            <AlertCircle className="w-8 h-8 text-[var(--afcfta-muted)]" />
+          </div>
+          <p className="text-[var(--afcfta-muted)] text-lg">{error?.message || t.noData}</p>
+          <p className="text-[var(--afcfta-muted)] text-sm mt-2">{t.chooseHint}</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const { droits = [], restrictions = [], couverture = {} } = data;
+  const description = pick(language, data.description_fr, data.description_en, data.description_fr);
+  const listeFormalites = formalites?.formalities || [];
 
   return (
     <div className="space-y-4" data-testid="regulatory-details-panel">
-      
-      {/* === HEADER - Synthèse Économique === */}
+
+      {/* === EN-TÊTE === */}
       <Card className="bg-[image:var(--card-grad)] border-[var(--afcfta-border)] overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[color-mix(in_srgb,var(--gold)_5%,transparent)] rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-        
-        <CardHeader className="relative pb-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-xl border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
-                <Sparkles className="w-6 h-6 text-[var(--gold)]" />
-              </div>
-              <div>
-                <CardTitle className="text-xl text-[var(--text)]">{t.title}</CardTitle>
-                <CardDescription className="text-[var(--afcfta-muted)]">{t.subtitle}</CardDescription>
-              </div>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-xl border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+              <Sparkles className="w-6 h-6 text-[var(--gold)]" />
             </div>
-            {processing_time_ms && (
-              <Badge variant="outline" className="bg-[var(--overlay)] text-[var(--text)] border-[var(--afcfta-border)] font-mono">
-                <Clock className="w-3 h-3 mr-1.5" />
-                {processing_time_ms.toFixed(1)}ms
-              </Badge>
-            )}
+            <div>
+              <CardTitle className="text-xl text-[var(--text)]">{t.title}</CardTitle>
+              <CardDescription className="text-[var(--afcfta-muted)]">{t.subtitle}</CardDescription>
+            </div>
           </div>
         </CardHeader>
-        
-        <CardContent className="relative pt-4">
-          {/* Barres de comparaison visuelles */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {/* Total NPF */}
-            <div className="relative bg-[var(--overlay)] rounded-xl p-5 border border-[var(--afcfta-border)] overflow-hidden group hover:border-[color-mix(in_srgb,var(--danger)_30%,transparent)] transition-colors">
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))]">
-                <div 
-                  className="h-full bg-gradient-to-r from-red-500 to-red-400 transition-all duration-500"
-                  style={{ width: `${Math.min(total_npf_pct || 0, 100)}%` }}
-                ></div>
-              </div>
-              <p className="text-[var(--afcfta-muted)] text-sm font-medium">{t.totalNPF}</p>
-              <p className="text-3xl font-bold text-[var(--danger)] mt-1">{(total_npf_pct || 0).toFixed(1)}%</p>
-              <p className="text-[var(--afcfta-muted)] text-xs mt-1">{pick(language, 'Tarif Nation Plus Favorisée', 'Most Favored Nation', 'تعريفة الدولة الأولى بالرعاية')}</p>
+      </Card>
+
+      {/* === INFORMATIONS PRODUIT === */}
+      <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]">
+        <CardHeader className="pb-3">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+              <Package className="w-5 h-5 text-[var(--info)]" />
             </div>
-            
-            {/* Total ZLECAf */}
-            <div className="relative bg-[var(--overlay)] rounded-xl p-5 border border-[var(--afcfta-border)] overflow-hidden group hover:border-[color-mix(in_srgb,var(--success)_30%,transparent)] transition-colors">
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))]">
-                <div 
-                  className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all duration-500"
-                  style={{ width: `${Math.min(total_zlecaf_pct || 0, 100)}%` }}
-                ></div>
-              </div>
-              <p className="text-[var(--afcfta-muted)] text-sm font-medium">{t.totalZLECAf}</p>
-              <p className="text-3xl font-bold text-[var(--success)] mt-1">{(total_zlecaf_pct || 0).toFixed(1)}%</p>
-              <p className="text-[var(--afcfta-muted)] text-xs mt-1">{pick(language, 'Accord de Libre-Échange', 'Free Trade Agreement', 'اتفاقية التجارة الحرة')}</p>
+            <CardTitle className="text-lg text-[var(--text)]">{t.productInfo}</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {/* Description du produit */}
+          <div className="bg-[var(--overlay)] rounded-lg p-4 mb-4 border-l-4 border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+            <p className="text-[var(--text)] text-lg leading-relaxed whitespace-pre-line">{description}</p>
+          </div>
+
+          {/* Grille d'informations */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-[var(--overlay)] rounded-lg p-3">
+              <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.nationalCode}</p>
+              <p className="text-[var(--text)] font-mono text-lg font-semibold">{data.code}</p>
             </div>
-            
-            {/* Économie */}
-            <div className="relative bg-gradient-to-br from-amber-500/10 to-amber-600/5 rounded-xl p-5 border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] overflow-hidden">
-              <div className="absolute top-3 right-3">
-                <TrendingDown className="w-5 h-5 text-[var(--gold)]" />
-              </div>
-              <p className="text-[var(--gold)] text-sm font-medium">{t.savings}</p>
-              <p className="text-3xl font-bold text-[var(--gold)] mt-1">-{(savings_pct || 0).toFixed(1)}%</p>
-              <p className="text-[var(--gold)] text-xs mt-1">{pick(language, 'Avec Certificat d\'Origine', 'With Certificate of Origin', 'مع شهادة المنشأ')}</p>
+            <div className="bg-[var(--overlay)] rounded-lg p-3">
+              <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.hs6Code}</p>
+              <p className="text-[var(--text)] font-mono text-lg">{data.hs6}</p>
             </div>
+            <div className="bg-[var(--overlay)] rounded-lg p-3">
+              <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.chapter}</p>
+              <p className="text-[var(--text)] text-lg">{data.chapitre}</p>
+            </div>
+            {data.unite && (
+              <div className="bg-[var(--overlay)] rounded-lg p-3">
+                <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.unit}</p>
+                <p className="text-[var(--text)] text-lg">{data.unite}</p>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
 
-      {/* === INFORMATIONS PRODUIT === */}
-      {commodity && (
-        <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]">
-          <CardHeader className="pb-3">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
-                <Package className="w-5 h-5 text-[var(--info)]" />
-              </div>
-              <CardTitle className="text-lg text-[var(--text)]">{t.productInfo}</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {/* Description du produit */}
-            <div className="bg-[var(--overlay)] rounded-lg p-4 mb-4 border-l-4 border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
-              <p className="text-[var(--text)] text-lg leading-relaxed">{commodity.description_fr}</p>
-            </div>
-            
-            {/* Grille d'informations */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-[var(--overlay)] rounded-lg p-3">
-                <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.nationalCode}</p>
-                <p className="text-[var(--text)] font-mono text-lg font-semibold">{commodity.national_code}</p>
-              </div>
-              <div className="bg-[var(--overlay)] rounded-lg p-3">
-                <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.hs6Code}</p>
-                <p className="text-[var(--text)] font-mono text-lg">{commodity.hs6}</p>
-              </div>
-              <div className="bg-[var(--overlay)] rounded-lg p-3">
-                <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.chapter}</p>
-                <p className="text-[var(--text)] text-lg">{commodity.chapter}</p>
-              </div>
-              <div className="bg-[var(--overlay)] rounded-lg p-3">
-                <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.sensitivity}</p>
-                <Badge className={`${sensStyle.bg} ${sensStyle.text} ${sensStyle.border} border`}>
-                  {t[commodity.sensitivity] || commodity.sensitivity}
-                </Badge>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
       {/* === DROITS ET TAXES === */}
-      {measures && measures.length > 0 && (
+      {droits.length > 0 && (
         <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)] overflow-hidden">
-          <CardHeader 
+          <CardHeader
             className="pb-3 cursor-pointer hover:bg-[var(--overlay)] transition-colors"
             onClick={() => toggleSection('measures')}
           >
@@ -446,106 +401,168 @@ export default function RegulatoryDetailsPanel({
               </div>
               <div className="flex items-center gap-3">
                 <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)] border px-3">
-                  {measures.length} {pick(language, 'taxes', 'taxes', 'ضرائب')}
+                  {droits.length} {droits.length > 1 ? pick(language, 'lignes', 'lines', 'سطور') : pick(language, 'ligne', 'line', 'سطر')}
                 </Badge>
-                {expandedSections.measures ? 
-                  <ChevronUp className="w-5 h-5 text-[var(--afcfta-muted)]" /> : 
+                {expandedSections.measures ?
+                  <ChevronUp className="w-5 h-5 text-[var(--afcfta-muted)]" /> :
                   <ChevronDown className="w-5 h-5 text-[var(--afcfta-muted)]" />
                 }
               </div>
             </div>
           </CardHeader>
-          
+
           {expandedSections.measures && (
             <CardContent className="pt-0">
               <div className="space-y-2">
-                {measures.map((measure, idx) => {
-                  const style = measureStyles[measure.measure_type] || measureStyles.OTHER_TAX;
+                {droits.map((droit, idx) => {
+                  const famille = FAMILLES[droit.famille] || FAMILLES.autre;
+                  const style = measureStyles[famille.style];
                   const Icon = style.icon;
-                  const hasReduction = measure.is_zlecaf_applicable && measure.zlecaf_rate_pct !== null && measure.zlecaf_rate_pct < measure.rate_pct;
-                  
+                  const taux = tauxAffiche(droit);
+
                   return (
-                    <div 
-                      key={idx} 
-                      className={`flex items-center justify-between p-4 rounded-lg ${style.bg} border ${style.border} transition-all hover:scale-[1.01]`}
+                    <div
+                      key={`${droit.code}-${idx}`}
+                      className={`flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 p-4 rounded-lg ${style.bg} border ${style.border}`}
+                      data-testid="regulatory-measure"
                     >
-                      <div className="flex items-center gap-4">
-                        <div className={`p-2 rounded-lg bg-[var(--overlay)]`}>
+                      <div className="flex items-start gap-4 min-w-0">
+                        <div className="p-2 rounded-lg bg-[var(--overlay)] shrink-0">
                           <Icon className={`w-5 h-5 ${style.color}`} />
                         </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-mono text-[var(--text)] font-semibold">{measure.code}</span>
-                            {hasReduction && (
-                              <Badge className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)] border text-xs">
-                                {t.exoneration}
-                              </Badge>
-                            )}
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-mono text-[var(--text)] font-semibold">{droit.code}</span>
+                            <Badge variant="outline" className="text-xs border-[var(--afcfta-border)] text-[var(--afcfta-muted)]">
+                              {pick(language, ...famille.label)}
+                            </Badge>
                           </div>
-                          <p className="text-[var(--text)] text-sm">{measure.name_fr}</p>
+                          {droit.libelle && droit.libelle !== droit.code && (
+                            <p className="text-[var(--text)] text-sm">{droit.libelle}</p>
+                          )}
+                          {droit.assiette && (
+                            <p className="text-[var(--afcfta-muted)] text-xs mt-1">
+                              {t.base} : <span className="font-mono">{droit.assiette}</span>
+                            </p>
+                          )}
+                          {droit.note && (
+                            <p className="text-[var(--afcfta-muted)] text-xs mt-1">{droit.note}</p>
+                          )}
                         </div>
                       </div>
-                      
-                      <div className="flex items-center gap-6">
-                        <div className="text-right">
-                          <p className="text-[var(--afcfta-muted)] text-xs">{t.taxRate}</p>
-                          <p className={`text-lg font-bold ${hasReduction ? 'text-[var(--danger)] line-through opacity-60' : 'text-[var(--text)]'}`}>
-                            {measure.rate_pct}%
+
+                      <div className="sm:text-right sm:shrink-0 sm:max-w-[45%]">
+                        <p className="text-[var(--afcfta-muted)] text-xs">{t.rate}</p>
+                        {taux ? (
+                          <p className="text-lg font-bold text-[var(--text)] break-words">{taux}</p>
+                        ) : (
+                          <p className="text-sm font-semibold text-[var(--afcfta-muted)]" title={t.toCompleteHint}>
+                            {t.toComplete}
                           </p>
-                        </div>
-                        {measure.is_zlecaf_applicable && (
-                          <div className="text-right">
-                            <p className="text-[var(--afcfta-muted)] text-xs">{t.zlecafRate}</p>
-                            <p className="text-lg font-bold text-[var(--success)]">
-                              {measure.zlecaf_rate_pct ?? measure.rate_pct}%
-                            </p>
-                          </div>
                         )}
                       </div>
                     </div>
                   );
                 })}
               </div>
+
+              {couverture.tva === false && (
+                <div className="flex items-start gap-2 mt-4 p-3 rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))]" data-testid="regulatory-vat-missing">
+                  <AlertCircle className="w-4 h-4 text-[var(--gold)] mt-0.5 shrink-0" />
+                  <p className="text-[var(--text)] text-sm">{t.vatMissing}</p>
+                </div>
+              )}
+              <div className="flex items-start gap-2 mt-3">
+                <Info className="w-4 h-4 text-[var(--info)] mt-0.5 shrink-0" />
+                <p className="text-[var(--afcfta-muted)] text-sm">{t.preferenceNote}</p>
+              </div>
             </CardContent>
           )}
         </Card>
       )}
 
-      {/* === DOCUMENTS REQUIS === */}
-      {requirements && requirements.length > 0 && (
-        <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)] overflow-hidden">
-          <CardHeader 
+      {/* === RESTRICTIONS === */}
+      {restrictions.length > 0 && (
+        <Card className="bg-[var(--overlay)] border-[color-mix(in_srgb,var(--danger)_30%,transparent)] overflow-hidden" data-testid="regulatory-restrictions">
+          <CardHeader
             className="pb-3 cursor-pointer hover:bg-[var(--overlay)] transition-colors"
-            onClick={() => toggleSection('requirements')}
+            onClick={() => toggleSection('restrictions')}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
-                  <ScrollText className="w-5 h-5 text-[var(--info)]" />
+                <div className="p-2 bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--danger)_30%,transparent)]">
+                  <Ban className="w-5 h-5 text-[var(--danger)]" />
                 </div>
                 <div>
-                  <CardTitle className="text-lg text-[var(--text)]">{t.requirements}</CardTitle>
-                  <CardDescription className="text-[var(--afcfta-muted)]">{t.requirementsDesc}</CardDescription>
+                  <CardTitle className="text-lg text-[var(--text)]">{t.restrictions}</CardTitle>
+                  <CardDescription className="text-[var(--afcfta-muted)]">{t.restrictionsDesc}</CardDescription>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <Badge className="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)] border px-3">
-                  {requirements.length} {pick(language, 'documents', 'documents', 'وثائق')}
-                </Badge>
-                {expandedSections.requirements ? 
-                  <ChevronUp className="w-5 h-5 text-[var(--afcfta-muted)]" /> : 
-                  <ChevronDown className="w-5 h-5 text-[var(--afcfta-muted)]" />
-                }
-              </div>
+              {expandedSections.restrictions ?
+                <ChevronUp className="w-5 h-5 text-[var(--afcfta-muted)]" /> :
+                <ChevronDown className="w-5 h-5 text-[var(--afcfta-muted)]" />
+              }
             </div>
           </CardHeader>
-          
-          {expandedSections.requirements && (
+
+          {expandedSections.restrictions && (
             <CardContent className="pt-0">
               <div className="space-y-3">
-                {requirements.map((req, idx) => (
-                  <div 
-                    key={idx} 
+                {restrictions.map((restriction, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-[var(--overlay)] rounded-lg p-4 border border-[var(--afcfta-border)]"
+                  >
+                    {/* Texte tel qu'écrit par la source, souvent en arabe. */}
+                    <p className="text-[var(--text)]" dir="auto">{restriction.text_verbatim}</p>
+                    {restriction.source && (
+                      <p className="text-[var(--afcfta-muted)] text-xs mt-2">{restriction.source}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          )}
+        </Card>
+      )}
+
+      {/* === FORMALITÉS === */}
+      <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)] overflow-hidden" data-testid="regulatory-formalities">
+        <CardHeader
+          className="pb-3 cursor-pointer hover:bg-[var(--overlay)] transition-colors"
+          onClick={() => toggleSection('requirements')}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+                <ScrollText className="w-5 h-5 text-[var(--info)]" />
+              </div>
+              <div>
+                <CardTitle className="text-lg text-[var(--text)]">{t.requirements}</CardTitle>
+                <CardDescription className="text-[var(--afcfta-muted)]">{t.requirementsDesc}</CardDescription>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              {listeFormalites.length > 0 && (
+                <Badge className="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)] border px-3">
+                  {listeFormalites.length} {listeFormalites.length > 1 ? pick(language, 'documents', 'documents', 'وثائق') : pick(language, 'document', 'document', 'وثيقة')}
+                </Badge>
+              )}
+              {expandedSections.requirements ?
+                <ChevronUp className="w-5 h-5 text-[var(--afcfta-muted)]" /> :
+                <ChevronDown className="w-5 h-5 text-[var(--afcfta-muted)]" />
+              }
+            </div>
+          </div>
+        </CardHeader>
+
+        {expandedSections.requirements && (
+          <CardContent className="pt-0">
+            {listeFormalites.length > 0 && (
+              <div className="space-y-3">
+                {listeFormalites.map((formalite, idx) => (
+                  <div
+                    key={`${formalite.code}-${idx}`}
                     className="bg-[var(--overlay)] rounded-lg p-4 border border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--info)_30%,transparent)] transition-colors"
                   >
                     <div className="flex items-start gap-4">
@@ -553,86 +570,37 @@ export default function RegulatoryDetailsPanel({
                         <FileCheck className="w-5 h-5 text-[var(--info)]" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
+                        {formalite.code && (
                           <span className="font-mono text-[var(--info)] text-sm bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] px-2 py-0.5 rounded">
-                            {req.code}
+                            {formalite.code}
                           </span>
-                          {req.is_mandatory && (
-                            <Badge className="bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] text-[var(--danger)] border-[color-mix(in_srgb,var(--danger)_30%,transparent)] border text-xs">
-                              {t.mandatory}
-                            </Badge>
-                          )}
-                        </div>
-                        <p className="text-[var(--text)] font-medium text-base">{req.document_fr}</p>
-                        {req.issuing_authority && (
-                          <div className="flex items-center gap-2 mt-2 text-[var(--afcfta-muted)] text-sm">
-                            <Landmark className="w-4 h-4 text-[var(--afcfta-muted)]" />
-                            <span>{req.issuing_authority}</span>
-                          </div>
                         )}
+                        <p className="text-[var(--text)] font-medium text-base mt-1">
+                          {pick(language, formalite.document_fr, formalite.document_en, formalite.document_fr) || formalite.texte}
+                        </p>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-            </CardContent>
-          )}
-        </Card>
-      )}
-
-      {/* === AVANTAGES ZLECAf === */}
-      {fiscal_advantages && fiscal_advantages.length > 0 && (
-        <Card className="bg-gradient-to-br from-emerald-900/20 to-slate-800/50 border-[color-mix(in_srgb,var(--success)_30%,transparent)] overflow-hidden">
-          <CardHeader 
-            className="pb-3 cursor-pointer hover:bg-[var(--overlay)] transition-colors"
-            onClick={() => toggleSection('advantages')}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
-                  <Award className="w-5 h-5 text-[var(--success)]" />
-                </div>
-                <div>
-                  <CardTitle className="text-lg text-[var(--text)]">{t.fiscalAdvantages}</CardTitle>
-                  <CardDescription className="text-[var(--success)]">{t.fiscalAdvantagesDesc}</CardDescription>
-                </div>
+            )}
+            {/* Le statut accompagne toujours la liste : une liste vide ne dit
+                pas si la source n'a rien publié ou s'il n'y a rien à présenter. */}
+            {formalites?.reserve && (
+              <div className={`flex items-start gap-2 ${listeFormalites.length > 0 ? 'mt-4' : ''}`} data-testid="regulatory-formalities-status">
+                <Info className="w-4 h-4 text-[var(--info)] mt-0.5 shrink-0" />
+                <p className="text-[var(--afcfta-muted)] text-sm">{formalites.reserve}</p>
               </div>
-              <div className="flex items-center gap-3">
-                <Badge className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)] border px-3">
-                  {fiscal_advantages.length}
-                </Badge>
-                {expandedSections.advantages ? 
-                  <ChevronUp className="w-5 h-5 text-[var(--afcfta-muted)]" /> : 
-                  <ChevronDown className="w-5 h-5 text-[var(--afcfta-muted)]" />
-                }
+            )}
+            {!formalites && (
+              <div className="flex items-start gap-2" data-testid="regulatory-formalities-unavailable">
+                <AlertCircle className="w-4 h-4 text-[var(--gold)] mt-0.5 shrink-0" />
+                <p className="text-[var(--afcfta-muted)] text-sm">{t.formalitiesUnavailable}</p>
               </div>
-            </div>
-          </CardHeader>
-          
-          {expandedSections.advantages && (
-            <CardContent className="pt-0">
-              <div className="space-y-3">
-                {fiscal_advantages.map((adv, idx) => (
-                  <div 
-                    key={idx} 
-                    className="bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] rounded-lg p-4 border border-[color-mix(in_srgb,var(--success)_30%,transparent)]"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <Badge className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)] border font-mono">
-                        {adv.tax_code}
-                      </Badge>
-                      <span className="text-2xl font-bold text-[var(--success)]">
-                        {adv.reduced_rate_pct}%
-                      </span>
-                    </div>
-                    <p className="text-[var(--text)]">{adv.condition_fr}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          )}
-        </Card>
-      )}
+            )}
+          </CardContent>
+        )}
+      </Card>
     </div>
   );
 }

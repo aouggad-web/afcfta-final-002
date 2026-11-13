@@ -134,6 +134,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const { label: hsCodeSimpleLabel } = useHsLabel(hsCode, language);
   const [regulatorySelectedPos, setRegulatorySelectedPos] = useState(null);
   const [regulatorySelectedPosDesc, setRegulatorySelectedPosDesc] = useState(null);
+  // Pays dont le socle — la source du calcul et de l'onglet Réglementation —
+  // sert au moins une position : seuls ils portent le badge « Disponible ».
+  // Sans réponse, aucun badge : jamais un badge affirmé sans preuve.
+  const [paysServis, setPaysServis] = useState([]);
+  useEffect(() => {
+    axios.get(`${API}/calcul/pays`).then(({ data }) => {
+      setPaysServis(Object.entries(data.pays || {}).filter(([, p]) => p.positions > 0).map(([iso3]) => iso3));
+    }).catch(() => {});
+  }, []);
   const [searchResetKey, setSearchResetKey] = useState(0);
   const [kenyaRemission, setKenyaRemission] = useState({
     answer: 'unknown',
@@ -2341,16 +2350,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       </SelectTrigger>
                       <SelectContent>
                         {countries.map((country) => {
-                          // Tous les 54 pays AfCFTA avec données canoniques du Moteur Réglementaire v3
-                          const REGULATORY_ENGINE_COUNTRIES = [
-                            'AGO', 'BDI', 'BEN', 'BFA', 'BWA', 'CAF', 'CIV', 'CMR', 'COD', 'COG',
-                            'COM', 'CPV', 'DJI', 'DZA', 'EGY', 'ERI', 'ETH', 'GAB', 'GHA', 'GIN',
-                            'GMB', 'GNB', 'GNQ', 'KEN', 'LBR', 'LBY', 'LSO', 'MAR', 'MDG', 'MLI',
-                            'MOZ', 'MRT', 'MUS', 'MWI', 'NAM', 'NER', 'NGA', 'RWA', 'SDN', 'SEN',
-                            'SLE', 'SOM', 'SSD', 'STP', 'SWZ', 'SYC', 'TCD', 'TGO', 'TUN', 'TZA',
-                            'UGA', 'ZAF', 'ZMB', 'ZWE'
-                          ];
-                          const hasRegulatoryData = REGULATORY_ENGINE_COUNTRIES.includes(country.code);
+                          const hasRegulatoryData = paysServis.includes(country.code);
                           return (
                             <SelectItem key={country.code} value={country.code}>
                               <span className="flex items-center gap-2">

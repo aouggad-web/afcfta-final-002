@@ -271,3 +271,80 @@ def test_un_droit_compose_se_lit_en_entier(client):
     ligne = next(l for l in lignes if l["code"] == "19019010")
     assert ligne["dd_rate"] is None
     assert ligne["dd_expression"] == "10% or 55c/kg less 90%"
+
+
+# ── Fiche de la position : droits, taxes et restrictions, lus au socle ───────
+# Le panneau « Réglementation » du calculateur lisait un moteur dont les
+# fichiers de lignes ne sont pas livrés : il répondait « Pays DZA non
+# disponible » pour tous les pays. Il lit désormais le socle, comme le calcul.
+
+
+def test_fiche_les_droits_de_la_position_tels_que_le_socle_les_porte(client):
+    corps = client.get("/consultation/DZA/position/0201101100").json()
+    assert corps["success"] is True and corps["source"] == "socle"
+    assert corps["code"] == "0201101100" and corps["niveau"] == "national" and corps["hs6"] == "020110"
+    assert "veaux" in corps["description_fr"]
+    taux = {d["code"]: d["taux"] for d in corps["droits"]}
+    assert taux["DD"] == 5.0 and taux["TCS"] == 3.0
+    # Chaque ligne dit sur quoi elle porte et d'où elle vient.
+    dd = next(d for d in corps["droits"] if d["code"] == "DD")
+    assert dd["assiette"] == "CIF" and dd["source"] and dd["famille"] == "droit"
+
+
+def test_fiche_les_droits_sont_ceux_que_le_calcul_liquide(client):
+    """Une seule source : les taux de la fiche sont ceux des lignes de POST /calcul."""
+    fiche = client.get("/consultation/DZA/position/0201101100").json()["droits"]
+    calcul = client.post(
+        "/calcul", json={"destination": "DZA", "code_sh": "0201101100", "valeur_cif": 1000}
+    ).json()["npf"]["lignes"]
+    assert {d["code"]: d["taux"] for d in fiche} == {l["code"]: l["taux_pct"] for l in calcul}
+
+
+def test_fiche_un_droit_compose_se_lit_en_entier(client):
+    """Même règle que les sous-positions : 10 % n'est qu'une composante."""
+    fiche = client.get("/consultation/ZAF/position/19019010").json()
+    dd = next(d for d in fiche["droits"] if d["code"] == "DD")
+    assert dd["taux"] is None
+    assert dd["expression"] == "10% or 55c/kg less 90%"
+
+
+def test_fiche_un_taux_absent_reste_null_et_jamais_zero(client):
+    """EGY 0206.80.00 : la source ne publie aucun taux de DD. « null » se lit
+    « à compléter » ; 0 se lirait « exonéré »."""
+    fiche = client.get("/consultation/EGY/position/0206800000").json()
+    dd = next(d for d in fiche["droits"] if d["code"] == "DD")
+    assert dd["taux"] is None and dd["expression"] is None
+
+
+def test_fiche_dit_quand_la_source_ne_publie_pas_la_tva(client):
+    """Une liste sans TVA ne doit pas se lire « aucune TVA » : la couverture
+    nomme la famille que la source ne publie pas (ZAF : le crawl SARS n'en
+    porte aucune)."""
+    couverture = client.get("/consultation/ZAF/position/19019010").json()["couverture"]
+    assert couverture["tva"] is False and "TVA" in couverture["motif"]
+    assert client.get("/consultation/DZA/position/0201101100").json()["couverture"]["tva"] is True
+
+
+def test_fiche_les_restrictions_sont_servies_telles_que_publiees(client):
+    corps = client.get("/consultation/EGY/position/0101210000").json()
+    assert len(corps["restrictions"]) == 1
+    assert corps["restrictions"][0]["text_verbatim"] and corps["restrictions"][0]["source"]
+    assert client.get("/consultation/DZA/position/0201101100").json()["restrictions"] == []
+
+
+def test_fiche_un_sh6_a_plusieurs_positions_demande_le_choix(client):
+    """Même réponse que POST /calcul : le choix revient à l'opérateur."""
+    refus = client.get("/consultation/TUN/position/870323")
+    assert refus.status_code == 422
+    detail = refus.json()["detail"]
+    assert detail["code"] == "POSITION_NATIONALE_REQUISE"
+    attendues = client.post("/calcul", json={"destination": "TUN", "code_sh": "870323", "valeur_cif": 1000})
+    assert [p["code"] for p in detail["positions"]] == [p["code"] for p in attendues.json()["detail"]["positions"]]
+
+
+def test_fiche_position_absente_code_invalide_et_pays_hors_socle(client):
+    absente = client.get("/consultation/DZA/position/9999999999")
+    assert absente.status_code == 404
+    assert absente.json()["detail"].startswith("DZA/9999999999 : position absente du socle")
+    assert client.get("/consultation/DZA/position/abc").status_code == 422
+    assert client.get("/consultation/XXX/position/020110").status_code == 503
