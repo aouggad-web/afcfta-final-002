@@ -171,6 +171,17 @@ def test_enrichment_fields_populated():
     assert "growth_trajectory" not in sugar
 
 
+def test_row_specific_origin_rule_comes_with_its_row_text():
+    # « Règle propre à cette ligne » alone names no requirement on a flow card:
+    # the chip also receives the Appendix IV row text (palm oil, 15.11).
+    roo = mod._rules_of_origin("151110", "fr")
+    assert roo["rule_name"] == "Règle propre à cette ligne de l'Appendice IV"
+    assert roo["matches_text"] is False
+    assert roo["rule_text_fr"].startswith(
+        "Fabrication dans laquelle la valeur de toutes les matières non originaires"
+    )
+
+
 def test_summary_aggregation():
     res = run(mod.get_strategic_flows("DZA", year=2024, lang="fr", limit=50))
     summary = res["summary"]

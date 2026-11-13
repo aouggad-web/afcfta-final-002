@@ -1113,9 +1113,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     <p className="text-[var(--text)]">
                       <bdi lang={language === 'en' ? 'en' : 'fr'} dir="ltr">{ruleOfOrigin.rules.primary_rule.explanation}</bdi>
                     </p>
-                    <p className="text-[var(--afcfta-muted)] italic">
-                      {pick(language, 'Seul le texte de la règle fait foi.', 'Only the rule text is authoritative.', 'نص القاعدة وحده هو المرجع المعتمد.')}
-                    </p>
+                    {/* Règle non encore adoptée : aucun texte ne fait foi. */}
+                    {ruleOfOrigin.status !== 'YTB' && (
+                      <p className="text-[var(--afcfta-muted)] italic">
+                        {pick(language, 'Seul le texte de la règle fait foi.', 'Only the rule text is authoritative.', 'نص القاعدة وحده هو المرجع المعتمد.')}
+                      </p>
+                    )}
                   </div>
                 )}
                 {ruleOfOrigin.status !== 'YTB' && ruleOfOrigin.rules.threshold_note_fr && (

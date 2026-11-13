@@ -316,7 +316,10 @@ export default function RulesTab({ language = 'fr' }) {
                   <p className="text-sm text-[var(--gold)]">
                     <bdi lang={language === 'en' ? 'en' : 'fr'} dir="ltr">{rulesOfOrigin.rules.primary_rule.explanation}</bdi>
                   </p>
-                  <p className="text-xs italic text-[var(--afcfta-muted)] mt-1">{t.ruleTextPrevails}</p>
+                  {/* Règle non encore adoptée : aucun texte ne fait foi. */}
+                  {rulesOfOrigin.status !== 'YTB' && (
+                    <p className="text-xs italic text-[var(--afcfta-muted)] mt-1">{t.ruleTextPrevails}</p>
+                  )}
                 </div>
               </div>
             )}

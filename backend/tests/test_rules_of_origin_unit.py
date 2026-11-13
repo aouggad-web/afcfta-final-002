@@ -388,6 +388,15 @@ def test_code_derived_name_explanation_and_article_only_when_the_text_states_it(
     wholly = roo.get_rule_of_origin("270900", "fr")
     assert wholly["primary_rule"]["name"] == "Entièrement Obtenu"
     assert wholly["regional_content"] == 100
+    # 68.03 reads "Fabrication sans laquelle [...]", a typo of the official
+    # text for the wording of 68.01/68.02: the same criterion.
+    slate = asyncio.run(roo.get_rules_of_origin("680300", lang="fr"))
+    assert slate["rules"]["primary_rule"]["matches_text"] is True
+    assert slate["rules"]["primary_rule"]["name"] == "Entièrement Obtenu"
+    assert slate["legal_reference"]["articles_fr"] == [
+        appendix_iv,
+        "Annexe 2, art. 4(a) et art. 5 (Entièrement Obtenu)",
+    ]
 
 
 def test_glued_ou_alternatives_are_split():
@@ -441,10 +450,15 @@ def test_only_source_notes_are_served():
                 assert not any(word in note for word in _INTERNAL_VOCABULARY), (key, note)
             for note in entry.get("curation_notes") or []:
                 assert note not in (entry.get("notes") or [])
-    assert served == 41
+    assert served == 30
     result = asyncio.run(roo.get_rules_of_origin("850440", lang="fr"))
     assert result["rules"]["applicable_notes"] == []  # chapter 85: internal note only
     assert "curation_notes" not in json.dumps(result)
+    # A rewording of the row text (already shown as the requirement) or a
+    # dataset summary of its scope is not a note of Appendix IV.
+    for code in ("190590", "240220", "620711"):
+        result = asyncio.run(roo.get_rules_of_origin(code, lang="fr"))
+        assert result["rules"]["applicable_notes"] == [], code
 
 
 def test_notes_corrected_from_the_official_french_appendix_iv():
@@ -454,6 +468,10 @@ def test_notes_corrected_from_the_official_french_appendix_iv():
         "Le chapitre 61 doit encore être finalisé. La règle du chapitre a été approuvée, "
         "mais les États membres disposent d'une certaine souplesse pour soumettre des "
         "exceptions pour les rubriques et sous-rubriques"
+    ]
+    # Footnote 28 (p. 68), verbatim.
+    assert roo.RULES_DATA["chapters"]["62"]["notes"] == [
+        "Adopté par la 2ème réunion extraordinaire du Conseil des Ministres de la ZLECAf (mai 2023)"
     ]
     # Note 8: rules 3 (mixtures) and 4 (particle size) do not cover chapter 28.
     (ch28,) = roo.RULES_DATA["chapters"]["28"]["notes"]
@@ -497,3 +515,44 @@ def test_change_of_chapter_rests_on_article_6_2_not_6_1_c():
     for code in ("821320", "821220"):
         reference = asyncio.run(roo.get_rules_of_origin(code, lang="fr"))["legal_reference"]
         assert reference["articles_fr"] == ["Annexe 2, article 6(2) (règles de l'Appendice IV)"]
+
+
+def test_ex_2009_89_juice_exception_is_served_verbatim():
+    # Appendix IV p. 30: the "Ex. 2009.89" row (mangosteen, kiwi, persimmon,
+    # starfruit and Bush Tucker juices) has its own phased rule; the entry's
+    # raw_fr is the rule of the "Autres" row, so the exception is a served note.
+    result = asyncio.run(roo.get_rules_of_origin("200989", lang="fr"))
+    assert result["rules"]["applicable_notes"] == [
+        "Ex. 2009.89 (Jus de mangoustan, Jus de kiwi, Jus de kaki, Jus de carambole, "
+        "Jus de Bush Tucker) : Fabrication dans laquelle la valeur des matières non "
+        "originaires utilisées ne doit pas excéder 60 % du prix départ usine du produit "
+        "pendant 5 ans, après quoi la fabrication dans laquelle tous les légumes, fruits, "
+        "noix ou autres parties de plantes utilisées doivent être entièrement obtenus"
+    ]
+    assert "curation_notes" not in roo.RULES_DATA["subheadings"]["200989"]
+
+
+def test_no_rule_rows_are_named_as_having_no_rule_of_origin():
+    # 63.09 and 63.10 read "Pas de règle" (Appendix IV p. 74): named as such, not
+    # as a row-specific rule, in both outputs (the strategic-flows chip receives
+    # only the name and the code).
+    for code in ("630900", "631010"):
+        rule = asyncio.run(roo.get_rules_of_origin(code, lang="fr"))["rules"]["primary_rule"]
+        assert rule["code"] == "NONE" and rule["matches_text"] is True
+        assert rule["name"] == "Pas de règle d'origine" and rule["explanation"] == ""
+        assert (
+            roo.get_rule_of_origin(code, "fr")["primary_rule"]["name"] == "Pas de règle d'origine"
+        )
+    assert roo.get_rule_of_origin("630900", "en")["primary_rule"]["name"] == "No rule of origin"
+
+
+def test_row_specific_rule_comes_with_its_row_text_outside_the_endpoint():
+    # The strategic-flows chip and the re-export note only get
+    # get_rule_of_origin(): a row-specific name must come with the row text.
+    palm = roo.get_rule_of_origin("151110", "fr")["primary_rule"]
+    assert palm["name"] == "Règle propre à cette ligne de l'Appendice IV"
+    assert palm["matches_text"] is False
+    assert palm["rule_text_fr"] == roo.RULES_DATA["headings"]["1511"]["raw_fr"]
+    assert roo.get_rule_of_origin("270900", "fr")["primary_rule"]["matches_text"] is True
+    pending = roo.get_rule_of_origin("870323", "fr")["primary_rule"]  # 87.03: À déterminer
+    assert pending["matches_text"] is False and pending["rule_text_fr"] == ""

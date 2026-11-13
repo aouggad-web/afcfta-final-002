@@ -117,6 +117,17 @@ describe("Règles d'origine — explication et base légale", () => {
     expect(screen.getByTestId('origin-applied-to')).toHaveTextContent('règle par défaut du chapitre');
     expect(screen.getByText(/note 2\.4 \(règle pas encore adoptée/)).toBeInTheDocument();
     expect(screen.getByText('Annexe 2, article 42, alinéas 1(c) et 3 (dispositions en suspens)')).toBeInTheDocument();
+    // Aucun texte adopté : rien ne « fait foi » face à l'article 42(3) cité.
+    expect(screen.queryByText('Seul le texte de la règle fait foi.')).not.toBeInTheDocument();
+  });
+
+  it('règle adoptée : l’explication rappelle que seul le texte fait foi', async () => {
+    const data = reponse({ code: 'CTH', psr: 'Fabrication à partir de matières de toute position autre que celle du produit' });
+    data.rules.primary_rule.explanation = 'Critère de changement de position tarifaire.';
+    consulter(data);
+
+    expect(await screen.findByText('Critère de changement de position tarifaire.')).toBeInTheDocument();
+    expect(screen.getByText('Seul le texte de la règle fait foi.')).toBeInTheDocument();
   });
 });
 
@@ -161,13 +172,16 @@ describe("Règles d'origine — ligne dont le texte n'énonce pas le critère de
     expect(screen.queryByText(/art\. 4\(a\)/)).not.toBeInTheDocument();
   });
 
+  // Ligne « Ex. 2009.89 » de l'Appendice IV (p. 30), mot pour mot.
+  const EX_2009_89 = 'Ex. 2009.89 (Jus de mangoustan, Jus de kiwi, Jus de kaki, Jus de carambole, Jus de Bush Tucker) : Fabrication dans laquelle la valeur des matières non originaires utilisées ne doit pas excéder 60 % du prix départ usine du produit pendant 5 ans, après quoi la fabrication dans laquelle tous les légumes, fruits, noix ou autres parties de plantes utilisées doivent être entièrement obtenus';
+
   it("affiche les notes de l'Appendice IV de la ligne", async () => {
     consulter({
       ...glaces,
-      rules: { ...glaces.rules, applicable_notes: ['Condition: les produits à base de blé du chapitre 11 utilisés doivent être originaires'] },
+      rules: { ...glaces.rules, applicable_notes: [EX_2009_89] },
     });
 
     expect(await screen.findByText("Notes de l'Appendice IV")).toBeInTheDocument();
-    expect(screen.getByText('Condition: les produits à base de blé du chapitre 11 utilisés doivent être originaires')).toBeInTheDocument();
+    expect(screen.getByText(EX_2009_89)).toBeInTheDocument();
   });
 });

@@ -8,23 +8,26 @@ import { describe, it, expect } from 'vitest';
 
 import AppendixIvNotes from './AppendixIvNotes';
 
+// Notes de bas de page 27 et 28 de l'Appendice IV (p. 68), mot pour mot.
+const CH61 =
+  "Le chapitre 61 doit encore être finalisé. La règle du chapitre a été approuvée, mais les États membres disposent d'une certaine souplesse pour soumettre des exceptions pour les rubriques et sous-rubriques";
+const CH62 = 'Adopté par la 2ème réunion extraordinaire du Conseil des Ministres de la ZLECAf (mai 2023)';
+
 const NOTE_25 =
   "Note 2.5 de l'Appendice IV: la valeur des matières non originaires sera automatiquement ramenée de 60 % à 55 % à la fin d'une période de cinq (5) ans à compter du 1er janvier 2021.";
 
 describe("Notes de l'Appendice IV", () => {
-  it('liste les notes de la ligne (ex-chapitre 19, réponse de GET /api/rules-of-origin/190219)', () => {
+  it('liste les notes de la ligne (chapitre 61, réponse de GET /api/rules-of-origin/610910)', () => {
     const roo = {
       rules: {
         threshold_note_fr: null,
-        applicable_notes: ['Condition: les produits à base de blé du chapitre 11 utilisés doivent être originaires'],
+        applicable_notes: [CH61],
       },
     };
     render(<AppendixIvNotes roo={roo} language="fr" />);
 
     expect(screen.getByText("Notes de l'Appendice IV")).toBeInTheDocument();
-    expect(
-      screen.getByText('Condition: les produits à base de blé du chapitre 11 utilisés doivent être originaires')
-    ).toBeInTheDocument();
+    expect(screen.getByText(CH61)).toBeInTheDocument();
   });
 
   it('ne répète pas la note 2.5, déjà montrée comme seuil à confirmer (84.14)', () => {
@@ -34,11 +37,11 @@ describe("Notes de l'Appendice IV", () => {
   });
 
   it('titre traduit en anglais et en arabe, notes en français', () => {
-    const roo = { rules: { applicable_notes: ['Couvre 41.07 à 41.13'] } };
+    const roo = { rules: { applicable_notes: [CH62] } };
     const { rerender } = render(<AppendixIvNotes roo={roo} language="en" />);
     expect(screen.getByText('Appendix IV notes')).toBeInTheDocument();
     rerender(<AppendixIvNotes roo={roo} language="ar" />);
     expect(screen.getByText('ملاحظات التذييل الرابع')).toBeInTheDocument();
-    expect(screen.getByText('Couvre 41.07 à 41.13').closest('bdi')).toHaveAttribute('lang', 'fr');
+    expect(screen.getByText(CH62).closest('bdi')).toHaveAttribute('lang', 'fr');
   });
 });

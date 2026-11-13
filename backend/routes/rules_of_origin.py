@@ -133,12 +133,14 @@ _VALUE_TEXT = (
     r"\[?{pct}\]? ?% du prix départ usine du produit"
 )
 _CRITERION_TEXT = {
-    "WO": r"fabrication dans laquelle (?:toutes )?les matières (?:utilisées )?"
+    # "sans laquelle": typo of the official 68.03 row (Appendix IV p. 76).
+    "WO": r"fabrication [ds]ans laquelle (?:toutes )?les matières (?:utilisées )?"
     r"doivent être entièrement obtenues",
     "CTH": r"fabrication à partir de matières de toute position autres? que celle du produit",
     "CTSH": r"fabrication à partir de matières de toute sous-position autres? que celle du produit",
     "CC": r"fabrication à partir de matières de tout chapitre autre que celui du produit",
     "YARN": r"fabrication à partir de fils",
+    "NONE": r"pas de règle",
 }
 
 
@@ -178,15 +180,22 @@ _ROW_SPECIFIC_RULE = {
     "en": "Rule specific to this Appendix IV row",
 }
 
+# Label of a row whose Appendix IV text is "Pas de règle" (63.09, 63.10), as
+# the rules tab already words it; NONE has no origin type of its own.
+_NO_RULE = {"fr": "Pas de règle d'origine", "en": "No rule of origin"}
+
 
 def _displayed_name(entry: dict, status: str, threshold_note, lang: str) -> str:
     """Rule name shown: a pending rule is named as such, a Note 2.5 rule by its
     criterion only (never the disputed "60 %"), a row whose text does not state
-    its code's criterion by the neutral row-specific label."""
+    its code's criterion by the neutral row-specific label, a "Pas de règle"
+    row as having no rule of origin."""
     if status == "YTB":
         return _rule_name("YTB", lang)
     if not _criterion_fits(entry):
         return _ROW_SPECIFIC_RULE.get(lang, _ROW_SPECIFIC_RULE["fr"])
+    if entry.get("code") == "NONE":
+        return _NO_RULE.get(lang, _NO_RULE["fr"])
     if threshold_note:
         return _rule_name("VA", lang)
     return _rule_name(entry.get("code"), lang)
@@ -521,6 +530,10 @@ def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
             "name": _displayed_name(entry, status, threshold_note, lang),
             "description": entry.get(f"description_{lang}") or entry.get("raw_fr", ""),
             "explanation": _displayed_explanation(entry, status, threshold_note, lang),
+            # A row-specific name refers to the row text: give that text
+            # (French only), except for a rule not yet adopted.
+            "matches_text": fits,
+            "rule_text_fr": "" if status == "YTB" else entry.get("raw_fr") or "",
         },
         "alternative_rule": (
             {

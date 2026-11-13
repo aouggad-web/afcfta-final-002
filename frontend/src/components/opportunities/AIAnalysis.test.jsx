@@ -155,4 +155,50 @@ describe("AIAnalysis — règle d'origine officielle d'une opportunité", () => 
     expect(screen.getByText('Teneur des matières non originaires')).toBeInTheDocument();
     expect(screen.queryByText(/Max 60/)).not.toBeInTheDocument();
   });
+
+  it('ligne à règle propre (21.05) : la carte montre le texte officiel de la règle', async () => {
+    const TEXTE_2105 =
+      'Fabrication dans laquelle les matières des chapitres 2, 4, 7, 8, 17 et 18 utilisées doivent être originaires';
+    // GET /api/rules-of-origin/210500, réduite à ce que lit la carte : pas
+    // d'explication générique, le texte de l'Appendice IV fait foi.
+    const regle2105 = {
+      hs_code: '210500',
+      status: 'AGREED',
+      rules: {
+        primary_rule: {
+          code: 'WO',
+          name: "Règle propre à cette ligne de l'Appendice IV",
+          explanation: '',
+          matches_text: false,
+        },
+        rule_text_fr: TEXTE_2105,
+        threshold_note_fr: null,
+      },
+    };
+    axios.get.mockImplementation((url) => {
+      if (url.includes('/substitution/countries')) {
+        return Promise.resolve({ data: { countries: [{ iso3: 'KEN', name: 'Kenya' }] } });
+      }
+      if (url.includes('/ai/health')) return Promise.resolve({ data: { ready: true } });
+      if (url.includes('/ai/opportunities/')) {
+        return Promise.resolve({
+          data: {
+            country: 'Kenya', country_iso3: 'KEN', mode: 'export', ai_available: true,
+            opportunities: [{
+              product: { name: 'Glaces de consommation', hs6Code: '210500' },
+              potentialPartner: 'Tanzania', potentialTradeValue: 3,
+              rulesOfOrigin: 'Règle citée par l’analyse',
+            }],
+          },
+        });
+      }
+      if (url.includes('/rules-of-origin/210500')) return Promise.resolve({ data: regle2105 });
+      return Promise.resolve({ data: {} });
+    });
+    render(<AIAnalysis language="fr" />);
+    await lancerAnalyse();
+
+    expect(await screen.findByTestId('official-rule-text')).toHaveTextContent(TEXTE_2105);
+    expect(screen.getByText("Règle propre à cette ligne de l'Appendice IV")).toBeInTheDocument();
+  });
 });

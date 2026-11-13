@@ -262,7 +262,8 @@
       "description_fr": "Ex-chapitre 19: Préparations à base de céréales, de farines, d'amidons, de fécules ou de lait; pâtisseries",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Condition: les produits à base de blé du chapitre 11 utilisés doivent être originaires"
       ],
       "product_description_fr": "Ex-chapitre 19: Préparations à base de céréales, de farines, d'amidons, de fécules ou de lait; pâtisseries",
@@ -320,7 +321,8 @@
       "description_fr": "Résidus et déchets des industries alimentaires; aliments préparés pour animaux",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Les matières des chapitres 2,3,4,10,11,12,17 doivent être originaires"
       ],
       "product_description_fr": "Résidus et déchets des industries alimentaires; aliments préparés pour animaux",
@@ -668,7 +670,8 @@
       "description_fr": "Ouvrages de sparterie ou de vannerie",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Matières du chapitre 14 doivent être entièrement obtenues"
       ],
       "product_description_fr": "Ouvrages de sparterie ou de vannerie",
@@ -900,7 +903,7 @@
       "time_phase": "Révision après 5 ans",
       "status": "PARTIAL",
       "notes": [
-        "Adopté par la 2ème réunion extraordinaire du Conseil des Ministres (mai 2023)"
+        "Adopté par la 2ème réunion extraordinaire du Conseil des Ministres de la ZLECAf (mai 2023)"
       ],
       "product_description_fr": "Vêtements et accessoires du vêtement, autres qu'en bonneterie",
       "source": "AfCFTA Appendix IV (PSR) - December 2023, 12th Council of Ministers"
@@ -932,7 +935,8 @@
       "description_fr": "Ex-chapitre 64: Chaussures, guêtres et articles analogues; parties de ces objets",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Les dessus de la position 64.06 doivent être originaires"
       ],
       "product_description_fr": "Ex-chapitre 64: Chaussures, guêtres et articles analogues; parties de ces objets",
@@ -1032,7 +1036,8 @@
       "description_fr": "Perles fines ou de culture, pierres gemmes ou similaires, métaux précieux, plaqués ou doublés de métaux précieux et ouvrages en ces matières; bijouterie de fantaisie; monnaies",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Règles spécifiques par sous-position (7101,7103,7106,7108,7110)"
       ],
       "product_description_fr": "Perles fines ou de culture, pierres gemmes ou similaires, métaux précieux, plaqués ou doublés de métaux précieux et ouvrages en ces matières; bijouterie de fantaisie; monnaies",
@@ -2014,7 +2019,8 @@
       "description_fr": "Cigares, cigarillos et cigarettes, en tabac ou en succédanés de tabac",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Condition: poids des matières non originaires de la position 24.01 ≤ 30% du poids du tabac utilisé dans le produit"
       ],
       "product_description_fr": "Cigares, cigarillos et cigarettes, en tabac ou en succédanés de tabac",
@@ -2030,7 +2036,8 @@
       "description_fr": "Autres tabacs et succédanés de tabac, fabriqués; tabacs homogénéisés ou reconstitués; extraits et sauces de tabac",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Condition: poids des matières non originaires de la position 24.01 ≤ 30% du poids du tabac utilisé dans le produit"
       ],
       "product_description_fr": "Autres tabacs et succédanés de tabac, fabriqués; tabacs homogénéisés ou reconstitués; extraits et sauces de tabac",
@@ -2258,7 +2265,8 @@
       "description_fr": "Cuirs préparés après tannage ou après dessèchement et cuirs et peaux parcheminés, de bovins ou d'équidés, épilés, même refendus (autres que ceux de la position 4114)",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Couvre 41.07 à 41.13"
       ],
       "product_description_fr": "Cuirs préparés après tannage ou après dessèchement et cuirs et peaux parcheminés, de bovins ou d'équidés, épilés, même refendus (autres que ceux de la position 4114)",
@@ -2375,7 +2383,8 @@
       "description_fr": "Combinaisons ou gilets de corps, slips, caleçons, chemises de nuit, pyjamas, peignoirs de bain, robes de chambre et articles similaires, pour hommes ou garçonnets",
       "time_phase": "Révision après 5 ans",
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Sous-positions 6207.19/6207.22/6207.29/6207.99"
       ],
       "product_description_fr": "Combinaisons ou gilets de corps, slips, caleçons, chemises de nuit, pyjamas, peignoirs de bain, robes de chambre et articles similaires, pour hommes ou garçonnets",
@@ -2391,7 +2400,8 @@
       "description_fr": "Combinaisons ou fonds de robes, jupons, slips, chemises de nuit, pyjamas, négligés, peignoirs de bain, robes de chambre et articles similaires, pour femmes ou fillettes",
       "time_phase": "Révision après 5 ans",
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Sous-positions 6208.11/6208.19/6208.22/6208.29"
       ],
       "product_description_fr": "Combinaisons ou fonds de robes, jupons, slips, chemises de nuit, pyjamas, négligés, peignoirs de bain, robes de chambre et articles similaires, pour femmes ou fillettes",
@@ -2407,7 +2417,8 @@
       "description_fr": "Brassières, gaines, corsets, bretelles, jarretières et articles similaires et leurs parties, même en bonneterie (6212.10 brassières)",
       "time_phase": "Révision après 5 ans",
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Sous-positions 6212.10 (brassières)/6212.20/6212.30/6212.90"
       ],
       "product_description_fr": "Brassières, gaines, corsets, bretelles, jarretières et articles similaires et leurs parties, même en bonneterie (6212.10 brassières)",
@@ -2539,7 +2550,8 @@
       "description_fr": "Assortiments composés de pièces de tissus et de fils, même avec accessoires, pour la confection de tapis, de tapisseries, de nappes de table ou de serviettes brodées, ou d'articles textiles similaires, en emballages pour la vente au détail",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Tolérance de 15% pour articles non originaires dans l'assortiment"
       ],
       "product_description_fr": "Assortiments composés de pièces de tissus et de fils, même avec accessoires, pour la confection de tapis, de tapisseries, de nappes de table ou de serviettes brodées, ou d'articles textiles similaires, en emballages pour la vente au détail",
@@ -5117,9 +5129,8 @@
       "description_fr": "Autres",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [],
-      "curation_notes": [
-        "Ex.2009.89: jus de mangoustan/kiwi/kaki/carambole/Bush Tucker = VA60 pendant 5 ans puis WO (régime distinct, voir alt_code)"
+      "notes": [
+        "Ex. 2009.89 (Jus de mangoustan, Jus de kiwi, Jus de kaki, Jus de carambole, Jus de Bush Tucker) : Fabrication dans laquelle la valeur des matières non originaires utilisées ne doit pas excéder 60 % du prix départ usine du produit pendant 5 ans, après quoi la fabrication dans laquelle tous les légumes, fruits, noix ou autres parties de plantes utilisées doivent être entièrement obtenus"
       ],
       "product_description_fr": "Autres",
       "source": "AfCFTA Appendix IV (PSR) - December 2023, 12th Council of Ministers"

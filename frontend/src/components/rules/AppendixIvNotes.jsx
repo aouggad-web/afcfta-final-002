@@ -3,9 +3,10 @@ import { pick } from '../../i18n/lang';
 
 /**
  * Notes de l'Appendice IV attachées à la ligne appliquée (réponse de
- * GET /api/rules-of-origin/{code}, champ rules.applicable_notes) : conditions,
- * portée, adoption, renvois aux notes numérotées. Les notes internes de
- * construction du jeu de données ne sont jamais servies. La note 2.5 est déjà
+ * GET /api/rules-of-origin/{code}, champ rules.applicable_notes) : notes
+ * numérotées ou renvois à ces notes, notes de bas de page, ligne « Ex. » de
+ * 2009.89. Les notes internes de construction du jeu de données et les
+ * reformulations du texte de la ligne ne sont jamais servies. La note 2.5 est déjà
  * montrée comme « seuil applicable à confirmer » : elle n'est pas répétée.
  */
 export default function AppendixIvNotes({ roo, language = 'fr', className = '' }) {

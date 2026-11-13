@@ -87,7 +87,8 @@ def _ensure_rules_loaded() -> None:
 
 
 def _rules_of_origin(hs_code: str, lang: str) -> Optional[Dict]:
-    """Verdict règles d'origine ZLECAf (nom + type) ou None si indisponible."""
+    """Verdict règles d'origine ZLECAf (nom, type et, pour une règle propre à
+    la ligne, son texte de l'Appendice IV) ou None si indisponible."""
     try:
         _ensure_rules_loaded()
         from routes.rules_of_origin import get_rule_of_origin
@@ -98,6 +99,8 @@ def _rules_of_origin(hs_code: str, lang: str) -> Optional[Dict]:
             "status": roo.get("status"),
             "rule_name": primary.get("name"),
             "rule_type": primary.get("type"),
+            "matches_text": primary.get("matches_text"),
+            "rule_text_fr": primary.get("rule_text_fr") or "",
         }
     except Exception:  # pragma: no cover
         return None
