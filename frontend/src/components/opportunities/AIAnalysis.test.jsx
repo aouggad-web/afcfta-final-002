@@ -108,3 +108,51 @@ describe('AIAnalysis', () => {
     expect(container.textContent).not.toMatch(/opportunities\.[a-zA-Z]+\./);
   });
 });
+
+describe("AIAnalysis — règle d'origine officielle d'une opportunité", () => {
+  const NOTE_25 =
+    "Note 2.5 de l'Appendice IV: la valeur des matières non originaires sera automatiquement ramenée de 60 % à 55 % à la fin d'une période de cinq (5) ans à compter du 1er janvier 2021.";
+  // GET /api/rules-of-origin/841810, réduite à ce que lit la carte.
+  const regle8418 = {
+    hs_code: '841810',
+    status: 'AGREED',
+    rules: {
+      primary_rule: {
+        code: 'VA60',
+        name: 'Teneur des matières non originaires',
+        explanation:
+          "Critère de la teneur des matières non originaires prévu à l'article 6(1)(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées (telle que définie à l'art. 1(y)) ne doit pas dépasser le pourcentage du prix départ usine (art. 1(k)) fixé par la règle.",
+      },
+      threshold_note_fr: NOTE_25,
+    },
+  };
+
+  it('note 2.5 : la carte nomme le critère sans « 60 % » et cite la note', async () => {
+    axios.get.mockImplementation((url) => {
+      if (url.includes('/substitution/countries')) {
+        return Promise.resolve({ data: { countries: [{ iso3: 'KEN', name: 'Kenya' }] } });
+      }
+      if (url.includes('/ai/health')) return Promise.resolve({ data: { ready: true } });
+      if (url.includes('/ai/opportunities/')) {
+        return Promise.resolve({
+          data: {
+            country: 'Kenya', country_iso3: 'KEN', mode: 'export', ai_available: true,
+            opportunities: [{
+              product: { name: 'Réfrigérateurs', hs6Code: '841810' },
+              potentialPartner: 'Tanzania', potentialTradeValue: 12,
+              rulesOfOrigin: 'Règle citée par l’analyse',
+            }],
+          },
+        });
+      }
+      if (url.includes('/rules-of-origin/841810')) return Promise.resolve({ data: regle8418 });
+      return Promise.resolve({ data: {} });
+    });
+    render(<AIAnalysis language="fr" />);
+    await lancerAnalyse();
+
+    expect(await screen.findByTestId('official-rule-threshold-note')).toHaveTextContent(NOTE_25);
+    expect(screen.getByText('Teneur des matières non originaires')).toBeInTheDocument();
+    expect(screen.queryByText(/Max 60/)).not.toBeInTheDocument();
+  });
+});

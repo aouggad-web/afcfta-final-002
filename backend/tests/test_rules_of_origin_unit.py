@@ -217,8 +217,8 @@ def test_explanations_are_grounded_in_annexe_2_articles():
         "WO": "5",
         "CTH": "6(1)(c)",
         "CTSH": "6(1)(d)",
-        "VA": "6(1)(a)-(b)",
-        "VA60": "6(1)(a)-(b)",
+        "VA": "6(1)(b)",
+        "VA60": "6(1)(b)",
         "SP": "6(1)(e)",
     }
     for code, article_ref in grounding.items():
@@ -294,7 +294,7 @@ def test_internal_origin_summary_matches_api_when_threshold_is_unconfirmed():
         assert internal["regional_content"] is None
         explanation = public["rules"]["primary_rule"]["explanation"]
         assert explanation == internal["primary_rule"]["explanation"]
-        # Pending rule: art. 42(3) explanation. Note 2.5: the generic value
+        # Pending rule: Appendix IV note 2.4 explanation. Note 2.5: the generic value
         # criterion, which names no percentage (never the disputed 60 %).
         expected = "YTB" if public["status"] == "YTB" else "VA"
         assert explanation == roo.ORIGIN_TYPES[expected]["explanation"]["fr"]
@@ -325,13 +325,175 @@ def test_legal_reference_cites_the_annexe_2_article_of_the_criterion():
     for code, article in roo._CRITERION_ARTICLES.items():
         assert article in roo.ORIGIN_TYPES[code]["explanation"]["fr"], code
 
+    # Every Appendix IV row rests on art. 6(2) of Annex 2 (official text,
+    # Algerian Customs): "les marchandises listées à l'Appendice IV [...] se
+    # qualifient comme marchandises originaires si elles satisfont aux règles
+    # définies dans les présentes"; the criterion's article follows.
+    appendix_iv = "Annexe 2, article 6(2) (règles de l'Appendice IV)"
     cth = asyncio.run(roo.get_rules_of_origin("851981", lang="fr"))["legal_reference"]
-    assert cth["articles_fr"] == ["Annexe 2, article 6(1)(c) (Changement de Position Tarifaire)"]
+    assert cth["articles_fr"] == [
+        appendix_iv,
+        "Annexe 2, article 6(1)(c) (Changement de Position Tarifaire)",
+    ]
     assert cth["location_fr"] == "position 85.19"
 
     wo = asyncio.run(roo.get_rules_of_origin("040110", lang="fr"))["legal_reference"]
-    assert wo["articles_fr"] == ["Annexe 2, art. 4(a) et art. 5 (Entièrement Obtenu)"]
+    assert wo["articles_fr"] == [appendix_iv, "Annexe 2, art. 4(a) et art. 5 (Entièrement Obtenu)"]
 
     pending = asyncio.run(roo.get_rules_of_origin("600110", lang="fr"))["legal_reference"]
-    assert pending["articles_fr"] == ["Annexe 2, article 42(3) (règle non encore adoptée)"]
-    assert "article 42(3)" in roo.ORIGIN_TYPES["YTB"]["explanation"]["fr"]
+    # A rule not yet adopted: Appendix IV note 2.4, and Annex 2 art. 42 quoted
+    # verbatim (official text, Algerian Customs), without asserting its scope.
+    assert pending["articles_fr"] == [
+        "Annexe 2, article 42, alinéas 1(c) et 3 (dispositions en suspens)"
+    ]
+    assert pending["notes_fr"] == [
+        "Appendice IV, note 2.4 (règle pas encore adoptée par les institutions "
+        "de négociation de la ZLECAf)"
+    ]
+    ytb = roo.ORIGIN_TYPES["YTB"]["explanation"]
+    assert "note 2.4" in ytb["fr"] and "note 2.4" in ytb["en"]
+    assert (
+        "« En attendant l'adoption des dispositions en suspens, les États parties conviennent "
+        "que les Règles d'Origine des régimes commerciaux existants sont applicables. »"
+    ) in ytb["fr"]
+
+
+# --- The rule code only describes rows whose text states its criterion -----
+
+
+def test_code_derived_name_explanation_and_article_only_when_the_text_states_it():
+    appendix_iv = "Annexe 2, article 6(2) (règles de l'Appendice IV)"
+    # 21.05 is coded WO, but its text only requires the materials of chapters
+    # 2, 4, 7, 8, 17 and 18 to be originating: the wholly-obtained name,
+    # explanation, art. 4(a)/5 and 100 % regional content would contradict it.
+    ice_cream = asyncio.run(roo.get_rules_of_origin("210500", lang="fr"))
+    rule = ice_cream["rules"]["primary_rule"]
+    assert rule["code"] == "WO" and rule["matches_text"] is False
+    assert rule["name"] == "Règle propre à cette ligne de l'Appendice IV"
+    assert rule["explanation"] == ""
+    assert ice_cream["rules"]["regional_content"] is None
+    assert ice_cream["rule"]["wholly_obtained"] is False
+    assert ice_cream["legal_reference"]["articles_fr"] == [appendix_iv]
+    assert roo.get_rule_of_origin("210500", "fr")["regional_content"] is None
+
+    # Wine: CTH plus "les raisins [...] doivent être entièrement obtenus".
+    wine = asyncio.run(roo.get_rules_of_origin("220421", lang="fr"))["rules"]["primary_rule"]
+    assert wine["matches_text"] is False and wine["explanation"] == ""
+
+    # A row whose text is exactly its code's criterion keeps everything.
+    cth = asyncio.run(roo.get_rules_of_origin("851981", lang="fr"))["rules"]["primary_rule"]
+    assert cth["matches_text"] is True
+    assert cth["name"] == "Changement de Position Tarifaire"
+    assert cth["explanation"] == roo.ORIGIN_TYPES["CTH"]["explanation"]["fr"]
+    wholly = roo.get_rule_of_origin("270900", "fr")
+    assert wholly["primary_rule"]["name"] == "Entièrement Obtenu"
+    assert wholly["regional_content"] == 100
+
+
+def test_glued_ou_alternatives_are_split():
+    # "produitOu Fabrication" and "OuFabrication" in the source text.
+    assert roo._rule_branches(roo.RULES_DATA["headings"]["8516"]["raw_fr"]) == [
+        "Fabrication à partir de matières de toute position autre que celle du produit",
+        "Fabrication dans laquelle la valeur des matières utilisées n'excède pas 60 % "
+        "du prix départ usine du produit",
+    ]
+    assert len(roo._rule_branches(roo.RULES_DATA["headings"]["8525"]["raw_fr"])) == 2
+
+
+def test_pending_and_note_25_rules_are_never_named_by_the_disputed_criterion():
+    # Chapter 60 is coded YARN but not adopted: named as pending, not "fils".
+    pending = asyncio.run(roo.get_rules_of_origin("600110", lang="fr"))["rules"]["primary_rule"]
+    assert pending["name"] == roo.ORIGIN_TYPES["YTB"]["fr"]
+    # Note 2.5 rows: named by the value criterion, never "Max 60 %".
+    for code in ("841410", "841911"):
+        result = asyncio.run(roo.get_rules_of_origin(code, lang="fr"))
+        assert result["rules"]["primary_rule"]["name"] == roo.ORIGIN_TYPES["VA"]["fr"]
+        assert all("60" not in a for a in result["legal_reference"]["articles_fr"])
+        assert (
+            roo.get_rule_of_origin(code, "fr")["primary_rule"]["name"]
+            == roo.ORIGIN_TYPES["VA"]["fr"]
+        )
+
+
+# --- Appendix IV notes: sorted, internal ones never served ------------------
+
+_INTERNAL_VOCABULARY = (
+    "module Python",
+    "headings[",
+    "alt_code",
+    "régression",
+    "Bracketed",
+    "bracketed",
+    "texte plain",
+    "littéralement",
+    "YTB",
+    "retombe",
+    "prime sur ce défaut",
+)
+
+
+def test_only_source_notes_are_served():
+    served = 0
+    for level in ("chapters", "headings", "subheadings"):
+        for key, entry in roo.RULES_DATA[level].items():
+            for note in entry.get("notes") or []:
+                served += 1
+                assert not any(word in note for word in _INTERNAL_VOCABULARY), (key, note)
+            for note in entry.get("curation_notes") or []:
+                assert note not in (entry.get("notes") or [])
+    assert served == 41
+    result = asyncio.run(roo.get_rules_of_origin("850440", lang="fr"))
+    assert result["rules"]["applicable_notes"] == []  # chapter 85: internal note only
+    assert "curation_notes" not in json.dumps(result)
+
+
+def test_notes_corrected_from_the_official_french_appendix_iv():
+    # Footnote 27 (p. 68): the chapter rule itself was approved.
+    ch61 = roo.RULES_DATA["chapters"]["61"]["notes"]
+    assert ch61 == [
+        "Le chapitre 61 doit encore être finalisé. La règle du chapitre a été approuvée, "
+        "mais les États membres disposent d'une certaine souplesse pour soumettre des "
+        "exceptions pour les rubriques et sous-rubriques"
+    ]
+    # Note 8: rules 3 (mixtures) and 4 (particle size) do not cover chapter 28.
+    (ch28,) = roo.RULES_DATA["chapters"]["28"]["notes"]
+    assert "Règle 1 : Origine de la réaction chimique" in ch28
+    assert "mélange" not in ch28.lower() and "particules" not in ch28
+
+
+def test_note_9_is_on_the_headings_it_governs_verbatim():
+    # Note 9 (Appendix IV, p. 14-15) defines vehicle construction or assembly
+    # only for the vehicles listed in 9.1/9.2 (87.01 to 87.04, bodies of 87.07)
+    # and for chassis (9.3, 87.06): not on chapter 87, shown for 87.13.
+    assert roo.RULES_DATA["chapters"]["87"]["notes"] == []
+    assert roo.RULES_DATA["headings"]["8705"]["notes"] == []
+    for heading in ("8701", "8702", "8703", "8704", "8706", "8707"):
+        (note,) = roo.RULES_DATA["headings"][heading]["notes"]
+        assert note.startswith("Note 9 de l'Appendice IV: 9.1 Dans le cas de tracteurs routiers")
+        assert "9.3 Dans le cas de châssis équipés de moteurs" in note
+    wheelchairs = asyncio.run(roo.get_rules_of_origin("871310", lang="fr"))
+    assert wheelchairs["rules"]["applicable_notes"] == []
+
+
+def test_value_rules_cite_the_non_originating_content_criterion():
+    # Annex 2 art. 6(1)(b) "la teneur des matières non originaires", the
+    # percentages of Appendix IV (art. 6A(1)(b)); (a) value added is another criterion.
+    va60 = asyncio.run(roo.get_rules_of_origin("850440", lang="fr"))["legal_reference"]
+    assert "Annexe 2, article 6(1)(b) (Max 60% valeur non-originaire)" in va60["articles_fr"]
+    for code in ("VA", "VA15", "VA40", "VA50", "VA60", "VA65"):
+        assert "6(1)(b)" in roo.ORIGIN_TYPES[code]["explanation"]["fr"]
+        assert "6(1)(a)" not in roo.ORIGIN_TYPES[code]["explanation"]["fr"]
+
+
+def test_change_of_chapter_rests_on_article_6_2_not_6_1_c():
+    # Annex 2 art. 6(1)(c) is "le changement de position tarifaire" (4 digits,
+    # art. 1(o)); art. 6(1) has no chapter-level criterion, so a change of
+    # chapter is an Appendix IV rule applied under art. 6(2) (Appendix IV note 1.1).
+    assert "CC" not in roo._CRITERION_ARTICLES
+    for lang, article in (("fr", "article 6(2)"), ("en", "Art. 6(2)")):
+        explanation = roo.ORIGIN_TYPES["CC"]["explanation"][lang]
+        assert article in explanation and "6(1)(c)" not in explanation
+    # The only CC rows (82.13, 8212.20) read "de toute position": their own text.
+    for code in ("821320", "821220"):
+        reference = asyncio.run(roo.get_rules_of_origin(code, lang="fr"))["legal_reference"]
+        assert reference["articles_fr"] == ["Annexe 2, article 6(2) (règles de l'Appendice IV)"]

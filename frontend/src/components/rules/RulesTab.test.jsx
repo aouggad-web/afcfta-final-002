@@ -99,22 +99,75 @@ it("écarte une réponse tardive pour un code précédent", async () => {
 });
 
 describe("Règles d'origine — explication et base légale", () => {
-  it('règle en négociation : explication (art. 42(3)) et base légale affichées', async () => {
-    const explication = "en attendant son adoption, l'article 42(3) de l'Annexe 2 prévoit que les règles d'origine des régimes commerciaux existants s'appliquent.";
+  it('règle en négociation : explication (note 2.4) et base légale affichées', async () => {
+    const explication = "La règle d'origine de ce produit n'est pas encore adoptée : l'Appendice IV la laisse « à déterminer » ou entre crochets ; selon sa note 2.4, une règle entre crochets « n'a pas encore été adoptée par les institutions de négociation de la ZLECAf ». L'article 42 de l'Annexe 2 range parmi les dispositions en suspens l'« Elaboration de règles hybrides à l'Appendice IV de l'annexe 2 sur les règles d'origine » (alinéa 1(c)) et dispose : « En attendant l'adoption des dispositions en suspens, les États parties conviennent que les Règles d'Origine des régimes commerciaux existants sont applicables. » (alinéa 3).";
     const data = reponse({ code: 'YTB', status: 'YTB' });
     data.rules.primary_rule.explanation = explication;
     data.legal_reference = {
       instrument_fr: "Accord portant création de la ZLECAf — Annexe 2, Appendice IV",
       location_fr: 'chapitre 60',
-      articles_fr: ['Annexe 2, article 42(3) (règle non encore adoptée)'],
+      articles_fr: ['Annexe 2, article 42, alinéas 1(c) et 3 (dispositions en suspens)'],
       match_type: 'chapter',
-      notes_fr: ['Appendice IV, note 2.4 (texte non adopté)'],
+      notes_fr: ['Appendice IV, note 2.4 (règle pas encore adoptée par les institutions de négociation de la ZLECAf)'],
       source_version: 'AfCFTA Appendix IV (PSR) - December 2023',
     };
     consulter(data);
 
     expect(await screen.findByText(explication)).toBeInTheDocument();
     expect(screen.getByTestId('origin-applied-to')).toHaveTextContent('règle par défaut du chapitre');
-    expect(screen.getByText(/article 42\(3\) \(règle non encore adoptée\)/)).toBeInTheDocument();
+    expect(screen.getByText(/note 2\.4 \(règle pas encore adoptée/)).toBeInTheDocument();
+    expect(screen.getByText('Annexe 2, article 42, alinéas 1(c) et 3 (dispositions en suspens)')).toBeInTheDocument();
+  });
+});
+
+describe("Règles d'origine — ligne dont le texte n'énonce pas le critère de son code", () => {
+  // Réponse de GET /api/rules-of-origin/210500 : codée WO, mais son texte
+  // n'exige que des matières originaires de certains chapitres.
+  const glaces = {
+    hs_code: '851900',
+    status: 'AGREED',
+    product_description_fr: 'Glaces de consommation, même contenant du cacao',
+    rules: {
+      primary_rule: { code: 'WO', name: "Règle propre à cette ligne de l'Appendice IV", explanation: '', matches_text: false },
+      alternative_rule: null,
+      threshold_note_fr: null,
+      applicable_notes: [],
+    },
+    rule: {
+      psr: 'Fabrication dans laquelle les matières des chapitres 2, 4, 7, 8, 17 et 18 utilisées doivent être originaires',
+      value_added_threshold: null,
+      category: "Règle propre à cette ligne de l'Appendice IV",
+    },
+    match_type: 'heading',
+    legal_reference: {
+      instrument_fr: "Accord portant création de la ZLECAf — Protocole sur le commerce des marchandises, Annexe 2 sur les règles d'origine, Appendice IV",
+      location_fr: 'position 21.05',
+      ex: false,
+      articles_fr: ["Annexe 2, article 6(2) (règles de l'Appendice IV)"],
+      match_type: 'heading',
+      notes_fr: [],
+      source_version: 'AfCFTA Appendix IV (PSR) - December 2023, 12th Council of Ministers',
+    },
+  };
+
+  it("ni « entièrement obtenu » ni art. 4(a)/5 : le texte de la ligne et l'art. 6(2) seulement", async () => {
+    consulter(glaces);
+
+    const critere = (await screen.findByText("Critère d'origine")).parentElement;
+    expect(critere).toHaveTextContent("Règle propre à cette ligne de l'Appendice IV : voir l'exigence");
+    expect(screen.queryByText(/entièrement obtenu/i)).not.toBeInTheDocument();
+    expect(screen.queryByText('Ce que cela implique')).not.toBeInTheDocument();
+    expect(screen.getByText("Annexe 2, article 6(2) (règles de l'Appendice IV)")).toBeInTheDocument();
+    expect(screen.queryByText(/art\. 4\(a\)/)).not.toBeInTheDocument();
+  });
+
+  it("affiche les notes de l'Appendice IV de la ligne", async () => {
+    consulter({
+      ...glaces,
+      rules: { ...glaces.rules, applicable_notes: ['Condition: les produits à base de blé du chapitre 11 utilisés doivent être originaires'] },
+    });
+
+    expect(await screen.findByText("Notes de l'Appendice IV")).toBeInTheDocument();
+    expect(screen.getByText('Condition: les produits à base de blé du chapitre 11 utilisés doivent être originaires')).toBeInTheDocument();
   });
 });

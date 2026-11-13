@@ -395,7 +395,7 @@
       "time_phase": null,
       "status": "AGREED",
       "notes": [
-        "Note 8: règles de traitement chimique (réaction chimique, purification, mélanges, taille des particules, matières de référence, séparation d'isomères)"
+        "Note 8 de l'Appendice IV : Règle 1 : Origine de la réaction chimique (8.3 à 8.5) ; Règle 2 : Origine de la purification (8.6) ; Règle 5 : Matières de référence (8.9 et 8.10) ; Règle 6 : Séparation d’isomères (8.11) ; Règle 7 : Séparation interdite (8.12)"
       ],
       "product_description_fr": "Ex-chapitre 28: Produits chimiques inorganiques; composés inorganiques ou organiques de métaux précieux, d'éléments radioactifs, de métaux des terres rares ou d'isotopes",
       "source": "AfCFTA Appendix IV (PSR) - December 2023, 12th Council of Ministers"
@@ -866,7 +866,8 @@
       "description_fr": "Étoffes de bonneterie",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Bracketed/non adopté: Note 2.4"
       ],
       "product_description_fr": "Étoffes de bonneterie",
@@ -883,7 +884,7 @@
       "time_phase": "Révision après 5 ans",
       "status": "PARTIAL",
       "notes": [
-        "Note: le chapitre 61 doit encore être finalisé; les États membres disposent d'une certaine souplesse pour soumettre des exceptions pour les rubriques et sous-rubriques"
+        "Le chapitre 61 doit encore être finalisé. La règle du chapitre a été approuvée, mais les États membres disposent d'une certaine souplesse pour soumettre des exceptions pour les rubriques et sous-rubriques"
       ],
       "product_description_fr": "Vêtements et accessoires du vêtement, en bonneterie",
       "source": "AfCFTA Appendix IV (PSR) - December 2023, 12th Council of Ministers"
@@ -914,7 +915,8 @@
       "description_fr": "Ex-chapitre 63: Autres articles textiles confectionnés; assortiments; friperie et chiffons",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Voir Notes 5,6,7 (textiles); plusieurs positions bracketed/YTB ([63.01]-[63.06]); 63.09/63.10 'Pas de règle'"
       ],
       "product_description_fr": "Ex-chapitre 63: Autres articles textiles confectionnés; assortiments; friperie et chiffons",
@@ -1200,7 +1202,8 @@
       "description_fr": "Ex-chapitre 84: Réacteurs nucléaires, chaudières, machines, appareils et engins mécaniques; parties de ces machines ou appareils",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "De nombreuses positions spécifiques (8407,8419,8421,etc.) ont des règles VA60 propres qui priment sur le défaut du chapitre"
       ],
       "product_description_fr": "Ex-chapitre 84: Réacteurs nucléaires, chaudières, machines, appareils et engins mécaniques; parties de ces machines ou appareils",
@@ -1216,7 +1219,8 @@
       "description_fr": "Machines, appareils et matériels électriques et leurs parties; appareils d'enregistrement ou de reproduction du son, appareils d'enregistrement ou de reproduction des images et du son en télévision, et parties et accessoires de ces appareils",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Règle de chapitre = VA60 SEUL (pas d'option CTH au niveau chapitre, contrairement à la structure existante du module Python qui indique 'primary':'CTH','alt':'VA60'). 85.04 (transformateurs) n'a pas de ligne dédiée dans l'Appendice IV et retombe donc sur ce défaut VA60 du chapitre."
       ],
       "product_description_fr": "Machines, appareils et matériels électriques et leurs parties; appareils d'enregistrement ou de reproduction du son, appareils d'enregistrement ou de reproduction des images et du son en télévision, et parties et accessoires de ces appareils",
@@ -1246,8 +1250,8 @@
       "description_fr": "Voitures automobiles, tracteurs, cycles et autres véhicules terrestres, leurs parties et accessoires",
       "time_phase": "Réexamen après 5 ans",
       "status": "PARTIAL",
-      "notes": [
-        "Note 9: définition de la construction/assemblage de véhicules (planchers, panneaux latéraux et de toit fixés ensemble; moteur, transmission, essieux, radiateurs, suspension, direction, freinage, équipement électrique fixés au plancher ou au châssis)",
+      "notes": [],
+      "curation_notes": [
         "Le texte du chapitre ne contient pas littéralement 'Ou YTB' — le YTB ne s'applique qu'aux positions spécifiquement listées comme 'À déterminer' (8701,8703,8704,8705,8706,8707,8708,8710,8711,8712)"
       ],
       "product_description_fr": "Voitures automobiles, tracteurs, cycles et autres véhicules terrestres, leurs parties et accessoires",
@@ -1347,7 +1351,8 @@
       "description_fr": "Meubles; mobilier médico-chirurgical; articles de literie et similaires; appareils d'éclairage non dénommés ni compris ailleurs; lampes-réclames, enseignes lumineuses, plaques indicatrices lumineuses et articles similaires; constructions préfabriquées",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Règle de chapitre = VA60 SEUL au niveau chapitre. La position 94.03 (autres meubles) dispose de sa propre règle hybride CTH-ou-VA60 qui prime sur ce défaut."
       ],
       "product_description_fr": "Meubles; mobilier médico-chirurgical; articles de literie et similaires; appareils d'éclairage non dénommés ni compris ailleurs; lampes-réclames, enseignes lumineuses, plaques indicatrices lumineuses et articles similaires; constructions préfabriquées",
@@ -2353,7 +2358,8 @@
       "description_fr": "Costumes tailleurs, ensembles, vestes, blazers, pantalons, culottes et shorts (autres que pour le bain), pour hommes ou garçonnets",
       "time_phase": "Sous réserve d'un réexamen au bout de cinq ans",
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Règle de position 62.03 (CTH). S'applique à toutes les sous-positions de la position 62.03 non couvertes par une règle de sous-position spécifique (ex: 6203.11/6203.31/6203.41 - laine ou poils fins). Cette entrée corrige une régression connue où l'absence de règle au niveau position faisait retomber ces codes sur la règle YARN du chapitre 62."
       ],
       "product_description_fr": "Costumes tailleurs, ensembles, vestes, blazers, pantalons, culottes et shorts (autres que pour le bain), pour hommes ou garçonnets",
@@ -2417,7 +2423,8 @@
       "description_fr": "Couvertures et tapis de voyage",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Bracketed: Note 2.4 = non adopté"
       ],
       "product_description_fr": "Couvertures et tapis de voyage",
@@ -2433,7 +2440,8 @@
       "description_fr": "Linge de lit, linge de table, linge de toilette et linge de cuisine",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Bracketed: Note 2.4 = non adopté"
       ],
       "product_description_fr": "Linge de lit, linge de table, linge de toilette et linge de cuisine",
@@ -2449,7 +2457,8 @@
       "description_fr": "Vitrages, rideaux et stores d'intérieur; cantonnières et tours de lit",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Bracketed: Note 2.4 = non adopté"
       ],
       "product_description_fr": "Vitrages, rideaux et stores d'intérieur; cantonnières et tours de lit",
@@ -2465,7 +2474,8 @@
       "description_fr": "Autres articles d'ameublement",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Bracketed: Note 2.4 = non adopté"
       ],
       "product_description_fr": "Autres articles d'ameublement",
@@ -2481,7 +2491,8 @@
       "description_fr": "Sacs et sachets d'emballage",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Bracketed: Note 2.4 = non adopté"
       ],
       "product_description_fr": "Sacs et sachets d'emballage",
@@ -2497,7 +2508,8 @@
       "description_fr": "Bâches et stores d'extérieur; tentes; voiles pour bateaux, planches à voile ou chars à voile; articles de camping",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Bracketed: Note 2.4 = non adopté"
       ],
       "product_description_fr": "Bâches et stores d'extérieur; tentes; voiles pour bateaux, planches à voile ou chars à voile; articles de camping",
@@ -2543,7 +2555,8 @@
       "description_fr": "Articles de friperie",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "'Pas de règle' (aucune règle d'origine) — statut particulier confirmé par le texte source, distinct de YTB"
       ],
       "product_description_fr": "Articles de friperie",
@@ -2559,7 +2572,8 @@
       "description_fr": "Chiffons, ficelles, cordes et cordages, en matières textiles, sous forme de déchets ou d'articles hors d'usage",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "'Pas de règle' (aucune règle d'origine) — statut particulier confirmé par le texte source, distinct de YTB"
       ],
       "product_description_fr": "Chiffons, ficelles, cordes et cordages, en matières textiles, sous forme de déchets ou d'articles hors d'usage",
@@ -2604,6 +2618,9 @@
       "time_phase": null,
       "status": "YTB",
       "notes": [
+        "Note 9 de l'Appendice IV: 9.1 Dans le cas de tracteurs routiers pour semi-remorques d’une masse ne dépassant pas 1.600 kg (sous-position ex-8701.20) ; des véhicules à moteur servant au transport de dix personnes ou plus, y compris le chauffeur, d’une masse ne dépassant pas 2.000 kg (sous-positions ex-8702.10 et 8702.90) ; des automobiles et autres véhicules à moteur conçus principalement pour le transport des personnes (à l’exclusion de ceux de la position 87.02), y compris les voitures familiales et les voitures de course (position 87.03) ; d’autres véhicules à moteur destinés au transport de marchandises, d’une masse ne dépassant pas 2.000 kg ou d’une masse totale en charge (MTC) ne dépassant pas 3.500 kg par châssis, et équipés d’une cabine (sous-positions ex. 8704.21, ex 8704.31 et ex 8704.90) ; de carrosseries de véhicules à moteur (cabines y comprises) relevant des positions 87.01 à 87.05 ; La construction ou le montage de la voiture ou de la carrosserie signifie que les panneaux de plancher, les flancs et les panneaux de toiture doivent être fixés les uns aux autres et que le moteur, le système de transmission, les essieux, les radiateurs, les éléments de suspension, les mécanismes de direction, les équipements de freinage et les instruments électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis du véhicule ; 9.2 Dans le cas de tracteurs routiers pour semi-remorques d’une masse 1.600 kg (sous-position ex 87.01.20) ; des véhicules à moteur servant au transport de dix personnes ou plus, y compris le chauffeur, d’une masse supérieure à 2.000 kg (sous-positions ex 8702.10 et 8702.90) ; d’autres véhicules à moteur destinés au transport de marchandises, d’une masse supérieure à 2.000 kg ou d’une masse totale en charge (MTC) supérieure à 3.500 kg par châssis, et dotés d’une cabine (sous-positions ex. 8704.21, ex. 8704.22, ex 8704.23, ex 8704.31, ex 8704.32 et ex. 8704.90) : La construction ou le montage de la voiture ou de la carrosserie signifie que les panneaux de plancher, les flancs et les panneaux de toiture doivent être fixés les uns aux autres et que le moteur, le système de transmission, les essieux, les radiateurs, les composants de suspension, les mécanismes de direction, les équipements de freinage et les instruments électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis du véhicule. 9.3 Dans le cas de châssis équipés de moteurs : lorsqu’il s’agit de véhicules à moteur des positions 87.01 à 87.05 (position 87.06) ; le moteur, le système de transmission, les essieux, les composants de suspension, les mécanismes de direction, les équipements de freinage et les équipements électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis."
+      ],
+      "curation_notes": [
         "Note 2.4: pas entre crochets ici mais texte plain 'À déterminer' = règle non encore adoptée"
       ],
       "product_description_fr": "Tracteurs",
@@ -2620,6 +2637,9 @@
       "time_phase": null,
       "status": "YTB",
       "notes": [
+        "Note 9 de l'Appendice IV: 9.1 Dans le cas de tracteurs routiers pour semi-remorques d’une masse ne dépassant pas 1.600 kg (sous-position ex-8701.20) ; des véhicules à moteur servant au transport de dix personnes ou plus, y compris le chauffeur, d’une masse ne dépassant pas 2.000 kg (sous-positions ex-8702.10 et 8702.90) ; des automobiles et autres véhicules à moteur conçus principalement pour le transport des personnes (à l’exclusion de ceux de la position 87.02), y compris les voitures familiales et les voitures de course (position 87.03) ; d’autres véhicules à moteur destinés au transport de marchandises, d’une masse ne dépassant pas 2.000 kg ou d’une masse totale en charge (MTC) ne dépassant pas 3.500 kg par châssis, et équipés d’une cabine (sous-positions ex. 8704.21, ex 8704.31 et ex 8704.90) ; de carrosseries de véhicules à moteur (cabines y comprises) relevant des positions 87.01 à 87.05 ; La construction ou le montage de la voiture ou de la carrosserie signifie que les panneaux de plancher, les flancs et les panneaux de toiture doivent être fixés les uns aux autres et que le moteur, le système de transmission, les essieux, les radiateurs, les éléments de suspension, les mécanismes de direction, les équipements de freinage et les instruments électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis du véhicule ; 9.2 Dans le cas de tracteurs routiers pour semi-remorques d’une masse 1.600 kg (sous-position ex 87.01.20) ; des véhicules à moteur servant au transport de dix personnes ou plus, y compris le chauffeur, d’une masse supérieure à 2.000 kg (sous-positions ex 8702.10 et 8702.90) ; d’autres véhicules à moteur destinés au transport de marchandises, d’une masse supérieure à 2.000 kg ou d’une masse totale en charge (MTC) supérieure à 3.500 kg par châssis, et dotés d’une cabine (sous-positions ex. 8704.21, ex. 8704.22, ex 8704.23, ex 8704.31, ex 8704.32 et ex. 8704.90) : La construction ou le montage de la voiture ou de la carrosserie signifie que les panneaux de plancher, les flancs et les panneaux de toiture doivent être fixés les uns aux autres et que le moteur, le système de transmission, les essieux, les radiateurs, les composants de suspension, les mécanismes de direction, les équipements de freinage et les instruments électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis du véhicule. 9.3 Dans le cas de châssis équipés de moteurs : lorsqu’il s’agit de véhicules à moteur des positions 87.01 à 87.05 (position 87.06) ; le moteur, le système de transmission, les essieux, les composants de suspension, les mécanismes de direction, les équipements de freinage et les équipements électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis."
+      ],
+      "curation_notes": [
         "Note 2.4: pas entre crochets ici mais texte plain 'À déterminer' = règle non encore adoptée"
       ],
       "product_description_fr": "Voitures de tourisme et autres véhicules automobiles principalement conçus pour le transport de personnes (autres que ceux du n° 87.02), y compris les voitures break et les voitures de course",
@@ -2636,6 +2656,9 @@
       "time_phase": null,
       "status": "YTB",
       "notes": [
+        "Note 9 de l'Appendice IV: 9.1 Dans le cas de tracteurs routiers pour semi-remorques d’une masse ne dépassant pas 1.600 kg (sous-position ex-8701.20) ; des véhicules à moteur servant au transport de dix personnes ou plus, y compris le chauffeur, d’une masse ne dépassant pas 2.000 kg (sous-positions ex-8702.10 et 8702.90) ; des automobiles et autres véhicules à moteur conçus principalement pour le transport des personnes (à l’exclusion de ceux de la position 87.02), y compris les voitures familiales et les voitures de course (position 87.03) ; d’autres véhicules à moteur destinés au transport de marchandises, d’une masse ne dépassant pas 2.000 kg ou d’une masse totale en charge (MTC) ne dépassant pas 3.500 kg par châssis, et équipés d’une cabine (sous-positions ex. 8704.21, ex 8704.31 et ex 8704.90) ; de carrosseries de véhicules à moteur (cabines y comprises) relevant des positions 87.01 à 87.05 ; La construction ou le montage de la voiture ou de la carrosserie signifie que les panneaux de plancher, les flancs et les panneaux de toiture doivent être fixés les uns aux autres et que le moteur, le système de transmission, les essieux, les radiateurs, les éléments de suspension, les mécanismes de direction, les équipements de freinage et les instruments électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis du véhicule ; 9.2 Dans le cas de tracteurs routiers pour semi-remorques d’une masse 1.600 kg (sous-position ex 87.01.20) ; des véhicules à moteur servant au transport de dix personnes ou plus, y compris le chauffeur, d’une masse supérieure à 2.000 kg (sous-positions ex 8702.10 et 8702.90) ; d’autres véhicules à moteur destinés au transport de marchandises, d’une masse supérieure à 2.000 kg ou d’une masse totale en charge (MTC) supérieure à 3.500 kg par châssis, et dotés d’une cabine (sous-positions ex. 8704.21, ex. 8704.22, ex 8704.23, ex 8704.31, ex 8704.32 et ex. 8704.90) : La construction ou le montage de la voiture ou de la carrosserie signifie que les panneaux de plancher, les flancs et les panneaux de toiture doivent être fixés les uns aux autres et que le moteur, le système de transmission, les essieux, les radiateurs, les composants de suspension, les mécanismes de direction, les équipements de freinage et les instruments électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis du véhicule. 9.3 Dans le cas de châssis équipés de moteurs : lorsqu’il s’agit de véhicules à moteur des positions 87.01 à 87.05 (position 87.06) ; le moteur, le système de transmission, les essieux, les composants de suspension, les mécanismes de direction, les équipements de freinage et les équipements électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis."
+      ],
+      "curation_notes": [
         "Note 2.4: pas entre crochets ici mais texte plain 'À déterminer' = règle non encore adoptée"
       ],
       "product_description_fr": "Véhicules automobiles pour le transport de marchandises",
@@ -2651,7 +2674,8 @@
       "description_fr": "Véhicules automobiles à usages spéciaux",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Note 2.4: pas entre crochets ici mais texte plain 'À déterminer' = règle non encore adoptée"
       ],
       "product_description_fr": "Véhicules automobiles à usages spéciaux",
@@ -2668,6 +2692,9 @@
       "time_phase": null,
       "status": "YTB",
       "notes": [
+        "Note 9 de l'Appendice IV: 9.1 Dans le cas de tracteurs routiers pour semi-remorques d’une masse ne dépassant pas 1.600 kg (sous-position ex-8701.20) ; des véhicules à moteur servant au transport de dix personnes ou plus, y compris le chauffeur, d’une masse ne dépassant pas 2.000 kg (sous-positions ex-8702.10 et 8702.90) ; des automobiles et autres véhicules à moteur conçus principalement pour le transport des personnes (à l’exclusion de ceux de la position 87.02), y compris les voitures familiales et les voitures de course (position 87.03) ; d’autres véhicules à moteur destinés au transport de marchandises, d’une masse ne dépassant pas 2.000 kg ou d’une masse totale en charge (MTC) ne dépassant pas 3.500 kg par châssis, et équipés d’une cabine (sous-positions ex. 8704.21, ex 8704.31 et ex 8704.90) ; de carrosseries de véhicules à moteur (cabines y comprises) relevant des positions 87.01 à 87.05 ; La construction ou le montage de la voiture ou de la carrosserie signifie que les panneaux de plancher, les flancs et les panneaux de toiture doivent être fixés les uns aux autres et que le moteur, le système de transmission, les essieux, les radiateurs, les éléments de suspension, les mécanismes de direction, les équipements de freinage et les instruments électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis du véhicule ; 9.2 Dans le cas de tracteurs routiers pour semi-remorques d’une masse 1.600 kg (sous-position ex 87.01.20) ; des véhicules à moteur servant au transport de dix personnes ou plus, y compris le chauffeur, d’une masse supérieure à 2.000 kg (sous-positions ex 8702.10 et 8702.90) ; d’autres véhicules à moteur destinés au transport de marchandises, d’une masse supérieure à 2.000 kg ou d’une masse totale en charge (MTC) supérieure à 3.500 kg par châssis, et dotés d’une cabine (sous-positions ex. 8704.21, ex. 8704.22, ex 8704.23, ex 8704.31, ex 8704.32 et ex. 8704.90) : La construction ou le montage de la voiture ou de la carrosserie signifie que les panneaux de plancher, les flancs et les panneaux de toiture doivent être fixés les uns aux autres et que le moteur, le système de transmission, les essieux, les radiateurs, les composants de suspension, les mécanismes de direction, les équipements de freinage et les instruments électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis du véhicule. 9.3 Dans le cas de châssis équipés de moteurs : lorsqu’il s’agit de véhicules à moteur des positions 87.01 à 87.05 (position 87.06) ; le moteur, le système de transmission, les essieux, les composants de suspension, les mécanismes de direction, les équipements de freinage et les équipements électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis."
+      ],
+      "curation_notes": [
         "Note 2.4: pas entre crochets ici mais texte plain 'À déterminer' = règle non encore adoptée"
       ],
       "product_description_fr": "Châssis avec moteur, pour véhicules automobiles",
@@ -2684,6 +2711,9 @@
       "time_phase": null,
       "status": "YTB",
       "notes": [
+        "Note 9 de l'Appendice IV: 9.1 Dans le cas de tracteurs routiers pour semi-remorques d’une masse ne dépassant pas 1.600 kg (sous-position ex-8701.20) ; des véhicules à moteur servant au transport de dix personnes ou plus, y compris le chauffeur, d’une masse ne dépassant pas 2.000 kg (sous-positions ex-8702.10 et 8702.90) ; des automobiles et autres véhicules à moteur conçus principalement pour le transport des personnes (à l’exclusion de ceux de la position 87.02), y compris les voitures familiales et les voitures de course (position 87.03) ; d’autres véhicules à moteur destinés au transport de marchandises, d’une masse ne dépassant pas 2.000 kg ou d’une masse totale en charge (MTC) ne dépassant pas 3.500 kg par châssis, et équipés d’une cabine (sous-positions ex. 8704.21, ex 8704.31 et ex 8704.90) ; de carrosseries de véhicules à moteur (cabines y comprises) relevant des positions 87.01 à 87.05 ; La construction ou le montage de la voiture ou de la carrosserie signifie que les panneaux de plancher, les flancs et les panneaux de toiture doivent être fixés les uns aux autres et que le moteur, le système de transmission, les essieux, les radiateurs, les éléments de suspension, les mécanismes de direction, les équipements de freinage et les instruments électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis du véhicule ; 9.2 Dans le cas de tracteurs routiers pour semi-remorques d’une masse 1.600 kg (sous-position ex 87.01.20) ; des véhicules à moteur servant au transport de dix personnes ou plus, y compris le chauffeur, d’une masse supérieure à 2.000 kg (sous-positions ex 8702.10 et 8702.90) ; d’autres véhicules à moteur destinés au transport de marchandises, d’une masse supérieure à 2.000 kg ou d’une masse totale en charge (MTC) supérieure à 3.500 kg par châssis, et dotés d’une cabine (sous-positions ex. 8704.21, ex. 8704.22, ex 8704.23, ex 8704.31, ex 8704.32 et ex. 8704.90) : La construction ou le montage de la voiture ou de la carrosserie signifie que les panneaux de plancher, les flancs et les panneaux de toiture doivent être fixés les uns aux autres et que le moteur, le système de transmission, les essieux, les radiateurs, les composants de suspension, les mécanismes de direction, les équipements de freinage et les instruments électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis du véhicule. 9.3 Dans le cas de châssis équipés de moteurs : lorsqu’il s’agit de véhicules à moteur des positions 87.01 à 87.05 (position 87.06) ; le moteur, le système de transmission, les essieux, les composants de suspension, les mécanismes de direction, les équipements de freinage et les équipements électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis."
+      ],
+      "curation_notes": [
         "Note 2.4: pas entre crochets ici mais texte plain 'À déterminer' = règle non encore adoptée"
       ],
       "product_description_fr": "Carrosseries pour véhicules automobiles, y compris les cabines",
@@ -2699,7 +2729,8 @@
       "description_fr": "Parties et accessoires des véhicules automobiles",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Note 2.4: pas entre crochets ici mais texte plain 'À déterminer' = règle non encore adoptée"
       ],
       "product_description_fr": "Parties et accessoires des véhicules automobiles",
@@ -2715,7 +2746,8 @@
       "description_fr": "Chars et automobiles blindés de combat",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Note 2.4: pas entre crochets ici mais texte plain 'À déterminer' = règle non encore adoptée"
       ],
       "product_description_fr": "Chars et automobiles blindés de combat",
@@ -2731,7 +2763,8 @@
       "description_fr": "Motocycles",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Note 2.4: pas entre crochets ici mais texte plain 'À déterminer' = règle non encore adoptée"
       ],
       "product_description_fr": "Motocycles",
@@ -2747,7 +2780,8 @@
       "description_fr": "Bicyclettes",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Note 2.4: pas entre crochets ici mais texte plain 'À déterminer' = règle non encore adoptée"
       ],
       "product_description_fr": "Bicyclettes",
@@ -2763,7 +2797,8 @@
       "description_fr": "Tissus de laine cardée ou de poils fins cardés",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Note 2.4: pas entre crochets ici mais texte plain 'À déterminer' = règle non encore adoptée"
       ],
       "product_description_fr": "Tissus de laine cardée ou de poils fins cardés",
@@ -2779,7 +2814,8 @@
       "description_fr": "Tissus de laine peignée ou de poils fins peignés",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Note 2.4: pas entre crochets ici mais texte plain 'À déterminer' = règle non encore adoptée"
       ],
       "product_description_fr": "Tissus de laine peignée ou de poils fins peignés",
@@ -2795,7 +2831,8 @@
       "description_fr": "Tissus de crin",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Note 2.4: pas entre crochets ici mais texte plain 'À déterminer' = règle non encore adoptée"
       ],
       "product_description_fr": "Tissus de crin",
@@ -2811,7 +2848,9 @@
       "description_fr": "Véhicules automobiles pour le transport de dix personnes ou plus, chauffeur inclus",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [],
+      "notes": [
+        "Note 9 de l'Appendice IV: 9.1 Dans le cas de tracteurs routiers pour semi-remorques d’une masse ne dépassant pas 1.600 kg (sous-position ex-8701.20) ; des véhicules à moteur servant au transport de dix personnes ou plus, y compris le chauffeur, d’une masse ne dépassant pas 2.000 kg (sous-positions ex-8702.10 et 8702.90) ; des automobiles et autres véhicules à moteur conçus principalement pour le transport des personnes (à l’exclusion de ceux de la position 87.02), y compris les voitures familiales et les voitures de course (position 87.03) ; d’autres véhicules à moteur destinés au transport de marchandises, d’une masse ne dépassant pas 2.000 kg ou d’une masse totale en charge (MTC) ne dépassant pas 3.500 kg par châssis, et équipés d’une cabine (sous-positions ex. 8704.21, ex 8704.31 et ex 8704.90) ; de carrosseries de véhicules à moteur (cabines y comprises) relevant des positions 87.01 à 87.05 ; La construction ou le montage de la voiture ou de la carrosserie signifie que les panneaux de plancher, les flancs et les panneaux de toiture doivent être fixés les uns aux autres et que le moteur, le système de transmission, les essieux, les radiateurs, les éléments de suspension, les mécanismes de direction, les équipements de freinage et les instruments électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis du véhicule ; 9.2 Dans le cas de tracteurs routiers pour semi-remorques d’une masse 1.600 kg (sous-position ex 87.01.20) ; des véhicules à moteur servant au transport de dix personnes ou plus, y compris le chauffeur, d’une masse supérieure à 2.000 kg (sous-positions ex 8702.10 et 8702.90) ; d’autres véhicules à moteur destinés au transport de marchandises, d’une masse supérieure à 2.000 kg ou d’une masse totale en charge (MTC) supérieure à 3.500 kg par châssis, et dotés d’une cabine (sous-positions ex. 8704.21, ex. 8704.22, ex 8704.23, ex 8704.31, ex 8704.32 et ex. 8704.90) : La construction ou le montage de la voiture ou de la carrosserie signifie que les panneaux de plancher, les flancs et les panneaux de toiture doivent être fixés les uns aux autres et que le moteur, le système de transmission, les essieux, les radiateurs, les composants de suspension, les mécanismes de direction, les équipements de freinage et les instruments électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis du véhicule. 9.3 Dans le cas de châssis équipés de moteurs : lorsqu’il s’agit de véhicules à moteur des positions 87.01 à 87.05 (position 87.06) ; le moteur, le système de transmission, les essieux, les composants de suspension, les mécanismes de direction, les équipements de freinage et les équipements électriques doivent être fixés aux panneaux de plancher ou au cadre du châssis."
+      ],
       "product_description_fr": "Véhicules automobiles pour le transport de dix personnes ou plus, chauffeur inclus",
       "source": "AfCFTA Appendix IV (PSR) - December 2023, 12th Council of Ministers"
     },
@@ -3007,7 +3046,8 @@
       "description_fr": "Fils à coudre de coton, même conditionnés pour la vente au détail",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Fils à coudre de coton, même conditionnés pour la vente au détail",
@@ -3023,7 +3063,8 @@
       "description_fr": "Fils de coton (autres que les fils à coudre), contenant au moins 85 % en poids de coton, non conditionnés pour la vente au détail",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Fils de coton (autres que les fils à coudre), contenant au moins 85 % en poids de coton, non conditionnés pour la vente au détail",
@@ -3039,7 +3080,8 @@
       "description_fr": "Fils de coton (autres que les fils à coudre), contenant moins de 85 % en poids de coton, non conditionnés pour la vente au détail",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Fils de coton (autres que les fils à coudre), contenant moins de 85 % en poids de coton, non conditionnés pour la vente au détail",
@@ -3055,7 +3097,8 @@
       "description_fr": "Fils de coton (autres que les fils à coudre) conditionnés pour la vente au détail",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Fils de coton (autres que les fils à coudre) conditionnés pour la vente au détail",
@@ -3071,7 +3114,8 @@
       "description_fr": "Tissus de coton, contenant au moins 85 % en poids de coton, d'un poids n'excédant pas 200 g/m2",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tissus de coton, contenant au moins 85 % en poids de coton, d'un poids n'excédant pas 200 g/m2",
@@ -3087,7 +3131,8 @@
       "description_fr": "Tissus de coton, contenant au moins 85 % en poids de coton, d'un poids excédant 200 g/m2",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tissus de coton, contenant au moins 85 % en poids de coton, d'un poids excédant 200 g/m2",
@@ -3103,7 +3148,8 @@
       "description_fr": "Tissus de coton, contenant moins de 85 % en poids de coton, mélangés principalement ou uniquement avec des fibres synthétiques ou artificielles, d'un poids n'excédant pas 200 g/m2",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tissus de coton, contenant moins de 85 % en poids de coton, mélangés principalement ou uniquement avec des fibres synthétiques ou artificielles, d'un poids n'excédant pas 200 g/m2",
@@ -3119,7 +3165,8 @@
       "description_fr": "Tissus de coton, contenant moins de 85 % en poids de coton, mélangés principalement ou uniquement avec des fibres synthétiques ou artificielles, d'un poids excédant 200 g/m2",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tissus de coton, contenant moins de 85 % en poids de coton, mélangés principalement ou uniquement avec des fibres synthétiques ou artificielles, d'un poids excédant 200 g/m2",
@@ -3135,7 +3182,8 @@
       "description_fr": "Autres tissus de coton",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Autres tissus de coton",
@@ -3193,7 +3241,8 @@
       "description_fr": "Tissus de lin",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tissus de lin",
@@ -3237,7 +3286,8 @@
       "description_fr": "Tissus de fils synthétiques incorporant des tissus obtenus des matières à partir de la position 54.04",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tissus de fils synthétiques incorporant des tissus obtenus des matières à partir de la position 54.04",
@@ -3253,7 +3303,8 @@
       "description_fr": "Tissus de fils de filaments synthétiques, y compris les tissus obtenus à partir des produits de la position 54.05",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tissus de fils de filaments synthétiques, y compris les tissus obtenus à partir des produits de la position 54.05",
@@ -3269,7 +3320,8 @@
       "description_fr": "Tissus de fibres synthétiques discontinues contenant au moins 85 % en poids de fibres synthétiques discontinues",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tissus de fibres synthétiques discontinues contenant au moins 85 % en poids de fibres synthétiques discontinues",
@@ -3285,7 +3337,8 @@
       "description_fr": "Tissus de fibres synthétiques discontinues, contenant moins de 85 % en poids de ces fibres, mélangés principalement ou uniquement avec du coton, d'un poids n'excédant pas 170 g/m2",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tissus de fibres synthétiques discontinues, contenant moins de 85 % en poids de ces fibres, mélangés principalement ou uniquement avec du coton, d'un poids n'excédant pas 170 g/m2",
@@ -3301,7 +3354,8 @@
       "description_fr": "Tissus de fibres synthétiques discontinues, contenant moins de 85 % en poids de ces fibres, mélangés principalement ou uniquement avec du coton, d'un poids excédant 170 g/m2",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tissus de fibres synthétiques discontinues, contenant moins de 85 % en poids de ces fibres, mélangés principalement ou uniquement avec du coton, d'un poids excédant 170 g/m2",
@@ -3317,7 +3371,8 @@
       "description_fr": "Autres tissus de fibres synthétiques discontinues",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Autres tissus de fibres synthétiques discontinues",
@@ -3333,7 +3388,8 @@
       "description_fr": "Tissus de fibres artificielles discontinues",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tissus de fibres artificielles discontinues",
@@ -3363,7 +3419,8 @@
       "description_fr": "Velours et peluches tissés et tissus de chenille, (autres que les articles des positions 58.02 ou 58.06)",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Velours et peluches tissés et tissus de chenille, (autres que les articles des positions 58.02 ou 58.06)",
@@ -3379,7 +3436,8 @@
       "description_fr": "Tissus bouclés du genre éponge, (autres que les articles du no 5806) surfaces textiles touffetées, autres que les produits du no 57.03)",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tissus bouclés du genre éponge, (autres que les articles du no 5806) surfaces textiles touffetées, autres que les produits du no 57.03)",
@@ -3395,7 +3453,8 @@
       "description_fr": "Tissus à point de gaze, (autres que les articles de la position 58.06)",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tissus à point de gaze, (autres que les articles de la position 58.06)",
@@ -3411,7 +3470,8 @@
       "description_fr": "Tulles, tulles-bobinots et tissus à mailles nouées ; dentelles en pièces, en bandes ou en motifs (autres que les produits des positions 60.02 à 60.06)",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Tulles, tulles-bobinots et tissus à mailles nouées ; dentelles en pièces, en bandes ou en motifs (autres que les produits des positions 60.02 à 60.06)",
@@ -3441,7 +3501,8 @@
       "description_fr": "Rubanerie autre que les articles de la position 58.07 ; rubans sans trame, en fils ou fibres parallélisés et encollés (bolducs)",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Rubanerie autre que les articles de la position 58.07 ; rubans sans trame, en fils ou fibres parallélisés et encollés (bolducs)",
@@ -3485,7 +3546,8 @@
       "description_fr": "Broderies en pièces, en bandes ou en motifs",
       "time_phase": null,
       "status": "YTB",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Code entre crochets dans le document source: règle non encore adoptée formellement (statut YTB) au moment de la 12e réunion du Conseil des Ministres, décembre 2023."
       ],
       "product_description_fr": "Broderies en pièces, en bandes ou en motifs",
@@ -5055,7 +5117,8 @@
       "description_fr": "Autres",
       "time_phase": null,
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Ex.2009.89: jus de mangoustan/kiwi/kaki/carambole/Bush Tucker = VA60 pendant 5 ans puis WO (régime distinct, voir alt_code)"
       ],
       "product_description_fr": "Autres",
@@ -5127,7 +5190,8 @@
       "description_fr": "Costumes tailleurs, ensembles, vestes, blazers, pantalons, culottes et shorts (autres que pour le bain) - sous-positions 6203.11/6203.31/6203.41 (laine ou poils fins)",
       "time_phase": "Sous réserve d'un réexamen au bout de cinq ans",
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Cette règle spécifique de sous-position (CTH, réexamen 5 ans) diffère de la règle par défaut du chapitre 62 (YARN). Les autres sous-positions de la position 62.03 sans règle propre utilisent désormais la règle CTH de la position 62.03 (voir headings['6203']) plutôt que de retomber directement sur la règle YARN du chapitre."
       ],
       "product_description_fr": "Costumes tailleurs, ensembles, vestes, blazers, pantalons, culottes et shorts (autres que pour le bain) - sous-positions 6203.11/6203.31/6203.41 (laine ou poils fins)",
@@ -5143,7 +5207,8 @@
       "description_fr": "Costumes tailleurs, ensembles, vestes, blazers, pantalons, culottes et shorts (autres que pour le bain) - sous-positions 6203.11/6203.31/6203.41 (laine ou poils fins)",
       "time_phase": "Sous réserve d'un réexamen au bout de cinq ans",
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Cette règle spécifique de sous-position (CTH, réexamen 5 ans) diffère de la règle par défaut du chapitre 62 (YARN). Les autres sous-positions de la position 62.03 sans règle propre utilisent désormais la règle CTH de la position 62.03 (voir headings['6203']) plutôt que de retomber directement sur la règle YARN du chapitre."
       ],
       "product_description_fr": "Costumes tailleurs, ensembles, vestes, blazers, pantalons, culottes et shorts (autres que pour le bain) - sous-positions 6203.11/6203.31/6203.41 (laine ou poils fins)",
@@ -5159,7 +5224,8 @@
       "description_fr": "Costumes tailleurs, ensembles, vestes, blazers, pantalons, culottes et shorts (autres que pour le bain) - sous-positions 6203.11/6203.31/6203.41 (laine ou poils fins)",
       "time_phase": "Sous réserve d'un réexamen au bout de cinq ans",
       "status": "AGREED",
-      "notes": [
+      "notes": [],
+      "curation_notes": [
         "Cette règle spécifique de sous-position (CTH, réexamen 5 ans) diffère de la règle par défaut du chapitre 62 (YARN). Les autres sous-positions de la position 62.03 sans règle propre utilisent désormais la règle CTH de la position 62.03 (voir headings['6203']) plutôt que de retomber directement sur la règle YARN du chapitre."
       ],
       "product_description_fr": "Costumes tailleurs, ensembles, vestes, blazers, pantalons, culottes et shorts (autres que pour le bain) - sous-positions 6203.11/6203.31/6203.41 (laine ou poils fins)",
@@ -5665,16 +5731,16 @@
       "en": "Wholly Obtained",
       "fr": "Entièrement Obtenu",
       "explanation": {
-        "fr": "Critère du produit entièrement obtenu (art. 4(a) et art. 5 de l'Annexe 2 sur les Règles d'Origine) : le produit doit être constitué exclusivement de ressources extraites, cultivées, nées et élevées, pêchées ou chassées, ou fabriquées uniquement à partir de tels produits, sur le territoire d'un État partie — sans aucune matière non originaire.",
-        "en": "Wholly-obtained criterion (Art. 4(a) and Art. 5 of Annex 2 on Rules of Origin): the product must consist exclusively of resources extracted, grown, born and raised, fished or hunted, or manufactured solely from such products, within a State Party's territory — using no non-originating materials at all."
+        "fr": "Critère du produit entièrement obtenu (art. 4(a) et art. 5 de l'Annexe 2 sur les Règles d'Origine) : le produit est originaire si « il a été entièrement obtenu dans ledit État Partie au sens de l’article 5 de la présente annexe » ; l'article 5, alinéa 1, énumère ces produits (paragraphes a. à n.).",
+        "en": "Wholly-obtained criterion (Art. 4(a) and Art. 5 of Annex 2 on Rules of Origin): the product originates if it has been wholly obtained in that State Party within the meaning of Art. 5, whose paragraph 1 lists those products (items a. to n.)."
       }
     },
     "CC": {
       "en": "Change of Chapter",
       "fr": "Changement de Chapitre",
       "explanation": {
-        "fr": "Variante, au niveau du chapitre (2 chiffres, art. 1(b) de l'Annexe 2), du critère de changement de classification tarifaire prévu à l'article 6(1)(c) : toutes les matières non originaires utilisées dans la fabrication doivent relever d'un chapitre du Système Harmonisé différent de celui du produit fini.",
-        "en": "A chapter-level (2-digit, Art. 1(b) of Annex 2) variant of the tariff-classification-change criterion in Art. 6(1)(c): all non-originating materials used in manufacture must fall under a different Harmonized System chapter than the finished product."
+        "fr": "Critère de changement de chapitre (2 chiffres, art. 1(b) de l'Annexe 2) fixé par la règle de l'Appendice IV, qui s'applique au titre de l'article 6(2) de l'Annexe 2 sur les Règles d'Origine (note 1.1 de l'Appendice IV) : toutes les matières non originaires utilisées dans la fabrication doivent relever d'un chapitre du Système Harmonisé différent de celui du produit fini.",
+        "en": "Change-of-chapter criterion (2-digit, Art. 1(b) of Annex 2) set by the Appendix IV rule, which applies under Art. 6(2) of Annex 2 on Rules of Origin (Appendix IV, note 1.1): all non-originating materials used in manufacture must fall under a different Harmonized System chapter than the finished product."
       }
     },
     "CTH": {
@@ -5694,51 +5760,51 @@
       }
     },
     "VA": {
-      "en": "Value Added",
-      "fr": "Valeur Ajoutée",
+      "en": "Non-originating materials content",
+      "fr": "Teneur des matières non originaires",
       "explanation": {
-        "fr": "Critère de la valeur ajoutée / teneur des matières non originaires prévu à l'article 6(1)(a)-(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées (telle que définie à l'art. 1(y)) ne doit pas dépasser le pourcentage du prix départ usine (art. 1(k)) fixé par la règle.",
-        "en": "Value-added / non-originating-content criterion set out in Art. 6(1)(a)-(b) of Annex 2 on Rules of Origin: the value of non-originating materials used (as defined in Art. 1(y)) must not exceed the percentage of the ex-works price (Art. 1(k)) set by the rule."
+        "fr": "Critère de la teneur des matières non originaires prévu à l'article 6(1)(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées (telle que définie à l'art. 1(y)) ne doit pas dépasser le pourcentage du prix départ usine (art. 1(k)) fixé par la règle.",
+        "en": "Non-originating-content criterion set out in Art. 6(1)(b) of Annex 2 on Rules of Origin: the value of non-originating materials used (as defined in Art. 1(y)) must not exceed the percentage of the ex-works price (Art. 1(k)) set by the rule."
       }
     },
     "VA15": {
       "en": "Max 15% non-originating value",
       "fr": "Max 15% valeur non-originaire",
       "explanation": {
-        "fr": "Critère de la valeur ajoutée / teneur des matières non originaires prévu à l'article 6(1)(a)-(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 15 % du prix départ usine (art. 1(k)) du produit fini.",
-        "en": "Value-added / non-originating-content criterion set out in Art. 6(1)(a)-(b) of Annex 2 on Rules of Origin: the value of non-originating materials used in manufacture must not exceed 15% of the product's ex-works price (Art. 1(k))."
+        "fr": "Critère de la teneur des matières non originaires prévu à l'article 6(1)(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 15 % du prix départ usine (art. 1(k)) du produit fini.",
+        "en": "Non-originating-content criterion set out in Art. 6(1)(b) of Annex 2 on Rules of Origin: the value of non-originating materials used in manufacture must not exceed 15% of the product's ex-works price (Art. 1(k))."
       }
     },
     "VA40": {
       "en": "Max 40% non-originating value",
       "fr": "Max 40% valeur non-originaire",
       "explanation": {
-        "fr": "Critère de la valeur ajoutée / teneur des matières non originaires prévu à l'article 6(1)(a)-(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 40 % du prix départ usine (art. 1(k)) du produit fini.",
-        "en": "Value-added / non-originating-content criterion set out in Art. 6(1)(a)-(b) of Annex 2 on Rules of Origin: the value of non-originating materials used in manufacture must not exceed 40% of the product's ex-works price (Art. 1(k))."
+        "fr": "Critère de la teneur des matières non originaires prévu à l'article 6(1)(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 40 % du prix départ usine (art. 1(k)) du produit fini.",
+        "en": "Non-originating-content criterion set out in Art. 6(1)(b) of Annex 2 on Rules of Origin: the value of non-originating materials used in manufacture must not exceed 40% of the product's ex-works price (Art. 1(k))."
       }
     },
     "VA50": {
       "en": "Max 50% non-originating value",
       "fr": "Max 50% valeur non-originaire",
       "explanation": {
-        "fr": "Critère de la valeur ajoutée / teneur des matières non originaires prévu à l'article 6(1)(a)-(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 50 % du prix départ usine (art. 1(k)) du produit fini.",
-        "en": "Value-added / non-originating-content criterion set out in Art. 6(1)(a)-(b) of Annex 2 on Rules of Origin: the value of non-originating materials used in manufacture must not exceed 50% of the product's ex-works price (Art. 1(k))."
+        "fr": "Critère de la teneur des matières non originaires prévu à l'article 6(1)(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 50 % du prix départ usine (art. 1(k)) du produit fini.",
+        "en": "Non-originating-content criterion set out in Art. 6(1)(b) of Annex 2 on Rules of Origin: the value of non-originating materials used in manufacture must not exceed 50% of the product's ex-works price (Art. 1(k))."
       }
     },
     "VA60": {
       "en": "Max 60% non-originating value",
       "fr": "Max 60% valeur non-originaire",
       "explanation": {
-        "fr": "Critère de la valeur ajoutée / teneur des matières non originaires prévu à l'article 6(1)(a)-(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 60 % du prix départ usine (art. 1(k)) du produit fini.",
-        "en": "Value-added / non-originating-content criterion set out in Art. 6(1)(a)-(b) of Annex 2 on Rules of Origin: the value of non-originating materials used in manufacture must not exceed 60% of the product's ex-works price (Art. 1(k))."
+        "fr": "Critère de la teneur des matières non originaires prévu à l'article 6(1)(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 60 % du prix départ usine (art. 1(k)) du produit fini.",
+        "en": "Non-originating-content criterion set out in Art. 6(1)(b) of Annex 2 on Rules of Origin: the value of non-originating materials used in manufacture must not exceed 60% of the product's ex-works price (Art. 1(k))."
       }
     },
     "VA65": {
       "en": "Max 65% non-originating value",
       "fr": "Max 65% valeur non-originaire",
       "explanation": {
-        "fr": "Critère de la valeur ajoutée / teneur des matières non originaires prévu à l'article 6(1)(a)-(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 65 % du prix départ usine (art. 1(k)) du produit fini.",
-        "en": "Value-added / non-originating-content criterion set out in Art. 6(1)(a)-(b) of Annex 2 on Rules of Origin: the value of non-originating materials used in manufacture must not exceed 65% of the product's ex-works price (Art. 1(k))."
+        "fr": "Critère de la teneur des matières non originaires prévu à l'article 6(1)(b) de l'Annexe 2 sur les Règles d'Origine : la valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 65 % du prix départ usine (art. 1(k)) du produit fini.",
+        "en": "Non-originating-content criterion set out in Art. 6(1)(b) of Annex 2 on Rules of Origin: the value of non-originating materials used in manufacture must not exceed 65% of the product's ex-works price (Art. 1(k))."
       }
     },
     "SP": {
@@ -5753,8 +5819,8 @@
       "en": "Regional Value Content",
       "fr": "Contenu de Valeur Régionale",
       "explanation": {
-        "fr": "Critère de la valeur ajoutée / teneur de valeur régionale prévu à l'article 6(1)(a)-(b) de l'Annexe 2 sur les Règles d'Origine : le contenu en valeur régionale du produit (matières et main-d'œuvre originaires des États parties) doit atteindre le seuil minimal fixé par la règle.",
-        "en": "Value-added / regional-value-content criterion set out in Art. 6(1)(a)-(b) of Annex 2 on Rules of Origin: the product's regional value content (materials and labour originating from State Parties) must meet the minimum threshold set by the rule."
+        "fr": "Critère de la valeur ajoutée prévu à l'article 6(1)(a) de l'Annexe 2 sur les Règles d'Origine : le contenu en valeur régionale du produit (matières et main-d'œuvre originaires des États parties) doit atteindre le seuil minimal fixé par la règle.",
+        "en": "Value-added criterion set out in Art. 6(1)(a) of Annex 2 on Rules of Origin: the product's regional value content (materials and labour originating from State Parties) must meet the minimum threshold set by the rule."
       }
     },
     "YARN": {
@@ -5769,8 +5835,8 @@
       "en": "Yet to be agreed",
       "fr": "En cours de négociation",
       "explanation": {
-        "fr": "La règle d'origine applicable à ce produit n'a pas encore été définitivement adoptée par les États parties (Appendice IV de l'Annexe 2, statut au moment de la 12e réunion du Conseil des Ministres, décembre 2023) ; en attendant son adoption, l'article 42(3) de l'Annexe 2 prévoit que les règles d'origine des régimes commerciaux existants s'appliquent.",
-        "en": "The rule of origin for this product has not yet been formally adopted by the State Parties (Annex 2, Appendix IV, status as of the 12th Council of Ministers meeting, December 2023); pending adoption, Art. 42(3) of Annex 2 provides that the rules of origin of existing trade regimes apply instead."
+        "fr": "La règle d'origine de ce produit n'est pas encore adoptée : l'Appendice IV la laisse « à déterminer » ou entre crochets ; selon sa note 2.4, une règle entre crochets « n'a pas encore été adoptée par les institutions de négociation de la ZLECAf ». L'article 42 de l'Annexe 2 range parmi les dispositions en suspens l'« Elaboration de règles hybrides à l'Appendice IV de l'annexe 2 sur les règles d'origine » (alinéa 1(c)) et dispose : « En attendant l'adoption des dispositions en suspens, les États parties conviennent que les Règles d'Origine des régimes commerciaux existants sont applicables. » (alinéa 3).",
+        "en": "The rule of origin for this product has not yet been adopted: Appendix IV leaves it to be determined or in square brackets; under its note 2.4, a rule in square brackets has not yet been adopted by the AfCFTA negotiating institutions. Article 42 of Annex 2 lists among the pending provisions the elaboration of hybrid rules in Appendix IV (paragraph 1(c)) and provides that, pending the adoption of the pending provisions, the State Parties agree that the rules of origin of existing trade regimes apply (paragraph 3)."
       }
     }
   },

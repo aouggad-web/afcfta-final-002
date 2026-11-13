@@ -165,6 +165,12 @@ const OfficialRuleOfOrigin = ({ hs6Code, lang }) => {
       <p style={{ fontSize: 11, color: 'var(--afcfta-muted)', lineHeight: 1.4, margin: 0 }}>
         {primaryRule.explanation}
       </p>
+      {/* Note 2.5: the printed 60 % ceiling falls to 55 %; the threshold is to be confirmed. */}
+      {rule.rules?.threshold_note_fr && (
+        <p style={{ fontSize: 11, color: 'var(--gold)', lineHeight: 1.4, margin: '4px 0 0' }} data-testid="official-rule-threshold-note">
+          <bdi lang="fr" dir="ltr">{rule.rules.threshold_note_fr}</bdi>
+        </p>
+      )}
     </div>
   );
 };

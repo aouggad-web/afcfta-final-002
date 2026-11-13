@@ -24,21 +24,34 @@ const RATTACHEMENT = {
     'لا توجد قاعدة خاصة بالبند: تُطبَّق القاعدة الافتراضية للفصل',
   ],
 };
+// Ligne « ex » : elle ne vise qu'une partie de son chapitre, de sa position ou
+// de sa sous-position ; un produit hors de sa désignation relève d'une autre règle.
+const LIGNE_EX = [
+  'ligne « ex » : elle ne vise que les produits de sa désignation',
+  '“ex” row: it only covers the products in its description',
+  'سطر « ex »: لا يشمل إلا المنتجات الواردة في وصفه',
+];
 
 export default function OriginLegalReference({ roo, language = 'fr', className = '' }) {
   const ref = roo?.legal_reference;
   if (!ref) return null;
-  const rattachement = RATTACHEMENT[ref.match_type];
+  const rattachement = ref.ex ? LIGNE_EX : RATTACHEMENT[ref.match_type];
   return (
     <div className={`space-y-1 ${className}`} data-testid="origin-legal-reference">
       <p className="font-semibold text-[var(--text)]">
         {pick(language, 'Base légale et référence', 'Legal basis and reference', 'الأساس القانوني والمرجع')}
       </p>
       <p data-testid="origin-applied-to">
-        {pick(language, 'Position', 'Code', 'الرمز')} <bdi dir="ltr">{roo.hs_code}</bdi> →{' '}
+        {pick(language, 'Position', 'Code', 'الرمز')} <bdi dir="ltr">{roo.hs_code}</bdi> {language === 'ar' ? '←' : '→'}{' '}
         <bdi lang="fr" dir="ltr">Appendice IV, {ref.location_fr}</bdi>
         {rattachement && <> ({pick(language, ...rattachement)})</>}
       </p>
+      {ref.ex && roo.product_description_fr && (
+        <p data-testid="origin-ex-description">
+          {pick(language, 'Désignation de la ligne', 'Row description', 'وصف السطر')} :{' '}
+          <bdi lang="fr" dir="ltr">{roo.product_description_fr}</bdi>
+        </p>
+      )}
       <p><bdi lang="fr" dir="ltr">{ref.instrument_fr}</bdi></p>
       {(ref.articles_fr || []).map((article) => (
         <p key={article}><bdi lang="fr" dir="ltr">{article}</bdi></p>
