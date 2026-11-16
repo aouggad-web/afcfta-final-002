@@ -19,7 +19,7 @@ from fastapi import APIRouter, HTTPException, Query
 
 from services import socle
 from services.calcul import _est_moyenne_statistique, calculer, droits_a_la_date
-from services.designation import texte_designation
+from services.designation import designation_publiee, libelle_sh6_emprunte, texte_designation
 from services.formalites import (
     FORMALITES_AUCUNE_PARTICULIERE,
     FORMALITES_DOCUMENTEES,
@@ -207,6 +207,7 @@ def fiche_position(
         raise HTTPException(status_code=404, detail=exc.args[0]) from exc
 
     designation = position.get("designation")
+    publiee = designation_publiee(designation)
     couverture = provenance.get("couverture") or {}
     niveau = provenance["niveau"]
     preference, preferentiels = (
@@ -224,9 +225,13 @@ def fiche_position(
         "hs6": position.get("hs6"),
         "chapitre": position.get("chapitre"),
         "unite": position.get("unite"),
-        "description_fr": texte_designation(designation, "fr"),
-        "description_en": texte_designation(designation, "en"),
-        "description_ar": texte_designation(designation, "ar"),
+        # La désignation du pays est le texte que son tarif publie ; le libellé SH6
+        # que le socle emprunte à d'autres tarifs (AGO, EGY, MOZ) est servi à part,
+        # avec sa source : il décrit le SH6, pas cette ligne.
+        "description_fr": texte_designation(publiee, "fr"),
+        "description_en": texte_designation(publiee, "en"),
+        "description_ar": texte_designation(publiee, "ar"),
+        "libelle_sh6_emprunte": libelle_sh6_emprunte(designation),
         "droits": [
             {
                 "code": droit.get("code"),

@@ -498,6 +498,110 @@ describe('RegulatoryDetailsPanel', () => {
     });
   });
 
+  describe('libellé SH6 emprunté à un autre tarif', () => {
+    // AGO 10061000 : le texte du tarif angolais, et les libellés que le socle emprunte
+    // au Sénégal et au Kenya (celui du Sénégal porte « de semence », un niveau national).
+    const emprunt = {
+      niveau: 'SH6',
+      fr: 'Riz en paille (riz paddy) de semence',
+      fr_source: 'SEN — Tarif extérieur commun CEDEAO (Sénégal)',
+      en: '- Rice in the husk (paddy or rough)',
+      en_source: 'KEN — EAC Common External Tariff (kra.go.ke)',
+    };
+    const angola = (surcharge = {}) => fiche({
+      country_iso3: 'AGO',
+      code: '10061000',
+      hs6: '100610',
+      chapitre: '10',
+      description_fr: 'Arroz com casca (arroz paddy)',
+      description_en: 'Arroz com casca (arroz paddy)',
+      description_ar: 'Arroz com casca (arroz paddy)',
+      libelle_sh6_emprunte: emprunt,
+      ...surcharge,
+    });
+    const PROPS_AGO = { countryCode: 'AGO', hsCode: '10061000' };
+
+    it("le texte du tarif est la désignation ; l'emprunt est déclaré à part, avec sa source", async () => {
+      repondre({ position: angola(), formalite: formalites() });
+      await rendre(PROPS_AGO);
+
+      expect(await screen.findByText('Arroz com casca (arroz paddy)')).toBeInTheDocument();
+      const note = screen.getByTestId('regulatory-borrowed-label');
+      expect(note).toHaveTextContent('Libellé du SH6 emprunté à un autre tarif :');
+      expect(note).toHaveTextContent('Source : SEN — Tarif extérieur commun CEDEAO (Sénégal)');
+      expect(note).toHaveTextContent('« Riz en paille (riz paddy) de semence »');
+      expect(note).toHaveTextContent('Il décrit le SH6, pas cette ligne nationale');
+      expect(note).toHaveTextContent('le texte publié par le tarif du pays fait foi');
+      // Le libellé du Sénégal ne se lit qu'ici : jamais comme la désignation de la position.
+      const lectures = screen.getAllByText(/Riz en paille/);
+      expect(lectures).toHaveLength(1);
+      expect(note).toContainElement(lectures[0]);
+    });
+
+    it("dans l'écran anglais, l'emprunt anglais et sa source", async () => {
+      repondre({ position: angola(), formalite: formalites() });
+      await rendre({ ...PROPS_AGO, language: 'en' });
+
+      const note = await screen.findByTestId('regulatory-borrowed-label');
+      expect(note).toHaveTextContent('SH6 label borrowed from another tariff:');
+      expect(note).toHaveTextContent('Source: KEN — EAC Common External Tariff (kra.go.ke)');
+      expect(note).toHaveTextContent('“- Rice in the husk (paddy or rough)”');
+      expect(note).toHaveTextContent("the text published by the country's own tariff prevails");
+      expect(note).not.toHaveTextContent('Riz en paille');
+    });
+
+    it("dans l'écran arabe, l'emprunt anglais (aucun emprunt n'est en arabe), avec la note en arabe", async () => {
+      repondre({ position: angola(), formalite: formalites() });
+      await rendre({ ...PROPS_AGO, language: 'ar' });
+
+      const note = await screen.findByTestId('regulatory-borrowed-label');
+      expect(note).toHaveTextContent('تسمية SH6 مستعارة من تعريفة أخرى:');
+      expect(note).toHaveTextContent('المصدر: KEN — EAC Common External Tariff (kra.go.ke)');
+      expect(note).toHaveTextContent('«- Rice in the husk (paddy or rough)»');
+      expect(note).toHaveTextContent('والنص المنشور في تعريفة البلد هو المعتمد');
+    });
+
+    it("sans libellé dans la langue de l'écran, celui d'une autre langue se lit avec sa propre source", async () => {
+      const seulementFrancais = { niveau: 'SH6', fr: emprunt.fr, fr_source: emprunt.fr_source };
+      repondre({ position: angola({ libelle_sh6_emprunte: seulementFrancais }), formalite: formalites() });
+      await rendre({ ...PROPS_AGO, language: 'en' });
+
+      const note = await screen.findByTestId('regulatory-borrowed-label');
+      expect(note).toHaveTextContent('Source: SEN — Tarif extérieur commun CEDEAO (Sénégal)');
+      expect(note).toHaveTextContent('“Riz en paille (riz paddy) de semence”');
+      expect(note).not.toHaveTextContent('KEN');
+    });
+
+    it("sans désignation publiée (Égypte), l'emprunt reste lisible, déclaré comme tel", async () => {
+      repondre({
+        position: angola({ description_fr: '', description_en: '', description_ar: '' }),
+        formalite: formalites(),
+      });
+      await rendre(PROPS_AGO);
+
+      // Rien n'est publié : l'écran le dit, et n'y met pas le libellé d'un autre tarif.
+      expect(await screen.findByTestId('regulatory-no-description')).toHaveTextContent('Désignation non publiée');
+      const note = screen.getByTestId('regulatory-borrowed-label');
+      expect(note).toHaveTextContent('Libellé du SH6 emprunté à un autre tarif');
+      expect(note).toHaveTextContent('Riz en paille (riz paddy) de semence');
+      expect(screen.getAllByText(/Riz en paille/)).toHaveLength(1);
+    });
+
+    it("n'affiche rien quand le socle n'emprunte aucun libellé", async () => {
+      repondre({ position: fiche(), formalite: formalites() });
+      await rendre();
+      await screen.findByText('De veaux');
+      expect(screen.queryByTestId('regulatory-borrowed-label')).not.toBeInTheDocument();
+    });
+
+    it("n'affiche rien quand la fiche déclare un emprunt nul", async () => {
+      repondre({ position: fiche({ libelle_sh6_emprunte: null }), formalite: formalites() });
+      await rendre();
+      await screen.findByText('De veaux');
+      expect(screen.queryByTestId('regulatory-borrowed-label')).not.toBeInTheDocument();
+    });
+  });
+
   describe('restrictions', () => {
     it('sert les restrictions telles que la source les écrit', async () => {
       repondre({

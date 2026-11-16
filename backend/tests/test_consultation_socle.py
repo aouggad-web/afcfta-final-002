@@ -13,7 +13,7 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from services import socle
-from services.designation import texte_designation
+from services.designation import designation_publiee, libelle_sh6_emprunte, texte_designation
 
 BACKEND = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -479,7 +479,9 @@ def test_fiche_porte_les_champs_de_la_position_du_socle(client):
         corps = client.get(f"/consultation/{iso3}/position/{code}").json()
         assert corps["chapitre"] == position["chapitre"] and corps["hs6"] == position["hs6"]
         assert corps["unite"] == position.get("unite")
-        assert corps["description_en"] == texte_designation(position.get("designation"), "en")
+        # La désignation du pays : ce que son tarif publie, sans les libellés que le
+        # socle emprunte à d'autres tarifs (EGY) ; ceux-là se servent à part.
+        assert corps["description_en"] == texte_designation(designation_publiee(position.get("designation")), "en")
         assert [d["note"] for d in corps["droits"]] == [d.get("note") for d in position["droits"]]
         assert [d["assiette"] for d in corps["droits"]] == [d.get("assiette") for d in position["droits"]]
 
@@ -581,3 +583,68 @@ def test_fiche_l_origine_est_le_pays_de_destination(client):
 @pytest.mark.parametrize("origine", ["XX", "KENYA", "D1A", "", "K N"])
 def test_fiche_une_origine_invalide_est_refusee(client, origine):
     assert client.get("/consultation/DZA/position/0201101100", params={"origine": origine}).status_code == 422
+
+
+@_requiert_socle("AGO")
+def test_fiche_un_libelle_emprunte_n_est_pas_la_designation_du_pays(client):
+    """AGO 10061000 : le socle y ajoute des libellés SH6 français et anglais
+    empruntés au Sénégal et au Kenya. Ils décrivent le SH6, et le français porte
+    même le niveau national du tarif qui l'a fourni (« de semence ») : lu comme la
+    désignation de la position angolaise, il réduisait le riz paddy au riz de
+    semence. La désignation est le texte du tarif angolais ; l'emprunt est servi
+    à part, avec sa source."""
+    designation = socle.position("AGO", "10061000")[0]["designation"]
+    if not {"fr", "en"} <= set(designation.get("langues_empruntees") or []):
+        pytest.skip("le socle AGO n'emprunte plus de libellé à cette position")
+    corps = client.get("/consultation/AGO/position/10061000").json()
+    for langue in ("fr", "en", "ar"):
+        assert corps[f"description_{langue}"] == designation["verbatim"]
+        assert corps[f"description_{langue}"] not in (designation["fr"], designation["en"])
+    emprunt = corps["libelle_sh6_emprunte"]
+    assert emprunt["niveau"] == "SH6"
+    assert emprunt["fr"] == designation["fr"] and emprunt["fr_source"] == designation["fr_source"]
+    assert emprunt["en"] == designation["en"] and emprunt["en_source"] == designation["en_source"]
+
+
+@_requiert_socle("EGY")
+def test_fiche_egypte_sans_libelle_national_l_emprunt_reste_lisible_et_declare(client):
+    """EGY : le tarif publie son libellé en arabe, et il est vide. La désignation
+    reste vide (rien n'est publié) ; les libellés empruntés, seuls à dire quelque
+    chose du produit, se lisent à part, déclarés comme empruntés."""
+    designation = socle.position("EGY", "0101210000")[0]["designation"]
+    if (designation.get("verbatim") or "").strip() or not designation.get("langues_empruntees"):
+        pytest.skip("cette position EGY publie un libellé, ou n'en emprunte aucun")
+    corps = client.get("/consultation/EGY/position/0101210000").json()
+    assert corps["description_fr"] == corps["description_en"] == corps["description_ar"] == ""
+    emprunt = corps["libelle_sh6_emprunte"]
+    assert emprunt["fr"] == designation["fr"] and emprunt["en"] == designation["en"]
+    assert emprunt["fr_source"] and emprunt["en_source"]
+
+
+def test_fiche_sans_emprunt_ne_declare_rien(client):
+    corps = client.get("/consultation/DZA/position/0201101100").json()
+    assert corps["libelle_sh6_emprunte"] is None
+    assert "veaux" in corps["description_fr"]
+
+
+@_requiert_socle("AGO", "EGY", "MOZ")
+@pytest.mark.parametrize("iso3", ["AGO", "EGY", "MOZ"])
+def test_aucun_emprunt_n_atteint_la_designation_du_pays(iso3):
+    """Sur toutes les positions du socle de ces trois pays : un libellé emprunté
+    ne sort jamais comme désignation (sauf s'il est identique au texte publié), et
+    se déclare à part avec le texte emprunté."""
+    emprunts = 0
+    for code, position in socle.charger(iso3)["positions"].items():
+        designation = position.get("designation")
+        if not isinstance(designation, dict) or not designation.get("langues_empruntees"):
+            continue
+        publiee = designation_publiee(designation)
+        declare = libelle_sh6_emprunte(designation)
+        for langue in designation["langues_empruntees"]:
+            emprunts += 1
+            lu = texte_designation(publiee, langue)
+            assert lu != designation[langue] or lu == designation.get("verbatim"), (
+                f"{iso3}/{code} : le libellé {langue} emprunté est servi comme désignation"
+            )
+            assert declare[langue] == designation[langue]
+    assert emprunts > 1000, f"{iso3} : trop peu d'emprunts examinés ({emprunts})"
