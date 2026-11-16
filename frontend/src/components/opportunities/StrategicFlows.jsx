@@ -236,7 +236,15 @@ function FlowCard({ flow, lang }) {
           sub={t('opportunities.strategicFlows.mfnPref')}
         />
         <AdvantageChip icon={Sparkles} label={t('opportunities.strategicFlows.priceComp')} value={adv.price_competitiveness} />
-        <AdvantageChip icon={ShieldCheck} label={t('opportunities.strategicFlows.roo')} value={roo.rule_name || roo.rule_type} />
+        {/* « Règle propre à cette ligne » : la ligne (en français) est citée. */}
+        <AdvantageChip
+          icon={ShieldCheck}
+          label={t('opportunities.strategicFlows.roo')}
+          value={roo.rule_name || roo.rule_type}
+          sub={roo.matches_text === false && roo.rule_text_fr
+            ? <bdi lang="fr" dir="ltr" data-testid="roo-rule-text">{roo.rule_text_fr}</bdi>
+            : null}
+        />
       </div>
     </div>
   );

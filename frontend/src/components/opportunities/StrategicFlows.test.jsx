@@ -72,6 +72,47 @@ describe('StrategicFlows', () => {
     expect(container.textContent).not.toMatch(/opportunities\.[a-zA-Z]+\./);
   });
 
+  it('cite le texte de la ligne quand la règle est propre à la ligne (15.11)', async () => {
+    const texte = 'Fabrication dans laquelle la valeur de toutes les matières non originaires '
+      + 'utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 3 ans, '
+      + 'après quoi la fabrication dans laquelle les matières utilisées doivent être '
+      + "entièrement obtenues doit faire l'objet d'un examen objectif";
+    const roo = {
+      rule_name: "Règle propre à cette ligne de l'Appendice IV",
+      rule_type: 'VA60',
+      matches_text: false,
+      rule_text_fr: texte,
+    };
+    const flow = { ...FLOWS.flows[0], hs_code: '151110', advantage: { afcfta_tariff_edge: {}, rules_of_origin: roo } };
+    axios.get.mockImplementation((url) => {
+      if (url.includes('/substitution/countries')) {
+        return Promise.resolve({ data: { countries: [{ iso3: 'KEN', name: 'Kenya' }] } });
+      }
+      if (url.includes('/strategic/flows/')) return Promise.resolve({ data: { ...FLOWS, flows: [flow] } });
+      return Promise.resolve({ data: {} });
+    });
+    render(<StrategicFlows language="fr" initialCountry={{ iso3: 'KEN' }} />);
+    expect(await screen.findByText("Règle propre à cette ligne de l'Appendice IV")).toBeInTheDocument();
+    const cite = screen.getByTestId('roo-rule-text');
+    expect(cite).toHaveTextContent(texte);
+    expect(cite).toHaveAttribute('lang', 'fr');
+  });
+
+  it('ne répète pas le texte quand le nom du critère suffit', async () => {
+    const roo = { rule_name: 'Changement de Position Tarifaire', rule_type: 'CTH', matches_text: true, rule_text_fr: 'x' };
+    const flow = { ...FLOWS.flows[0], advantage: { afcfta_tariff_edge: {}, rules_of_origin: roo } };
+    axios.get.mockImplementation((url) => {
+      if (url.includes('/substitution/countries')) {
+        return Promise.resolve({ data: { countries: [{ iso3: 'KEN', name: 'Kenya' }] } });
+      }
+      if (url.includes('/strategic/flows/')) return Promise.resolve({ data: { ...FLOWS, flows: [flow] } });
+      return Promise.resolve({ data: {} });
+    });
+    render(<StrategicFlows language="fr" initialCountry={{ iso3: 'KEN' }} />);
+    expect(await screen.findByText('Changement de Position Tarifaire')).toBeInTheDocument();
+    expect(screen.queryByTestId('roo-rule-text')).not.toBeInTheDocument();
+  });
+
   it('montre l’erreur de l’API plutôt qu’une liste vide', async () => {
     axios.get.mockImplementation((url) => {
       if (url.includes('/substitution/countries')) {
