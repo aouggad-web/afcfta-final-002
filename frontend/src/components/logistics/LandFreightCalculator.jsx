@@ -5,16 +5,18 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Truck, Clock, Package, Info, MapPin, Flag } from 'lucide-react';
 import { montant } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 const FALLBACK_CARGO = [
-  { value: 'general', label_fr: 'Marchandise générale', label_en: 'General cargo' },
-  { value: 'container', label_fr: 'Conteneurisé', label_en: 'Containerised' },
-  { value: 'perishable', label_fr: 'Périssable (camion frigo)', label_en: 'Perishable (reefer)' },
-  { value: 'dangerous', label_fr: 'Marchandise dangereuse', label_en: 'Dangerous goods' },
-  { value: 'bulk', label_fr: 'Vrac', label_en: 'Bulk' },
+  { value: 'general', label_fr: 'Marchandise générale', label_en: 'General cargo', label_ar: 'بضائع عامة' },
+  { value: 'container', label_fr: 'Conteneurisé', label_en: 'Containerised', label_ar: 'بضائع في حاويات' },
+  { value: 'perishable', label_fr: 'Périssable (camion frigo)', label_en: 'Perishable (reefer)', label_ar: 'بضائع قابلة للتلف (شاحنة مبرّدة)' },
+  { value: 'dangerous', label_fr: 'Marchandise dangereuse', label_en: 'Dangerous goods', label_ar: 'بضائع خطرة' },
+  { value: 'bulk', label_fr: 'Vrac', label_en: 'Bulk', label_ar: 'بضائع سائبة' },
 ];
 
 const texts = {
@@ -41,6 +43,18 @@ const texts = {
     distance: 'Distance', transit: 'Transit time', operators: 'Operators', days: 'days', km: 'km',
     perTon: '/tonne', perTonKm: '$/tonne-km', borders: 'borders', osbp: 'OSBP', split: 'Rail / Road',
     source: 'Source', disclaimer: 'Disclaimer', selectAll: 'Select a corridor and tonnage.',
+  },
+  ar: {
+    title: 'حاسبة الشحن البري',
+    subtitle: 'تقدير 2024 — نموذج معاير وفق برنامج SSATP للبنك الدولي واللجنة الاقتصادية لأفريقيا وبنك التنمية الأفريقي (الممرات الأفريقية)',
+    corridor: 'الممر', mode: 'الوسيلة', road: 'طريق بري', rail: 'سكك حديدية', multimodal: 'سكك حديدية + طريق (متعدد الوسائط)',
+    weight: 'الحمولة (بالطن)', cargo: 'طبيعة البضاعة',
+    calculate: 'احسب الشحن', loading: 'جارٍ الحساب…', result: 'تفصيل التكاليف',
+    totalCost: 'التكلفة الإجمالية التقديرية', transport: 'النقل', transship: 'إعادة الشحن (سكك حديدية↔طريق)',
+    border: 'العبور الحدودي', handling: 'الوثائق',
+    distance: 'المسافة', transit: 'مدة العبور', operators: 'المشغلون', days: 'يوم', km: 'km',
+    perTon: '/طن', perTonKm: '$/طن-كم', borders: 'حدود', osbp: 'OSBP', split: 'سكك حديدية / طريق',
+    source: 'المصدر', disclaimer: 'تنبيه', selectAll: 'اختر ممرًا والحمولة.',
   },
 };
 
@@ -110,7 +124,7 @@ export default function LandFreightCalculator({ language = 'fr' }) {
     }
   };
 
-  const cargoLabel = (c) => (language === 'fr' ? c.label_fr : c.label_en);
+  const cargoLabel = (c) => pick(language, c.label_fr, c.label_en, c.label_ar || c.label_fr);
   const modeLabel = (m) => (m === 'rail' ? `🚂 ${t.rail}` : m === 'multimodal' ? `🚂🛣️ ${t.multimodal}` : `🛣️ ${t.road}`);
 
   return (
@@ -140,7 +154,7 @@ export default function LandFreightCalculator({ language = 'fr' }) {
                 <option value="">— {t.corridor} —</option>
                 {corridors.map(c => (
                   <option key={c.corridor_id} value={c.corridor_id}>
-                    {c.name} · {c.length_km} {t.km} · {(c.countries || []).join('–')}
+                    {trDonnee(c.name, language)} · {c.length_km} {t.km} · {(c.countries || []).join('–')}
                   </option>
                 ))}
               </select>
@@ -207,7 +221,7 @@ export default function LandFreightCalculator({ language = 'fr' }) {
           <CardHeader className="py-4 border-b border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base font-bold text-[var(--text)]">{t.result}</CardTitle>
-              <Badge className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)] text-xs">{language === 'fr' ? 'Estimé' : 'Modeled'} · {result.data_year}</Badge>
+              <Badge className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)] text-xs">{pick(language, 'Estimé', 'Modeled', 'تقديري')} · {result.data_year}</Badge>
             </div>
             <div className="flex flex-wrap gap-2 mt-1">
               <Badge variant="outline" className="text-xs"><MapPin className="w-3 h-3 mr-1" />{result.length_km.toLocaleString()} {t.km}</Badge>
@@ -217,7 +231,7 @@ export default function LandFreightCalculator({ language = 'fr' }) {
               )}
               <Badge variant="outline" className="text-xs"><Clock className="w-3 h-3 mr-1" />{result.transit_days_min}–{result.transit_days_max} {t.days}</Badge>
               <Badge variant="outline" className="text-xs"><Flag className="w-3 h-3 mr-1" />{result.border_crossings} {t.borders} ({result.osbp_crossings} {t.osbp})</Badge>
-              <Badge variant="outline" className="text-xs"><Package className="w-3 h-3 mr-1" />{result.cargo_label}</Badge>
+              <Badge variant="outline" className="text-xs"><Package className="w-3 h-3 mr-1" />{trDonnee(result.cargo_label, language)}</Badge>
             </div>
           </CardHeader>
           <CardContent className="pt-4 space-y-5">
@@ -253,7 +267,7 @@ export default function LandFreightCalculator({ language = 'fr' }) {
                 <span className="text-[var(--afcfta-muted)]">{result.source}</span>
               </div>
               <div className="p-3 bg-[var(--afcfta-card2)] rounded-lg border border-[var(--afcfta-border)] text-xs text-[var(--afcfta-muted)]">
-                <span className="font-semibold">{t.disclaimer}: </span>{result.disclaimer}
+                <span className="font-semibold">{t.disclaimer}: </span>{trDonnee(result.disclaimer, language)}
               </div>
             </div>
           </CardContent>

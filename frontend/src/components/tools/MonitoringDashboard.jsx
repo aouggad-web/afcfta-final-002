@@ -3,6 +3,7 @@ import axios from 'axios';
 import { entitlementNoticeText, entitlementRefusal } from './entitlementNotice';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
+import { pick, intlLocale } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -15,7 +16,7 @@ export default function MonitoringDashboard({ language = 'fr' }) {
   const [sortField, setSortField] = useState('code');
   const [sortAsc, setSortAsc] = useState(true);
 
-  const t = language === 'fr' ? {
+  const t = pick(language, {
     title: "Monitoring des Données Tarifaires",
     subtitle: "Suivi en temps réel de la collecte des positions tarifaires nationales",
     totalCountries: "Pays collectés",
@@ -36,7 +37,7 @@ export default function MonitoringDashboard({ language = 'fr' }) {
     subscriptionTitle: "Module réservé aux abonnés",
     coverage: "Couverture",
     withSub: "Avec sous-positions",
-  } : {
+  }, {
     title: "Tariff Data Monitoring",
     subtitle: "Real-time tracking of national tariff position collection",
     totalCountries: "Countries collected",
@@ -57,7 +58,28 @@ export default function MonitoringDashboard({ language = 'fr' }) {
     subscriptionTitle: "Subscribers-only module",
     coverage: "Coverage",
     withSub: "With sub-positions",
-  };
+  }, {
+    title: "مراقبة البيانات التعريفية",
+    subtitle: "متابعة آنية لجمع البنود التعريفية الوطنية",
+    totalCountries: "البلدان المجمَّعة",
+    totalLines: "بنود SH6",
+    totalSub: "البنود الفرعية (SH8-12)",
+    totalPositions: "مجموع البنود",
+    refresh: "تحديث",
+    country: "البلد",
+    tariffLines: "بنود SH6",
+    subPositions: "البنود الفرعية",
+    total: "المجموع",
+    vatRate: "TVA %",
+    ddAvg: "متوسط الرسم الجمركي %",
+    chapters: "الفصول",
+    generatedAt: "آخر جمع",
+    noData: "لا توجد بيانات.",
+    success: "اكتمل الجمع بنجاح!",
+    subscriptionTitle: "وحدة مخصّصة للمشتركين",
+    coverage: "التغطية",
+    withSub: "مع بنود فرعية",
+  });
 
   const fetchStats = useCallback(async () => {
     setLoading(true);
@@ -100,7 +122,7 @@ export default function MonitoringDashboard({ language = 'fr' }) {
   }) : [];
 
   const formatNumber = (n) => n?.toLocaleString() || '0';
-  const formatDate = (d) => d ? new Date(d).toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '-';
+  const formatDate = (d) => d ? new Date(d).toLocaleDateString(intlLocale(language), { year: 'numeric', month: 'short', day: 'numeric' }) : '-';
 
   return (
     <div className="space-y-6">
@@ -152,7 +174,7 @@ export default function MonitoringDashboard({ language = 'fr' }) {
       </Card>
 
       {subscriptionNotice ? null : loading ? (
-        <div className="text-center py-8 text-[var(--afcfta-muted)]">Loading...</div>
+        <div className="text-center py-8 text-[var(--afcfta-muted)]">{pick(language, 'Loading...', 'Loading...', 'جارٍ التحميل…')}</div>
       ) : !stats?.countries?.length ? (
         <div className="text-center py-8 text-[var(--afcfta-muted)]">{t.noData}</div>
       ) : (

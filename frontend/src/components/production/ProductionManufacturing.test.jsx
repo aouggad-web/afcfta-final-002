@@ -14,9 +14,11 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import axios from 'axios';
 
+import { useAuth } from '../../context/AuthContext';
 import ProductionManufacturing from './ProductionManufacturing';
 
 vi.mock('axios');
+vi.mock('../../context/AuthContext', () => ({ useAuth: vi.fn() }));
 
 vi.mock('./EnhancedCountrySelector', () => ({
   default: ({ value, onChange }) => (
@@ -192,5 +194,19 @@ describe('ProductionManufacturing', () => {
 
     await waitFor(() => expect(screen.getByText('TunisieCourante')).toBeInTheDocument());
     expect(screen.queryByText('MarocEnRetard')).not.toBeInTheDocument();
+  });
+
+  // PDF des résultats permis à toutes les formules (décision de l'exploitant,
+  // 06/11/2026).
+  it('propose l’export PDF de la table ISIC4 à un abonné', async () => {
+    useAuth.mockReturnValue({ user: { role: 'user', export_formats: ['pdf'] } });
+    axios.get.mockImplementation((url) =>
+      url.includes('/production/unido/MAR')
+        ? Promise.resolve({ data: unido('MAR', 'Maroc', 'Textile') })
+        : Promise.resolve({ data: { sectors: [] } }),
+    );
+    render(<ProductionManufacturing language="fr" />);
+
+    expect(await screen.findByRole('button', { name: /Exporter en PDF/ })).toBeInTheDocument();
   });
 });

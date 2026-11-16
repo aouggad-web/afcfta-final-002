@@ -360,10 +360,10 @@ async def get_african_forex_rates(
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error("Erreur lors de la récupération des taux de change: %s", exc)
+        logger.error("Erreur lors de la récupération des taux de change: %s", exc, exc_info=True)
         raise HTTPException(
             status_code=503,
-            detail=f"Service de taux de change indisponible : {exc}",
+            detail="Service de taux de change indisponible.",
         ) from exc
 
 
@@ -431,10 +431,12 @@ async def convert_to_local_currency(
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error("Erreur conversion %s→%s: %s", from_currency, currency_code, exc)
+        logger.error(
+            "Erreur conversion %s→%s: %s", from_currency, currency_code, exc, exc_info=True
+        )
         raise HTTPException(
             status_code=503,
-            detail=f"Service de conversion indisponible : {exc}",
+            detail="Service de conversion indisponible.",
         ) from exc
 
 

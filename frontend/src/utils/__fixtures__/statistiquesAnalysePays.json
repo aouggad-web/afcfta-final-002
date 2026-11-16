@@ -1,0 +1,188 @@
+{
+ "rca": {
+  "country": {
+   "oec_id": "afnga",
+   "name_fr": "Nigeria",
+   "name_en": "Nigeria"
+  },
+  "year": 2022,
+  "hs_level": "HS4",
+  "total_exports": 71605103349.0,
+  "world_exports": 24184090264300.0,
+  "total_products": 1095,
+  "products_with_advantage": 53,
+  "currency": "USD",
+  "data": [
+   {
+    "hs_code": "4105",
+    "product": "Tanned Sheep Hides",
+    "country_value": 70177560.0,
+    "country_share": 0.09800636647077762,
+    "world_share": 0.0015821534315261334,
+    "rca": 61.945,
+    "has_advantage": true
+   },
+   {
+    "hs_code": "2609",
+    "product": "Tin Ores",
+    "country_value": 250449109.0,
+    "country_share": 0.3497643286391509,
+    "world_share": 0.006642515300116035,
+    "rca": 52.655,
+    "has_advantage": true
+   },
+   {
+    "hs_code": "1802",
+    "product": "Cocoa Shells",
+    "country_value": 40073690.0,
+    "country_share": 0.05596485184119163,
+    "world_share": 0.0010811630668860644,
+    "rca": 51.764,
+    "has_advantage": true
+   },
+   {
+    "hs_code": "4106",
+    "product": "Tanned Goat Hides",
+    "country_value": 17799389.0,
+    "country_share": 0.02485771008980546,
+    "world_share": 0.0012724030039461434,
+    "rca": 19.536,
+    "has_advantage": true
+   },
+   {
+    "hs_code": "1801",
+    "product": "Cocoa Beans",
+    "country_value": 503483077.0,
+    "country_share": 0.7031385382492173,
+    "world_share": 0.036077781986613607,
+    "rca": 19.49,
+    "has_advantage": true
+   },
+   {
+    "hs_code": "1207",
+    "product": "Other Oily Seeds",
+    "country_value": 320858688.0,
+    "country_share": 0.44809472089740504,
+    "world_share": 0.02988025864122436,
+    "rca": 14.996,
+    "has_advantage": true
+   },
+   {
+    "hs_code": "0801",
+    "product": "Coconuts, Brazil Nuts, and Cashews",
+    "country_value": 350152929.0,
+    "country_share": 0.4890055493578029,
+    "world_share": 0.039399015798685835,
+    "rca": 12.412,
+    "has_advantage": true
+   },
+   {
+    "hs_code": "2709",
+    "product": "Crude Petroleum",
+    "country_value": 52432961689.0,
+    "country_share": 73.22517423575823,
+    "world_share": 6.505833761940521,
+    "rca": 11.255,
+    "has_advantage": true
+   },
+   {
+    "hs_code": "3102",
+    "product": "Nitrogenous Fertilizers",
+    "country_value": 2034094081.0,
+    "country_share": 2.8407110469290413,
+    "world_share": 0.2703139037878223,
+    "rca": 10.509,
+    "has_advantage": true
+   },
+   {
+    "hs_code": "4402",
+    "product": "Wood Charcoal",
+    "country_value": 53355141.0,
+    "country_share": 0.07451304237345974,
+    "world_share": 0.007644379812496167,
+    "rca": 9.747,
+    "has_advantage": true
+   }
+  ],
+  "methodology": "Balassa RCA = (Xcp/Xc)/(Xwp/Xw); RCA>1 = avantage comparatif révélé",
+  "source": "OEC/BACI",
+  "retrieved_at": "2026-11-08T12:41:18.739371"
+ },
+ "complementarite": {
+  "exporter": {
+   "oec_id": "afnga",
+   "name_fr": "Nigeria",
+   "name_en": "Nigeria"
+  },
+  "importer": {
+   "oec_id": "afzaf",
+   "name_fr": "Afrique du Sud",
+   "name_en": "South Africa"
+  },
+  "year": 2022,
+  "hs_level": "HS4",
+  "tci": 11.7,
+  "matching_products": 1093,
+  "top_opportunities": [
+   {
+    "hs_code": "2709",
+    "product": "Crude Petroleum",
+    "exporter_export_share": 73.23,
+    "importer_import_share": 3.94,
+    "match_score": 3.94
+   },
+   {
+    "hs_code": "2710",
+    "product": "Refined Petroleum",
+    "exporter_export_share": 1.65,
+    "importer_import_share": 16.47,
+    "match_score": 1.65
+   },
+   {
+    "hs_code": "7108",
+    "product": "Gold",
+    "exporter_export_share": 1.17,
+    "importer_import_share": 4.81,
+    "match_score": 1.17
+   },
+   {
+    "hs_code": "3102",
+    "product": "Nitrogenous Fertilizers",
+    "exporter_export_share": 2.84,
+    "importer_import_share": 1.03,
+    "match_score": 1.03
+   },
+   {
+    "hs_code": "2711",
+    "product": "Petroleum Gas",
+    "exporter_export_share": 12.93,
+    "importer_import_share": 0.77,
+    "match_score": 0.77
+   },
+   {
+    "hs_code": "8905",
+    "product": "Special Purpose Ships",
+    "exporter_export_share": 0.86,
+    "importer_import_share": 0.59,
+    "match_score": 0.59
+   },
+   {
+    "hs_code": "2716",
+    "product": "Electricity",
+    "exporter_export_share": 0.22,
+    "importer_import_share": 0.26,
+    "match_score": 0.22
+   },
+   {
+    "hs_code": "7403",
+    "product": "Refined Copper",
+    "exporter_export_share": 0.2,
+    "importer_import_share": 0.18,
+    "match_score": 0.18
+   }
+  ],
+  "methodology": "TCI = 100·(1 − Σ|m_jk − x_ik|/2). TCI élevé ⇒ profil d'export de i compatible avec le profil d'import de j.",
+  "source": "OEC/BACI",
+  "retrieved_at": "2026-11-08T12:41:18.745240"
+ }
+}

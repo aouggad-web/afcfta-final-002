@@ -16,7 +16,7 @@
     },
     {
       "texte_archive": "sources/COD_loi_de_finances_2026_annexes.texte-extrait.txt",
-      "sha256": "37888cffb3b956fb1e428ffa3d43935f51c513e60bca91c9bb3a28c5e2ff745a"
+      "sha256": "6d76fec82a197ef218791324677a30adab3df3952effb619a2011adf79372a5e"
     }
   ],
   "regle": {
@@ -51,8 +51,8 @@
       "verbatim": "au taux de 0,5%"
     },
     "annexe_xvi_lf2026": {
-      "valeur": "Annexe XVI de la loi de finances 2026 adoptée : café vert exempt ; eau douce 5 % ; minerais et concentrés 10 % ; pétrole brut et énergie électrique 5 % ; oxyde de zinc 5 % ; hydroxydes de cobalt 10 % ; sciages avivés exempts jusqu'à 150 mm, 5 % au-delà ; diamants et or 0,5 % (artisanal) ou 3 % (industriel) ; cuivre blister 5 % ; déchets de cuivre 5 %.",
-      "reference": "Loi de finances n° 25/060 du 29 décembre 2025 pour l'exercice 2026, art. 10 et annexe XVI (pages 72 à 80 du volume Recettes)",
+      "valeur": "Annexe XVI de la loi de finances 2026 adoptée, supprimée par la loi de finances rectificative n° 26/032 (art. 10), qui remet en application les annexes de la loi n° 24/011 pour 2025 (art. 6), dont le texte adopté n'est pas lu. Les taux retenus sont ceux sur lesquels l'annexe 2026 et le projet de LF 2025 concordent : café vert exempt ; eau douce 5 % ; minerais et concentrés 10 % ; pétrole brut et énergie électrique 5 % ; oxyde de zinc 5 % ; hydroxydes de cobalt 10 % ; sciages avivés exempts jusqu'à 150 mm, 5 % au-delà ; cuivre blister 5 % ; déchets de cuivre 5 %. Or et diamants : 0,5 % (artisanal) ou 3 % (industriel), selon l'art. 17 du projet de LF 2025, la synthèse PwC du texte adopté et l'annexe 2026 (l'annexe du projet 2025 porte encore 1,5 % pour l'artisanal).",
+      "reference": "Loi de finances n° 25/060 pour 2026, annexe XVI (pages 72 à 80) ; loi de finances rectificative n° 26/032 du 7 août 2026, art. 6 et 10 (JO du 17 août 2026)",
       "verbatim": "PRODUITS SOUMIS AUX DROITS DE DOUANE A L'EXPORTATION"
     }
   },

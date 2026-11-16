@@ -1,9 +1,9 @@
 """
 enhance_airport_aviation_logistics.py
 --------------------------------------
-Load airports_africains.json, enrich each airport entry with comprehensive
-aviation logistics contact data (global cargo airlines, integrators, ground
-handlers and service providers), and save the result as
+Load airports_africains.json, add the aviation logistics contact database
+(global cargo airlines, integrators, ground handlers and service providers)
+next to the airport entries, and save the result as
 airports_africains_enhanced_aviation_logistics.json.
 """
 
@@ -800,129 +800,20 @@ AGENTS_DATABASE = {
 }
 
 # ---------------------------------------------------------------------------
-# Airport authority enhancement template
-# ---------------------------------------------------------------------------
-
-AIRPORT_AUTHORITY_DEPARTMENTS = {
-    "air_traffic_control": {
-        "department": "Contrôle de la Circulation Aérienne",
-        "responsibilities": ["Aircraft movement", "Airspace management", "Safety"],
-        "24h_emergency": True,
-    },
-    "customs_office": {
-        "department": "Douanes Aéroportuaires",
-        "responsibilities": ["Cargo declarations", "Passenger clearance", "Duty collection"],
-        "24h_emergency": False,
-    },
-    "cargo_operations": {
-        "department": "Direction des Opérations Cargo",
-        "responsibilities": [
-            "Cargo terminal management",
-            "Handler coordination",
-            "Capacity planning",
-        ],
-        "24h_emergency": True,
-    },
-    "security_department": {
-        "department": "Sûreté Aéroportuaire",
-        "responsibilities": ["Airport security", "Cargo screening", "Access control"],
-        "24h_emergency": True,
-    },
-    "commercial_department": {
-        "department": "Direction Commerciale",
-        "responsibilities": ["Airline relations", "Slot allocation", "Business development"],
-        "24h_emergency": False,
-    },
-    "veterinary_phytosanitary": {
-        "department": "Services Vétérinaires et Phytosanitaires",
-        "responsibilities": ["Live animals inspection", "Plant quarantine", "Health certificates"],
-        "24h_emergency": False,
-    },
-}
-
-
-# ---------------------------------------------------------------------------
 # Helper functions
 # ---------------------------------------------------------------------------
 
 
-def build_enhanced_actor(original_actor: dict) -> dict:
-    """Merge original actor entry with enriched contact template fields."""
-    enhanced = dict(original_actor)
-    enhanced.setdefault("services", ["Cargo transport", "Ground handling"])
-    enhanced.setdefault("operating_hours", "24h/24 - 7j/7")
-    enhanced.setdefault("certifications", ["IATA", "ISO 9001"])
-    enhanced.setdefault("cargo_categories", ["General cargo", "Express"])
-    return enhanced
-
-
-def enrich_airport_authority(airport: dict) -> dict:
-    """Build a basic authority block with departmental contacts."""
-    iata = airport.get("iata_code", "XXX")
-    authority = {
-        "authority_name": f"Direction Générale - {airport.get('airport_name', '')}",
-        "iata_code": iata,
-        "departments": {
-            dept_key: {
-                **dept_info,
-                "contact_phone": "Voir direction aéroportuaire",
-                "contact_email": f"{iata.lower()}.{dept_key}@airport.aero",
-            }
-            for dept_key, dept_info in AIRPORT_AUTHORITY_DEPARTMENTS.items()
-        },
-    }
-    return authority
-
-
 def enhance_airport(airport: dict) -> dict:
-    """Return an enriched copy of an airport entry."""
-    enhanced = dict(airport)
+    """Return a copy of an airport entry, without any templated field.
 
-    # Enhance each existing actor entry
-    enhanced["actors"] = [build_enhanced_actor(a) for a in airport.get("actors", [])]
-
-    # Add airport authority departmental contacts
-    enhanced["airport_authority"] = enrich_airport_authority(airport)
-
-    # Add logistics network cross-reference
-    country_iso = airport.get("country_iso", "")
-    enhanced["logistics_network"] = {
-        "global_cargo_airlines_present": _airlines_for_country(country_iso),
-        "integrators_present": _integrators_for_country(country_iso),
-        "ground_handlers_present": _handlers_for_country(country_iso),
-        "service_providers_available": [
-            "Customs brokers (air)",
-            "Freight forwarders (air)",
-            "Aircraft support services",
-            "Cargo warehouse operators",
-        ],
-    }
-
-    return enhanced
-
-
-def _airlines_for_country(iso: str) -> list:
-    present = []
-    for key, airline in AGENTS_DATABASE["global_cargo_airlines"].items():
-        if iso in airline.get("local_offices", {}):
-            present.append(airline["company_name"])
-    return present
-
-
-def _integrators_for_country(iso: str) -> list:
-    present = []
-    for key, integrator in AGENTS_DATABASE["integrators"].items():
-        if iso in integrator.get("local_offices", {}):
-            present.append(integrator["company_name"])
-    return present
-
-
-def _handlers_for_country(iso: str) -> list:
-    present = []
-    for key, handler in AGENTS_DATABASE["ground_handlers"].items():
-        if iso in handler.get("local_offices", {}):
-            present.append(handler["company_name"])
-    return present
+    Earlier versions added an authority block built from a template (generic
+    name, six identical departments, ``<iata>.<department>@airport.aero``
+    addresses), default services / hours / certifications for every actor and
+    a per-country "logistics network". None of it was published by the
+    airports: the API serves them as data, so nothing is added here any more.
+    """
+    return dict(airport)
 
 
 # ---------------------------------------------------------------------------
@@ -953,9 +844,7 @@ def main():
                     "Global cargo airline profiles with local station contacts",
                     "Integrator (DHL/FedEx/UPS) detailed local operations",
                     "Ground handler profiles with certification details",
-                    "Airport authority departmental contacts",
                     "Aviation service provider network database",
-                    "Logistics network cross-reference per airport",
                 ],
             },
         },

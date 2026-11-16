@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
-import { entitlementNoticeText, entitlementRefusal } from './entitlementNotice';
+import {
+  freeCalculationNoticeText,
+  entitlementNoticeText,
+  entitlementRefusal,
+  PRICING_URL,
+  reportsNoticeText,
+} from './entitlementNotice';
 
 // Charge utile réellement renvoyée par entitlement_guard._forbidden().
 const upgradeRequired = {
@@ -67,5 +73,79 @@ describe('entitlementNoticeText', () => {
 
   it('ne dit rien en l’absence de refus', () => {
     expect(entitlementNoticeText(null, 'fr')).toBeNull();
+  });
+});
+
+describe('entitlementNoticeText en arabe', () => {
+  it('traduit le refus du serveur en gardant le nom de la formule', () => {
+    const text = entitlementNoticeText(entitlementRefusal(upgradeRequired), 'ar');
+    expect(text).toContain("'free'");
+    expect(text).not.toContain('Ce module');
+    expect(text).toMatch(/[؀-ۿ]/);
+  });
+
+  it('traduit le dépassement de quota', () => {
+    const text = entitlementNoticeText({ kind: 'quota_exceeded', tier: 'starter', message: 'Quota de la formule ...' }, 'ar');
+    expect(text).toContain("'starter'");
+    expect(text).toContain('حصة');
+  });
+
+  it('retombe sur le libellé local arabe sans formule connue', () => {
+    const text = entitlementNoticeText({ kind: 'upgrade_required', tier: null, message: "Ce module n'est pas inclus…" }, 'ar');
+    expect(text).toContain('للباقات المدفوعة');
+  });
+});
+
+// Refus des routes /api/reports/* et du calculateur (audit E1).
+const anonymousReports = {
+  response: {
+    status: 403,
+    data: { detail: { error: 'upgrade_required', tier: 'anonymous', module: 'reports', message: 'Ce module est réservé aux abonnements payants.' } },
+  },
+};
+
+describe('reportsNoticeText', () => {
+  it('dit, dans la langue de l’interface, que le module est réservé aux abonnements payants', () => {
+    expect(reportsNoticeText(anonymousReports, 'fr')).toContain('réservé aux abonnements payants');
+    expect(reportsNoticeText(anonymousReports, 'en')).toContain('reserved for paid subscriptions');
+    expect(reportsNoticeText(anonymousReports, 'ar')).toContain('وحدة الفرص');
+    // Un abonné free reçoit le même avis.
+    expect(reportsNoticeText(upgradeRequired, 'en')).toContain('reserved for paid subscriptions');
+  });
+
+  it('distingue le quota de rapports atteint d’une formule payante', () => {
+    const quota = { response: { status: 429, data: { detail: { error: 'quota_exceeded', tier: 'starter' } } } };
+    expect(reportsNoticeText(quota, 'fr')).toContain('Quota de rapports');
+  });
+
+  it('laisse les vraies pannes à leur message générique', () => {
+    expect(reportsNoticeText({ response: { status: 500, data: {} } }, 'fr')).toBeNull();
+    expect(reportsNoticeText({ message: 'Network Error' }, 'fr')).toBeNull();
+  });
+
+  it('renvoie vers la page des formules', () => {
+    expect(PRICING_URL).toBe('/pricing.html');
+  });
+});
+
+describe('freeCalculationNoticeText', () => {
+  const gratuits = {
+    response: {
+      status: 429,
+      data: { detail: { error: 'quota_exceeded', tier: 'free', module: 'calculator', quota: 2, quota_period: 'month' } },
+    },
+  };
+
+  it('invite à s’abonner, dans la langue de l’interface, avec le quota du mois', () => {
+    expect(freeCalculationNoticeText(gratuits, 'fr')).toBe('Vos 2 calculs gratuits du mois sont utilisés. Abonnez-vous pour continuer.');
+    expect(freeCalculationNoticeText(gratuits, 'en')).toContain('Subscribe to continue');
+    expect(freeCalculationNoticeText(gratuits, 'ar')).toContain('اشترك');
+  });
+
+  it('ne concerne ni le quota d’un abonné ni une autre erreur', () => {
+    const abonne = { response: { status: 429, data: { detail: { error: 'quota_exceeded', tier: 'starter', quota: 40, quota_period: 'day' } } } };
+    expect(freeCalculationNoticeText(abonne, 'fr')).toBeNull();
+    expect(freeCalculationNoticeText(anonymousReports, 'fr')).toBeNull();
+    expect(freeCalculationNoticeText({ response: { status: 422, data: {} } }, 'fr')).toBeNull();
   });
 });

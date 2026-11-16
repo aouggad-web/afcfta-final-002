@@ -28,6 +28,15 @@ const texts = {
     hedging: 'FX Hedging',
     matrix: 'Financing Matrix',
   },
+  ar: {
+    banking: 'المصارف',
+    insurance: 'التأمين',
+    bankingInfo: 'معلومات وتنظيم',
+    recommendations: 'توصيات',
+    scoring: 'تقييم المصارف',
+    hedging: 'التحوط من مخاطر الصرف',
+    matrix: 'مصفوفة التمويل',
+  },
 };
 
 export default function FinanceTab({ language = 'en', countries = [] }) {

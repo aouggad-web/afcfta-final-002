@@ -219,13 +219,17 @@ class NorthAfricaOrchestrator:
                         )
                     else:
                         status.status = "failed"
-                        status.error = result.error
+                        # result.error est le str(e) brut de BaseScraper.run()
+                        # (déjà journalisé avec sa trace) : il reste au journal.
+                        status.error = "Internal server error"
                         logger.error(f"[{country_code}] Crawl failed: {result.error}")
 
                 except Exception as exc:
                     status.status = "failed"
-                    status.error = str(exc)
-                    logger.error(f"[{country_code}] Crawl exception: {exc}")
+                    # Le résumé du job est servi par /jobs/{job_id} : le détail
+                    # reste au journal.
+                    status.error = "Internal server error"
+                    logger.error(f"[{country_code}] Crawl exception: {exc}", exc_info=True)
                 finally:
                     status.completed_at = datetime.utcnow()
 
@@ -245,8 +249,8 @@ class NorthAfricaOrchestrator:
 
         except Exception as exc:
             job.status = "failed"
-            job.error = str(exc)
-            logger.error(f"Regional job {job.job_id} failed: {exc}")
+            job.error = "Internal server error"
+            logger.error(f"Regional job {job.job_id} failed: {exc}", exc_info=True)
         finally:
             job.completed_at = datetime.utcnow()
             self._running_tasks.pop(job.job_id, None)

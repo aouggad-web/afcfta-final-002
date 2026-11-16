@@ -27,7 +27,7 @@
     "Véhicules électriques (8703.80, 8711.60) : DI, ICE et IVA ramenés à 0 en application de l'art. 54, n.º 1 ; l'attribution relève de la DNRE (n.º 4)."
   ],
   "ce_que_cela_ne_tranche_pas": [
-    "Taxe spécifique sur l'alcool (art. 91) : le barème en CVE par litre « conforme disposto na Pauta » n'est pas dans les textes déposés ; ligne sans montant sur les positions 2203 à 2206 et 2208, total déclaré incomplet.",
+    "Taxe spécifique sur l'alcool (art. 91) : barème en CVE par litre trouvé depuis (Lei n.º 45/X/2024, art. 77, annexe I) et servi par la fiche CPV_taxe_alcool_2026-11-02.json.",
     "Taxe spécifique sur les produits doces (art. 92) : barème et champ absents des textes déposés, non servie.",
     "Taxe carbone (Lei 45/X/2024, art. 80, reconduite par l'art. 95) : texte non déposé, non servie.",
     "Exonérations conditionnelles des véhicules (Lei 69/X/2025, art. 49 à 53) et du matériel de recharge (art. 54, n.º 2 et 3) : dépendent de l'importateur ou de l'usage, non appliquées par position.",

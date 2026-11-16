@@ -72,3 +72,18 @@ def test_product_index_endpoint_returns_search_results_not_the_corpus():
     assert result["metadata"]["hs_version"] == "HS2022"
     assert result["metadata"]["redistribution_allowed"] is False
     assert "entries" not in result
+
+
+def test_product_index_q_borne_a_200_caracteres():
+    """Constat E2 : la requête est bornée (libellés OMD : p99 118 caractères)."""
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    from routes.hs_codes import router
+
+    app = FastAPI()
+    app.include_router(router)
+    client = TestClient(app)
+    q = ("huile de palme " * 14)[:200]
+    assert client.get("/hs-codes/product-index", params={"q": q}).status_code == 200
+    assert client.get("/hs-codes/product-index", params={"q": q + "x"}).status_code == 422

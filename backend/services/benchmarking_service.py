@@ -35,8 +35,8 @@ def get_top_producers(hs_code: str, n: int = 5) -> Dict:
 
         result = get_continental_producers(hs_code)
     except Exception as exc:
-        _log.warning("continental producers unavailable: %s", exc)
-        return {"available": False, "producers": [], "note": str(exc)}
+        _log.warning("continental producers unavailable: %s", exc, exc_info=True)
+        return {"available": False, "producers": [], "note": "Service temporarily unavailable"}
 
     if not result.get("available"):
         return {
@@ -198,8 +198,8 @@ def benchmark_infrastructure(destination_iso3: str, lang: str = "fr") -> Dict:
         gai = get_gai(destination_iso3)
         gai_score = gai.get("score") if gai else None
     except Exception as exc:
-        _log.warning("infrastructure benchmarking failed: %s", exc)
-        return {"available": False, "note": str(exc)}
+        _log.warning("infrastructure benchmarking failed: %s", exc, exc_info=True)
+        return {"available": False, "note": "Service temporarily unavailable"}
 
     # Simple infrastructure score: zones + PAPSS + GAI proxy
     score = 0.0
@@ -363,7 +363,12 @@ def tariff_benefit_analysis(
         )
         preference = taux_preferentiels(position, destination_iso3, origin_iso3, code)
         if preference.get("applique"):
-            regime = "CUSTOMS_UNION" if preference.get("regime") == "UNION_DOUANIERE" else "ZLECAF"
+            # Le régime qui a joué, jamais « ZLECAF » par défaut : une franchise
+            # d'union douanière ou de la zone arabe (GZALE, importation en
+            # Algérie) n'est pas une préférence ZLECAf.
+            regime = {"UNION_DOUANIERE": "CUSTOMS_UNION", "GZALE": "FTA_CONDITIONAL"}.get(
+                preference.get("regime"), "ZLECAF"
+            )
             applique = (preference.get("taux", {}).get("DD") or {}).get("taux")
         elif npf is not None and _npf_etabli(destination_iso3, origin_iso3, preference):
             regime, applique = "NPF", npf
@@ -417,8 +422,10 @@ def tariff_benefit_analysis(
     # Normalised contribution to composite reward (a 20% duty saving -> 1.0).
     advantage_index = round(min(advantage / 20.0, 1.0), 3)
 
-    if regime in ("ZLECAF", "CUSTOMS_UNION"):
-        regime_label = "ZLECAf" if regime == "ZLECAF" else "union douanière"
+    if regime in ("ZLECAF", "CUSTOMS_UNION", "FTA_CONDITIONAL"):
+        regime_label = {"ZLECAF": "ZLECAf", "CUSTOMS_UNION": "union douanière"}.get(
+            regime, bloc or "zone de libre-échange"
+        )
         narrative = (
             f"Avantage tarifaire {regime_label} pour "
             f"{origin_iso3.upper()} → {destination_iso3.upper()} : "

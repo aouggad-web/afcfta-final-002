@@ -1,0 +1,80 @@
+Cap-Vert — taxe spécifique sur l'alcool importé (CVE par litre) : extraits verbatim (relevés le 2026-11-02)
+
+1) Boletim Oficial, I Série, n.º 125, Suplemento, 30 de dezembro de 2024 — Lei n.º 45/X/2024, aprova o Orçamento do Estado para 2025
+   https://www.camara.cv/wp-content/uploads/2025/01/OE2025-BO.pdf — sha256 5da4ad9858b2513d77acea05091740f7e1e7e61e682b759bdac16cfbb019126a
+   archivé : data/cpv/reference/CPV_boe_125_sup_2024-12-30_lei45X2024_OE2025.pdf
+
+Artigo 77.º
+Taxa específica sobre o álcool
+1. Sem prejuízo da aplicação do ICE, nos termos da legislação em vigor, é alterada a Pauta Aduaneira, aprovada pela Lei n.º 49/IX/2019, de 27 de fevereiro (corrigida pela Retificação n.º 25/2019, de 28 de março), no que se refere à taxa específica em CVE/litro, devida nas importações, relativamente às bebidas alcoólicas, conforme quadro anexo I ao presente diploma e que dele é parte integrante.
+
+Anexo I (A que se refere o artigo 77.º) — colonnes : Código, Nac., Designação das mercadorias, U.C., %, (CVE)
+2203.00.10     00      - - - Acondicionado em recipientes de capacidade                                             lt                30      60
+                           não superior a 50cl
+2203.00.90     00      - - - Outros                                                                                 lt                30      60
+22.04                  Vinhos de uvas frescas, incluídos os vinhos enriquecidos
+                       com álcool; mostos de uvas, excluídos os da posição
+                       20.09.
+2204.10.00     00      - Vinhos espumantes e vinhos espumosos                                                       lt                30      90
+                       - Outros vinhos; mostos de uvas cuja fermentação tenha
+                         sido impedida ou interrompida por adição de álcool:
+                       - - Em recipientes de capacidade não superior a 2lllitros:
+2204.21.00     10      - - - - - Outros vinhos                                                                      lt                30      90
+2204.21.00     90      - - - - - Mostos de uva                                                                      lt                        90
+                       - - Em recipientes de capacidade superior a 2 l, mas não
+                      superior a 10 l:
+2204.22.00     10      - - - - - Outros vinhos                                                                      lt                30      90
+2204.22.00     90      - - - - - Mostos de uva                                                                      lt                        90
+                       - - Outros:
+2204.29.00     10      - - - - - Outros vinhos                                                                      lt                30      90
+2204.29.00     90      - - - - - Mostos de uva                                                                      lt                        90
+2204.30.00     00      - Outros mostos de uvas                                                                      lt                        90
+22.05                  Vermutes e outros vinhos de uvas frescas preparados
+                       com plantas ou substâncias aromáticas.
+2205.10.00     00      - Em recipientes de capacidade não superior a 2 l litros                                     lt                30      90
+2205.90.00     00      - Outros                                                                                     lt                30      90
+22.06                  Outras bebidas fermentadas (sidra, perada, hidromel,
+                       saqué, por exemplo); mistura de bebidas fermentadas
+                       e misturas de bebidas fermentadas com bebidas não
+                       alcoólicas, não compreendidas noutras posições.
+2206.00.10     00      - - - Cerveja, exceto de malte                                                               lt                30      90
+2206.00.90     00      - - - Outras                                                                                   lt                30         90
+22.07                  Álcool etílico não desnaturado, com um teor alcoólico
+                       em volume igual ou superior a 80 % vol; álcool etílico
+                       e aguardentes, desnaturados, com qualquer teor
+                       alcoólico.
+                       - Álcool etílico não desnaturado, com um teor alcoólico
+                         em volume igual ou superior a 80 % vol :
+2207.10.90     00      - - - Outros                                                                                   lt                           90
+2207.20.00     00      - Álcool etílico e aguardentes, desnaturados, com                                              lt                           90
+                         qualquer teor alcoólico
+22.08                  Álcool etílico não desnaturado, com um teor alcoólico
+                       em volume inferior a 80 % vol; aguardentes, licores e
+                       outras bebidas espirituosas.
+                       - Aguardentes de vinho ou de bagaço de uvas
+2208.20.10     00      - - - - - Conhaque                                                                             lt                30     300
+2208.20.00     00      - - - - - Outros                                                                               lt                30     300
+2208.30.00     00      - Uísques                                                                                      lt                30     300
+                       - Rum e outras aguardentes provenientes da destilação,
+                        após fermentação, de produtos da cana-de-açúcar:
+2208.40.00     10      - - - - - Aguardente de cana-de-açúcar                                                         lt                30     300
+2208.40.00     90      - - - - - Outros                                                                               lt                30     300
+2208.50.00     00      - Gin e genebra                                                                                lt                30     300
+2208.60.00     00      - Vodka                                                                                        lt                30     300
+2208.70.00     00      - Licores                                                                                      lt                30     300
+2208.90.00     00      - Outros                                                                                       lt                30     300
+
+2) Boletim Oficial, I Série, n.º 133, 1.º Suplemento, 31 de dezembro de 2025 — Lei n.º 69/X/2025, aprova o Orçamento do Estado para 2026
+   archivé : data/cpv/reference/CPV_boe_133_sup1_2025-12-31_lei69X2025_OE2026.pdf (sha256 86a99336d3a0fa7e287f4f22342298b0a6cc1747bec738b2532faeeea3179fc1)
+
+Artigo 91.º
+Taxa específica sobre o álcool
+1. O montante arrecadado em relação à taxa específica em CVE/litro, devida nas importações,
+relativamente às bebidas alcoólicas, conforme disposto na Pauta Aduaneira, aprovada pela Lei n.º
+51/X/2025, de 17 de abril, destina-se aos programas de combate ao alcoolismo e projetos de
+investimentos, atividades desportivas e às políticas para a juventude, até ao limite do seu
+orçamento.
+2. As receitas referidas no número anterior não são consignadas.
+
+3) Boletim Oficial, I Série, n.º 125, 30 de dezembro de 2022 — Lei n.º 16/X/2022 (Orçamento do Estado 2023), art. 79.º e anexo II (barème antérieur, remplacé) : cervejas 20, vinhos 35, uísques 180, outras bebidas espirituosas 130 CVE/litro.
+   https://www.aler-renovaveis.org/contents/files/bo_30-12-2022_125_4925.pdf — sha256 7aa1fe403081158b89645caecc62b65f549ce02dc249106b9f8e34f1daa9c1dd (non archivé)

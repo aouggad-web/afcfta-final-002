@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
+import { intlLocale } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -48,6 +50,18 @@ export default function AirLogisticsMap({ onAirportClick, selectedCountry, langu
       cargoMovements: "Cargo Movements",
       viewDetails: "View full details",
       tons: "tons"
+    },
+    ar: {
+      legend: "دليل الرموز",
+      majorHub: "مركز رئيسي (>400 ألف طن)",
+      largeHub: "مركز كبير (200-400 ألف طن)",
+      mediumHub: "مركز متوسط (100-200 ألف طن)",
+      regional: "إقليمي (<100 ألف طن)",
+      freight: "الشحن",
+      mail: "البريد",
+      cargoMovements: "حركات الشحن",
+      viewDetails: "عرض التفاصيل الكاملة",
+      tons: "طن"
     }
   };
 
@@ -108,9 +122,7 @@ export default function AirLogisticsMap({ onAirportClick, selectedCountry, langu
 
   const formatNumber = (num) => {
     if (num === null || num === undefined) return 'N/A';
-    return language === 'en' 
-      ? new Intl.NumberFormat('en-US').format(num)
-      : new Intl.NumberFormat('fr-FR').format(num);
+    return new Intl.NumberFormat(intlLocale(language)).format(num);
   };
 
   return (
@@ -170,10 +182,10 @@ export default function AirLogisticsMap({ onAirportClick, selectedCountry, langu
                 <div className="p-2 min-w-[250px]">
                   <h3 className="font-bold text-lg mb-1 flex items-center gap-2">
                     <span>✈️</span>
-                    {airport.airport_name}
+                    {trDonnee(airport.airport_name, language)}
                   </h3>
                   <p className="text-sm text-[var(--afcfta-muted)] mb-2">
-                    {airport.country_name} • {airport.iata_code}
+                    {trDonnee(airport.country_name, language)} • {airport.iata_code}
                   </p>
                   
                   <div className="space-y-2 text-sm">

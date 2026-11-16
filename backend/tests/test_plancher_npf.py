@@ -24,7 +24,9 @@ from services.preference import taux_preferentiels
 #: NPF et le taux préférentiel écarté.
 CAS_MESURES = [
     # (destination, origine, position, NPF publié, taux préférentiel écarté)
-    ("DZA", "EGY", "0201101100", 5.0, 24.0),  # bovins, base 2019 à 30 %
+    # Maurice plutôt que l'Égypte : pour une origine arabe, la franchise GZALE
+    # (0 %) l'emporte sur cette position sans DAPS (fiche DZA_GZALE).
+    ("DZA", "MUS", "0201101100", 5.0, 24.0),  # bovins, base 2019 à 30 %
     ("DZA", "KEN", "0201101100", 5.0, 26.25),  # la même, calendrier réciprocité
     ("DZA", "EGY", "0207121000", 5.0, 24.0),  # volailles — et un DAPS de 70 %
 ]

@@ -1,0 +1,49 @@
+/**
+ * Module Outils, tarifs NPF : aucun téléchargement, quelle que soit la
+ * formule (décision du responsable produit, 03/11/2026). L'écran n'affiche
+ * que le nombre de positions tarifaires nationales de chaque pays.
+ */
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import axios from 'axios';
+
+import TariffDownloads from './TariffDownloads';
+
+vi.mock('axios');
+
+const LISTE = {
+  count: 1,
+  countries: [{ code: 'COG', name: 'Congo', positions: 5876, collecte: '2026', devise: 'XAF' }],
+  regions: { cemac: { name: 'CEMAC + RDC + STP', countries: ['COG'] } },
+};
+
+describe('TariffDownloads', () => {
+  it('affiche le nombre de positions nationales, sans aucun téléchargement', async () => {
+    axios.get.mockResolvedValue({ data: LISTE });
+    const { container } = render(<TariffDownloads language="fr" />);
+
+    expect(await screen.findByTestId('positions-nationales')).toHaveTextContent(
+      'positions tarifaires nationales'
+    );
+    expect(screen.getByTestId('positions-nationales').textContent).toMatch(/5\s876/);
+    expect(container.querySelectorAll('button, a[download]')).toHaveLength(0);
+    expect(container.textContent).not.toMatch(/CSV|JSON|Télécharger/);
+  });
+
+  it('montre les téléchargements au seul compte admin autorisé par le serveur', async () => {
+    const cog = {
+      ...LISTE.countries[0],
+      total_size_kb: 120,
+      download_url: '/tariff-data/download-zip/COG',
+      json_download_url: '/tariff-data/download-json/COG',
+    };
+    axios.get.mockResolvedValue({ data: { ...LISTE, telechargement: true, countries: [cog] } });
+    render(<TariffDownloads language="fr" />);
+
+    expect(await screen.findByText(/Télécharger tout le groupe/)).toBeInTheDocument();
+    expect(screen.getByText(/CSV/)).toBeInTheDocument();
+    expect(screen.getByText(/JSON/)).toBeInTheDocument();
+    expect(screen.getByTestId('positions-nationales')).toHaveTextContent('positions tarifaires nationales');
+  });
+});

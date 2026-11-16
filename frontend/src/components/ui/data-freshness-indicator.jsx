@@ -6,6 +6,7 @@ import React from 'react';
 import { Clock, Database, Zap } from 'lucide-react';
 import { Badge } from './badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip';
+import { pick } from '../../i18n/lang';
 
 /**
  * Data freshness information from the API
@@ -27,12 +28,12 @@ export function DataFreshnessIndicator({
         data-testid="data-freshness-live"
       >
         <Zap className="h-3 w-3 mr-1" />
-        {language === 'fr' ? 'Données en direct' : 'Live data'}
+        {pick(language, 'Données en direct', 'Live data', 'بيانات مباشرة')}
       </Badge>
     );
   }
 
-  const ageText = language === 'fr' ? freshness.age_human : (freshness.age_human_en || freshness.age_human);
+  const ageText = pick(language, freshness.age_human, freshness.age_human_en || freshness.age_human, freshness.age_human);
   
   // Determine badge style based on freshness
   const getBadgeStyle = () => {
@@ -58,13 +59,9 @@ export function DataFreshnessIndicator({
 
   const getTooltipText = () => {
     if (!freshness.from_cache) {
-      return language === 'fr' 
-        ? 'Données fraîchement générées par l\'IA'
-        : 'Freshly generated AI data';
+      return pick(language, 'Données fraîchement générées par l\'IA', 'Freshly generated AI data', 'بيانات أنشأها الذكاء الاصطناعي للتو');
     }
-    return language === 'fr'
-      ? `Données mises en cache ${ageText}`
-      : `Cached data from ${ageText}`;
+    return pick(language, `Données mises en cache ${ageText}`, `Cached data from ${ageText}`, `بيانات مخزّنة مؤقتًا ${ageText}`);
   };
 
   const badge = (
@@ -74,7 +71,7 @@ export function DataFreshnessIndicator({
       data-testid="data-freshness-indicator"
     >
       {getIcon()}
-      {language === 'fr' ? 'Données: ' : 'Data: '}{ageText}
+      {pick(language, 'Données: ', 'Data: ', 'البيانات: ')}{ageText}
     </Badge>
   );
 
@@ -93,7 +90,7 @@ export function DataFreshnessIndicator({
           {freshness.from_cache && (
             <p className="text-xs text-slate-400 mt-1">
               <Clock className="h-3 w-3 inline mr-1" />
-              {language === 'fr' ? 'Cache: 6h' : 'Cache TTL: 6h'}
+              {pick(language, 'Cache: 6h', 'Cache TTL: 6h', 'مدة التخزين المؤقت: 6 ساعات')}
             </p>
           )}
         </TooltipContent>
@@ -113,7 +110,7 @@ export function DataFreshnessCompact({
     return null;
   }
 
-  const ageText = language === 'fr' ? freshness.age_human : (freshness.age_human_en || freshness.age_human);
+  const ageText = pick(language, freshness.age_human, freshness.age_human_en || freshness.age_human, freshness.age_human);
   
   return (
     <span 

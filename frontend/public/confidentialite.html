@@ -35,7 +35,7 @@ nav{font-size:14px;margin-bottom:24px}
 <main>
 <nav><a href="/">← Retour au site</a> · <a href="/cgu.html">Conditions d'utilisation</a></nav>
 <h1>Politique de confidentialité</h1>
-<p class="meta">Version 2026-09 · en vigueur le <mark>[date de mise en ligne — à la finalisation technique et administrative]</mark></p>
+<p class="meta">Version 2026-11 · en vigueur le <mark>[date de mise en ligne — à la finalisation technique et administrative]</mark></p>
 
 <p>Cette politique explique quelles données personnelles la plateforme ZLECAf Intelligence (<a href="https://afcfta-zlecaf.com">afcfta-zlecaf.com</a>) collecte, pourquoi, avec qui elles sont partagées, combien de temps elles sont conservées et comment exercer vos droits. Elle s'applique au site, à l'API et aux futures applications mobiles.</p>
 
@@ -66,7 +66,8 @@ Contact pour toute question sur vos données : <a href="mailto:contact@afcfta-zl
 <tr><td>Emergent</td><td>Hébergement du site et des données</td><td><mark>[pays des serveurs — à confirmer auprès d'Emergent]</mark></td></tr>
 <tr><td>Stripe</td><td>Paiements par carte (hors Algérie)</td><td>Union européenne / États-Unis</td></tr>
 <tr><td>Chargily</td><td>Paiements CIB / Edahabia (Algérie)</td><td>Algérie</td></tr>
-<tr><td>Zoho</td><td>Envoi des emails</td><td>États-Unis</td></tr>
+<tr><td>Resend</td><td>Envoi des emails de compte (confirmation d'adresse, mot de passe oublié)</td><td>États-Unis</td></tr>
+<tr><td>Zoho</td><td>Envoi des autres emails (bienvenue, abonnement et paiement, livraison des achats, transmission des messages du formulaire de contact) et réception du courrier adressé à nos adresses @afcfta-zlecaf.com</td><td>États-Unis</td></tr>
 <tr><td>IPinfo</td><td>Détection du pays à partir de l'adresse IP</td><td>États-Unis</td></tr>
 <tr><td>Anthropic, Google</td><td>Fonctions d'analyse par intelligence artificielle</td><td>États-Unis</td></tr>
 </table></div>
@@ -77,7 +78,7 @@ Contact pour toute question sur vos données : <a href="mailto:contact@afcfta-zl
 <div class="scroll"><table>
 <tr><th>Données</th><th>Durée</th></tr>
 <tr><td>Compte et données associées</td><td>Tant que le compte existe ; effacées dès sa suppression</td></tr>
-<tr><td>Adresses IP</td><td>Non conservées par nous : utilisées le temps de la requête pour déterminer votre pays, puis oubliées. Nos prestataires techniques (Cloudflare, Supabase, hébergeur) peuvent les journaliser pour la sécurité, selon leurs propres durées.</td></tr>
+<tr><td>Adresses IP</td><td>Jamais enregistrées par nous : utilisées le temps de la requête pour déterminer votre pays. Sans compte, le nombre de calculs du jour est compté en mémoire du serveur, par adresse IP (par bloc pour une adresse IPv6), et effacé au plus tard à minuit (UTC). Nos prestataires techniques (Cloudflare, Supabase, hébergeur) peuvent les journaliser pour la sécurité, selon leurs propres durées.</td></tr>
 <tr><td>Achats et factures</td><td><mark>[durée comptable légale à fixer]</mark>, sous forme anonymisée après suppression du compte</td></tr>
 <tr><td>Messages de contact</td><td><mark>[durée à fixer selon les obligations légales]</mark></td></tr>
 </table></div>
@@ -95,7 +96,8 @@ Contact pour toute question sur vos données : <a href="mailto:contact@afcfta-zl
 <p>Le site n'utilise que des cookies et un stockage local <strong>strictement nécessaires</strong> à son fonctionnement ; ils ne nécessitent donc pas votre consentement :</p>
 <ul>
 <li><code>access_token</code> : maintient votre session de connexion ;</li>
-<li><code>csrf_token</code> : protège vos actions contre les attaques par falsification de requête ;</li>
+<li><code>csrf_token</code> (nommé <code>__Host-csrf_token</code> sur le site en HTTPS) : protège vos actions contre les attaques par falsification de requête ;</li>
+<li><code>appareil_connu</code> : posé après une connexion réussie, pour un an ; il permet de vous laisser vous connecter depuis ce navigateur même si un tiers multiplie les essais sur votre compte. Il ne contient ni votre adresse e-mail ni votre adresse IP ;</li>
 <li>stockage local du navigateur : session de connexion Supabase, thème clair/sombre, disposition de votre tableau de bord.</li>
 </ul>
 

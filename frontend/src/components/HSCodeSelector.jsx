@@ -39,12 +39,26 @@ const texts = {
     ruleType: "Type de règle",
     requirement: "Exigence",
     regionalContent: "Contenu régional",
+    originCriterion: "Critère d'origine",
+    criteria: {
+      CTH: "Changement de position tarifaire",
+      CTSH: "Changement de sous-position tarifaire",
+      CC: "Changement de chapitre",
+      WO: "Produit entièrement obtenu",
+      SP: "Ouvraison spécifique",
+      YARN: "Fabrication à partir de fils",
+      NONE: "Pas de règle d'origine",
+      YTB: "Règle en négociation",
+      SPECIFIC: "Règle propre à cette ligne de l'Appendice IV : voir l'exigence"
+    },
     viewRules: "Voir les règles",
     section: "Section",
     chapter: "Chapitre",
     position: "Position",
     subPosition: "Sous-position",
-    unit: "Unité"
+    unit: "Unité",
+    chAbbr: "Ch.",
+    hs6Codes: "codes SH6"
   },
   en: {
     title: "HS6 Codes - Harmonized System",
@@ -69,12 +83,70 @@ const texts = {
     ruleType: "Rule type",
     requirement: "Requirement",
     regionalContent: "Regional content",
+    originCriterion: "Origin criterion",
+    criteria: {
+      CTH: "Change of tariff heading",
+      CTSH: "Change of tariff subheading",
+      CC: "Change of chapter",
+      WO: "Wholly obtained product",
+      SP: "Specific process",
+      YARN: "Manufacture from yarn",
+      NONE: "No rule of origin",
+      YTB: "Rule under negotiation",
+      SPECIFIC: "Rule specific to this Appendix IV row: see the requirement"
+    },
     viewRules: "View rules",
     section: "Section",
     chapter: "Chapter",
     position: "Position",
     subPosition: "Sub-position",
-    unit: "Unit"
+    unit: "Unit",
+    chAbbr: "Ch.",
+    hs6Codes: "codes SH6"
+  },
+  ar: {
+    title: "رموز SH6 - النظام المنسق",
+    searchPlaceholder: "ابحث عن منتج أو رمز SH…",
+    chapters: "الفصول",
+    allChapters: "جميع الفصول",
+    results: "نتيجة",
+    noResults: "لا توجد نتائج لـ",
+    loading: "جارٍ التحميل…",
+    selectCode: "اختيار",
+    selectedCode: "الرمز المختار",
+    clearSelection: "مسح",
+    browseByChapter: "التصفّح حسب الفصل",
+    topChapters: "الفصول الرئيسية",
+    recentSearches: "عمليات البحث الأخيرة",
+    searchTab: "بحث",
+    browseTab: "تصفّح",
+    hierarchyTab: "التسلسل الهرمي",
+    codesInChapter: "رمزًا في هذا الفصل",
+    selectChapter: "اختر فصلًا",
+    rulesOfOrigin: "قواعد المنشأ",
+    ruleType: "نوع القاعدة",
+    requirement: "الشرط",
+    regionalContent: "المحتوى الإقليمي",
+    originCriterion: "معيار المنشأ",
+    criteria: {
+      CTH: "تغيير البند التعريفي",
+      CTSH: "تغيير البند الفرعي التعريفي",
+      CC: "تغيير الفصل",
+      WO: "منتج تم الحصول عليه بالكامل",
+      SP: "عملية تصنيع محددة",
+      YARN: "التصنيع انطلاقًا من الخيوط",
+      NONE: "لا توجد قاعدة منشأ",
+      YTB: "قاعدة قيد التفاوض",
+      SPECIFIC: "قاعدة خاصة بهذا السطر من التذييل الرابع: انظر الشرط"
+    },
+    viewRules: "عرض القواعد",
+    section: "القسم",
+    chapter: "الفصل",
+    position: "البند",
+    subPosition: "البند الفرعي",
+    unit: "الوحدة",
+    chAbbr: "الفصل",
+    hs6Codes: "رمزًا SH6"
   }
 };
 
@@ -142,6 +214,29 @@ const HS_SECTIONS = {
     { id: 'XIX', chapters: ['93'], name: "Arms and ammunition" },
     { id: 'XX', chapters: ['94', '95', '96'], name: "Miscellaneous manufactured articles" },
     { id: 'XXI', chapters: ['97', '99'], name: "Works of art, collectors' pieces" }
+  ],
+  ar: [
+    { id: 'I', chapters: ['01', '02', '03', '04', '05'], name: "الحيوانات الحية والمنتجات الحيوانية" },
+    { id: 'II', chapters: ['06', '07', '08', '09', '10', '11', '12', '13', '14'], name: "المنتجات النباتية" },
+    { id: 'III', chapters: ['15'], name: "الشحوم والزيوت" },
+    { id: 'IV', chapters: ['16', '17', '18', '19', '20', '21', '22', '23', '24'], name: "المنتجات الغذائية" },
+    { id: 'V', chapters: ['25', '26', '27'], name: "المنتجات المعدنية" },
+    { id: 'VI', chapters: ['28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38'], name: "المنتجات الكيميائية" },
+    { id: 'VII', chapters: ['39', '40'], name: "اللدائن والمطاط" },
+    { id: 'VIII', chapters: ['41', '42', '43'], name: "الجلود الخام والجلود المدبوغة والفراء" },
+    { id: 'IX', chapters: ['44', '45', '46'], name: "الخشب ومصنوعاته" },
+    { id: 'X', chapters: ['47', '48', '49'], name: "عجائن الخشب والورق" },
+    { id: 'XI', chapters: ['50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63'], name: "المواد النسيجية" },
+    { id: 'XII', chapters: ['64', '65', '66', '67'], name: "الأحذية وأغطية الرأس" },
+    { id: 'XIII', chapters: ['68', '69', '70'], name: "مصنوعات الحجر والخزف والزجاج" },
+    { id: 'XIV', chapters: ['71'], name: "اللؤلؤ والأحجار والمعادن الثمينة" },
+    { id: 'XV', chapters: ['72', '73', '74', '75', '76', '78', '79', '80', '81', '82', '83'], name: "المعادن العادية" },
+    { id: 'XVI', chapters: ['84', '85'], name: "الآلات والأجهزة" },
+    { id: 'XVII', chapters: ['86', '87', '88', '89'], name: "معدات النقل" },
+    { id: 'XVIII', chapters: ['90', '91', '92'], name: "الأدوات والأجهزة" },
+    { id: 'XIX', chapters: ['93'], name: "الأسلحة والذخائر" },
+    { id: 'XX', chapters: ['94', '95', '96'], name: "سلع ومنتجات متنوعة" },
+    { id: 'XXI', chapters: ['97', '99'], name: "التحف الفنية وقطع المجموعات" }
   ]
 };
 
@@ -278,7 +373,7 @@ export function HSCodeSearch({ value, onChange, language = 'fr', placeholder, sh
               <SupplementaryUnitBadge item={selectedDetails} />
             </div>
             <Badge variant="outline" className="text-xs">
-              Ch. {selectedDetails.chapter} - {selectedDetails.chapter_name}
+              {t.chAbbr} {selectedDetails.chapter} - {selectedDetails.chapter_name}
             </Badge>
           </div>
         </div>
@@ -324,7 +419,7 @@ export function HSCodeSearch({ value, onChange, language = 'fr', placeholder, sh
                     <p className="text-xs text-gray-500 mt-1 flex items-center gap-2 flex-wrap">
                       <span className="inline-flex items-center gap-1">
                         <Globe className="w-3 h-3" />
-                        Ch. {item.chapter} - {item.chapter_name}
+                        {t.chAbbr} {item.chapter} - {item.chapter_name}
                       </span>
                       <SupplementaryUnitBadge item={item} />
                     </p>
@@ -476,6 +571,18 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
     return chapters.find(c => c.code === chapterCode);
   };
 
+  // Critère réel d'une règle sans seuil de valeur ajoutée (même logique que
+  // l'onglet Règles d'origine). Une règle en négociation l'est quel que soit
+  // son code ; une ligne dont le texte n'énonce pas le critère de son code
+  // (chapitre 42 : changement de position à condition) renvoie à l'exigence ;
+  // un code sans libellé renvoie au texte source de la règle.
+  const getCriterion = (roo) => {
+    const code = roo.rules?.primary_rule?.code;
+    const key = roo.status === 'YTB' ? 'YTB'
+      : roo.rules?.primary_rule?.matches_text === false && code !== 'NONE' ? 'SPECIFIC' : code;
+    return t.criteria[key] || roo.rules?.rule_text_fr;
+  };
+
   return (
     <Card className="shadow-lg" data-testid="hs-code-browser">
       <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-t-lg">
@@ -485,7 +592,7 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
         </CardTitle>
         {stats && (
           <p className="text-blue-100 text-sm">
-            {stats.total_chapters} {t.chapters} • {stats.total_codes} codes SH6
+            {stats.total_chapters} {t.chapters} • {stats.total_codes} {t.hs6Codes}
           </p>
         )}
       </CardHeader>
@@ -539,7 +646,7 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-800">{item.label}</p>
                         <p className="text-xs text-gray-500 flex items-center gap-2 flex-wrap">
-                          <span>Ch. {item.chapter} - {item.chapter_name}</span>
+                          <span>{t.chAbbr} {item.chapter} - {item.chapter_name}</span>
                           <SupplementaryUnitBadge item={item} />
                         </p>
                       </div>
@@ -658,7 +765,7 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
                       {section.name}
                     </span>
                     <span className="text-xs text-gray-500">
-                      Ch. {section.chapters[0]}-{section.chapters[section.chapters.length - 1]}
+                      {t.chAbbr} {section.chapters[0]}-{section.chapters[section.chapters.length - 1]}
                     </span>
                   </button>
                   
@@ -694,7 +801,7 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
 
         {/* Rules of Origin Panel */}
         {showRulesOfOrigin && rulesOfOrigin && (
-          <div className="border-t bg-gradient-to-r from-orange-50 to-amber-50 p-4">
+          <div className="border-t bg-gradient-to-r from-orange-50 to-amber-50 p-4" data-testid="rules-of-origin-panel">
             <div className="flex items-center gap-2 mb-3">
               <FileText className="w-4 h-4 text-orange-600" />
               <h4 className="font-semibold text-orange-800">{t.rulesOfOrigin}</h4>
@@ -705,24 +812,34 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
             <div className="grid grid-cols-3 gap-4 text-sm">
               <div>
                 <p className="text-xs text-gray-500 mb-1">{t.ruleType}</p>
-                <p className="font-medium text-gray-800">{rulesOfOrigin.rules.rule}</p>
+                <p className="font-medium text-gray-800">{rulesOfOrigin.rules.primary_rule.name}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-500 mb-1">{t.requirement}</p>
-                <p className="font-medium text-gray-800">{rulesOfOrigin.rules.requirement}</p>
+                <p className="font-medium text-gray-800">{rulesOfOrigin.rules.rule_text_fr}</p>
               </div>
-              <div>
-                <p className="text-xs text-gray-500 mb-1">{t.regionalContent}</p>
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-gradient-to-r from-green-500 to-green-600 rounded-full"
-                      style={{ width: `${rulesOfOrigin.rules.regional_content}%` }}
-                    />
+              {/* Seules les règles de valeur ajoutée portent un seuil ; regional_content
+                  vaut 100 pour WO sans en porter, d'où la garde sur threshold_pct. */}
+              {rulesOfOrigin.status !== 'YTB' && rulesOfOrigin.rules.threshold_pct != null &&
+                rulesOfOrigin.rules.regional_content != null ? (
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">{t.regionalContent}</p>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden" data-testid="regional-content-bar">
+                      <div
+                        className="h-full bg-gradient-to-r from-green-500 to-green-600 rounded-full"
+                        style={{ width: `${rulesOfOrigin.rules.regional_content}%` }}
+                      />
+                    </div>
+                    <span className="font-bold text-green-700">{rulesOfOrigin.rules.regional_content}%</span>
                   </div>
-                  <span className="font-bold text-green-700">{rulesOfOrigin.rules.regional_content}%</span>
                 </div>
-              </div>
+              ) : (
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">{t.originCriterion}</p>
+                  <p className="font-medium text-gray-800">{getCriterion(rulesOfOrigin)}</p>
+                </div>
+              )}
             </div>
           </div>
         )}

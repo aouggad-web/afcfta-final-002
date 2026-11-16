@@ -491,7 +491,7 @@
         },
         {
           "code": "TEA",
-          "libelle": "Taxa específica sobre o álcool (Lei 69/X/2025, art. 91.º) — montant par litre non publié"
+          "libelle": "Taxa específica sobre o álcool"
         },
         {
           "code": "TET",
@@ -503,10 +503,10 @@
         }
       ],
       "devise": "CVE",
-      "date_reference": "2026-10-28",
-      "sha256": "a8a74a08447af2d2fa8069517696c894b44b8838b92a465c516094b9cf321f63",
-      "notes_sha256": "aa3c4290b16abe93f47a8987785823936521b8d65bdd77cad09ab60bfd07581c",
-      "socle_sha256": "4982de7f40832cb209a687dbf4af0ca9dece1a7b641606a90d4c11090cb0d6a8",
+      "date_reference": "2026-11-02",
+      "sha256": "e3ed4e506eaf243d7e4e28ef64ecafaa65967b6375bd30e4b975b7c4488ee724",
+      "notes_sha256": "54b35fe40fc6fb5dcc952298db64f939ef599e2fa57c1cd6a117702eae1d596b",
+      "socle_sha256": "fd682fb4b906c748ad81d541136797d652611e31227a9b0036eefbc6b0dab79c",
       "collecte": "2026-10-12T21:25:12.776398+00:00"
     },
     "DZA": {

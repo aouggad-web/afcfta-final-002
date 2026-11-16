@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Badge } from '../ui/badge';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { TrendingUp, Globe, Award, Loader2 } from 'lucide-react';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -61,6 +62,25 @@ export default function WBLogisticsPanel({ language = 'fr' }) {
       sortBy: 'Sort by:',
       allDimensions: 'All dimensions',
       noData: 'LPI data not available',
+    },
+    ar: {
+      title: 'مؤشر الأداء اللوجستي (LPI)',
+      subtitle: 'البنك الدولي — مقارنة 54 بلدًا أفريقيًا وفق 6 أبعاد',
+      loading: 'جارٍ تحميل بيانات LPI…',
+      error: 'خطأ في التحميل',
+      rank: 'الترتيب',
+      country: 'البلد',
+      overall: 'النتيجة الإجمالية',
+      customs: 'الجمارك',
+      infrastructure: 'البنية التحتية',
+      quality: 'جودة الخدمات اللوجستية',
+      tracking: 'التتبع',
+      timeliness: 'الالتزام بالمواعيد',
+      source: 'المصدر: البنك الدولي — مؤشر الأداء اللوجستي 2022/2023',
+      topCountries: 'أفضل 10 بلدان أفريقية — النتيجة الإجمالية لمؤشر LPI',
+      sortBy: 'ترتيب حسب:',
+      allDimensions: 'جميع الأبعاد',
+      noData: 'بيانات LPI غير متاحة',
     },
   };
 
@@ -186,7 +206,7 @@ export default function WBLogisticsPanel({ language = 'fr' }) {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-[var(--info)]" />
-            {language === 'fr' ? 'Classement Complet — 54 pays africains' : 'Full Ranking — 54 African countries'}
+            {pick(language, 'Classement Complet — 54 pays africains', 'Full Ranking — 54 African countries', 'الترتيب الكامل — 54 بلدًا أفريقيًا')}
           </CardTitle>
         </CardHeader>
         <CardContent>

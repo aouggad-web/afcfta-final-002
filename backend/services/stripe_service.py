@@ -221,4 +221,8 @@ def construct_event(payload: bytes, sig_header: str | None):
     try:
         return stripe.Webhook.construct_event(payload, sig_header, secret)
     except stripe.error.SignatureVerificationError as exc:  # type: ignore[attr-defined]
-        raise ValueError(f"Signature webhook invalide : {exc}") from exc
+        raise ValueError("Signature webhook invalide.") from exc
+    except ValueError as exc:
+        # Corps non UTF-8, JSON invalide ou événement « thin » : le texte de la
+        # bibliothèque reste au journal (cause chaînée), jamais dans la réponse.
+        raise ValueError("Corps de webhook illisible.") from exc

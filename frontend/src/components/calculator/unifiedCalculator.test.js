@@ -468,6 +468,50 @@ describe("mapCalculToLegacyResult — union douanière, un régime distinct de l
   });
 });
 
+describe('mapCalculToLegacyResult — GZALE retenue à l\'importation en Algérie', () => {
+  const contexte = { originCountry: 'MAR', destinationCountry: 'DZA', hsCode: '0101210000', cifValue: 10000 };
+  const calcul = {
+    position: {},
+    npf: {
+      etat: 'COMPLET',
+      lignes: [ligne({ code: 'DD', taux_pct: 5, montant: 500, assiette: 'CIF', base: 10000 })],
+      manques: [],
+      total_droits: 500,
+      total_a_payer: 10500,
+      taux_effectif_pct: 5,
+    },
+    preference: {
+      etat: 'COMPLET',
+      lignes: [ligne({ code: 'DD', taux_pct: 0, montant: 0, assiette: 'CIF', base: 10000, regime_applique: 'preference' })],
+      manques: [],
+      total_droits: 0,
+      total_a_payer: 10000,
+      taux_effectif_pct: 0,
+    },
+    regime_commercial: {
+      applique: true,
+      regime: 'GZALE',
+      code_bloc: 'GZALE',
+      libelle_bloc: 'Grande zone arabe de libre-échange',
+      statut: 'FRANCHISE_ZONE_LIBRE_ECHANGE',
+      note: "GZALE : droit de douane 0 %. Conditions : certificat d'origine arabe.",
+    },
+    preference_zlecaf: { applique: false, regime: 'GZALE', statut: 'REGIME_GZALE', note: "La ZLECAf n'est pas retenue ici." },
+    provenance: { niveau: 'national', source: {}, assiettes: {} },
+  };
+  const r = mapCalculToLegacyResult(calcul, contexte);
+
+  it('annonce un régime sous conditions, chiffré, jamais la ZLECAf', () => {
+    expect(r.trade_regime).toBe('FTA_CONDITIONAL');
+    expect(r.trade_regime_code).toBe('GZALE');
+    expect(r.trade_regime_note).toContain("certificat d'origine");
+    expect(r.preferential_regime_applied).toBe(true);
+    expect(r.zlecaf_tariff_amount).toBe(0);
+    expect(r.zlecaf_eligible).toBe(false);
+    expect(r.customs_union).toBeNull();
+  });
+});
+
 describe('mapCalculToLegacyResult — un complément national reste annoncé', () => {
   const calcul = {
     position: {},

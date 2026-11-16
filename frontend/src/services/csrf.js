@@ -1,7 +1,13 @@
 import axios from 'axios';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
-const CSRF_COOKIE = 'csrf_token';
+// En HTTPS, le serveur nomme le cookie __Host-csrf_token (audit INFO-4,
+// backend/middlewares/csrf_protection.py) : le navigateur refuse alors tout
+// cookie de ce nom posé par un sous-domaine ou une réponse http. Le préfixe
+// exige Secure, d'où csrf_token en http local. Calculé à chaque appel.
+function csrfCookieName() {
+  return window.location.protocol === 'https:' ? '__Host-csrf_token' : 'csrf_token';
+}
 const CSRF_HEADER = 'X-CSRF-Token';
 const MUTATING_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 const CSRF_ERRORS = new Set(['CSRF token missing', 'CSRF token invalid']);
@@ -29,7 +35,7 @@ function persistReadableToken(token) {
   const isHttps = window.location.protocol === 'https:';
   const attrs = isHttps ? 'SameSite=None; Secure; Partitioned' : 'SameSite=Lax';
   document.cookie =
-    `${encodeURIComponent(CSRF_COOKIE)}=${encodeURIComponent(token)}` +
+    `${encodeURIComponent(csrfCookieName())}=${encodeURIComponent(token)}` +
     `; Path=/; ${attrs}; Max-Age=3600`;
 }
 
@@ -49,7 +55,7 @@ function isCsrfRejection(error) {
 }
 
 export async function getCsrfToken({ forceRefresh = false } = {}) {
-  const cookieToken = readCookie(CSRF_COOKIE);
+  const cookieToken = readCookie(csrfCookieName());
   if (cookieToken && !forceRefresh) return cookieToken;
 
   if (!tokenRequest) {
@@ -67,16 +73,16 @@ export async function getCsrfToken({ forceRefresh = false } = {}) {
         }
 
         const responseToken = response.headers.get(CSRF_HEADER);
-        const token = responseToken || readCookie(CSRF_COOKIE);
+        const token = responseToken || readCookie(csrfCookieName());
         if (!token) throw new Error('CSRF token was not provided by the server');
 
         // Some preview/browser combinations expose the response header before
         // committing Set-Cookie. Persist the same non-secret double-submit
         // token so the next mutation sends a matching cookie and header.
-        if (readCookie(CSRF_COOKIE) !== token) {
+        if (readCookie(csrfCookieName()) !== token) {
           persistReadableToken(token);
         }
-        if (readCookie(CSRF_COOKIE) !== token) {
+        if (readCookie(csrfCookieName()) !== token) {
           throw new Error('CSRF cookie could not be initialized');
         }
 
@@ -90,19 +96,35 @@ export async function getCsrfToken({ forceRefresh = false } = {}) {
   return tokenRequest;
 }
 
+async function isCsrfRejectionResponse(response) {
+  if (response.status !== 403) return false;
+  try {
+    const body = await response.clone().json();
+    return CSRF_ERRORS.has(body?.detail);
+  } catch {
+    return false;
+  }
+}
+
 export async function csrfFetch(input, init = {}) {
   const method = (init.method || 'GET').toUpperCase();
   const headers = new Headers(init.headers || {});
+  const mutating = MUTATING_METHODS.has(method);
 
-  if (MUTATING_METHODS.has(method)) {
+  if (mutating) {
     headers.set(CSRF_HEADER, await getCsrfToken());
   }
 
-  return fetch(input, {
-    ...init,
-    credentials: 'include',
-    headers,
-  });
+  const send = () => fetch(input, { ...init, credentials: 'include', headers });
+  const response = await send();
+
+  // Une seule relance après un refus CSRF, comme l'intercepteur axios : un
+  // jeton périmé ou un cookie d'avant un changement de nom se réamorcent.
+  if (mutating && (await isCsrfRejectionResponse(response))) {
+    headers.set(CSRF_HEADER, await getCsrfToken({ forceRefresh: true }));
+    return send();
+  }
+  return response;
 }
 
 export function installAxiosCsrf(instance = axios) {

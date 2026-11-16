@@ -51,8 +51,8 @@ def get_freight_options(
         )
         return {"available": True, **result}
     except Exception as exc:
-        _log.warning("multimodal comparison unavailable: %s", exc)
-        return {"available": False, "options": [], "note": str(exc)}
+        _log.warning("multimodal comparison unavailable: %s", exc, exc_info=True)
+        return {"available": False, "options": [], "note": "Service temporarily unavailable"}
 
 
 def _cheapest_operational(options: List[Dict]) -> Optional[Dict]:
@@ -70,8 +70,13 @@ def get_free_zones(destination_iso3: str) -> Dict:
         zones = get_free_zones_by_country((destination_iso3 or "").upper())
         return {"available": True, "zones": zones or [], "count": len(zones or [])}
     except Exception as exc:
-        _log.warning("free zones unavailable: %s", exc)
-        return {"available": False, "zones": [], "count": 0, "note": str(exc)}
+        _log.warning("free zones unavailable: %s", exc, exc_info=True)
+        return {
+            "available": False,
+            "zones": [],
+            "count": 0,
+            "note": "Service temporarily unavailable",
+        }
 
 
 def get_logistics_profile(

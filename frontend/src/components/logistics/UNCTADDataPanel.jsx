@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Ship, TrendingUp, Globe, Loader2 } from 'lucide-react';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -33,6 +34,17 @@ export default function UNCTADDataPanel({ language = 'fr' }) {
       loading: "Loading UNCTAD data...",
       error: "Error loading data",
       source: "Source: UNCTAD - Review of Maritime Transport 2024"
+    },
+    ar: {
+      title: "إحصائيات الأونكتاد",
+      subtitle: "بيانات رسمية - استعراض النقل البحري للأونكتاد 2024",
+      totalThroughput: "إجمالي الحركة",
+      growth: "النمو 2023-2024",
+      globalShare: "الحصة من التجارة العالمية",
+      mTeu: "مليون TEU",
+      loading: "جارٍ تحميل بيانات الأونكتاد…",
+      error: "خطأ أثناء تحميل البيانات",
+      source: "المصدر: الأونكتاد - استعراض النقل البحري 2024"
     }
   };
 
@@ -121,7 +133,7 @@ export default function UNCTADDataPanel({ language = 'fr' }) {
                 </div>
                 <TrendingUp className="w-10 h-10 text-[var(--success)]" />
               </div>
-              <p className="text-xs text-[var(--success)] mt-2">YoY</p>
+              <p className="text-xs text-[var(--success)] mt-2">{pick(language, 'YoY', 'YoY', 'على أساس سنوي')}</p>
             </CardContent>
           </Card>
 
@@ -134,7 +146,7 @@ export default function UNCTADDataPanel({ language = 'fr' }) {
                 </div>
                 <Globe className="w-10 h-10 text-[var(--violet)]" />
               </div>
-              <p className="text-xs text-[var(--violet)] mt-2">{language === 'en' ? 'World Trade' : 'Commerce Mondial'}</p>
+              <p className="text-xs text-[var(--violet)] mt-2">{pick(language, 'Commerce Mondial', 'World Trade', 'التجارة العالمية')}</p>
             </CardContent>
           </Card>
         </div>

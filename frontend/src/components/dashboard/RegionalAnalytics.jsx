@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { apiV2 } from '../../services/api-v2';
+import { pick } from '../../i18n/lang';
 
 const BLOCS = [
   { id: 'ECOWAS', label: 'ECOWAS', color: 'from-green-600 to-emerald-700', emoji: '🌿' },
@@ -37,22 +38,22 @@ function BlocPanel({ bloc, data, language }) {
     <div className="space-y-4">
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <KPICard
-          label={language === 'fr' ? 'Volume Commercial' : 'Trade Volume'}
+          label={pick(language, 'Volume Commercial', 'Trade Volume', 'حجم التجارة')}
           value={kpis.tradeVolume}
           color="text-blue-700"
         />
         <KPICard
-          label={language === 'fr' ? 'Croissance' : 'Growth'}
+          label={pick(language, 'Croissance', 'Growth', 'النمو')}
           value={kpis.growth}
           color="text-green-700"
         />
         <KPICard
-          label={language === 'fr' ? 'Pays Membres' : 'Member States'}
+          label={pick(language, 'Pays Membres', 'Member States', 'الدول الأعضاء')}
           value={kpis.memberCount}
           color="text-indigo-700"
         />
         <KPICard
-          label={language === 'fr' ? 'Commerce Intra' : 'Intra-Trade'}
+          label={pick(language, 'Commerce Intra', 'Intra-Trade', 'التجارة البينية')}
           value={kpis.intraTrade}
           color="text-orange-600"
         />
@@ -61,7 +62,7 @@ function BlocPanel({ bloc, data, language }) {
       {corridors.length > 0 && (
         <div>
           <h4 className="text-sm font-semibold text-gray-700 mb-2">
-            {language === 'fr' ? 'Corridors Commerciaux Clés' : 'Key Trade Corridors'}
+            {pick(language, 'Corridors Commerciaux Clés', 'Key Trade Corridors', 'الممرات التجارية الرئيسية')}
           </h4>
           <div className="space-y-2">
             {corridors.map((c, i) => (
@@ -76,7 +77,7 @@ function BlocPanel({ bloc, data, language }) {
 
       {!kpis.tradeVolume && corridors.length === 0 && (
         <p className="text-center text-gray-400 py-8 text-sm">
-          {language === 'fr' ? 'Données non disponibles' : 'Data not available'}
+          {pick(language, 'Données non disponibles', 'Data not available', 'البيانات غير متاحة')}
         </p>
       )}
     </div>
@@ -116,12 +117,10 @@ export default function RegionalAnalytics({ language = 'fr' }) {
       <Card className="bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 text-white shadow-xl">
         <CardHeader>
           <CardTitle className="text-2xl font-bold flex items-center gap-3">
-            🌍 {language === 'fr' ? 'Analytique Régionale' : 'Regional Analytics'}
+            🌍 {pick(language, 'Analytique Régionale', 'Regional Analytics', 'التحليلات الإقليمية')}
           </CardTitle>
           <CardDescription className="text-slate-300">
-            {language === 'fr'
-              ? 'Performance des blocs économiques régionaux africains'
-              : 'African regional economic bloc performance metrics'}
+            {pick(language, 'Performance des blocs économiques régionaux africains', 'African regional economic bloc performance metrics', 'أداء التكتلات الاقتصادية الإقليمية الأفريقية')}
           </CardDescription>
         </CardHeader>
       </Card>
@@ -152,7 +151,7 @@ export default function RegionalAnalytics({ language = 'fr' }) {
             <span>{currentBloc?.label}</span>
             {!loading && !error && (
               <Badge className="ml-2 bg-slate-100 text-slate-600 border-0 text-xs">
-                {language === 'fr' ? 'Données de référence' : 'Reference data'}
+                {pick(language, 'Données de référence', 'Reference data', 'بيانات مرجعية')}
               </Badge>
             )}
           </CardTitle>
@@ -161,9 +160,7 @@ export default function RegionalAnalytics({ language = 'fr' }) {
           {loading && <Spinner />}
           {error && !loading && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
-              {language === 'fr'
-                ? 'Impossible de charger les données analytiques.'
-                : 'Failed to load analytics data.'}
+              {pick(language, 'Impossible de charger les données analytiques.', 'Failed to load analytics data.', 'تعذّر تحميل البيانات التحليلية.')}
             </div>
           )}
           {!loading && !error && (

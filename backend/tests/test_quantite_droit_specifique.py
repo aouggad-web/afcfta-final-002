@@ -13,7 +13,6 @@ Deux invariants tiennent l'ensemble :
      la mauvaise unité.
 """
 
-import importlib.util
 import os
 import sys
 

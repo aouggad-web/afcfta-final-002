@@ -1,6 +1,7 @@
 import React from "react";
 import { BarChart3, TrendingUp, Ship, ShieldCheck } from "lucide-react";
 import { montantCompact } from "../utils/nombres";
+import { pick } from "../i18n/lang";
 
 const KPI_CONFIG = {
   gdp:      { icon: BarChart3,   accent: "var(--gold)",    accentSoft: "rgba(212,137,26,0.16)",  colorClass: "progress" },
@@ -13,32 +14,32 @@ export default function KpiRow({ language = "fr", stats }) {
   const kpis = [
     {
       type: "gdp",
-      title: language === "fr" ? "PIB combiné Afrique" : "Combined Africa GDP",
+      title: pick(language, "PIB combiné Afrique", "Combined Africa GDP", "الناتج المحلي الإجمالي المجمّع لأفريقيا"),
       value: montantCompact(stats?.gdp || 2.7e12, language, { T: 1 }),
-      subtext: language === "fr" ? "54 signataires · 48 ratifications" : "54 signatories · 48 ratifications",
-      meta: language === "fr" ? "Macro" : "Macro",
+      subtext: pick(language, "54 signataires · 48 ratifications", "54 signatories · 48 ratifications", "54 دولة موقّعة · 48 مصادقة"),
+      meta: pick(language, "Macro", "Macro", "الاقتصاد الكلي"),
     },
     {
       type: "trade",
-      title: language === "fr" ? "Commerce intra-africain" : "Intra-African Trade",
+      title: pick(language, "Commerce intra-africain", "Intra-African Trade", "التجارة البينية الأفريقية"),
       value: montantCompact(stats?.trade || 235e9, language, { B: 0 }),
-      subtext: language === "fr" ? "Croissance 2024 : +7.7 %" : "2024 Growth: +7.7%",
+      subtext: pick(language, "Croissance 2024 : +7.7 %", "2024 Growth: +7.7%", "نمو 2024: ‎+7.7%"),
       meta: "▲ +7.7 %",
       metaPositive: true,
     },
     {
       type: "port",
-      title: language === "fr" ? "Ports majeurs" : "Major Ports",
+      title: pick(language, "Ports majeurs", "Major Ports", "الموانئ الرئيسية"),
       value: stats?.ports || "68",
-      subtext: "35.5 M TEU / an",
-      meta: language === "fr" ? "Logistique" : "Logistics",
+      subtext: pick(language, "35.5 M TEU / an", "35.5 M TEU / an", "35.5 مليون TEU سنويًا"),
+      meta: pick(language, "Logistique", "Logistics", "اللوجستيك"),
     },
     {
       type: "progress",
-      title: language === "fr" ? "Progression ZLECAf" : "AfCFTA Progress",
+      title: pick(language, "Progression ZLECAf", "AfCFTA Progress", "تقدّم زليكاف"),
       value: stats?.progress || "57 %",
-      subtext: language === "fr" ? "Phase 2 en cours" : "Phase 2 ongoing",
-      meta: language === "fr" ? "Mise en œuvre" : "Implementation",
+      subtext: pick(language, "Phase 2 en cours", "Phase 2 ongoing", "المرحلة الثانية جارية"),
+      meta: pick(language, "Mise en œuvre", "Implementation", "التنفيذ"),
     },
   ];
 

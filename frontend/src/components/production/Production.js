@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import ISIC4DetailTable from './ISIC4DetailTable';
+import { pick } from '../../i18n/lang';
 import './styles.css';
 
 const getBackendUrl = () => {
@@ -9,6 +11,9 @@ const getBackendUrl = () => {
 };
 
 export default function Production() {
+  const { i18n } = useTranslation();
+  // Écran en français seulement ; l'arabe s'ajoute, l'anglais reste en français.
+  const L = (fr, ar) => pick(i18n.language, fr, fr, ar);
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -41,14 +46,14 @@ export default function Production() {
   return (
     <div className="production-module">
       <div className="production-header">
-        <h1>🏭 Production Africaine</h1>
-        <p>Secteurs manufacturiers (UNIDO ISIC Rev.4) et capacités de production réelles</p>
+        <h1>🏭 {L('Production Africaine', 'الإنتاج الأفريقي')}</h1>
+        <p>{L('Secteurs manufacturiers (UNIDO ISIC Rev.4) et capacités de production réelles', 'القطاعات الصناعية التحويلية (UNIDO ISIC Rev.4) والقدرات الإنتاجية الفعلية')}</p>
       </div>
 
       <div className="production-controls">
-        <label htmlFor="country-select">Sélectionner un pays :</label>
-        {loading && <span className="country-loading">Chargement des pays...</span>}
-        {error && <span className="country-error">Erreur: {error}</span>}
+        <label htmlFor="country-select">{L('Sélectionner un pays :', 'اختر بلداً:')}</label>
+        {loading && <span className="country-loading">{L('Chargement des pays...', 'جارٍ تحميل البلدان…')}</span>}
+        {error && <span className="country-error">{L('Erreur', 'خطأ')}: {error}</span>}
         {!loading && countries.length > 0 && (
           <select
             id="country-select"

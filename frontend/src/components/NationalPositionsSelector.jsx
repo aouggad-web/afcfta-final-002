@@ -5,6 +5,7 @@ import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { ChevronDown, ChevronUp, Package, Check, DollarSign, Percent, FileText, AlertCircle, TrendingUp, TrendingDown, Car, Leaf, Cog, Zap, Maximize2, Minimize2 } from 'lucide-react';
+import { pick } from '../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -70,6 +71,27 @@ export default function NationalPositionsSelector({
       selectToCalculate: "Select to calculate exact duties",
       nationalPosition: "National tariff position",
       nationalSubPosition: "National tariff sub-position"
+    },
+    ar: {
+      title: "البنود التعريفية الوطنية",
+      subtitle: "اختر البند المطابق تمامًا لبضاعتك",
+      code: "الرمز الوطني",
+      description: "التسمية الرسمية",
+      ddRate: "الرسم الجمركي",
+      estimatedDuties: "الرسوم التقديرية",
+      select: "اختيار",
+      selected: "مختار",
+      noPositions: "لا تتوفر بنود فرعية وطنية لرمز SH هذا",
+      loadError: "خطأ أثناء تحميل البنود",
+      positions: "بنود متاحة",
+      cifValue: "القيمة سيف (CIF) المصرَّح بها",
+      source: "المصدر",
+      digits: "أرقام",
+      showMore: "عرض المزيد",
+      showLess: "عرض أقل",
+      selectToCalculate: "اختر لحساب الرسوم بدقة",
+      nationalPosition: "البند التعريفي الوطني",
+      nationalSubPosition: "البند التعريفي الفرعي الوطني"
     }
   };
 
@@ -133,7 +155,7 @@ export default function NationalPositionsSelector({
   const handleSelect = useCallback((position) => {
     if (onPositionSelect) {
       const code = position.code || position.hs_code;
-      const desc = language === 'fr' ? (position.description_fr || position.description) : (position.description_en || position.description);
+      const desc = pick(language, position.description_fr || position.description, position.description_en || position.description, position.description_fr || position.description);
       onPositionSelect(code, desc);
     }
   }, [onPositionSelect, language]);
@@ -174,7 +196,7 @@ export default function NationalPositionsSelector({
           {loading && (
             <div className="flex items-center justify-center py-8">
               <div className="w-8 h-8 border-2 border-[var(--violet)] border-t-transparent rounded-full animate-spin"></div>
-              <span className="ml-3 text-[var(--afcfta-muted)]">Chargement des positions nationales...</span>
+              <span className="ml-3 text-[var(--afcfta-muted)]">{pick(language, 'Chargement des positions nationales...', 'Chargement des positions nationales...', 'جارٍ تحميل البنود الوطنية…')}</span>
             </div>
           )}
 
@@ -199,13 +221,13 @@ export default function NationalPositionsSelector({
               {sortedPositions.map((position, idx) => {
                 const currentCode = position.code || position.hs_code || '';
                 const isSelected = selectedPosition === currentCode;
-                const desc = language === 'fr' ? (position.description_fr || position.description) : (position.description_en || position.description);
+                const desc = pick(language, position.description_fr || position.description, position.description_en || position.description, position.description_fr || position.description);
                 const isLongDesc = desc && desc.length > 150;
                 const isDescExpanded = expandedDescriptions[idx];
                 
                 // Logic for dynamic badge label
                 const codeLen = currentCode.replace(/\./g, '').length;
-                let badgeLabel = `HS${codeLen} digits`;
+                let badgeLabel = pick(language, `HS${codeLen} digits`, `HS${codeLen} digits`, `SH${codeLen} (${codeLen} ${t.digits})`);
                 if (codeLen === 8) badgeLabel = t.nationalPosition;
                 if (codeLen === 10) badgeLabel = t.nationalSubPosition;
 

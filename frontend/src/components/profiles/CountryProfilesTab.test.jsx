@@ -123,3 +123,42 @@ describe('Profils Pays — classement africain et années réelles', () => {
     expect(screen.queryByText(/Solde budgétaire|Compte courant/)).not.toBeInTheDocument();
   });
 });
+
+describe('Profils Pays — projets structurants', () => {
+  const PROJET = {
+    titre: 'Mine de fer de Gara Djebilet',
+    titre_ar: 'منجم الحديد غار جبيلات',
+    statut: 'OPÉRATIONNEL',
+    statut_ar: 'قيد التشغيل',
+    description: 'Exploitation du gisement de fer.',
+    description_ar: 'استغلال منجم الحديد.',
+    source: 'APS',
+  };
+
+  beforeEach(() => {
+    axios.get.mockImplementation((url) =>
+      Promise.resolve({
+        data: url.includes('/country-profile/') ? { ...PROFILE, ongoing_projects: [PROJET] } : COUNTRIES,
+      })
+    );
+  });
+
+  const ouvrirAlgerie = async (language) => {
+    render(<CountryProfilesTab language={language} />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalled());
+    await userEvent.type(screen.getAllByRole('combobox').find((el) => el.tagName === 'INPUT'), 'dza{Enter}');
+  };
+
+  it('affiche les textes arabes du projet quand l’interface est en arabe', async () => {
+    await ouvrirAlgerie('ar');
+    expect(await screen.findByText('منجم الحديد غار جبيلات')).toBeInTheDocument();
+    expect(screen.getByText('استغلال منجم الحديد.')).toBeInTheDocument();
+    expect(screen.queryByText('Mine de fer de Gara Djebilet')).not.toBeInTheDocument();
+  });
+
+  it('garde le français ailleurs, et quand un champ arabe manque', async () => {
+    await ouvrirAlgerie('fr');
+    expect(await screen.findByText('Mine de fer de Gara Djebilet')).toBeInTheDocument();
+    expect(screen.queryByText('منجم الحديد غار جبيلات')).not.toBeInTheDocument();
+  });
+});

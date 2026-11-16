@@ -13,12 +13,13 @@ import os
 import re
 import unicodedata
 from collections import OrderedDict
+from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Query
 
 from services import socle
-from services.calcul import droits_a_la_date
-from services.designation import texte_designation
+from services.calcul import _est_moyenne_statistique, calculer, droits_a_la_date
+from services.designation import designation_publiee, libelle_sh6_emprunte, texte_designation
 from services.formalites import (
     FORMALITES_AUCUNE_PARTICULIERE,
     FORMALITES_DOCUMENTEES,
@@ -27,25 +28,54 @@ from services.formalites import (
     RESERVES_FORMALITES,
     SOURCES_EXHAUSTIVES_FORMALITES,
 )
+from services.preference import taux_preferentiels
 
 router = APIRouter(prefix="/consultation")
+#: La fiche d'une position (droits, taxes, restrictions) est le module de
+#: consultation « reglementation » de la décision d'accès du 09/11/2026 : connexion,
+#: puis 5 recherches par mois en formule Découverte (routes/__init__.py). Elle a son
+#: propre routeur, comme la couverture du calcul : la garde ne doit pas peser sur
+#: les routes que le calculateur partage (sous-positions, recherche, formalités),
+#: dont l'usage est déjà compté au calcul.
+router_reglementation = APIRouter(prefix="/consultation")
 
 DONNEES = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 
 
-def _droit_de_douane(position: dict) -> dict:
-    """Le droit de douane tel que le socle le porte : un taux, ou l'expression
+def _taux_publie(droit: dict) -> dict:
+    """Le taux d'un droit tel que le socle le porte : un taux, ou l'expression
     d'un droit spécifique, ou rien (« à compléter »)."""
-    dd = next((d for d in droits_a_la_date(position.get("droits") or []) if d.get("code") == "DD"), None) or {}
-    specifique = dd.get("specifique") or {}
+    specifique = droit.get("specifique") or {}
     # « 40% or 240c/kg », « 40% + US$0.50/L » : le pourcentage n'est qu'une
     # composante. Le servir comme LE taux afficherait 40 % là où la part
     # spécifique peut l'emporter ; c'est l'expression entière qui se lit.
-    deux_composantes = dd.get("taux") is not None and bool(dd.get("specifique"))
+    deux_composantes = droit.get("taux") is not None and bool(droit.get("specifique"))
     return {
-        "dd_rate": None if deux_composantes else dd.get("taux"),
-        "dd_expression": dd.get("expression_brute") or specifique.get("brut"),
+        "taux": None if deux_composantes else droit.get("taux"),
+        "expression": droit.get("expression_brute") or specifique.get("brut"),
     }
+
+
+def _restriction(restriction: dict) -> dict:
+    """Une restriction sous une forme unique. La source l'écrit de deux façons
+    (Égypte : ``kind`` / ``text_verbatim`` ; Libye : ``type`` / ``verbatim`` /
+    ``libelle_fr`` / ``portee``) : lue sous une seule, l'autre devenait une carte
+    vide, et une interdiction d'importation ne se voyait pas. Le texte reste celui
+    de la source ; seule la forme est unifiée."""
+    return {
+        "type": restriction.get("type") or restriction.get("kind"),
+        "libelle": restriction.get("libelle_fr"),
+        "texte": restriction.get("text_verbatim") or restriction.get("verbatim"),
+        "portee": restriction.get("portee"),
+        "source": restriction.get("source"),
+    }
+
+
+def _droit_de_douane(position: dict) -> dict:
+    """Le droit de douane tel que le socle le porte."""
+    dd = next((d for d in droits_a_la_date(position.get("droits") or []) if d.get("code") == "DD"), None) or {}
+    publie = _taux_publie(dd)
+    return {"dd_rate": publie["taux"], "dd_expression": publie["expression"]}
 
 
 @router.get(
@@ -82,6 +112,187 @@ def sous_positions(iso3: str, hs6: str):
         "hs6": socle.normaliser_code(hs6)[:6],
         "total": len(lignes),
         "sub_positions": lignes,
+        "source": "socle",
+    }
+
+
+def _ligne_preferentielle(ligne, remise):
+    """Ce que devient une ligne sous préférence.
+
+    ``taux_pct`` du calcul n'est que la composante ad valorem du droit : un droit
+    préférentiel cumulé (« 7%+SCR5/kg »), composé (« 40% or 240c/kg »), réduit
+    (« 4% or 22c/kg less 36% ») ou plafonné porte davantage, et ne se réduit pas
+    à un pourcentage sans en faire un faux taux. Dans ce cas ``taux`` reste vide
+    et ``expression`` donne le droit tel que le moteur le conserve ; seul le
+    Calculateur, qui a la quantité et la valeur, en tire un montant."""
+    remise = remise if isinstance(remise, dict) else {}
+    specifique = remise.get("specifique")
+    simple = not (
+        specifique or remise.get("compose") or remise.get("cumulatif")
+        or remise.get("plafond_ad_valorem_pct") is not None
+        or remise.get("deduction_ad_valorem_pct") is not None
+    )
+    expression = None
+    if not simple:
+        expression = remise.get("expression_brute") or (
+            specifique.get("brut") if isinstance(specifique, dict) else specifique
+        )
+    return {
+        "regime": ligne["regime_applique"],
+        "taux": ligne.get("taux_pct") if simple else None,
+        "expression": expression,
+        "taux_ecarte": (ligne.get("plancher_npf") or {}).get("taux_preferentiel_ecarte_pct"),
+    }
+
+
+def _preference(position: dict, provenance: dict, destination: str, code: str, origine: str):
+    """La préférence qu'une origine ouvre sur cette position : un bloc qui dit le
+    régime et, quand il est refusé, pourquoi, et ce que chaque ligne devient.
+
+    Le taux de chaque ligne est celui que POST /calcul liquiderait : la table
+    ``{code: taux}`` du moteur passe par ``calculer`` lui-même, qui applique la
+    règle du plancher (aucun importateur n'invoque un régime plus cher que le
+    NPF : KEN vers DZA, la table donne 26,25 % pour un NPF de 5 %, et c'est 5 %
+    qui est retenu). Les réécrire ici donnerait deux règles qui divergeraient.
+    Aucune valeur en douane : seuls les taux sont lus, jamais un montant."""
+    if origine == destination:
+        return {"origine": origine, "applique": False, "statut": "MEME_PAYS", "regime": None,
+                "libelle_bloc": None, "note": None, "reserve": None, "perimetre": None}, {}
+    pref = taux_preferentiels(position, destination, origine, code)
+    lignes = {}
+    if pref.get("taux"):
+        resultat = calculer(
+            position, 0, taux_preferentiels=pref["taux"],
+            devise_position=provenance.get("devise_nationale"), couverture=provenance.get("couverture"),
+        )
+        for ligne in resultat["preference"]["lignes"]:
+            if ligne.get("regime_applique") and ligne["code"] not in lignes:
+                lignes[ligne["code"]] = _ligne_preferentielle(ligne, pref["taux"].get(ligne["code"]))
+    bloc = {
+        "origine": origine,
+        "applique": bool(pref.get("applique")),
+        "statut": pref.get("statut"),
+        "regime": pref.get("regime"),
+        "libelle_bloc": pref.get("libelle_bloc"),
+        "note": pref.get("note"),
+        # « Servie, mais pas nécessairement accordée » : la règle d'origine de la
+        # rubrique n'est pas arrêtée. POST /calcul la garde, la fiche aussi.
+        "reserve": pref.get("reserve") or None,
+        "perimetre": pref.get("perimetre") or None,
+    }
+    return bloc, lignes
+
+
+@router_reglementation.get(
+    "/{iso3}/position/{code}",
+    summary="Droits, taxes et restrictions publiés pour une position, lus au socle",
+)
+def fiche_position(
+    iso3: str,
+    code: str,
+    origine: Optional[str] = Query(
+        None,
+        pattern="^[A-Za-z]{3}$",
+        description="Pays d'origine (ISO-3), facultatif : ajoute la préférence qu'il ouvre (ZLECAf, union douanière, zone arabe).",
+    ),
+):
+    """Ce que le tarif publie pour la position, ligne à ligne, sans rien calculer.
+
+    Ni total : le total des droits et taxes est celui de POST /calcul. Sans
+    ``origine``, ni taux préférentiel, qui en dépend ; avec elle, ``preference`` dit
+    le régime que l'origine ouvre et chaque ligne porte le taux qu'il lui donne.
+    Les mesures temporaires (gazettes EAC) et le choix d'un
+    usage restent au calcul : ``usages`` nomme les régimes qui en dépendent.
+    Un taux que la source ne porte pas reste ``null`` — jamais un zéro — et
+    ``couverture`` dit quelles familles la source ne publie pas pour ce pays,
+    pour qu'une liste incomplète ne se lise pas comme complète. Une ligne dont
+    le taux est une moyenne statistique (WITS/TRAINS) le dit (``base_statistique``),
+    comme le calcul : ce n'est pas le droit applicable à une marchandise.
+    """
+    try:
+        position, provenance = socle.position(iso3, code)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except socle.SocleIndisponible as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except KeyError as exc:
+        # Même réponse que POST /calcul : un SH6 qui porte plusieurs positions
+        # nationales n'en désigne aucune, et le choix revient à l'opérateur.
+        normalise = socle.normaliser_code(code)
+        sous = socle.positions_nationales(iso3, normalise) if len(normalise) == 6 else []
+        if sous:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "POSITION_NATIONALE_REQUISE",
+                    "message": (
+                        f"{iso3.upper()}/{normalise} : {len(sous)} positions nationales "
+                        "sous ce SH6 — choisir la position."
+                    ),
+                    "positions": sous,
+                },
+            ) from exc
+        raise HTTPException(status_code=404, detail=exc.args[0]) from exc
+
+    designation = position.get("designation")
+    publiee = designation_publiee(designation)
+    couverture = provenance.get("couverture") or {}
+    niveau = provenance["niveau"]
+    preference, preferentiels = (
+        _preference(position, provenance, provenance["iso3"], code, origine.upper()) if origine else (None, {})
+    )
+    # Le code de la ligne servie. À défaut de position nationale à ce code, c'est
+    # la ligne du SH6 qui répond : annoncer le code saisi ferait lire, sous
+    # « code national », une position que le tarif ne publie pas.
+    code_servi = provenance["code_demande"] if niveau == "national" else provenance["code_demande"][:6]
+    return {
+        "success": True,
+        "country_iso3": provenance["iso3"],
+        "code": code_servi,
+        "niveau": niveau,
+        "hs6": position.get("hs6"),
+        "chapitre": position.get("chapitre"),
+        "unite": position.get("unite"),
+        # La désignation du pays est le texte que son tarif publie ; le libellé SH6
+        # que le socle emprunte à d'autres tarifs (AGO, EGY, MOZ) est servi à part,
+        # avec sa source : il décrit le SH6, pas cette ligne.
+        "description_fr": texte_designation(publiee, "fr"),
+        "description_en": texte_designation(publiee, "en"),
+        "description_ar": texte_designation(publiee, "ar"),
+        "libelle_sh6_emprunte": libelle_sh6_emprunte(designation),
+        "droits": [
+            {
+                "code": droit.get("code"),
+                "libelle": droit.get("libelle"),
+                "famille": droit.get("famille"),
+                **_taux_publie(droit),
+                "assiette": droit.get("assiette"),
+                "note": droit.get("note"),
+                "source": droit.get("source"),
+                "base_statistique": _est_moyenne_statistique(droit.get("source")),
+                # Mesure de défense commerciale (antidumping, sauvegarde) : le taux
+                # existe mais dépend de l'origine, du producteur ou du produit. Servi
+                # sans taux, il se lirait « la source n'en publie pas ».
+                "conditionnel": bool(droit.get("defense_commerciale")),
+                # Ce que l'origine change à cette ligne ; None quand elle n'y change rien.
+                "preference": preferentiels.get(droit.get("code")),
+            }
+            for droit in position.get("droits") or []
+        ],
+        "restrictions": [_restriction(r) for r in position.get("restrictions") or []],
+        # Les régimes que l'usage déclaré peut substituer (Égypte : taxe de Table
+        # à la place de la TVA, par exemple). Les lignes ci-dessus sont celles du
+        # régime courant ; le calcul applique l'usage choisi.
+        "preference": preference,
+        "usages": [
+            {"code": usage.get("code"), "libelle": usage.get("libelle"), "texte": usage.get("texte")}
+            for usage in position.get("usages") or []
+        ],
+        "couverture": {
+            "etat": couverture.get("etat"),
+            "motif": couverture.get("motif"),
+            "tva": couverture.get("tva"),
+        },
         "source": "socle",
     }
 
@@ -165,7 +376,10 @@ def _textes_cherchables(iso3: str, positions: dict):
 )
 def recherche(
     iso3: str,
-    q: str = Query(..., min_length=2),
+    # Borné (constat E2) : une désignation nationale collée tient (jusqu'à
+    # ~1 200 caractères au Maroc ; au-delà, seules quelques notes de chapitre
+    # recopiées dans la désignation, à Madagascar et en Zambie).
+    q: str = Query(..., min_length=2, max_length=2000),
     limit: int = Query(25, ge=1, le=100),
     langue: str = Query("fr", pattern="^(fr|en)$"),
 ):
@@ -190,7 +404,8 @@ def recherche(
         # bornent le code.
         mots = re.findall(r"\w+", _pli(q))
         prefixe = "".join(mot for mot in mots if mot.isdigit())
-        mots = [mot for mot in mots if not mot.isdigit() and len(mot) >= 2]
+        # Un mot répété ne coûte qu'une fois (tous les mots sont exigés).
+        mots = list(dict.fromkeys(mot for mot in mots if not mot.isdigit() and len(mot) >= 2))
         # (début de mot, mot entier — pluriel en -s/-x admis) pour chaque mot.
         motifs = [(re.compile(rf"\b{re.escape(m)}"), re.compile(rf"\b{re.escape(m)}[sx]?\b")) for m in mots]
         classes = []

@@ -1,0 +1,522 @@
+{
+  "port_id": "DZA-ALG-001",
+  "port_name": "Port d'Alger",
+  "country_iso": "DZA",
+  "country_name": "Algérie",
+  "un_locode": "DZALG",
+  "geo_lat": 36.7631,
+  "geo_lon": 3.0597,
+  "port_type": "Maritime Commercial",
+  "latest_stats": {
+    "year": 2024,
+    "container_throughput_teu": 700000,
+    "cargo_throughput_tons": 25000000,
+    "vessel_calls": 1600,
+    "container_vessel_calls": 355,
+    "source": "EPAL — Déclaration DG Abdelhamid Boulaam, février 2025. Confirmé: APS / Radio Algérienne / Maghreb Émergent.",
+    "note": "700 000 EVP en 2024 (officiel EPAL). Progression à ~1 000 000 EVP en 2025 (+43%, APS). Taux d'occupation quais 2024: ~98% (saturation) → 2025: ~80% après modernisation DPWorld TCA. ~1 600 escales totales (dont ~355 porte-conteneurs). Sur 400 navires porte-conteneurs annoncés pour 2025.",
+    "year_2025_projection": {
+      "container_throughput_teu": 1000000,
+      "vessel_calls_total": 2000,
+      "container_vessel_calls": 400,
+      "source": "APS + Radio Algérienne + LNR-DZ — bilan 2025 publié"
+    }
+  },
+  "port_authority": {
+    "name": "Entreprise Portuaire d'Alger (EPAL)",
+    "address": "Zone Portuaire, Môle d'Alger, BP 80, 16000 Alger, Algérie",
+    "website": "https://www.epal.dz",
+    "contact_phone": "+213 21 24 34 96",
+    "contact_email": "epal@epal.dz",
+    "departments": {
+      "direction_generale": {
+        "phone": "+213 21 24 34 96",
+        "email": "epal@epal.dz"
+      },
+      "capitainerie": {
+        "phone": "+213 21 24 14 73",
+        "vhf_channel": "Canal 16 / Canal 11"
+      },
+      "exploitation_conteneurs": {
+        "phone": "+213 21 24 76 63"
+      },
+      "douane_port": {
+        "label": "Direction Régionale des Douanes d'Alger-Port",
+        "phone": "+213 21 42 44 44",
+        "website": "https://www.douane.gov.dz"
+      }
+    }
+  },
+  "terminals": [
+    {
+      "terminal_id": "TCA-DPW",
+      "name": "Terminal à Conteneurs d'Alger (TCA)",
+      "operator": "DP World Algeria",
+      "type": "Conteneurs",
+      "capacity_teu_year": 550000,
+      "area_ha": 28,
+      "quay_length_m": 720,
+      "max_draft_m": 13.5,
+      "equipment": {
+        "portiques_quai": 4,
+        "rtg_rubber_tyred_gantry": 14,
+        "reach_stackers": 6
+      },
+      "certifications": [
+        "ISO 9001:2015",
+        "ISPS Code"
+      ],
+      "website": "https://www.dpworld.com/en/ports-and-terminals/our-ports/algeria"
+    },
+    {
+      "terminal_id": "TG-OAIC",
+      "name": "Terminal Céréalier",
+      "operator": "OAIC / EPAL",
+      "type": "Vrac sec (céréales)",
+      "capacity_tons_year": 5000000,
+      "silos_capacity_tons": 120000,
+      "quay_length_m": 430,
+      "max_draft_m": 12.5
+    },
+    {
+      "terminal_id": "TR-RO",
+      "name": "Terminal Roulier",
+      "operator": "EPAL",
+      "type": "Ro-Ro / véhicules",
+      "area_ha": 8,
+      "quay_length_m": 280,
+      "carriers": [
+        "Grimaldi Lines",
+        "CNAN"
+      ]
+    },
+    {
+      "terminal_id": "TP-FERRY",
+      "name": "Terminal Passagers & Fret Ferry",
+      "operator": "Algérie Ferries / EPAL",
+      "type": "Passagers + fret accompagné",
+      "capacity_passagers_year": 800000,
+      "destinations_ferry": [
+        "Marseille (France)",
+        "Alicante (Espagne)",
+        "Almeria (Espagne)",
+        "Valencia (Espagne)",
+        "Barcelone (Espagne)"
+      ]
+    },
+    {
+      "terminal_id": "TGC-DIVERS",
+      "name": "Terminal Marchandises Diverses",
+      "operator": "EPAL",
+      "type": "Général — acier, bois, équipements industriels",
+      "quay_length_m": 1200,
+      "max_draft_m": 11.0
+    }
+  ],
+  "services": [
+    {
+      "carrier": "CMA CGM",
+      "service_name": "AME (Africa Maghreb Express)",
+      "frequency": "Hebdomadaire",
+      "rotation": "Marseille – Sète – Alger – Oran – Alger – Marseille",
+      "transit_time_marseille_alger_days": 2
+    },
+    {
+      "carrier": "MSC",
+      "service_name": "AGX (Algeria Express)",
+      "frequency": "Hebdomadaire",
+      "rotation": "Valencia – Barcelone – Gênes – Alger – Tunis – Valencia"
+    },
+    {
+      "carrier": "Maersk",
+      "service_name": "AFRICA EXPRESS (AFX)",
+      "frequency": "Bi-hebdomadaire",
+      "rotation": "Algésiras – Barcelone – Alger – Sfax – Algésiras"
+    },
+    {
+      "carrier": "Hapag-Lloyd",
+      "service_name": "IPAK",
+      "frequency": "Bi-mensuelle",
+      "rotation": "Barcelone – Alger – Tunis – Gênes – Barcelone"
+    },
+    {
+      "carrier": "Grimaldi Lines",
+      "service_name": "Algeria Ro-Ro Service",
+      "frequency": "Hebdomadaire",
+      "rotation": "Marseille – Alger (fret roulier + marchandises diverses)"
+    },
+    {
+      "carrier": "Arkas Line",
+      "service_name": "MED AFRICA (MAF)",
+      "frequency": "Hebdomadaire",
+      "rotation": "Izmir – Mersin – Alger – Valencia – Barcelone"
+    },
+    {
+      "carrier": "ONE (Ocean Network Express)",
+      "service_name": "Via transbordement Algésiras / Gioia Tauro",
+      "frequency": "Hebdomadaire",
+      "rotation": "Réseau mondial via hub méditerranéen"
+    },
+    {
+      "carrier": "COSCO Shipping",
+      "service_name": "MED ALGERIA",
+      "frequency": "Bi-mensuelle",
+      "rotation": "Pirée – Alger – Casablanca – Pirée"
+    }
+  ],
+  "agents": [
+    {
+      "agent_name": "DPWorld Algeria (TCA)",
+      "group": "International",
+      "role": "Opérateur terminal conteneurs",
+      "address": "Terminal à Conteneurs d'Alger, Zone Portuaire, 16000 Alger",
+      "website": "https://www.dpworld.com",
+      "contact": "+213 21 47 56 00",
+      "email": "algeria.operations@dpworld.com",
+      "services": [
+        "Manutention conteneurs",
+        "Stockage",
+        "Empotage/dépotage"
+      ],
+      "operating_hours": "24h/24 — 7j/7",
+      "certifications": [
+        "ISO 9001:2015",
+        "ISPS"
+      ],
+      "cargo_types": [
+        "FCL",
+        "LCL",
+        "Réfrigéré",
+        "Hors-gabarit"
+      ]
+    },
+    {
+      "agent_name": "CMA CGM Algeria",
+      "group": "International",
+      "role": "Agent armateur / consignataire",
+      "address": "5 Rue Asselah Hocine, Alger 16000",
+      "website": "https://www.cmacgm.com",
+      "contact": "+213 21 73 91 10",
+      "email": "alg.customerservice@cma-cgm.com",
+      "services": [
+        "Consignation navires",
+        "Billetterie fret",
+        "Transit"
+      ],
+      "operating_hours": "Dim-Jeu 08h-17h",
+      "cargo_types": [
+        "FCL",
+        "LCL",
+        "Reefer",
+        "Hors-gabarit"
+      ]
+    },
+    {
+      "agent_name": "MSC Algeria",
+      "group": "International",
+      "role": "Agent armateur / consignataire",
+      "address": "Rue Ahmed Bouzrina, Alger Centre 16000",
+      "website": "https://www.msc.com",
+      "contact": "+213 21 63 08 08",
+      "email": "algeria@msc.com",
+      "services": [
+        "Consignation",
+        "Fret conteneurisé",
+        "Fret vrac"
+      ],
+      "operating_hours": "Dim-Jeu 08h-17h",
+      "cargo_types": [
+        "FCL",
+        "LCL",
+        "Reefer"
+      ]
+    },
+    {
+      "agent_name": "Maersk Algeria",
+      "group": "International",
+      "role": "Agent armateur",
+      "address": "26 Rue Khelifa Boukhalfa, Alger 16000",
+      "website": "https://www.maersk.com",
+      "contact": "+213 21 23 95 00",
+      "email": "algeria.customer@maersk.com",
+      "services": [
+        "Fret conteneurisé",
+        "Logistique intégrée"
+      ],
+      "operating_hours": "Dim-Jeu 08h-17h",
+      "cargo_types": [
+        "FCL",
+        "LCL",
+        "Reefer"
+      ]
+    },
+    {
+      "agent_name": "CNAN Group (Armateur National)",
+      "group": "National",
+      "role": "Armateur / Agent maritime",
+      "address": "16 Boulevard Colonel Amirouche, Alger",
+      "website": "https://www.cnan.dz",
+      "contact": "+213 21 63 20 20",
+      "email": "commercial@cnan.dz",
+      "services": [
+        "Affrètement",
+        "Consignation",
+        "Transit"
+      ],
+      "operating_hours": "Dim-Jeu 08h-17h",
+      "cargo_types": [
+        "Vrac",
+        "Général",
+        "FCL"
+      ]
+    },
+    {
+      "agent_name": "Algérie Ferries",
+      "group": "National",
+      "role": "Armateur ferries passagers & fret",
+      "address": "6 Boulevard Khemisti, Alger 16000",
+      "website": "https://www.algerieferries.dz",
+      "contact": "+213 21 42 24 24",
+      "email": "fret@algerieferries.dz",
+      "services": [
+        "Fret accompagné",
+        "Remorques",
+        "Véhicules",
+        "Passagers"
+      ],
+      "operating_hours": "Lun-Sam 08h-17h",
+      "cargo_types": [
+        "Ro-Ro",
+        "Fret accompagné",
+        "Véhicules"
+      ]
+    },
+    {
+      "agent_name": "Kuehne+Nagel Algérie",
+      "group": "International",
+      "role": "Transitaire / Commissionnaire en douane",
+      "address": "Route de Bab Ezzouar, Alger",
+      "website": "https://www.kuehne-nagel.com",
+      "contact": "+213 21 77 85 00",
+      "email": "algeria@kuehne-nagel.com",
+      "services": [
+        "Transit",
+        "Dédouanement",
+        "Entreposage",
+        "Distribution"
+      ],
+      "operating_hours": "Dim-Jeu 08h-17h30",
+      "certifications": [
+        "ISO 9001",
+        "AEO"
+      ],
+      "cargo_types": [
+        "FCL",
+        "LCL",
+        "Air",
+        "Projets industriels"
+      ]
+    },
+    {
+      "agent_name": "Bolloré Logistics Algérie (SDV)",
+      "group": "International",
+      "role": "Transitaire / Logisticien",
+      "address": "Zone Industrielle, Ain Benian, Alger",
+      "website": "https://www.bollore-logistics.com",
+      "contact": "+213 21 37 45 00",
+      "email": "algeria@bollore.com",
+      "services": [
+        "Transit",
+        "Dédouanement",
+        "Entreposage sous douane"
+      ],
+      "operating_hours": "Dim-Jeu 08h-17h",
+      "cargo_types": [
+        "FCL",
+        "LCL",
+        "Projets"
+      ]
+    }
+  ],
+  "lsci": {
+    "value": 15.32,
+    "world_rank": 102,
+    "year": 2023,
+    "source": "UNCTAD Liner Shipping Connectivity Index 2023",
+    "note": "Rang Afrique du Nord: 4e (derrière Maroc 42.1, Égypte 38.5, Tunisie 18.1)"
+  },
+  "performance_metrics": {
+    "avg_waiting_time_hours": 144,
+    "avg_waiting_time_label": "6 jours — 2024 (Kuehne+Nagel / Ministère Transports DZ, confirmé)",
+    "quay_occupancy_rate_2024_pct": 98,
+    "quay_occupancy_rate_2025_pct": 80,
+    "last_updated": "2025-02-21 (LNR-DZ bilan T3 2025 publié)",
+    "nature": "mesure",
+    "source": "Kuehne+Nagel, Operational Update (avril 2025) ; ministère des Transports (Algérie) ; EPAL / APS pour les taux d'occupation des quais"
+  },
+  "traffic_evolution": [
+    {
+      "year": 2019,
+      "teu": 785000,
+      "vessels": 1820,
+      "container_vessel_calls": 380,
+      "cargo_tons": 24000000,
+      "avg_wait_time": 72.0,
+      "source": "Estimation — national UNCTAD 1 794K × part Alger ~43.8%",
+      "note": "Pré-COVID. UNCTAD national Algérie 2019: 1 793 990 EVP.",
+      "nature": "estimation"
+    },
+    {
+      "year": 2020,
+      "teu": 640000,
+      "vessels": 1550,
+      "container_vessel_calls": 310,
+      "cargo_tons": 20500000,
+      "avg_wait_time": 96.0,
+      "source": "Estimation — national UNCTAD 1 541K × part Alger ~41.5%. COVID -14.1% national.",
+      "note": "COVID-19 + restrictions importations DZ. UNCTAD national 2020: 1 541 273 EVP.",
+      "nature": "estimation"
+    },
+    {
+      "year": 2021,
+      "teu": 660000,
+      "vessels": 1580,
+      "container_vessel_calls": 320,
+      "cargo_tons": 21500000,
+      "avg_wait_time": 120.0,
+      "source": "Estimation — reprise partielle, restrictions importations maintenues",
+      "note": "Loi finances 2021: maintien restrictions LIC. Reprise progressive.",
+      "nature": "estimation"
+    },
+    {
+      "year": 2022,
+      "teu": 680000,
+      "vessels": 1590,
+      "container_vessel_calls": 335,
+      "cargo_tons": 23000000,
+      "avg_wait_time": 132.0,
+      "source": "Estimation — T1 2022 EPAL: ~61 220 EVP (publié). Extrapolation annuelle.",
+      "note": "T1 2022 publié par EPAL: ~61 220 EVP. Saturation quais en progression.",
+      "nature": "estimation"
+    },
+    {
+      "year": 2023,
+      "teu": 680000,
+      "vessels": 1590,
+      "container_vessel_calls": 340,
+      "cargo_tons": 24000000,
+      "avg_wait_time": 144.0,
+      "source": "Estimation — T1 2023: 55 955 EVP (-8.6% YoY). T3 2023: 68 446 EVP (+8.18%). Hausse annuelle trafic >14% (APS 2023).",
+      "note": "EPAL publie: T1 2023=55 955 EVP, T3 2023=68 446 EVP. Taux d'occupation quais ~98% (saturation documentée). Attente navires: 6 jours (Kuehne+Nagel, confirmé).",
+      "nature": "estimation"
+    },
+    {
+      "year": 2024,
+      "teu": 700000,
+      "vessels": 1600,
+      "container_vessel_calls": 355,
+      "cargo_tons": 25000000,
+      "avg_wait_time": 144.0,
+      "source": "EPAL — DG Abdelhamid Boulaam, déclaration officielle, confirmé APS/Radio Algérienne",
+      "note": "700 000 EVP CONFIRMÉ. Taux d'occupation quais: ~98% (saturation). T3 2024: 71 383 EVP. Attente grands navires: maintien 6 jours.",
+      "nature": "mesure"
+    },
+    {
+      "year": 2025,
+      "teu": 1000000,
+      "vessels": 2000,
+      "container_vessel_calls": 400,
+      "cargo_tons": 27000000,
+      "source": "APS / Radio Algérienne / LNR-DZ — bilan 2025 publié (officiel)",
+      "note": "PREMIER MILLION D'EVP franchi. >400 navires porte-conteneurs. T3 2025: 106 293 EVP (+48.91% vs T3 2024). Taux d'occupation quais: ~80% (décongestionnement après modernisation DPWorld TCA). Attente petits navires: <1 jour (vs 10 jours en 2009). Attente grands navires: -50%.",
+      "nature": "mesure"
+    }
+  ],
+  "trs_analysis": {
+    "container_dwell_time_days": 15,
+    "source": "Estimation régionale LPI + données incidents documentés",
+    "source_type": "ESTIMATION_REGIONAL",
+    "source_reliability_level": 2,
+    "data_year": 2024,
+    "methodology": "LPI Algérie 2023 + benchmarks Afrique du Nord + incidents documentés",
+    "vessel_turnaround_hours": "120-168",
+    "vessel_waiting_days": "5-7",
+    "vessel_waiting_source": "Kuehne+Nagel Operational Update, Avril 2025",
+    "customs_clearance_hours": "72-120",
+    "teu_throughput_q1_2024": 64917,
+    "teu_q1_2024_growth_yoy_pct": 16,
+    "teu_q1_2024_source": "EPAL communiqué officiel Q1 2024",
+    "incident_july_aug_2024_days": "21-24",
+    "incident_july_aug_2024_source": "Maghreb Emergent / Reporters DZ",
+    "lpi_score": 2.4,
+    "lpi_rank": 117,
+    "lpi_year": 2023,
+    "lpi_source": "World Bank Logistics Performance Index 2023",
+    "no_official_data_reason": "L'EPAL ne publie pas de TRS standardisé WCO. Les statistiques trimestrielles EVP sont disponibles mais pas les temps de séjour désagrégés.",
+    "factual_data_points": [
+      "2024: 700 000 EVP — DG EPAL Boulaam, officiel (APS/Radio Algérienne)",
+      "2025: ~1 000 000 EVP — APS / Radio Algérienne (officiel)",
+      "T3 2025: 106 293 EVP (+48.91% vs T3 2024: 71 383 EVP)",
+      "T3 2023: 68 446 EVP | T1 2023: 55 955 EVP (bilans EPAL trimestriels)",
+      "Taux d'occupation quais 2024: ~98% (saturation) → 2025: ~80% (post-DPWorld TCA)",
+      "Navires 2024: ~1 600 total (dont ~355 porte-conteneurs) | 2025: ~2 000 (+400 PC)",
+      "UNCTAD national DZ 2019: 1 793 990 EVP | 2020: 1 541 273 EVP (-14.1% COVID)",
+      "Attente petits navires 2025: <1j (vs 10j en 2009) | Grands navires: -50%"
+    ],
+    "warning": "ℹ️ TEU 2024 (700 000 EVP) = DONNÉES EPAL OFFICIELLES (DG Boulaam). Historique 2019-2023 = estimations basées sur données fragmentaires EPAL + UNCTAD national. EPAL ne publie pas de rapport annuel normalisé.",
+    "source_reliability_label": "Estimation Régionale",
+    "nature": "estimation"
+  },
+  "lpi_2023": {
+    "overall_score": 2.4,
+    "customs_score": 2.2,
+    "infrastructure_score": 2.3,
+    "tracking_tracing_score": 2.5,
+    "timeliness_score": 2.7,
+    "world_rank": 117,
+    "africa_rank": 22,
+    "source": "World Bank Logistics Performance Index 2023",
+    "year": 2023
+  },
+  "global_benchmarks": {
+    "africa_avg_dwell_days": 20,
+    "africa_avg_source": "African Development Bank",
+    "north_africa_avg_dwell_days": 12,
+    "casablanca_dwell_days": 6,
+    "tunis_dwell_days": 8,
+    "global_median_dwell_days_h2_2023": 1.1,
+    "source": "UNCTAD Review of Maritime Transport 2024 / African Development Bank / World Bank"
+  },
+  "logistics_network": {
+    "global_carriers_present": [
+      "A.P. Møller – Maersk A/S",
+      "Mediterranean Shipping Company S.A. (MSC)",
+      "CMA CGM Group",
+      "COSCO Shipping Lines Co., Ltd.",
+      "Ocean Network Express (ONE)",
+      "Hapag-Lloyd AG",
+      "Grimaldi Lines"
+    ],
+    "terminal_operators": [
+      "DP World Algeria (TCA — Terminal à Conteneurs d'Alger)"
+    ],
+    "regional_specialists_present": [
+      "Arkas Line",
+      "CNAN Group",
+      "Algérie Ferries"
+    ],
+    "customs_brokers_count": "180+ commissionnaires agréés (Direction Générale des Douanes)",
+    "service_providers_available": [
+      "Commissionnaires en douane agréés (DGA)",
+      "Transitaires internationaux (Kuehne+Nagel, Bolloré, DHL)",
+      "Camionneurs licenciés Ministère des Transports",
+      "Entrepôts sous douane (MEAD — Magasins et Aires de Dédouanement)",
+      "Consignataires de navires agréés"
+    ],
+    "hinterland_connections": {
+      "road": "RN5 (Blida-Médéa), RN1 (Transafricaine Tamanrasset), autoroute Est-Ouest",
+      "rail": "SNTF: gare de triage El Harrach — réseau ferroviaire national",
+      "airport": "Aéroport Houari Boumediene (ALG): 20 km"
+    }
+  }
+}

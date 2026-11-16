@@ -11,6 +11,7 @@ follow-up phases (usage counters, route-level enforcement, team seats).
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from types import MappingProxyType
@@ -20,7 +21,7 @@ TIERS = ("free", "starter", "pro", "business")
 
 # Feature modules gated per tier (mirrors the app's sidebar). Each tier grants
 # or denies each module and, when granted, may cap its usage over a period.
-MODULES = ("stats", "production", "logistics", "roo", "tools", "reports")
+MODULES = ("stats", "production", "logistics", "roo", "profiles", "reglementation", "tools", "reports")
 
 # Reset window a module quota is counted over.
 #   "day"   — rolling/calendar day, reset nightly
@@ -58,13 +59,16 @@ def _capped(quota: int, period: str) -> ModuleAccess:
 @dataclass(frozen=True)
 class Entitlements:
     tier: str
-    daily_calculations: Optional[int]  # None = unlimited
+    daily_calculations: Optional[int]  # None = unlimited (sauf monthly_calculations)
     monthly_country_profiles: Optional[int]  # None = unlimited (all 54)
     export_formats: tuple[str, ...]
     api_access: bool
     api_monthly_quota: Optional[int]
     seats_included: int
     modules: Mapping[str, ModuleAccess] = field(default_factory=dict)
+    # Calculs par mois civil (formule de découverte) ; None = pas de plafond
+    # mensuel, seul daily_calculations s'applique.
+    monthly_calculations: Optional[int] = None
 
     def __post_init__(self) -> None:
         # These instances are shared singletons (resolve_entitlements returns
@@ -82,42 +86,47 @@ class Entitlements:
 
 
 _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
+    # « free » = formule Découverte (décision de l'exploitant du 09/11/2026) :
+    # gratuite, pour un compte inscrit, e-mail validé, sans abonnement payant. Sans compte, seul le tableau de bord d'accueil est
+    # consultable (entitlement_guard : 401 « login_required » ailleurs).
+    # Chaque mois civil : 2 calculs, et 5 recherches par module de consultation
+    # (un pays, un produit, un port… choisi ; ouvrir le module ne compte pas),
+    # puis invitation à s'abonner. Opportunités et outils restent payants.
     "free": Entitlements(
         tier="free",
-        daily_calculations=10,
+        daily_calculations=None,
+        monthly_calculations=2,
         monthly_country_profiles=None,
-        export_formats=(),
+        # Exports (décision de l'exploitant du 06/11/2026) : le PDF pour toutes
+        # les formules ; CSV et Excel pour aucune, réservés au compte admin
+        # (_ADMIN_ENTITLEMENTS). Quotas de PDF par formule : à définir.
+        export_formats=("pdf",),
         api_access=False,
         api_monthly_quota=None,
         seats_included=1,
         modules={
-            # stats/production/logistics/roo are browse/reference modules gated
-            # by entitlement_guard.require_module_enabled() — the tier on/off
-            # switch only, never metered per request (a single screen fans out
-            # to many GETs; metering broke the very first page load — see the
-            # module docstring). Publishing a quota here that enforcement never
-            # checks would let this grid, and the pricing page built from it,
-            # advertise limits nobody hits. "unlimited when enabled" below is
-            # therefore the true runtime behavior, not an aspirational cap.
-            "stats": _UNLIMITED,
-            "production": _UNLIMITED,
-            "logistics": _UNLIMITED,
-            "roo": _UNLIMITED,
-            # "tools" (tariff data downloads) is gated the same way as the
-            # browse modules above: entitlement_guard.require_module_enabled()
-            # is mounted on the router (see routes/__init__.py,
-            # _tools_entitlement), an on/off switch per tier, not metered per
-            # request. It is _DENIED here for free, not _capped(...), because
-            # the module is withheld outright rather than rate-limited.
+            # Modules de consultation : compteur de recherches distinctes
+            # (entitlement_guard.require_module_consultation), pas de requêtes —
+            # un écran envoie beaucoup de GET.
+            "stats": _capped(5, "month"),
+            "production": _capped(5, "month"),
+            "logistics": _capped(5, "month"),
+            "roo": _capped(5, "month"),
+            "profiles": _capped(5, "month"),
+            # Fiche réglementaire d'une position (onglet Réglementation du
+            # calculateur) : un pays et un produit cherchés comptent chacun une
+            # recherche, comme ailleurs.
+            "reglementation": _capped(5, "month"),
             "tools": _DENIED,
-            "reports": _capped(2, "day"),
+            # Module Opportunités réservé aux abonnements payants (audit E1).
+            "reports": _DENIED,
         },
     ),
     "starter": Entitlements(
         tier="starter",
         daily_calculations=40,
         monthly_country_profiles=None,
-        export_formats=("csv",),
+        export_formats=("pdf",),
         api_access=False,
         api_monthly_quota=None,
         seats_included=1,
@@ -126,6 +135,8 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "production": _UNLIMITED,
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
+            "profiles": _UNLIMITED,
+            "reglementation": _UNLIMITED,
             "tools": _capped(10, "day"),
             "reports": _capped(10, "day"),
         },
@@ -134,7 +145,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
         tier="pro",
         daily_calculations=100,
         monthly_country_profiles=None,
-        export_formats=("csv", "excel", "pdf"),
+        export_formats=("pdf",),
         api_access=False,
         api_monthly_quota=None,
         seats_included=1,
@@ -143,6 +154,8 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "production": _UNLIMITED,
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
+            "profiles": _UNLIMITED,
+            "reglementation": _UNLIMITED,
             "tools": _UNLIMITED,
             "reports": _capped(30, "day"),
         },
@@ -151,7 +164,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
         tier="business",
         daily_calculations=None,
         monthly_country_profiles=None,
-        export_formats=("csv", "excel", "pdf"),
+        export_formats=("pdf",),
         api_access=True,
         api_monthly_quota=1000,
         seats_included=5,
@@ -160,6 +173,8 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "production": _UNLIMITED,
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
+            "profiles": _UNLIMITED,
+            "reglementation": _UNLIMITED,
             "tools": _UNLIMITED,
             "reports": _capped(200, "day"),
         },
@@ -254,6 +269,36 @@ def all_tier_entitlements() -> Mapping[str, Entitlements]:
     return _ALL_TIER_ENTITLEMENTS_VIEW
 
 
+# Compte admin amorcé depuis l'environnement (server.py, seul à porter le rôle
+# « admin ») : tous les modules, aucun quota, pour les démonstrations du
+# produit, si ADMIN_ACCES_ILLIMITE est activé (voir `admin_acces_illimite`).
+# Hors de la grille des formules (TIERS) : ni vendu ni affiché sur la page
+# des tarifs.
+_ADMIN_ENTITLEMENTS = Entitlements(
+    tier="admin",
+    daily_calculations=None,
+    monthly_country_profiles=None,
+    export_formats=("csv", "excel", "pdf"),
+    api_access=True,
+    api_monthly_quota=None,
+    seats_included=_TIER_ENTITLEMENTS["business"].seats_included,
+    modules={module_id: _UNLIMITED for module_id in MODULES},
+)
+
+
+def admin_acces_illimite(user: Optional[dict]) -> bool:
+    """Le compte admin a-t-il l'accès illimité (tous les modules sans quota,
+    téléchargement des tarifs, exports CSV et Excel) ? Réglage du déploiement,
+    lu à chaque appel :
+    ADMIN_ACCES_ILLIMITE=true sur Emergent, maintenu en production (décision de
+    l'exploitant du 06/11/2026) ; désactivé quand la variable est absente.
+    Désactivé, le compte admin est traité comme tout utilisateur, selon sa
+    formule."""
+    if not user or user.get("role") != "admin":
+        return False
+    return os.environ.get("ADMIN_ACCES_ILLIMITE", "").strip().lower() in ("1", "true", "oui", "yes")
+
+
 def resolve_entitlements(user: Optional[dict], *, now: Optional[datetime] = None) -> Entitlements:
     """Resolve the effective entitlements for a user document. `user=None`
     (an unauthenticated visitor) resolves to the free tier, same as any
@@ -261,4 +306,6 @@ def resolve_entitlements(user: Optional[dict], *, now: Optional[datetime] = None
     Entitlements instance, never None. Never raises — always returns at
     least the free tier, so callers can gate features without a separate
     "no subscription" branch."""
+    if admin_acces_illimite(user):
+        return _ADMIN_ENTITLEMENTS
     return _TIER_ENTITLEMENTS[_effective_tier(user, now=now)]

@@ -302,9 +302,11 @@ class EnhancedSearchEngine:
         # Geographic filter
         filter_countries = criteria.get("countries", [])
         if filter_countries:
-            countries = [c for c in countries if c in [fc.upper() for fc in filter_countries]]
+            voulus = {fc.upper() for fc in filter_countries}
+            countries = [c for c in countries if c in voulus]
 
-        sectors = criteria.get("sectors", ["general"])
+        # Dédoublonnés et bornés (constat E2) : un calcul de score par pays et secteur.
+        sectors = list(dict.fromkeys(criteria.get("sectors", ["general"])))[:20]
         investment_size = criteria.get("investment_size", "medium")
         risk_tolerance = criteria.get("risk_tolerance", "medium")
         min_score = float(criteria.get("min_score", 0.0))

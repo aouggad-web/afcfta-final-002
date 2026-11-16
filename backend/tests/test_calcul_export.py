@@ -647,7 +647,7 @@ def test_cod_positions_a_etablir(client):
                                titulaire_minier=False), "EXPORT")
         assert ligne["montant"] is None, code
     or_brut = _ligne(_export(client, pays="COD", code_sh="71081200", valeur=1_000_000, devise="CDF"), "EXPORT")
-    assert "0,5 %" in or_brut["note"] and "24/011" in or_brut["note"] and "25/060" in or_brut["note"]
+    assert "0,5 %" in or_brut["note"] and "24/011" in or_brut["note"] and "26/032" in or_brut["note"]
 
 
 def test_cod_or_et_diamants_exoneres_pour_le_titulaire_minier(client):

@@ -8,6 +8,8 @@ import {
   TrendingUp, TrendingDown, Package, Info, Loader2 
 } from 'lucide-react';
 import { montantUnite } from '../utils/nombres';
+import { pick } from '../i18n/lang';
+import { trDonnee } from '../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -77,10 +79,38 @@ function TradeProductsTable({ language = 'fr' }) {
       titleExportWorld: "Top 20 Products Exported by Africa to the World",
       titleImportIntra: "Top 20 Products Imported in Intra-African Trade",
       titleExportIntra: "Top 20 Products Exported in Intra-African Trade"
+    },
+    ar: {
+      title: "أهم 20 منتجًا تجاريًا أفريقيًا",
+      subtitle: "تحليل مفصل لأبرز المنتجات المتبادلة (الاستيراد/التصدير مع العالم والتجارة البينية الأفريقية)",
+      importWorld: "الواردات من العالم (أهم 20)",
+      exportWorld: "الصادرات إلى العالم (أهم 20)",
+      importIntra: "الواردات البينية الأفريقية (أهم 20)",
+      exportIntra: "الصادرات البينية الأفريقية (أهم 20)",
+      tabImportWorld: "واردات من العالم",
+      tabExportWorld: "صادرات إلى العالم",
+      tabImportIntra: "واردات بينية أفريقية",
+      tabExportIntra: "صادرات بينية أفريقية",
+      loading: "جارٍ تحميل البيانات التجارية…",
+      product: "المنتج",
+      hsCode: "رمز SH",
+      value: "القيمة",
+      share: "الحصة",
+      growth: "النمو",
+      topExporters: "أكبر المصدِّرين",
+      topImporters: "أكبر المستوردين",
+      source: "المصدر",
+      year: "السنة",
+      footerSources: "المصادر: الأونكتاد COMTRADE، OEC/BACI 2024، ITC Trade Map، البنك الأفريقي للتنمية، أمانة منطقة التجارة الحرة القارية الأفريقية",
+      footerNote: "تمثل البيانات أهم 20 منتجًا حسب القيمة التجارية. التصنيف وفق النظام المنسق (SH). بيانات 2024.",
+      titleImportWorld: "أهم 20 منتجًا تستوردها أفريقيا من العالم",
+      titleExportWorld: "أهم 20 منتجًا تصدّرها أفريقيا إلى العالم",
+      titleImportIntra: "أهم 20 منتجًا مستوردًا في التجارة البينية الأفريقية",
+      titleExportIntra: "أهم 20 منتجًا مصدَّرًا في التجارة البينية الأفريقية"
     }
   };
 
-  const t = texts[language];
+  const t = texts[language] || texts.fr;
 
   useEffect(() => {
     fetchAllData();
@@ -176,7 +206,7 @@ function TradeProductsTable({ language = 'fr' }) {
                     {product.rank}
                   </span>
                 </td>
-                <td style={{ fontWeight: 600, color: 'var(--text)', whiteSpace: 'normal', overflowWrap: 'anywhere' }}>{product.product}</td>
+                <td style={{ fontWeight: 600, color: 'var(--text)', whiteSpace: 'normal', overflowWrap: 'anywhere' }}>{trDonnee(product.product, language)}</td>
                 <td>
                   <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', padding: '2px 6px', borderRadius: 4, background: 'var(--overlay)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-soft)' }}>
                     {product.hs_code}
@@ -197,7 +227,7 @@ function TradeProductsTable({ language = 'fr' }) {
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                     {(isExport ? product.top_exporters : product.top_importers)?.slice(0, 3).map((country, i) => (
                       <span key={i} style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 100, background: `color-mix(in srgb, ${accentColor} 13%, transparent)`, border: `1px solid color-mix(in srgb, ${accentColor} 27%, transparent)`, color: 'var(--text-soft)' }}>
-                        {country}
+                        {trDonnee(country, language)}
                       </span>
                     ))}
                   </div>
@@ -222,7 +252,7 @@ function TradeProductsTable({ language = 'fr' }) {
               </span>
               <span className="spc-hs">{product.hs_code}</span>
             </div>
-            <div className="spc-name">{product.product}</div>
+            <div className="spc-name">{trDonnee(product.product, language)}</div>
             <div className="spc-metrics">
               <div className="spc-metric">
                 <span className="spc-label">{t.value}</span>
@@ -241,7 +271,7 @@ function TradeProductsTable({ language = 'fr' }) {
               <span className="spc-label">{isExport ? t.topExporters : t.topImporters}</span>
               <div className="spc-chips">
                 {(isExport ? product.top_exporters : product.top_importers)?.slice(0, 3).map((country, i) => (
-                  <span key={i} className="spc-chip">{country}</span>
+                  <span key={i} className="spc-chip">{trDonnee(country, language)}</span>
                 ))}
               </div>
             </div>
@@ -326,7 +356,7 @@ function TradeProductsTable({ language = 'fr' }) {
             <div className="stats-chart-header blue">
               <div className="stats-chart-title blue">
                 <ArrowDownToLine className="w-5 h-5" />
-                {language === 'en' ? t.titleImportWorld : importsWorld?.title}
+                {pick(language, importsWorld?.title, t.titleImportWorld, t.titleImportWorld)}
               </div>
               <div className="stats-chart-subtitle">
                 <Info className="w-3 h-3 inline mr-1" />
@@ -345,7 +375,7 @@ function TradeProductsTable({ language = 'fr' }) {
             <div className="stats-chart-header" style={{ borderBottomColor: 'rgba(52,211,153,0.2)' }}>
               <div className="stats-chart-title" style={{ color: 'var(--success)' }}>
                 <ArrowUpFromLine className="w-5 h-5" />
-                {language === 'en' ? t.titleExportWorld : exportsWorld?.title}
+                {pick(language, exportsWorld?.title, t.titleExportWorld, t.titleExportWorld)}
               </div>
               <div className="stats-chart-subtitle">
                 <Info className="w-3 h-3 inline mr-1" />
@@ -364,7 +394,7 @@ function TradeProductsTable({ language = 'fr' }) {
             <div className="stats-chart-header" style={{ borderBottomColor: 'rgba(167,139,250,0.2)' }}>
               <div className="stats-chart-title violet">
                 <Handshake className="w-5 h-5" />
-                {language === 'en' ? t.titleImportIntra : intraImports?.title}
+                {pick(language, intraImports?.title, t.titleImportIntra, t.titleImportIntra)}
               </div>
               <div className="stats-chart-subtitle">
                 <Info className="w-3 h-3 inline mr-1" />
@@ -383,7 +413,7 @@ function TradeProductsTable({ language = 'fr' }) {
             <div className="stats-chart-header terra">
               <div className="stats-chart-title terra">
                 <Globe className="w-5 h-5" />
-                {language === 'en' ? t.titleExportIntra : intraExports?.title}
+                {pick(language, intraExports?.title, t.titleExportIntra, t.titleExportIntra)}
               </div>
               <div className="stats-chart-subtitle">
                 <Info className="w-3 h-3 inline mr-1" />
@@ -400,7 +430,7 @@ function TradeProductsTable({ language = 'fr' }) {
       {/* Footer Info */}
       <div className="stats-source-note" style={{ background: 'var(--afcfta-card2)', borderRadius: 10, border: '1px solid var(--overlay)' }}>
         <Info className="w-4 h-4 inline mr-1 opacity-60" />
-        <strong>{language === 'en' ? 'Sources' : 'Sources'}:</strong> {t.footerSources}
+        <strong>{pick(language, 'Sources', 'Sources', 'المصادر')}:</strong> {t.footerSources}
         <br />
         <span style={{ opacity: 0.8 }}>{t.footerNote}</span>
       </div>

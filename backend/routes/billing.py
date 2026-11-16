@@ -113,7 +113,8 @@ async def geo_diagnostic(request: Request):
     le backend voit réellement. Ne révèle que des informations sur la requête de
     l'appelant lui-même.
     """
-    xff = request.headers.get("x-forwarded-for", "")
+    # Toutes les lignes, comme `geo_service.client_ip`.
+    xff = ",".join(request.headers.getlist("x-forwarded-for"))
 
     # L'adresse vue par la couche ASGI est une IP d'infrastructure (pod, ingress).
     # Seul son *caractère* privé/public a une valeur de diagnostic — savoir si la
@@ -133,6 +134,10 @@ async def geo_diagnostic(request: Request):
         "cloudflare_trusted": geo_service.cloudflare_is_trusted(request),
         "geoip_db_configured": bool(os.environ.get("GEOIP_DB_PATH")),
         "ipinfo_configured": bool(os.environ.get("IPINFO_TOKEN")),
+        # Le pair direct est-il un relais approuvé (TRUSTED_PROXY_CIDRS) ? Sinon
+        # X-Forwarded-For est ignoré. Derrière un ingress, il doit valoir true :
+        # à défaut, renseignez TRUSTED_PROXY_CIDRS avec la plage de l'ingress.
+        "proxy_peer_trusted": geo_service.peer_is_trusted_proxy(request),
         # Relais de confiance pris en compte pour extraire l'IP du visiteur.
         # Si `client_ip` ci-dessus ne correspond pas à votre adresse publique
         # réelle, ajustez TRUSTED_PROXY_HOPS et rappelez cette route.
@@ -172,11 +177,12 @@ async def get_entitlements():
     (`entitlement_guard.require_module`), au lieu d'une liste HTML codée en
     dur qui pourrait diverger. Aucune authentification : ce sont les règles
     des formules, pas les droits d'un utilisateur précis — le tier "free"
-    inclus ici est celui d'un visiteur non connecté.
+    est la formule Découverte (compte gratuit à adresse e-mail validée).
     """
     return {
         tier: {
             "daily_calculations": ent.daily_calculations,
+            "monthly_calculations": ent.monthly_calculations,
             "monthly_country_profiles": ent.monthly_country_profiles,
             "export_formats": list(ent.export_formats),
             "api_access": ent.api_access,
@@ -381,7 +387,12 @@ async def create_product_checkout(payload: ProductCheckoutPayload, request: Requ
         try:
             amount_dzd = pricing.product_dzd_amount(payload.product)
         except pricing.InvalidPrice as exc:
-            raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc))
+            # Message bâti sur la configuration du serveur : au journal seulement (M9).
+            logger.error("Tarif Chargily mal configuré : %s", exc)
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Paiement local momentanément indisponible.",
+            ) from exc
         url = await run_in_threadpool(
             lambda: chargily_service.create_checkout(
                 amount_dzd=amount_dzd,
@@ -616,7 +627,7 @@ async def stripe_webhook(request: Request):
     try:
         event = stripe_service.construct_event(payload, sig)
     except ValueError as exc:
-        logger.warning("Webhook rejeté: %s", exc)
+        logger.warning("Webhook rejeté: %s", exc, exc_info=True)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
 
     event_id = event.get("id") if isinstance(event, dict) else event["id"]
@@ -764,7 +775,7 @@ async def chargily_webhook(request: Request):
     try:
         event = chargily_service.verify_and_parse(payload, signature)
     except ValueError as exc:
-        logger.warning("Webhook Chargily rejeté: %s", exc)
+        logger.warning("Webhook Chargily rejeté: %s", exc, exc_info=True)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
 
     event_id = event.get("id") or ""

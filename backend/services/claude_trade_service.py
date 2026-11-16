@@ -620,6 +620,8 @@ class ClaudeTradeService:
                     "regional_content_pct": rule.get("regional_content"),
                     "status": rule.get("status"),
                     "source": rule.get("source_detail"),
+                    "matches_text": primary.get("matches_text"),
+                    "rule_text_fr": primary.get("rule_text_fr") or "",
                 }
         except Exception as e:
             logger.debug(f"PSR lookup unavailable for {hs}: {e}")
@@ -635,15 +637,23 @@ class ClaudeTradeService:
                 "ZLECAf. La préférence tarifaire ne s'applique que si la "
                 "transformation locale satisfait la règle d'origine du produit"
                 + (
-                    f" ({rule_summary['name']}"
-                    + (
-                        f", contenu régional ≥ {rule_summary['regional_content_pct']} %"
-                        if rule_summary.get("regional_content_pct")
-                        else ""
+                    # Règle propre à sa ligne : son nom n'énonce aucun critère,
+                    # le texte de la ligne (en français) si.
+                    f" (Appendice IV : « {rule_summary['rule_text_fr']} »)"
+                    if rule_summary
+                    and rule_summary.get("matches_text") is False
+                    and rule_summary.get("rule_text_fr")
+                    else (
+                        f" ({rule_summary['name']}"
+                        + (
+                            f", contenu régional ≥ {rule_summary['regional_content_pct']} %"
+                            if rule_summary.get("regional_content_pct")
+                            else ""
+                        )
+                        + ")"
+                        if rule_summary and rule_summary.get("name")
+                        else " (Annexe 2 / Appendice IV ZLECAf)"
                     )
-                    + ")"
-                    if rule_summary and rule_summary.get("name")
-                    else " (Annexe 2 / Appendice IV ZLECAf)"
                 )
                 + ". Exiger un certificat d'origine ZLECAf avant de compter la préférence."
             ),
@@ -1088,6 +1098,9 @@ STRICT DATA RULES:
         # pv=4 : l'ancrage production relaie désormais le caveat méthodologique
         # par commodité (banane/plantain : production ≠ capacité d'export) —
         # invalide les analyses en cache générées sans ce garde-fou.
+        # Pas d'incrément pour la note des hubs de réexportation qui cite le
+        # texte d'une règle propre à sa ligne : choix de ne pas recalculer les
+        # analyses en cache ; elles prennent la nouvelle note à leur expiration.
         cache_params = {
             "country": country_name,
             "mode": mode,
@@ -1655,9 +1668,11 @@ Wrap ALL 15 in this envelope:
                 payload = await self.factual_opportunities(country_name, mode=mode, lang=lang)
             except Exception as fallback_error:  # pragma: no cover - dernier recours
                 logger.error(f"Factual fallback also failed: {fallback_error}")
-                return {"error": str(e), "opportunities": []}
-            payload["error"] = str(e)
-            payload["degraded_reason"] = f"analysis_failed: {e}"
+                return {"error": "Internal server error", "opportunities": []}
+            # Le texte de l'exception reste au journal (ci-dessus) : il peut
+            # porter l'URL d'un fournisseur ou un message d'erreur interne.
+            payload["error"] = "Internal server error"
+            payload["degraded_reason"] = "analysis_failed"
             return payload
 
     # ── Country Economic Profile ───────────────────────────────────────────────
@@ -1748,7 +1763,7 @@ Return this EXACT JSON structure:
 
         except Exception as e:
             logger.error(f"Error in country profile: {e}", exc_info=True)
-            return {"error": str(e)}
+            return {"error": "Internal server error"}
 
     # ── Product Analysis ──────────────────────────────────────────────────────
 
@@ -1929,7 +1944,7 @@ Return this EXACT JSON structure with one entry per year, deduplicated:
 
         except Exception as e:
             logger.error(f"Error in trade balance: {e}", exc_info=True)
-            return {"error": str(e)}
+            return {"error": "Internal server error"}
 
     # ── Value Chains ──────────────────────────────────────────────────────────
 
@@ -2232,7 +2247,7 @@ This keeps the payload compact and parseable."""
 
         except Exception as e:
             logger.error(f"Error in value chains: {e}", exc_info=True)
-            return {"error": str(e)}
+            return {"error": "Internal server error"}
 
     @staticmethod
     def _filter_unverified_raw_producers(result: Dict, real_raw_material_iso3: set) -> int:

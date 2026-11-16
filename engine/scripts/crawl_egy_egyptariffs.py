@@ -13,7 +13,7 @@ Usage :
     python crawl_egy_egyptariffs.py --chapters 01 02 03
     python crawl_egy_egyptariffs.py --out egy_raw.json
 
-Sortie : egy_raw.json  (à uploader sur Replit)
+Sortie : egy_raw.json  (à déposer dans backend/data/raw_crawls/)
 
 -----------------------------------------------------------------------
 CORRECTIF v2 — mapping de colonnes taxes (bug critique)
@@ -268,7 +268,7 @@ def main():
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     print(f"\nSauvegardé: {args.out} ({len(data['positions'])} positions)")
-    print(f"   Uploader sur Replit dans: backend/data/raw_crawls/")
+    print(f"   À déposer dans : backend/data/raw_crawls/")
 
 
 if __name__ == "__main__":

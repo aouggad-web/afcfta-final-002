@@ -13,6 +13,7 @@ Cache TTLs:
 
 import hashlib
 import json
+import logging
 import os
 import time
 from datetime import timedelta
@@ -27,6 +28,8 @@ try:
 except ImportError:
     REDIS_AVAILABLE = False
     redis = None
+
+logger = logging.getLogger(__name__)
 
 # Configuration
 REDIS_URL = os.environ.get("REDIS_URL", "redis://localhost:6379/0")
@@ -47,6 +50,12 @@ CACHE_TTL = {
 # Global Redis client (type hinted with a forward reference so it is safe
 # even when the redis package is not installed)
 _redis_client: "Optional[Any]" = None
+
+# Après un échec de connexion, pas de nouvel essai avant ce délai (constat E2) :
+# sinon chaque lecture ou écriture du cache retente la connexion (jusqu'à 2 s
+# chacune si l'hôte ne répond pas), de façon synchrone dans le handler.
+_DELAI_RECONNEXION_S = 30
+_dernier_echec: Optional[float] = None
 
 # ---------------------------------------------------------------------------
 # In-memory fallback cache
@@ -157,22 +166,26 @@ def _disk_delete(key: str) -> bool:
 
 def get_redis_client() -> "Optional[Any]":
     """Get or create Redis client singleton."""
-    global _redis_client
+    global _redis_client, _dernier_echec
 
     if not REDIS_AVAILABLE or not CACHE_ENABLED:
         return None
 
     if _redis_client is None:
+        if _dernier_echec is not None and time.monotonic() - _dernier_echec < _DELAI_RECONNEXION_S:
+            return None
         try:
             _redis_client = redis.from_url(
                 REDIS_URL, decode_responses=True, socket_connect_timeout=2, socket_timeout=2
             )
             # Test connection
             _redis_client.ping()
-            print(f"✓ Redis cache connected: {REDIS_URL}")
+            # Sans l'URL : elle porte le mot de passe Redis (docker-compose.yml).
+            print("✓ Redis cache connected")
         except Exception as e:
             print(f"⚠ Redis connection failed: {e}")
             _redis_client = None
+            _dernier_echec = time.monotonic()
 
     return _redis_client
 
@@ -358,7 +371,8 @@ def cache_stats() -> dict:
             "ttl_config": CACHE_TTL,
         }
     except Exception as e:
-        return {"status": "error", "error": str(e)}
+        logger.error(f"Cache stats error: {e}", exc_info=True)
+        return {"status": "error", "error": "Internal server error"}
 
 
 def cached(ttl_type: str = "default", key_prefix: str = None):

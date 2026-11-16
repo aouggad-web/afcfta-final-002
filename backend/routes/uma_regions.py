@@ -142,8 +142,8 @@ async def get_north_africa_countries(
             "countries": countries,
         }
     except Exception as exc:
-        logger.error(f"get_north_africa_countries failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"get_north_africa_countries failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 # ── /api/regions/uma/intelligence ────────────────────────────────────────────
@@ -232,8 +232,8 @@ async def get_uma_intelligence():
             },
         }
     except Exception as exc:
-        logger.error(f"get_uma_intelligence failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"get_uma_intelligence failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 # ── /api/regions/north-africa/summary ────────────────────────────────────────
@@ -267,8 +267,8 @@ async def get_regional_summary():
             "low_reliability_countries": ["LBY", "SDN", "MRT"],
         }
     except Exception as exc:
-        logger.error(f"get_regional_summary failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"get_regional_summary failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 # ── /api/regions/north-africa/compare ────────────────────────────────────────
@@ -309,8 +309,8 @@ async def compare_countries(
 
         return {"comparison": comparison}
     except Exception as exc:
-        logger.error(f"compare_countries failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"compare_countries failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 # ── /api/investment/north-africa/zones ───────────────────────────────────────
@@ -358,8 +358,8 @@ async def get_all_investment_zones(
             "zones_by_country": all_zones,
         }
     except Exception as exc:
-        logger.error(f"get_all_investment_zones failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"get_all_investment_zones failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @investment_router.get("/north-africa/zones/{country_code}")
@@ -387,8 +387,8 @@ async def get_country_investment_zones(country_code: str):
             "zones": zones,
         }
     except Exception as exc:
-        logger.error(f"get_country_investment_zones({country_code}) failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"get_country_investment_zones({country_code}) failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 # ── Mount sub-routers onto the main router ────────────────────────────────────

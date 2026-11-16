@@ -8,8 +8,13 @@ Bridges two systems that were previously disconnected:
 
 A caller with a valid JWT session is gated on their actual subscription tier.
 A caller without one (API-key-only access, or no auth at all) is treated as
-the "free" tier — `resolve_entitlements(None)` already resolves to free, so
-there is no separate branch for that case.
+the "free" tier — `resolve_entitlements(None)` already resolves to free.
+
+Appels sans session (audit E1) : les calculs sont comptés en mémoire par
+visiteur (`require_calculations_quota`) ; l'API v2, le module Opportunités et
+les exports de fichiers exigent une clé API valide (plans API vendus, clés
+admin), déjà comptée par sa `request_quota` dans `auth.require_auth` ; les
+exports CSV et Excel, la session admin seule, aucune clé (`check_export_format`).
 
 Wire the database before first request, same pattern as `auth.py`/`billing.py`:
     from entitlement_guard import set_database
@@ -18,16 +23,26 @@ Wire the database before first request, same pattern as `auth.py`/`billing.py`:
 
 from __future__ import annotations
 
+import logging
 from typing import Optional
 
+from auth import require_auth
 from bson import ObjectId
 from bson.errors import InvalidId
-from entitlements import Entitlements, ModuleAccess, resolve_entitlements
+from entitlements import (
+    Entitlements,
+    ModuleAccess,
+    admin_acces_illimite,
+    all_tier_entitlements,
+    resolve_entitlements,
+)
 from fastapi import Depends, HTTPException, Request, status
 from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError, PyMongoError
 from services import supabase_auth
 from services.user_auth_service import decode_access_token
+
+logger = logging.getLogger(__name__)
 
 _db = None
 
@@ -191,6 +206,44 @@ def _quota_exceeded(tier: str, module_id: str, access: ModuleAccess) -> HTTPExce
     )
 
 
+def _connexion_requise(module_id: str) -> HTTPException:
+    """Sans compte, seul le tableau de bord d'accueil est consultable (décision
+    de l'exploitant du 09/11/2026)."""
+    return HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail={
+            "error": "login_required",
+            "tier": "anonymous",
+            "module": module_id,
+            "message": (
+                "Créez un compte gratuit et validez votre adresse e-mail pour "
+                "consulter ce module."
+            ),
+        },
+    )
+
+
+def _cle_api(key_doc) -> bool:
+    """Vrai pour un vrai document `api_keys` (plan API vendu ou clé admin), et
+    non pour le contexte public que `require_auth` rend sans clé ou sans base."""
+    return isinstance(key_doc, dict) and bool(key_doc.get("key_hash"))
+
+
+def _reserve_aux_abonnements(module_id: str) -> HTTPException:
+    return HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail={
+            "error": "upgrade_required",
+            "tier": "anonymous",
+            "module": module_id,
+            "message": (
+                "Ce module est réservé aux abonnements payants. Souscrivez un "
+                "abonnement pour y accéder."
+            ),
+        },
+    )
+
+
 def require_module(module_id: str):
     """FastAPI dependency factory: gates a route on a subscriber's access to
     `module_id` per `entitlements.MODULES`, enforcing both the on/off switch
@@ -216,6 +269,52 @@ def require_module(module_id: str):
             if not ok:
                 raise _quota_exceeded(ent.tier, module_id, access)
         return ent
+
+    return _dependency
+
+
+def require_paid_module(module_id: str, *, compter: bool = True):
+    """`require_module` pour un module réservé aux abonnements payants (module
+    Opportunités, « reports », refusé à la formule free — audit E1).
+
+    Un abonné est traité par `require_module` (403 en free, quota sinon), ou,
+    avec `compter=False`, par `require_module_enabled` (403 en free, sans
+    décompte : écrans de consultation du même onglet, qui envoient beaucoup de
+    requêtes). Un appel sans session est refusé (403 upgrade_required), sauf
+    s'il porte une clé API valide, ou s'il n'y a pas de base (dev, workflow CI
+    opportunites_module.yml) : le module reste alors ouvert comme avant."""
+
+    module_dependency = (require_module if compter else require_module_enabled)(module_id)
+
+    async def _dependency(
+        request: Request,
+        user: Optional[dict] = Depends(get_optional_subscriber),
+        key_doc: dict = Depends(require_auth),
+    ) -> Entitlements:
+        if user is None:
+            if _db is None or _cle_api(key_doc):
+                return resolve_entitlements(None)
+            raise _reserve_aux_abonnements(module_id)
+        return await module_dependency(request=request, user=user)
+
+    return _dependency
+
+
+def require_admin_illimite():
+    """Réservé au compte admin quand ADMIN_ACCES_ILLIMITE est activé
+    (`entitlements.admin_acces_illimite`) : téléchargement des tarifs, interdit
+    à toutes les formules (décision du responsable produit, 03/11/2026).
+    Toute autre session, clé API ou appel anonyme reçoit 403."""
+
+    async def _dependency(user: Optional[dict] = Depends(get_optional_subscriber)) -> None:
+        if not admin_acces_illimite(user):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail={
+                    "error": "downloads_disabled",
+                    "message": "Le téléchargement des tarifs n'est pas proposé.",
+                },
+            )
 
     return _dependency
 
@@ -251,27 +350,175 @@ def require_module_enabled(module_id: str):
     return _dependency
 
 
+# Paramètres d'une requête qui désignent ce que l'utilisateur cherche (un pays,
+# un produit, un port…). Les autres (langue, page, tri, format, année…) ne
+# font pas une nouvelle recherche.
+_PARAMETRES_DE_RECHERCHE = frozenset({
+    "country", "country_code", "country_iso", "country_iso3", "iso3", "iso", "pays",
+    "hs", "hs_code", "hs6", "code", "product", "produit", "commodity",
+    "q", "query", "search", "port", "port_id", "airport_id", "corridor_id", "operator_id",
+    "origin", "destination", "partner", "reporter", "exporter", "importer",
+})
+_MAX_TERMES = 20
+_ESSAIS_RECHERCHES = 5
+
+
+def termes_de_recherche(request: Request) -> list:
+    """Ce que cherche une requête : valeurs des paramètres de chemin et des
+    paramètres de recherche (`_PARAMETRES_DE_RECHERCHE`), en majuscules.
+    Sans terme (ouverture du module, listes générales), rien n'est compté."""
+    # Chemin et requête lus séparément : un paramètre de requête homonyme
+    # (`?country_code=`) ne remplace pas la valeur du chemin.
+    valeurs = list(request.path_params.values()) + [
+        v for nom, v in request.query_params.multi_items() if nom.lower() in _PARAMETRES_DE_RECHERCHE
+    ]
+    termes = {str(v).strip().upper()[:64] for v in valeurs} - {""}
+    return sorted(termes)[:_MAX_TERMES]
+
+
+async def compter_recherches(user: dict, module_id: str, termes: list, access: ModuleAccess) -> bool:
+    """Vrai si les `termes` tiennent dans le quota de recherches du module pour
+    la période : un terme déjà cherché dans la période ne compte pas de
+    nouveau, un terme nouveau prend une place parmi `access.quota`."""
+    if _db is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={
+                "error": "entitlements_unavailable",
+                "message": "Vérification des quotas indisponible (base de données non configurée).",
+            },
+        )
+    cle = f"{user['_id']}:{module_id}:{_period_key(access.quota_period, user)}"
+    try:
+        # Lecture puis écriture conditionnelle : l'écriture n'a lieu que si la
+        # liste lue n'a pas changé entre-temps, sinon on relit. Deux recherches
+        # simultanées ne peuvent donc pas dépasser le quota à elles deux.
+        for _ in range(_ESSAIS_RECHERCHES):
+            doc = await _db.recherches_modules.find_one({"_id": cle})
+            deja = list((doc or {}).get("termes") or [])
+            nouveaux = [t for t in termes if t not in deja]
+            if not nouveaux:
+                return True
+            if len(deja) + len(nouveaux) > access.quota:
+                return False
+            if doc is None:
+                try:
+                    await _db.recherches_modules.insert_one(
+                        {"_id": cle, "termes": nouveaux, "user_id": user["_id"], "module": module_id}
+                    )
+                    return True
+                except DuplicateKeyError:
+                    continue
+            res = await _db.recherches_modules.update_one(
+                {"_id": cle, "termes": deja},
+                {"$push": {"termes": {"$each": nouveaux}}},
+            )
+            if res.matched_count:
+                return True
+        raise PyMongoError("recherches_modules : trop d'écritures concurrentes")
+    except PyMongoError:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={"error": "entitlements_unavailable", "message": "Vérification des quotas indisponible."},
+        )
+
+
+def _recherches_epuisees(tier: str, module_id: str, access: ModuleAccess) -> HTTPException:
+    return HTTPException(
+        status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+        detail={
+            "error": "quota_exceeded",
+            "tier": tier,
+            "module": module_id,
+            "quota": access.quota,
+            "quota_period": access.quota_period,
+            "message": (
+                f"Vos {access.quota} recherches gratuites du mois dans ce module sont "
+                "utilisées. Abonnez-vous pour continuer."
+            ),
+        },
+    )
+
+
+def require_module_consultation(module_id: str, *, chemins_publics: tuple = ()):
+    """Module de consultation (Statistiques, Production, Logistique, Règles
+    d'origine, Profils pays), décision de l'exploitant du 09/11/2026 :
+
+    - sans compte : 401 « login_required », sauf les `chemins_publics` (données
+      du tableau de bord d'accueil), une clé API valide, ou l'absence de base
+      (développement, CI) ;
+    - formule sans le module : 403 ;
+    - formule avec un quota de recherches (découverte : 5 par mois) : chaque
+      terme nouveau (pays, produit, port…) est compté, l'ouverture du module
+      et les listes générales ne le sont pas ; au-delà, 429 ;
+    - formules payantes : sans limite."""
+
+    async def _dependency(
+        request: Request,
+        user: Optional[dict] = Depends(get_optional_subscriber),
+        key_doc: dict = Depends(require_auth),
+    ) -> Entitlements:
+        ent = resolve_entitlements(user)
+        if request.url.path.rstrip("/") in chemins_publics:
+            return ent
+        if user is None:
+            if _db is None or _cle_api(key_doc):
+                return ent
+            raise _connexion_requise(module_id)
+        access = ent.module(module_id)
+        if not access.enabled:
+            raise _forbidden(ent.tier, module_id)
+        if access.quota is not None:
+            termes = termes_de_recherche(request)
+            if termes and not await compter_recherches(user, module_id, termes, access):
+                raise _recherches_epuisees(ent.tier, module_id, access)
+        return ent
+
+    return _dependency
+
+
+def require_login(module_id: str):
+    """Connexion exigée, rien de décompté : les routes que le calculateur
+    partage (positions, recherche, formalités, pays servis) servent l'écran
+    d'un module dont l'usage est compté ailleurs, au calcul ou à la fiche.
+
+    Sans compte : 401 « login_required » (décision de l'exploitant du
+    09/11/2026), sauf une clé API valide et l'absence de base (dev, CI)."""
+
+    async def _dependency(
+        user: Optional[dict] = Depends(get_optional_subscriber),
+        key_doc: dict = Depends(require_auth),
+    ) -> None:
+        if user is None and _db is not None and not _cle_api(key_doc):
+            raise _connexion_requise(module_id)
+
+    return _dependency
+
+
 def require_api_access():
     """FastAPI dependency for `Entitlements.api_access`/`api_monthly_quota`
     (currently only Business: unlocked, 1000 req/month) — a per-tier field,
     not a `MODULES` entry, same shape as `require_calculations_quota`.
 
-    Provisional wiring for pre-production testing: gates the API v2 router
-    for a signed-in SaaS subscriber (403 if their tier doesn't include API
-    access, 429 past the monthly quota), but — same rationale as
-    `require_module` — an anonymous/API-key-only caller keeps its prior,
-    unmetered access rather than being newly locked out. Once real API
-    subscriptions ship, this should require identity outright instead of
-    falling back for anonymous callers.
+    Gates the API v2 router for a signed-in SaaS subscriber (403 if their tier
+    doesn't include API access, 429 past the monthly quota). Sans session
+    (audit E1) : une clé API valide passe (plans API vendus, de tier « free »
+    et sans session JWT, déjà comptés par leur `request_quota`) ; tout autre
+    appel, base absente comprise, reçoit 403. FastAPI met `require_auth` en
+    cache pour la requête : la clé n'est comptée qu'une fois, même avec le
+    `_auth` du routeur.
     """
 
     async def _dependency(
         request: Request,
         user: Optional[dict] = Depends(get_optional_subscriber),
+        key_doc: dict = Depends(require_auth),
     ) -> Entitlements:
         ent = resolve_entitlements(user)
         if user is None:
-            return ent
+            if _cle_api(key_doc):
+                return ent
+            raise _forbidden(ent.tier, "api")
         if not ent.api_access:
             raise _forbidden(ent.tier, "api")
         if ent.api_monthly_quota is not None:
@@ -285,23 +532,96 @@ def require_api_access():
 
 
 def require_calculations_quota():
-    """FastAPI dependency for the tariff calculator's `daily_calculations`
-    limit — a per-tier field on `Entitlements`, not a `MODULES` entry."""
+    """FastAPI dependency for the tariff calculator's limit — a per-tier field
+    on `Entitlements` (`monthly_calculations`, sinon `daily_calculations`), not
+    a `MODULES` entry.
+
+    Sans session : aucun calcul, 401 « login_required » (décision de
+    l'exploitant du 09/11/2026). Passent sans être comptés : une clé API valide
+    (comptée par sa `request_quota`) et l'absence de base (dev, CI)."""
 
     async def _dependency(
         request: Request,
         user: Optional[dict] = Depends(get_optional_subscriber),
+        key_doc: dict = Depends(require_auth),
     ) -> Entitlements:
         ent = resolve_entitlements(user)
-        if ent.daily_calculations is None or user is None:
-            # Same rationale as require_module: no identity to meter an
-            # anonymous caller against, so it keeps its prior (unmetered)
-            # access rather than being newly blocked.
+        if user is None:
+            if _db is None or _cle_api(key_doc):
+                return ent
+            # Sans compte, aucun calcul (décision de l'exploitant du 09/11/2026).
+            raise _connexion_requise("calculator")
+        if ent.monthly_calculations is not None:
+            access = ModuleAccess(enabled=True, quota=ent.monthly_calculations, quota_period="month")
+        elif ent.daily_calculations is None:
             return ent
-        access = ModuleAccess(enabled=True, quota=ent.daily_calculations, quota_period="day")
+        else:
+            access = ModuleAccess(enabled=True, quota=ent.daily_calculations, quota_period="day")
         ok = await check_and_increment_usage(user, "calculator", access)
         if not ok:
             raise _quota_exceeded(ent.tier, "calculator", access)
         return ent
+
+    return _dependency
+
+
+def _export_non_propose(fmt: str) -> HTTPException:
+    """Refus d'un format d'export qu'aucune formule ne propose : il n'invite
+    pas à changer de formule, comme pour le téléchargement des tarifs."""
+    nom = {"csv": "CSV", "excel": "Excel"}.get(fmt, fmt.upper())
+    return HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail={
+            "error": "export_disabled",
+            "module": f"export_{fmt}",
+            "message": f"L'export {nom} n'est proposé dans aucune formule.",
+        },
+    )
+
+
+def check_export_format(fmt: str, user: Optional[dict], key_doc) -> Entitlements:
+    """Exige le format d'export `fmt` dans la formule (`export_formats`, audit
+    E1) : 403 sinon.
+
+    Décision de l'exploitant du 06/11/2026 : le PDF est accordé à toutes les
+    formules ; un format qu'aucune formule ne propose (CSV, Excel) est réservé
+    au compte admin connecté quand ADMIN_ACCES_ILLIMITE est activé, comme le
+    téléchargement des tarifs : aucune clé API n'y passe, même admin.
+
+    Un appel sans session passe, pour un format proposé, avec une clé API
+    valide ; sans clé, il est refusé, base absente comprise."""
+    ent = resolve_entitlements(user)
+    if not any(fmt in formule.export_formats for formule in all_tier_entitlements().values()):
+        if fmt not in ent.export_formats:
+            raise _export_non_propose(fmt)
+        return ent
+    if user is None:
+        if _cle_api(key_doc):
+            return ent
+        # Sans session, `ent` est la formule free, qui a le PDF : sans clé,
+        # aucun fichier n'est produit pour un anonyme pour autant.
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": "upgrade_required",
+                "tier": "anonymous",
+                "module": f"export_{fmt}",
+                "message": f"L'export {fmt.upper()} est réservé aux comptes connectés.",
+            },
+        )
+    if fmt not in ent.export_formats:
+        raise _forbidden(ent.tier, f"export_{fmt}")
+    return ent
+
+
+def require_export_format(fmt: str):
+    """FastAPI dependency factory : `check_export_format` pour une route qui
+    sert toujours le même format (`routers/export_router.py`)."""
+
+    async def _dependency(
+        user: Optional[dict] = Depends(get_optional_subscriber),
+        key_doc: dict = Depends(require_auth),
+    ) -> Entitlements:
+        return check_export_format(fmt, user, key_doc)
 
     return _dependency

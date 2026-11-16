@@ -103,24 +103,27 @@ _REGION_CARRIERS = {
 
 # Multiplicateurs par nature de marchandise (TACT commodity factors)
 COMMODITY_FACTORS = {
-    "general": {"factor": 1.0, "label_fr": "Marchandise générale", "label_en": "General cargo"},
+    "general": {"factor": 1.0, "label_fr": "Marchandise générale", "label_en": "General cargo", "label_ar": "بضائع عامة"},
     "perishable": {
         "factor": 1.18,
         "label_fr": "Périssable (chaîne du froid)",
         "label_en": "Perishable (cold chain)",
+        "label_ar": "بضائع قابلة للتلف (سلسلة التبريد)",
     },
     "pharma": {
         "factor": 1.45,
         "label_fr": "Pharmaceutique / temp. contrôlée",
         "label_en": "Pharma / temp-controlled",
+        "label_ar": "مستحضرات صيدلانية / حرارة متحكَّم فيها",
     },
     "dangerous": {
         "factor": 1.55,
         "label_fr": "Marchandise dangereuse (DGR)",
         "label_en": "Dangerous goods (DGR)",
+        "label_ar": "بضائع خطرة (DGR)",
     },
-    "valuable": {"factor": 1.65, "label_fr": "Valeur / sécurisé", "label_en": "Valuable / secured"},
-    "live": {"factor": 1.40, "label_fr": "Animaux vivants", "label_en": "Live animals"},
+    "valuable": {"factor": 1.65, "label_fr": "Valeur / sécurisé", "label_en": "Valuable / secured", "label_ar": "بضائع ثمينة / مؤمَّنة"},
+    "live": {"factor": 1.40, "label_fr": "Animaux vivants", "label_en": "Live animals", "label_ar": "حيوانات حية"},
 }
 
 VOLUMETRIC_FACTOR = 167.0  # kg par m³ (norme IATA TACT)
@@ -229,7 +232,13 @@ def get_air_fee_airports() -> List[Dict[str, Any]]:
 
 def get_commodity_types() -> List[Dict[str, Any]]:
     return [
-        {"value": k, "label_fr": v["label_fr"], "label_en": v["label_en"], "factor": v["factor"]}
+        {
+            "value": k,
+            "label_fr": v["label_fr"],
+            "label_en": v["label_en"],
+            "label_ar": v["label_ar"],
+            "factor": v["factor"],
+        }
         for k, v in COMMODITY_FACTORS.items()
     ]
 

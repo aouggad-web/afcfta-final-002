@@ -125,8 +125,11 @@ def test_no_user_grants_free_tier():
     ent = resolve_entitlements(None)
 
     assert ent.tier == "free"
-    assert ent.daily_calculations == 10
-    assert ent.export_formats == ()
+    # Compte sans abonnement (décision de l'exploitant du 09/11/2026) :
+    # 2 calculs par mois, plus de quota quotidien.
+    assert ent.daily_calculations is None
+    assert ent.monthly_calculations == 2
+    assert ent.export_formats == ("pdf",)
     assert ent.api_access is False
 
 
@@ -134,6 +137,35 @@ def test_user_with_no_subscription_field_grants_free_tier():
     ent = resolve_entitlements({"email": "a@example.com"})
 
     assert ent.tier == "free"
+
+
+def test_le_compte_admin_a_tous_les_modules_sans_aucun_quota(monkeypatch):
+    # Compte admin amorcé (server.py), pour les démonstrations : aucune limite,
+    # si le déploiement l'active (ADMIN_ACCES_ILLIMITE, Emergent).
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
+    ent = resolve_entitlements({"email": "admin@example.com", "role": "admin"})
+
+    assert ent.tier == "admin"
+    assert ent.daily_calculations is None
+    assert ent.api_access is True and ent.api_monthly_quota is None
+    assert ent.export_formats == ("csv", "excel", "pdf")
+    for module_id in MODULES:
+        access = ent.module(module_id)
+        assert access.enabled is True and access.quota is None, module_id
+    # Hors de la grille vendue, et réservé au rôle admin.
+    assert "admin" not in TIERS
+    assert resolve_entitlements({"email": "u@example.com", "role": "user"}).tier == "free"
+
+
+@pytest.mark.parametrize("reglage", [None, "", "false", "0"])
+def test_sans_le_reglage_le_compte_admin_suit_sa_formule(monkeypatch, reglage):
+    # Désactivé (défaut, production à décider) : aucun privilège d'abonnement.
+    if reglage is None:
+        monkeypatch.delenv("ADMIN_ACCES_ILLIMITE", raising=False)
+    else:
+        monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", reglage)
+
+    assert resolve_entitlements({"email": "admin@example.com", "role": "admin"}).tier == "free"
 
 
 @pytest.mark.parametrize("tier", ["starter", "pro", "business"])
@@ -155,22 +187,22 @@ def test_business_tier_grants_api_access_and_seats():
     assert ent.seats_included == 5
 
 
-def test_pro_tier_unlocks_all_export_formats_and_unlimited_profiles():
+def test_pro_tier_unlocks_unlimited_profiles():
     user = {"subscription_tier": "pro", "subscription_status": "active"}
 
     ent = resolve_entitlements(user)
 
-    assert set(ent.export_formats) == {"csv", "excel", "pdf"}
     assert ent.monthly_country_profiles is None
     assert ent.daily_calculations == 100
 
 
-def test_starter_tier_only_unlocks_csv_export():
-    user = {"subscription_tier": "starter", "subscription_status": "active"}
+@pytest.mark.parametrize("tier", TIERS)
+def test_chaque_formule_n_a_que_l_export_pdf(tier):
+    # Décision de l'exploitant du 06/11/2026 : le PDF pour toutes les formules,
+    # CSV et Excel pour aucune (réservés au compte admin).
+    user = {"subscription_tier": tier, "subscription_status": "active"}
 
-    ent = resolve_entitlements(user)
-
-    assert ent.export_formats == ("csv",)
+    assert resolve_entitlements(user).export_formats == ("pdf",)
 
 
 def test_trialing_status_grants_paid_tier():
@@ -317,19 +349,20 @@ def test_every_tier_declares_every_module():
 def test_free_tier_module_caps_and_denials():
     ent = resolve_entitlements(None)
 
-    # stats/production/logistics/roo are browse/reference modules — gated by
-    # require_module_enabled() (on/off only, never metered), so their
-    # published quota must be unlimited to match runtime enforcement.
-    stats = ent.module("stats")
-    assert stats.enabled is True
-    assert stats.quota is None
-    assert stats.quota_period is None
+    # Modules de consultation : 5 recherches distinctes par mois
+    # (entitlement_guard.require_module_consultation), pas un quota de requêtes.
+    for module_id in ("stats", "production", "logistics", "roo", "profiles", "reglementation"):
+        access = ent.module(module_id)
+        assert (access.enabled, access.quota, access.quota_period) == (True, 5, "month"), module_id
 
     assert ent.module("tools").enabled is False
-    roo = ent.module("roo")
-    assert roo.enabled is True
-    assert roo.quota is None
-    assert roo.quota_period is None
+    # Module Opportunités réservé aux abonnements payants (audit E1).
+    assert ent.module("reports").enabled is False
+    # Les formules payantes gardent les modules de consultation sans limite.
+    starter = resolve_entitlements({"subscription_tier": "starter", "subscription_status": "active"})
+    assert starter.module("profiles").quota is None
+    assert starter.module("reglementation").quota is None
+    assert starter.monthly_calculations is None
 
 
 def test_pro_tier_mixes_unlimited_and_capped_modules():
@@ -469,11 +502,12 @@ async def test_require_module_enabled_never_meters_capped_module():
     # A single logistics/stats/production/roo screen fans out to many GETs;
     # enablement-only gating must let a signed-in free user load it any
     # number of times without being blocked. Exercised here against "reports"
-    # (still genuinely capped at 2/day via the metered require_module()) to
+    # (still genuinely capped at 10/day for starter via the metered
+    # require_module(); free no longer has it at all) to
     # prove require_module_enabled() ignores a module's quota entirely,
     # rather than happening to pass because the module has none.
     dep = entitlement_guard.require_module_enabled("reports")
-    user = _user("free")
+    user = _user("starter")
     for _ in range(50):
         await _call_dep(dep, user)
 
@@ -703,13 +737,18 @@ async def test_api_access_denied_below_business(fake_db, monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_api_access_anonymous_keeps_prior_unmetered_access(fake_db):
-    # No JWT session at all — same "keep prior behavior" fallback as
-    # require_module, so an existing API-key-only integration isn't newly
-    # locked out of api_v2 by this provisional wiring.
+async def test_api_access_anonyme_sans_cle_refuse_avec_cle_accepte(fake_db):
+    # Audit E1 : sans session, l'API v2 n'est plus ouverte à tous. Seule une
+    # clé API valide (document api_keys, plans API vendus) passe ; le contexte
+    # public que rend require_auth sans clé est refusé.
     dep = entitlement_guard.require_api_access()
-    for _ in range(5):
-        await dep(request=None, user=None)
+    with pytest.raises(HTTPException) as exc:
+        await dep(request=None, user=None, key_doc={"tier": "public", "no_key": True})
+    assert exc.value.status_code == 403
+    assert exc.value.detail["error"] == "upgrade_required"
+
+    ent = await dep(request=None, user=None, key_doc={"key_hash": "h", "tier": "free"})
+    assert ent.tier == "free"
 
 
 @pytest.mark.asyncio

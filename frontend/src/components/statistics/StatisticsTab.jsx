@@ -26,7 +26,11 @@ import RcaAnalysis from './RcaAnalysis';
 import TradeComplementarity from './TradeComplementarity';
 import PreferenceMargin from './PreferenceMargin';
 import { PDFExportButton } from '../common/ExportTools';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specVueEnsemblePdf } from '../../utils/statistiquesRapportsPdf';
 import { montantUnite } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -36,7 +40,7 @@ const AfricaTooltip = ({ active, payload, label, unit, language }) => {
   if (!active || !payload || !payload.length) return null;
   return (
     <div className="stats-tooltip" style={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, padding: '10px 14px', fontSize: '0.8rem' }}>
-      <p style={{ color: 'var(--text)', fontWeight: 700, marginBottom: 4 }}>{label}</p>
+      <p style={{ color: 'var(--text)', fontWeight: 700, marginBottom: 4 }}>{trDonnee(label, language)}</p>
       {payload.map((p, i) => (
         <p key={i} style={{ color: `color-mix(in srgb, ${p.color} 40%, var(--text))`, margin: 0 }}>
           {p.name}: <strong>{montantUnite(p.value / 1e9, 'B', language, 1)}</strong>
@@ -50,6 +54,8 @@ const AfricaTooltip = ({ active, payload, label, unit, language }) => {
 export default function StatisticsTab({ language = 'fr' }) {
   const { t } = useTranslation();
   const [statistics, setStatistics] = useState(null);
+  // Totaux africains (OEC/BACI) pour le rapport PDF de la vue d'ensemble.
+  const [africaTotals, setAfricaTotals] = useState(null);
   const [activeSubTab, setActiveSubTab] = useState('overview');
   const contentRef = useRef(null);
 
@@ -95,6 +101,27 @@ export default function StatisticsTab({ language = 'fr' }) {
       imports: "Imports 2024",
       exportsEvolution: "Export volume (Billion USD)",
       importsVolume: "Import volume (Billion USD)"
+    },
+    ar: {
+      title: "الإحصائيات التجارية",
+      subtitle: "بيانات وتحليلات التجارة الأفريقية — زليكاف 2024",
+      overview: "نظرة عامة",
+      products: "المنتجات",
+      treemap: "خريطة المنتجات",
+      map: "الخريطة",
+      reseau: "شبكة زليكاف",
+      rca: "RCA",
+      complementarity: "التكامل",
+      preference: "تفضيلات زليكاف",
+      trends: "الاتجاهات",
+      parPays: "حسب البلد وSH6",
+      comparison: "مقارنة البلدان",
+      topExporters: "أكبر 10 مصدِّرين",
+      topImporters: "أكبر 10 مستوردين",
+      exports: "الصادرات 2024",
+      imports: "الواردات 2024",
+      exportsEvolution: "حجم الصادرات (مليار USD)",
+      importsVolume: "حجم الواردات (مليار USD)"
     }
   };
 
@@ -102,6 +129,9 @@ export default function StatisticsTab({ language = 'fr' }) {
 
   useEffect(() => {
     fetchStatistics();
+    axios.get(`${API}/oec/africa/totals?year=2024`)
+      .then((res) => setAfricaTotals(res.data))
+      .catch((error) => console.error('Error loading Africa totals:', error));
   }, []);
 
   const fetchStatistics = async () => {
@@ -175,6 +205,14 @@ export default function StatisticsTab({ language = 'fr' }) {
         <div ref={contentRef}>
           {/* ── Overview Tab ─────────────────────────────────── */}
           <TabsContent value="overview" className="space-y-8">
+            {statistics && (
+              <div className="flex justify-end">
+                <OpportunityPdfExport
+                  language={language}
+                  getSpec={(_, langue) => specVueEnsemblePdf({ statistics, totaux: africaTotals }, langue)}
+                />
+              </div>
+            )}
             <OECTradeStats language={language} />
             <StatisticsZaubaStyle language={language} />
 
@@ -215,6 +253,7 @@ export default function StatisticsTab({ language = 'fr' }) {
                         <YAxis
                           dataKey="name"
                           type="category"
+                          tickFormatter={(v) => trDonnee(v, language)}
                           tick={{ fontSize: 11, fill: 'var(--text)' }}
                           width={78}
                           axisLine={false}
@@ -266,6 +305,7 @@ export default function StatisticsTab({ language = 'fr' }) {
                         <YAxis
                           dataKey="name"
                           type="category"
+                          tickFormatter={(v) => trDonnee(v, language)}
                           tick={{ fontSize: 11, fill: 'var(--text)' }}
                           width={78}
                           axisLine={false}
@@ -334,9 +374,7 @@ export default function StatisticsTab({ language = 'fr' }) {
                 produit (index OMD) pour les utilisateurs sans bagage douanier. */}
             <div className="stats-chart-card" style={{ padding: 16 }}>
               <div className="stats-chart-title" style={{ marginBottom: 10 }}>
-                {language === 'en'
-                  ? 'Find an HS code from a product name'
-                  : 'Trouver un code SH à partir d’un nom de produit'}
+                {pick(language, 'Trouver un code SH à partir d’un nom de produit', 'Find an HS code from a product name', 'البحث عن رمز SH انطلاقًا من اسم المنتج')}
               </div>
               <ProductHSSearch language={language} lang={language} />
             </div>

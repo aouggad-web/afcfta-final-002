@@ -1,0 +1,9 @@
+Polices hébergées avec la page (aucun appel à un service tiers) :
+
+- Readex Pro (latin et arabe) — Copyright 2019 The Readex Pro Project Authors
+  (https://github.com/ThomasJockin/readexpro), SIL Open Font License 1.1 (texte complet : OFL-ReadexPro.txt).
+- Young Serif — Copyright 2023 The Young Serif Project Authors
+  (https://github.com/noirblancrouge/YoungSerif), SIL Open Font License 1.1 (texte complet : OFL-YoungSerif.txt).
+
+Fichiers WOFF2 issus de Fontsource (paquets @fontsource/readex-pro et @fontsource/young-serif,
+version 5.1.0). Ce sont les polices de l'application (frontend/index.html).

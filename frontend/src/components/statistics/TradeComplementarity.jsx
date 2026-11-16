@@ -12,8 +12,12 @@ import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Link2, RefreshCw, ArrowRight } from 'lucide-react';
-import { getCountryFlag } from '../../utils/countryCodes';
+import { getCountryFlag, AFRICAN_COUNTRIES } from '../../utils/countryCodes';
+import { pick } from '../../i18n/lang';
 import { CSVExportButton } from '../common/ExportTools';
+import { trierPays } from '../../utils/triPays';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specComplementaritePdf } from '../../utils/statistiquesRapportsPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -67,6 +71,29 @@ const TEXTS = {
     methodology: 'TCI = 100·(1 − Σ|partner import share − export share|/2). A high TCI means what the exporter sells matches what the importer buys.',
     levelHint: { HS2: 'Chapters', HS4: 'Positions', HS6: 'Sub-positions' },
     sameCountry: 'Choose two different countries.',
+  },
+  ar: {
+    title: 'التكامل التجاري (TCI)',
+    subtitle: 'إمكانات التبادل بين بلدين — بيانات OEC/BACI مباشرة',
+    exporter: 'المصدِّر',
+    importer: 'المستورد',
+    year: 'السنة',
+    level: 'مستوى SH',
+    loading: 'جارٍ حساب التكامل…',
+    error: 'تعذّر حساب التكامل لهذا الاختيار.',
+    noData: 'لا توجد بيانات متاحة.',
+    score: 'مؤشر TCI',
+    interpretation: (v) => v >= 50 ? 'تكامل قوي' : v >= 30 ? 'تكامل متوسط' : 'تكامل ضعيف',
+    opportunities: 'أبرز الفرص (العرض ↔ الطلب)',
+    product: 'المنتج',
+    code: 'الرمز',
+    expShare: 'حصة التصدير',
+    impShare: 'حصة الاستيراد',
+    match: 'التداخل',
+    matchingProducts: (n) => `المنتجات المتداخلة: ${n}`,
+    methodology: 'TCI = 100·(1 − Σ|حصة استيراد الشريك − حصة التصدير|/2). يعني ارتفاع TCI أن ما يبيعه المصدِّر يتوافق مع ما يشتريه المستورد.',
+    levelHint: { HS2: 'الفصول', HS4: 'البنود', HS6: 'البنود الفرعية' },
+    sameCountry: 'اختر بلدين مختلفين.',
   },
 };
 
@@ -148,9 +175,9 @@ export default function TradeComplementarity({ language = 'fr' }) {
             <Select value={exporter} onValueChange={setExporter}>
               <SelectTrigger data-testid="tci-exporter-select"><SelectValue /></SelectTrigger>
               <SelectContent>
-                {countries.map((c) => (
+                {trierPays(countries, (c) => pick(language, c.name, c.name, AFRICAN_COUNTRIES[c.iso3]?.name_ar || c.name), language).map((c) => (
                   <SelectItem key={c.iso3} value={c.iso3}>
-                    <span className="flex items-center gap-2"><span>{getCountryFlag(c.iso3)}</span><span>{c.name}</span></span>
+                    <span className="flex items-center gap-2"><span>{getCountryFlag(c.iso3)}</span><span>{pick(language, c.name, c.name, AFRICAN_COUNTRIES[c.iso3]?.name_ar || c.name)}</span></span>
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -161,9 +188,9 @@ export default function TradeComplementarity({ language = 'fr' }) {
             <Select value={importer} onValueChange={setImporter}>
               <SelectTrigger data-testid="tci-importer-select"><SelectValue /></SelectTrigger>
               <SelectContent>
-                {countries.map((c) => (
+                {trierPays(countries, (c) => pick(language, c.name, c.name, AFRICAN_COUNTRIES[c.iso3]?.name_ar || c.name), language).map((c) => (
                   <SelectItem key={c.iso3} value={c.iso3}>
-                    <span className="flex items-center gap-2"><span>{getCountryFlag(c.iso3)}</span><span>{c.name}</span></span>
+                    <span className="flex items-center gap-2"><span>{getCountryFlag(c.iso3)}</span><span>{pick(language, c.name, c.name, AFRICAN_COUNTRIES[c.iso3]?.name_ar || c.name)}</span></span>
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -201,15 +228,21 @@ export default function TradeComplementarity({ language = 'fr' }) {
           <div className="flex items-center justify-center py-10 text-[var(--afcfta-muted)]">{txt.noData}</div>
         ) : (
           <>
+            <div className="flex justify-end">
+              <OpportunityPdfExport
+                language={language}
+                getSpec={(_, langue) => specComplementaritePdf(response, { exportateur: exporter, importateur: importer }, langue)}
+              />
+            </div>
             {/* ── Score TCI ─────────────────────────────────────── */}
             <div className="flex flex-col items-center justify-center py-4 rounded-xl bg-[var(--afcfta-card2)]">
               <div className="flex items-center gap-3 text-sm text-[var(--afcfta-muted)] mb-2">
                 <span className="flex items-center gap-1 font-medium">
-                  {getCountryFlag(exporter)} {response.exporter?.name_fr || response.exporter?.name_en || exporter}
+                  {getCountryFlag(exporter)} {pick(language, null, null, AFRICAN_COUNTRIES[exporter]?.name_ar) || response.exporter?.name_fr || response.exporter?.name_en || exporter}
                 </span>
                 <ArrowRight className="w-4 h-4 text-[var(--afcfta-muted)]" />
                 <span className="flex items-center gap-1 font-medium">
-                  {getCountryFlag(importer)} {response.importer?.name_fr || response.importer?.name_en || importer}
+                  {getCountryFlag(importer)} {pick(language, null, null, AFRICAN_COUNTRIES[importer]?.name_ar) || response.importer?.name_fr || response.importer?.name_en || importer}
                 </span>
               </div>
               <div className="text-5xl font-bold" style={{ color: `color-mix(in srgb, ${scoreColor(tci)} 40%, var(--text))`}}>{tci}</div>

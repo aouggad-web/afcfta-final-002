@@ -6,7 +6,9 @@ on:
       dry_run:
         description: "Dry run (show what would be deleted, don't actually delete)"
         required: false
-        default: "false"
+        # Par défaut, simulation : un lancement manuel sans réglage ne supprime
+        # rien (audit INFO-8).
+        default: "true"
         type: choice
         options:
           - "true"
@@ -20,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
 

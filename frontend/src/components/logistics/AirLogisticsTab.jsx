@@ -9,6 +9,7 @@ import AirLogisticsMap from './AirLogisticsMap';
 import AirportCard from './AirportCard';
 import AirportDetailsModal from './AirportDetailsModal';
 import AirFreightCalculator from './AirFreightCalculator';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -61,6 +62,26 @@ export default function AirLogisticsTab({ language = 'fr' }) {
       centralAfrica: "Central Africa",
       eastAfrica: "East Africa",
       southernAfrica: "Southern Africa"
+    },
+    ar: {
+      title: "اللوجستيك الجوي الأفريقي",
+      subtitle: "استعرض أهم مطارات الشحن في أفريقيا مع إحصائيات الحركة والفاعلين والخطوط المنتظمة",
+      filterByCountry: "تصفية حسب البلد:",
+      allCountries: "جميع البلدان (64 مطارًا)",
+      map: "الخريطة",
+      list: "القائمة",
+      airports: "مطار",
+      airportsPlural: "مطارات",
+      loading: "جارٍ تحميل بيانات المطارات…",
+      errorTitle: "خطأ",
+      errorLoad: "تعذّر تحميل بيانات المطارات",
+      errorDetails: "تعذّر تحميل تفاصيل المطار",
+      // Regions
+      northAfrica: "شمال أفريقيا",
+      westAfrica: "غرب أفريقيا",
+      centralAfrica: "وسط أفريقيا",
+      eastAfrica: "شرق أفريقيا",
+      southernAfrica: "الجنوب الأفريقي"
     }
   };
 
@@ -237,6 +258,71 @@ export default function AirLogisticsTab({ language = 'fr' }) {
         { value: "ZMB", label: "🇿🇲 Zambia" },
         { value: "ZWE", label: "🇿🇼 Zimbabwe" }
       ]
+    },
+    ar: {
+      northAfrica: [
+        { value: "DZA", label: "🇩🇿 الجزائر (3)" },
+        { value: "EGY", label: "🇪🇬 مصر (2)" },
+        { value: "LBY", label: "🇱🇾 ليبيا" },
+        { value: "MAR", label: "🇲🇦 المغرب (3)" },
+        { value: "TUN", label: "🇹🇳 تونس" }
+      ],
+      westAfrica: [
+        { value: "BEN", label: "🇧🇯 بنين" },
+        { value: "BFA", label: "🇧🇫 بوركينا فاسو" },
+        { value: "CPV", label: "🇨🇻 الرأس الأخضر" },
+        { value: "CIV", label: "🇨🇮 كوت ديفوار" },
+        { value: "GMB", label: "🇬🇲 غامبيا" },
+        { value: "GHA", label: "🇬🇭 غانا" },
+        { value: "GIN", label: "🇬🇳 غينيا" },
+        { value: "LBR", label: "🇱🇷 ليبيريا" },
+        { value: "MLI", label: "🇲🇱 مالي" },
+        { value: "MRT", label: "🇲🇷 موريتانيا" },
+        { value: "NER", label: "🇳🇪 النيجر" },
+        { value: "NGA", label: "🇳🇬 نيجيريا (3)" },
+        { value: "SEN", label: "🇸🇳 السنغال" },
+        { value: "SLE", label: "🇸🇱 سيراليون" },
+        { value: "TGO", label: "🇹🇬 توغو" }
+      ],
+      centralAfrica: [
+        { value: "AGO", label: "🇦🇴 أنغولا" },
+        { value: "CMR", label: "🇨🇲 الكاميرون" },
+        { value: "CAF", label: "🇨🇫 جمهورية أفريقيا الوسطى" },
+        { value: "TCD", label: "🇹🇩 تشاد" },
+        { value: "COG", label: "🇨🇬 الكونغو" },
+        { value: "COD", label: "🇨🇩 جمهورية الكونغو الديمقراطية (2)" },
+        { value: "GNQ", label: "🇬🇶 غينيا الاستوائية" },
+        { value: "GAB", label: "🇬🇦 الغابون" },
+        { value: "STP", label: "🇸🇹 ساو تومي وبرينسيب" }
+      ],
+      eastAfrica: [
+        { value: "BDI", label: "🇧🇮 بوروندي" },
+        { value: "COM", label: "🇰🇲 جزر القمر" },
+        { value: "DJI", label: "🇩🇯 جيبوتي" },
+        { value: "ERI", label: "🇪🇷 إريتريا" },
+        { value: "ETH", label: "🇪🇹 إثيوبيا" },
+        { value: "KEN", label: "🇰🇪 كينيا (2)" },
+        { value: "MDG", label: "🇲🇬 مدغشقر" },
+        { value: "MWI", label: "🇲🇼 ملاوي" },
+        { value: "MUS", label: "🇲🇺 موريشيوس" },
+        { value: "RWA", label: "🇷🇼 رواندا" },
+        { value: "SYC", label: "🇸🇨 سيشل" },
+        { value: "SOM", label: "🇸🇴 الصومال" },
+        { value: "SSD", label: "🇸🇸 جنوب السودان" },
+        { value: "SDN", label: "🇸🇩 السودان" },
+        { value: "TZA", label: "🇹🇿 تنزانيا (2)" },
+        { value: "UGA", label: "🇺🇬 أوغندا" }
+      ],
+      southernAfrica: [
+        { value: "BWA", label: "🇧🇼 بوتسوانا" },
+        { value: "LSO", label: "🇱🇸 ليسوتو" },
+        { value: "MOZ", label: "🇲🇿 موزمبيق" },
+        { value: "NAM", label: "🇳🇦 ناميبيا" },
+        { value: "ZAF", label: "🇿🇦 جنوب أفريقيا (2)" },
+        { value: "SWZ", label: "🇸🇿 إسواتيني" },
+        { value: "ZMB", label: "🇿🇲 زامبيا" },
+        { value: "ZWE", label: "🇿🇼 زيمبابوي" }
+      ]
     }
   };
 
@@ -272,27 +358,27 @@ export default function AirLogisticsTab({ language = 'fr' }) {
               >
                 <option value="ALL">🌍 {t.allCountries}</option>
                 <optgroup label={t.northAfrica}>
-                  {countries.northAfrica.map(c => (
+                  {trierPays(countries.northAfrica, (c) => c.label, language).map(c => (
                     <option key={c.value} value={c.value}>{c.label}</option>
                   ))}
                 </optgroup>
                 <optgroup label={t.westAfrica}>
-                  {countries.westAfrica.map(c => (
+                  {trierPays(countries.westAfrica, (c) => c.label, language).map(c => (
                     <option key={c.value} value={c.value}>{c.label}</option>
                   ))}
                 </optgroup>
                 <optgroup label={t.centralAfrica}>
-                  {countries.centralAfrica.map(c => (
+                  {trierPays(countries.centralAfrica, (c) => c.label, language).map(c => (
                     <option key={c.value} value={c.value}>{c.label}</option>
                   ))}
                 </optgroup>
                 <optgroup label={t.eastAfrica}>
-                  {countries.eastAfrica.map(c => (
+                  {trierPays(countries.eastAfrica, (c) => c.label, language).map(c => (
                     <option key={c.value} value={c.value}>{c.label}</option>
                   ))}
                 </optgroup>
                 <optgroup label={t.southernAfrica}>
-                  {countries.southernAfrica.map(c => (
+                  {trierPays(countries.southernAfrica, (c) => c.label, language).map(c => (
                     <option key={c.value} value={c.value}>{c.label}</option>
                   ))}
                 </optgroup>

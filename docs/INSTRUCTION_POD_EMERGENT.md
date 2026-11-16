@@ -28,6 +28,25 @@ le reconstruit à la première requête — mais ne comptez pas dessus.
 BRANCH=main bash sync_emergent.sh
 ```
 
+**Tapez-la vous-même dans le terminal (Shell) Emergent** (depuis `/app` :
+`cd /app && BRANCH=main bash sync_emergent.sh`), pas dans le chat de l'agent
+Emergent : chaque message à l'agent est facturé comme un tour, une
+synchronisation par le terminal n'en coûte aucun (conseil du support Emergent,
+novembre 2026). Une seule synchronisation par lot, après la fusion ; ne la
+redemandez pas quand elle a réussi. Elle a réussi si :
+
+- la ligne qui suit « 1bis/6 » affiche « ✓ » ;
+- la sortie se termine par « ✅ Synchronisation terminée », sans
+  « ⚠ RAPPEL » juste avant (sinon, voir §6 bis).
+
+Ne collez jamais de valeur secrète (clé, jeton, mot de passe, contenu de
+`backend/.env`) dans le chat Emergent. Saisissez-la par la carte sécurisée
+d'Emergent ; elle prime sur `backend/.env`, qui ne remplace pas une variable
+déjà présente dans l'environnement. Une clé qui n'est que dans
+`/app/backend/.env` se modifie dans le terminal, puis
+`supervisorctl restart backend`. Une valeur déjà collée est à considérer comme
+exposée et à changer.
+
 Ne lancez **pas** `start.sh` sous Emergent : supervisord gère les services, et
 `sync_emergent.sh` fait déjà `supervisorctl restart all`.
 
@@ -158,9 +177,18 @@ Un exportateur ne peut servir que ce que le pays **ne produit pas** : la
 production nationale est soustraite (`importable_need`), et c'est sur cette
 grandeur que les marchés sont classés.
 
+Le module Opportunités est réservé aux abonnements payants : sur le pod (avec
+base), un appel anonyme reçoit un 403. On interroge donc l'application dans le
+processus, sans base (comme la CI) :
+
 ```bash
-curl -s "http://localhost:8001/api/reports/national-need?hs_code=0714&country=DZA"
-curl -s "http://localhost:8001/api/reports/national-need?hs_code=0803&country=DZA"
+cd /app/backend && MONGO_URL= python - <<'EOF'
+from fastapi.testclient import TestClient
+import server
+c = TestClient(server.app)
+for hs in ("0714", "0803"):
+    print(hs, c.get(f"/api/reports/national-need?hs_code={hs}&country=DZA").json())
+EOF
 ```
 
 Le premier doit être **non établi** ; le second doit **rester un marché réel**.
@@ -207,6 +235,141 @@ n'en paraisse à l'écran, et aucune synchronisation n'y aurait rien changé.
 `index.js` est désormais un point d'entrée mince qui monte `App`, et cinq tests
 gardent ce câblage. **Rien à corriger dans le pod** : synchronisez sur `main`
 une fois cette PR fusionnée.
+
+## 6 bis. Alerte « contrôle des crons » (point 17 de l'audit de sécurité)
+
+Le backend relance toutes les heures `scripts/controle_crons_emergent.sh`, le
+même contrôle que l'étape 1bis de `sync_emergent.sh`. Il signale :
+- une ligne de `webhook-crons` hors de la forme rendue par Emergent ;
+- une tâche `dispatch_webhook` alors que `.emergent/crons.yml` n'existe pas, ou
+  un `crons.yml` absent du manifeste ;
+- un octet de contrôle ou non ASCII dans un fichier de cron ;
+- un fichier inattendu dans `/etc/cron.d`. Le relevé du 06/11/2026 y trouve
+  `.placeholder`, `e2scrub_all` et `webhook-crons` ;
+- une crontab d'utilisateur ;
+- un script de `.emergent/cron/` différent de `scripts/crons_emergent_sha256.txt` ;
+- un fichier Debian lancé en root différent du même manifeste : `/etc/crontab`,
+  `/etc/cron.daily/apt-compat`, `/etc/cron.daily/dpkg` et
+  `/etc/supervisor/supervisord.conf` (empreintes du relevé du 06/11/2026,
+  identiques aux fichiers des paquets bookworm officiels) ;
+- dans `/etc/cron.hourly`, `cron.daily`, `cron.weekly`, `cron.monthly` et
+  `cron.yearly`, un fichier absent du manifeste. Les noms contenant un point
+  (`.placeholder`, `x.sh`…) ne sont pas signalés : `run-parts` ne les lance
+  jamais ;
+- un `/etc/anacrontab` ou une file d'attente `at` non vide
+  (`/var/spool/cron/atjobs`, `atspool`) : ni anacron ni at ne sont installés ;
+- dans `/etc/supervisor/conf.d`, un fichier autre que `supervisord.conf`,
+  `supervisord_code_server.conf`, `supervisord_nginx_proxy.conf` et
+  `webhook-crond.conf` ; un programme supervisord (`[program:…]`) autre que
+  `backend`, `frontend`, `mongodb`, `code-server`, `nginx-code-proxy` et
+  `webhook-crond` (l'un d'eux disparu rend le contrôle incomplet, code 2). Le
+  contenu de ces fichiers d'Emergent (commandes lancées) n'est pas comparé.
+
+Le verdict est publié, sans détail, dans `components.crons` de
+`/api/health/status`. La tâche GitHub « Surveillance sécurité » le lit toutes les
+six heures et échoue, avec un e-mail, si le verdict n'est pas « ok » ou s'il a
+plus de deux heures.
+
+Une anomalie reste affichée, même si la ligne en cause a disparu depuis, jusqu'à
+l'effacement de `/app/.afcfta-crons-anomalie`. Ce fichier est sur le volume du
+pod : il survit au redémarrage du backend, à la synchronisation et à la reprise
+du pod, et ne disparaît qu'avec la reconstruction du volume. Après une fausse
+alerte avérée seulement, l'effacer à la main (`rm -f /app/.afcfta-crons-anomalie`),
+avant toute synchronisation. La page reste en « anomalie » jusqu'au contrôle
+suivant, au plus une heure, ou jusqu'à un redémarrage du backend
+(`supervisorctl restart backend`), qui refait aussitôt le contrôle. Relancer
+la tâche GitHub seulement après.
+
+**Sur alerte « ANOMALIE, compromission possible »** (verdict `anomalie`) :
+
+Ne pas resynchroniser : la synchronisation relancerait le pod avec les
+secrets sans retirer une ligne plantée, et effacerait des traces. Ne pas
+effacer `/app/.afcfta-crons-anomalie` et ne pas corriger les crons à la main.
+
+1. **Relevé en lecture seule.** Message à coller dans Emergent :
+
+   ```text
+   Contrôle de sécurité en LECTURE SEULE : ne modifie, n'efface, ne redémarre et ne synchronise rien. N'affiche aucune valeur de secret.
+   1. cat /app/.afcfta-crons-anomalie
+   2. grep -n "Crons du pod" /var/log/supervisor/backend.err.log | tail -5
+   3. cd /app && env -u EMERGENT_DIR -u CRON_D -u CRON_SPOOL -u MANIFESTE -u RACINE_SYSTEME bash scripts/controle_crons_emergent.sh; echo "code=$?"
+   4. ls -la /etc/cron.d/ /etc/cron.hourly/ /etc/cron.daily/ /etc/cron.weekly/ /etc/cron.monthly/ /etc/cron.yearly/ /etc/supervisor/conf.d/ /var/spool/cron/ /var/spool/cron/crontabs/ 2>&1
+   5. git -C /app log --oneline -1 ; git -C /app status --short .emergent | head -20
+   Renvoie-moi toutes les sorties telles quelles.
+   ```
+
+   Le journal tient chaque contrôle sur une seule ligne (retours à la ligne
+   écrits `\n`), et le contrôle masque déjà les valeurs des lignes signalées.
+   Faire analyser la réponse (fausse alerte ou anomalie réelle) avant toute
+   autre action.
+
+2. **Fausse alerte avérée** (cas le plus probable : Emergent a mis à jour ses
+   scripts de `.emergent/cron/`, dont l'empreinte ne correspond plus au
+   manifeste) :
+   1. corriger dans une PR ce qui déclenche l'alerte, le plus souvent
+      `scripts/crons_emergent_sha256.txt` après relecture du changement
+      d'Emergent, puis la fusionner. Pour une empreinte `/etc/…` (image du pod
+      mise à jour par Emergent), ne la remplacer qu'après l'avoir retrouvée
+      dans le paquet Debian officiel correspondant (deb.debian.org ou
+      security.debian.org) ;
+   2. message à coller dans Emergent :
+
+      ```text
+      Fausse alerte confirmée et corrigée sur main. Exécute, dans cet ordre :
+      rm -f /app/.afcfta-crons-anomalie
+      cd /app && BRANCH=main bash sync_emergent.sh
+      Renvoie-moi la ligne de l'étape « 1bis/6 » et celle qui la suit.
+      ```
+
+      La synchronisation est indispensable : le contrôle lit le manifeste du
+      pod (`/app/scripts/crons_emergent_sha256.txt`), que la fusion ne change
+      pas. Sans elle, le contrôle relancé au redémarrage relirait l'ancien
+      manifeste et recréerait l'anomalie. L'effacement passe avant : la
+      synchronisation redémarre le backend, dont le premier contrôle doit
+      alors donner « ok ». Si l'étape 1bis affiche encore « ⚠ », s'arrêter
+      là : la correction ne couvre pas tout.
+
+      Si rien n'est à corriger dans le dépôt (cause disparue et comprise), le
+      message se réduit à
+      `rm -f /app/.afcfta-crons-anomalie && supervisorctl restart backend`.
+   3. vérifier que `components.crons` de `/api/health/status` est repassé à
+      « ok », puis relancer la tâche GitHub.
+
+3. **Anomalie réelle, ou doute :**
+   1. demander au support d'Emergent d'exporter la base MongoDB (comptes,
+      abonnements) avant toute reconstruction, et lui demander si la
+      reconstruction la conserve ;
+   2. faire reconstruire le pod ET son volume par le support d'Emergent : une
+      ligne plantée survit sur le volume ;
+   3. changer tous les secrets : régénérer chaque valeur chez son fournisseur,
+      puis la saisir dans la carte sécurisée d'Emergent, jamais dans une
+      conversation. Sont concernés `JWT_SECRET`, `ADMIN_PASSWORD`, la clé
+      secrète Supabase (`sb_secret_…`), les clés Stripe et Chargily (secrète
+      et webhook), la clé Resend, `CLOUDFLARE_EDGE_SECRET`, les clés Anthropic
+      et Gemini, le mot de passe MongoDB et toute autre clé de `backend/.env` ;
+   4. retirer puis redonner à Emergent son accès GitHub (GitHub → Settings →
+      Applications) ;
+   5. synchroniser sur `main` : l'étape 1bis doit afficher « ✓ », puis la
+      tâche GitHub doit repasser au vert.
+
+**Sur alerte « surveillance indisponible »** (pod injoignable, réponse
+Cloudflare, verdict absent, incomplet ou trop ancien) : ce n'est pas un signe
+de compromission. Vérifier que le pod et le backend tournent, puis relancer la
+tâche. Si Cloudflare répond 403 ou 503 aux exécuteurs GitHub, demander à
+Emergent d'autoriser `/api/health/status`. Une réponse HTTP 404 vient le plus
+souvent de la préversion en veille, quand personne n'est actif sur Emergent :
+ouvrir Emergent, attendre que l'aperçu réponde, puis relancer la tâche
+(Actions → Surveillance sécurité → Re-run jobs).
+
+**Mise en place, une fois :**
+1. Créer la variable de dépôt `URL_SANTE_STATUS`, qui vaut l'adresse
+   `https://<pod>/api/health/status`.
+2. Lancer la tâche une première fois à la main (Actions → Surveillance
+   sécurité → Run workflow).
+
+Si Emergent met à jour ses scripts de `.emergent/cron/`, relire le changement,
+puis mettre à jour le manifeste dans la même PR : le test
+`test_le_manifeste_correspond_aux_scripts_versionnes` l'exige.
 
 ## 7. Ce qui n'est PAS concerné
 

@@ -25,8 +25,10 @@ from auth import require_admin, require_auth
 from entitlement_guard import (
     require_api_access,
     require_calculations_quota,
-    require_module,
+    require_login,
+    require_module_consultation,
     require_module_enabled,
+    require_paid_module,
 )
 from fastapi import APIRouter, Depends
 
@@ -41,7 +43,11 @@ _admin = [Depends(require_admin)]
 # API key", these check "does this subscriber's tier include this module". A
 # JWT-session subscriber is gated on their real tier; anyone else (API-key-only,
 # or no auth at all) is gated as the free tier — see
-# entitlement_guard.get_optional_subscriber.
+# entitlement_guard.get_optional_subscriber. Exceptions (audit E1): without a
+# session, calculations are counted in memory per visitor, and reports, API v2
+# and file exports are refused unless a valid API key is sent (CSV and Excel
+# exports: the admin session only, no key, no plan includes them) — see the
+# entitlement_guard module docstring.
 #
 # Browse/reference modules (stats, production, logistics, roo, tools) are gated
 # on the tier on/off switch ONLY — no per-request metering. A single UI view of
@@ -52,12 +58,28 @@ _admin = [Depends(require_admin)]
 # enforced on genuine billable *actions* instead — one tariff calculation
 # (`_calculator_entitlement`) and one generated premium report
 # (`_reports_entitlement`) — not on browsing reference data.
-_stats_entitlement = [Depends(require_module_enabled("stats"))]
-_production_entitlement = [Depends(require_module_enabled("production"))]
-_logistics_entitlement = [Depends(require_module_enabled("logistics"))]
-_roo_entitlement = [Depends(require_module_enabled("roo"))]
+#
+# Décision de l'exploitant du 09/11/2026 : sans compte, seul le tableau de bord
+# d'accueil est consultable ; un compte inscrit sans abonnement a 5 recherches
+# par module et par mois (pays, produit, port… distincts), puis l'invitation à
+# s'abonner — voir entitlement_guard.require_module_consultation.
+# Données du tableau de bord d'accueil, servies par le routeur Statistiques.
+_TABLEAU_DE_BORD = ("/api/statistics", "/api/statistics/afreximbank-atr2026")
+_stats_entitlement = [Depends(require_module_consultation("stats", chemins_publics=_TABLEAU_DE_BORD))]
+_production_entitlement = [Depends(require_module_consultation("production"))]
+_logistics_entitlement = [Depends(require_module_consultation("logistics"))]
+_roo_entitlement = [Depends(require_module_consultation("roo"))]
+_reglementation_entitlement = [Depends(require_module_consultation("reglementation"))]
+# Routes que le calculateur partage (positions, recherche, formalités, pays servis) :
+# connexion exigée, rien de décompté — leur usage est compté au calcul ou à la fiche.
+_calculator_login = [Depends(require_login("calculator"))]
 _tools_entitlement = [Depends(require_module_enabled("tools"))]
-_reports_entitlement = [Depends(require_module("reports"))]
+# Module Opportunités réservé aux abonnements payants (audit E1).
+_reports_entitlement = [Depends(require_paid_module("reports"))]
+# Sous-onglets du même onglet Opportunités (Substitution, Flux stratégiques,
+# Algérie) : réservés eux aussi aux abonnements payants, sans décompte du
+# quota de rapports (écrans de consultation, nombreuses requêtes).
+_opportunites_entitlement = [Depends(require_paid_module("reports", compter=False))]
 _calculator_entitlement = [Depends(require_calculations_quota())]
 _api_entitlement = [Depends(require_api_access())]
 
@@ -79,6 +101,7 @@ from .etl import router as etl_router
 from .hs_codes import router as hs_codes_router
 from .industrie_nationale import router as industrie_nationale_router
 from .logistics import router as logistics_router
+from .marches import router as marches_router
 from .oec import router as oec_router
 from .production import router as production_router
 from .rules_of_origin import init_data as init_rules_data
@@ -134,6 +157,7 @@ from .calcul import router_couverture as calcul_couverture_router
 from .calcul_export import router as calcul_export_router
 from .calcul_export import router_couverture as calcul_export_couverture_router
 from .consultation import router as consultation_router
+from .consultation import router_reglementation as consultation_reglementation_router
 
 try:
     from .gemini_analysis import router as gemini_router
@@ -326,22 +350,6 @@ except ImportError:
     INSURANCE_AVAILABLE = False
 
 try:
-    from api.graphql.schema import router as graphql_router
-
-    GRAPHQL_AVAILABLE = True
-except ImportError:
-    graphql_router = None
-    GRAPHQL_AVAILABLE = False
-
-try:
-    from api.websocket.handlers import router as websocket_router
-
-    WEBSOCKET_AVAILABLE = True
-except ImportError:
-    websocket_router = None
-    WEBSOCKET_AVAILABLE = False
-
-try:
     from api.mobile.lightweight_endpoints import router as mobile_router
 
     MOBILE_AVAILABLE = True
@@ -375,10 +383,12 @@ except ImportError:
 
 try:
     from .reports import router as reports_router
+    from .reports import router_diagnostics as reports_diagnostics_router
 
     REPORTS_AVAILABLE = True
 except ImportError as e:
     reports_router = None
+    reports_diagnostics_router = None
     REPORTS_AVAILABLE = False
     _logger.warning(f"Premium reports route unavailable: {e}")
 
@@ -433,6 +443,8 @@ def register_routes(api_router: APIRouter):
         dependencies=_auth + _logistics_entitlement,
     )
     api_router.include_router(countries_router, tags=["Countries"], dependencies=_auth)
+    # Tableau de bord de direction : cours des matières premières et bourses africaines.
+    api_router.include_router(marches_router, tags=["Marchés africains"], dependencies=_auth)
     api_router.include_router(tariffs_router, tags=["Tariffs"], dependencies=_auth)
     api_router.include_router(
         statistics_router,
@@ -445,12 +457,20 @@ def register_routes(api_router: APIRouter):
         dependencies=_auth + _stats_entitlement,
     )
     api_router.include_router(etl_router, tags=["ETL Administration"], dependencies=_admin)
-    api_router.include_router(substitution_router, tags=["Trade Substitution"], dependencies=_auth)
     api_router.include_router(
-        industrie_nationale_router, tags=["Industrie nationale"], dependencies=_auth
+        substitution_router,
+        tags=["Trade Substitution"],
+        dependencies=_auth + _opportunites_entitlement,
     )
     api_router.include_router(
-        strategic_router, tags=["Strategic Trade Intelligence"], dependencies=_auth
+        industrie_nationale_router,
+        tags=["Industrie nationale"],
+        dependencies=_auth + _opportunites_entitlement,
+    )
+    api_router.include_router(
+        strategic_router,
+        tags=["Strategic Trade Intelligence"],
+        dependencies=_auth + _opportunites_entitlement,
     )
     if GEMINI_AVAILABLE:
         api_router.include_router(gemini_router, tags=["AI Analysis"], dependencies=_auth)
@@ -467,7 +487,9 @@ def register_routes(api_router: APIRouter):
         tags=["Calculateur"],
         dependencies=_auth + _calculator_entitlement,
     )
-    api_router.include_router(calcul_couverture_router, tags=["Calculateur"], dependencies=_auth)
+    api_router.include_router(
+        calcul_couverture_router, tags=["Calculateur"], dependencies=_auth + _calculator_login
+    )
     # Droits de sortie : même socle, même moteur, et le même quota de calculs.
     api_router.include_router(
         calcul_export_router,
@@ -478,7 +500,17 @@ def register_routes(api_router: APIRouter):
         calcul_export_couverture_router, tags=["Calculateur export"], dependencies=_auth
     )
     # Consultation du tarif, servie par le même socle que le calcul.
-    api_router.include_router(consultation_router, tags=["Consultation"], dependencies=_auth)
+    api_router.include_router(
+        consultation_router, tags=["Consultation"], dependencies=_auth + _calculator_login
+    )
+    # La fiche d'une position (onglet Réglementation) : module de consultation,
+    # connexion puis 5 recherches par mois en formule Découverte (décision du 09/11/2026).
+    # Les routes ci-dessus, que le calculateur partage, restent hors quota.
+    api_router.include_router(
+        consultation_reglementation_router,
+        tags=["Consultation"],
+        dependencies=_auth + _reglementation_entitlement,
+    )
     if TRADE_DATA_AVAILABLE:
         api_router.include_router(
             trade_data_router, tags=["Trade Data Sources"], dependencies=_auth
@@ -567,12 +599,16 @@ def register_routes(api_router: APIRouter):
             tags=["Insurance"],
             dependencies=_auth,
         )
-    if GRAPHQL_AVAILABLE:
-        api_router.include_router(graphql_router, tags=["GraphQL"], dependencies=_auth)
-    if WEBSOCKET_AVAILABLE:
-        api_router.include_router(
-            websocket_router, tags=["WebSocket Real-time"], dependencies=_auth
-        )
+    # GraphQL (/api/graphql, playground, /api/graphql/schema) n'est plus servi :
+    # aucun appelant dans l'application, et il exposait aux anonymes la purge
+    # du cache, des métriques internes et des messages d'erreur bruts
+    # (constats E2 et E4 de l'audit de sécurité). Module conservé dans
+    # api/graphql/schema.py, non monté.
+    # Les WebSocket (/api/ws/...) ne sont plus servis non plus (constat M11) :
+    # aucun écran ne s'y connecte et aucun code n'y publie, et ils prenaient la
+    # clé API dans l'adresse, s'ouvraient à tous sans base de données, ne
+    # contrôlaient pas l'origine et laissaient choisir le user_id. Module
+    # conservé dans api/websocket/handlers.py, non monté.
     if MOBILE_AVAILABLE:
         api_router.include_router(mobile_router, tags=["Mobile API"], dependencies=_auth)
     if CURRENCIES_AVAILABLE:
@@ -590,6 +626,12 @@ def register_routes(api_router: APIRouter):
             reports_router,
             tags=["Premium Opportunity Reports"],
             dependencies=_auth + _reports_entitlement,
+        )
+        # Diagnostics publics, hors abonnement et hors quota.
+        api_router.include_router(
+            reports_diagnostics_router,
+            tags=["Premium Opportunity Reports"],
+            dependencies=_auth,
         )
 
     # SaaS layer: user accounts (JWT session, separate from the X-API-Key

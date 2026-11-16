@@ -65,4 +65,5 @@ def test_ping_oec_connection_exception(monkeypatch):
     r = run(mod.real_trade_service.ping_oec())
     assert r["reachable"] is False
     assert r["status_code"] is None
-    assert "boom" in r["error"]
+    # Le texte de l'exception reste au journal du serveur (constat M9).
+    assert r["error"] == "Upstream service error"

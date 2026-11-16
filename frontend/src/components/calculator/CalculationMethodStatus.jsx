@@ -1,5 +1,6 @@
 import React from "react";
 import { AlertTriangle, CheckCircle2, Scale } from "lucide-react";
+import { pick } from "../../i18n/lang";
 
 export default function CalculationMethodStatus({
   status,
@@ -8,22 +9,23 @@ export default function CalculationMethodStatus({
 }) {
   if (!status && !legalSource) return null;
 
-  const fr = language === "fr";
   const isCountrySpecific = status === "country_specific";
   const title = isCountrySpecific
-    ? fr
-      ? "Méthode nationale appliquée"
-      : "Country-specific method applied"
-    : fr
-      ? "Méthode générique à confirmer"
-      : "Generic method to be confirmed";
+    ? pick(language, "Méthode nationale appliquée", "Country-specific method applied", "تم تطبيق المنهجية الوطنية")
+    : pick(language, "Méthode générique à confirmer", "Generic method to be confirmed", "منهجية عامة تحتاج إلى تأكيد");
   const description = isCountrySpecific
-    ? fr
-      ? "Les assiettes et l’ordre des taxes suivent le profil du pays de destination."
-      : "Tax bases and ordering follow the destination country profile."
-    : fr
-      ? "Aucune méthode nationale validée n’est encore enregistrée pour ce pays. Le résultat utilise provisoirement TVA = CIF + DD."
-      : "No validated country method is registered yet. The result provisionally uses VAT = CIF + customs duty.";
+    ? pick(
+        language,
+        "Les assiettes et l’ordre des taxes suivent le profil du pays de destination.",
+        "Tax bases and ordering follow the destination country profile.",
+        "تتبع أوعية الضرائب وترتيبها ملف بلد المقصد.",
+      )
+    : pick(
+        language,
+        "Aucune méthode nationale validée n’est encore enregistrée pour ce pays. Le résultat utilise provisoirement TVA = CIF + DD.",
+        "No validated country method is registered yet. The result provisionally uses VAT = CIF + customs duty.",
+        "لم تُسجَّل بعدُ أي منهجية وطنية معتمدة لهذا البلد. وتعتمد النتيجة مؤقتًا: ضريبة القيمة المضافة (TVA) = CIF + الرسم الجمركي.",
+      );
   const Icon = isCountrySpecific ? CheckCircle2 : AlertTriangle;
 
   return (
@@ -51,7 +53,7 @@ export default function CalculationMethodStatus({
             <p className="mt-2 flex items-start gap-1.5 text-xs text-[var(--afcfta-muted)]">
               <Scale className="mt-0.5 h-3.5 w-3.5 shrink-0" />
               <span>
-                {fr ? "Référence" : "Reference"} : {legalSource}
+                {pick(language, "Référence", "Reference", "المرجع")} : {legalSource}
               </span>
             </p>
           )}

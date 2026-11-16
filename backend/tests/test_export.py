@@ -3,6 +3,7 @@ Tests for export endpoints
 """
 
 import io
+import re
 from unittest.mock import MagicMock
 
 import pandas as pd
@@ -110,14 +111,35 @@ def _app_comme_en_production():
     cassé, mais parce que le test ne reproduisait pas le montage réel. Un test
     qui interroge une URL que la production ne sert pas ne prouve rien : on
     reconstitue ici la même composition.
+
+    Ces tests portent sur le contenu des fichiers : l'appelant y est le compte
+    admin connecté (avec ADMIN_ACCES_ILLIMITE, voir `_admin_illimite`), seul
+    admis aux exports CSV et Excel (décision du 06/11/2026), et présente une
+    clé API admin, exigée par le rapport de validation (`require_admin`). Ces
+    contrôles eux-mêmes sont testés dans test_acces_par_formule.py.
     """
+    from auth import require_auth
+    from entitlement_guard import get_optional_subscriber
     from fastapi import APIRouter, FastAPI
+
+    async def _cle_admin():
+        return {"key_hash": "empreinte-de-test", "tier": "admin", "active": True}
+
+    async def _session_admin():
+        return {"_id": "admin", "email": "admin@exemple.invalid", "role": "admin"}
 
     api_router = APIRouter(prefix="/api")
     api_router.include_router(router)
     app = FastAPI()
     app.include_router(api_router)
+    app.dependency_overrides[require_auth] = _cle_admin
+    app.dependency_overrides[get_optional_subscriber] = _session_admin
     return app
+
+
+@pytest.fixture(autouse=True)
+def _admin_illimite(monkeypatch):
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
 
 
 @pytest.fixture
@@ -347,3 +369,94 @@ class TestExportErrorHandling:
         # Missing countries parameter for Excel
         response = client_with_mock_db.get("/api/export/tariffs/excel")
         assert response.status_code == 422
+
+
+class TestInjectionDeFormules:
+    """Audit M5 : aucune cellule exportée ne doit être lue comme une formule."""
+
+    FORMULE = '=HYPERLINK("https://exemple.invalid","x")'
+
+    @pytest.fixture
+    def client_formule(self, mock_db):
+        async def find_one(*args, **kwargs):
+            query = args[0] if args else {}
+            return {
+                "country_code": query.get("country_code", "KE"),
+                "imported_at": "2024-01-01T00:00:00Z",
+                "tariffs": {
+                    "tariff_lines": [
+                        {"hs_code": "010110", "description": self.FORMULE, "customs_duty": -5.0}
+                    ]
+                },
+            }
+
+        mock_db["customs_data"].find_one = find_one
+        init_db(mock_db)
+        return TestClient(_app_comme_en_production())
+
+    def test_export_csv_neutralise_une_description_formule(self, client_formule):
+        import csv
+
+        response = client_formule.get("/api/export/tariffs/csv?country=KE")
+
+        ligne = next(csv.DictReader(io.StringIO(response.text)))
+        assert ligne["description"] == "'" + self.FORMULE
+        assert ligne["customs_duty"] == "-5.0"
+
+    def test_export_excel_n_ecrit_aucune_formule(self, client_formule):
+        import openpyxl
+
+        response = client_formule.get("/api/export/tariffs/excel?countries=KE")
+
+        feuille = openpyxl.load_workbook(io.BytesIO(response.content))["KE"]
+        cellules = [c for ligne in feuille.iter_rows() for c in ligne if c.value is not None]
+        assert not [c.coordinate for c in cellules if c.data_type == "f"]
+        assert "'" + self.FORMULE in [c.value for c in cellules]
+        assert [c.data_type for c in cellules if c.value == -5.0] == ["n"]
+
+    def test_comparaison_csv_neutralise_un_code_pays_formule_dans_l_en_tete(
+        self, client_with_mock_db
+    ):
+        response = client_with_mock_db.get(
+            "/api/export/comparison/csv", params={"countries": "KE,=1+1"}
+        )
+
+        en_tete = response.text.splitlines()[0].split(",")
+        assert "'=1+1_duty" in en_tete
+        assert "=1+1_duty" not in en_tete
+        assert "comparison_KE__1_1_" in response.headers["content-disposition"]
+
+    def test_csv_lus_avec_le_separateur_point_virgule(self, mock_db):
+        """Excel en français coupe ces CSV à virgules sur chaque « ; » et chaque
+        fin de ligne, même entre guillemets : aucun morceau n'est une formule."""
+        piege = "x;=1+2;y\n=3+4"
+
+        async def find_one(*args, **kwargs):
+            lignes = [
+                {"hs_code": "010110", "description": piege},
+                # En fin de champ, le morceau continue sur le champ suivant.
+                {"hs_code": "010120", "description": "a,b;=", "unit": '"&1+1;'},
+                # Une liste est écrite sous forme de texte, « ; » compris.
+                {"hs_code": "010130", "customs_duty": ["w;=5+5;"]},
+                # Premier champ d'une ligne (comparaison) : un signe seul y
+                # continue, après la virgule, sur le champ suivant.
+                {"hs_code": "-", "description": "1+cmd|' /C calc'!A0;"},
+            ]
+            return {
+                "country_code": "KE",
+                "known_data_gaps": ["z;=6+6;"],
+                "tariffs": {"tariff_lines": lignes},
+            }
+
+        mock_db["customs_data"].find_one = find_one
+        init_db(mock_db)
+        client = TestClient(_app_comme_en_production())
+
+        for url, params in [
+            ("/api/export/tariffs/csv", {"country": "KE"}),
+            ("/api/export/comparison/csv", {"countries": "KE," + piege}),
+        ]:
+            response = client.get(url, params=params)
+            assert response.status_code == 200
+            morceaux = [m.lstrip('"') for m in re.split(r"[;\r\n]", response.text)]
+            assert not [m for m in morceaux if len(m) > 1 and m[0] in "=+-@"]

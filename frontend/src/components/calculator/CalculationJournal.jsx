@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Badge } from '../ui/badge';
 import { ScrollText, ExternalLink } from 'lucide-react';
 import { montant } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
 
 const usd = (v, language) => {
   if (v === null || v === undefined || v === '-') return '—';
@@ -18,25 +19,27 @@ const usd = (v, language) => {
 };
 
 function JournalTable({ steps, language }) {
-  const fr = language === 'fr';
   if (!steps || steps.length === 0) return null;
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
           <tr className="text-xs text-[var(--afcfta-muted)] border-b border-[var(--afcfta-border)]">
-            <th className="text-left py-2 pr-2 font-medium">{fr ? 'Étape' : 'Step'}</th>
-            <th className="text-right py-2 px-2 font-medium">{fr ? 'Base' : 'Base'}</th>
-            <th className="text-right py-2 px-2 font-medium">{fr ? 'Taux' : 'Rate'}</th>
-            <th className="text-right py-2 px-2 font-medium">{fr ? 'Montant' : 'Amount'}</th>
-            <th className="text-right py-2 pl-2 font-medium">{fr ? 'Cumul' : 'Cumulative'}</th>
+            <th className="text-left py-2 pr-2 font-medium">{pick(language, 'Étape', 'Step', 'المرحلة')}</th>
+            <th className="text-right py-2 px-2 font-medium">{pick(language, 'Base', 'Base', 'الوعاء')}</th>
+            <th className="text-right py-2 px-2 font-medium">{pick(language, 'Taux', 'Rate', 'المعدل')}</th>
+            <th className="text-right py-2 px-2 font-medium">{pick(language, 'Montant', 'Amount', 'المبلغ')}</th>
+            <th className="text-right py-2 pl-2 font-medium">{pick(language, 'Cumul', 'Cumulative', 'المجموع التراكمي')}</th>
           </tr>
         </thead>
         <tbody>
           {steps.map((s, idx) => (
             <tr key={idx} className="border-b border-[var(--afcfta-border)] last:border-0">
               <td className="py-2 pr-2">
-                <span className="text-[var(--text)]">{s.component}</span>
+                <span className="text-[var(--text)]">
+                  {/* Seule l'étape « Valeur CIF » est un libellé de l'appli ; les autres sont des codes de taxes. */}
+                  {s.component === 'Valeur CIF' ? pick(language, 'Valeur CIF', 'Valeur CIF', 'القيمة سيف (CIF)') : s.component}
+                </span>
                 {s.legal_ref && (
                   <span className="block text-[11px] text-[var(--afcfta-muted)]">
                     {s.legal_ref_url ? (
@@ -68,7 +71,6 @@ function JournalTable({ steps, language }) {
 }
 
 export default function CalculationJournal({ normalJournal, zlecafJournal, language = 'fr' }) {
-  const fr = language === 'fr';
   const [tab, setTab] = useState('npf');
   const hasNpf = normalJournal && normalJournal.length > 0;
   const hasZlc = zlecafJournal && zlecafJournal.length > 0;
@@ -103,17 +105,15 @@ export default function CalculationJournal({ normalJournal, zlecafJournal, langu
             </div>
             <div>
               <CardTitle className="text-lg text-[var(--text)]">
-                {fr ? 'Journal de calcul' : 'Calculation journal'}
+                {pick(language, 'Journal de calcul', 'Calculation journal', 'سجل الحساب')}
               </CardTitle>
               <CardDescription className="text-[var(--afcfta-muted)]">
-                {fr
-                  ? 'Étapes détaillées avec base, taux et références légales (USD)'
-                  : 'Step-by-step with base, rate and legal references (USD)'}
+                {pick(language, 'Étapes détaillées avec base, taux et références légales (USD)', 'Step-by-step with base, rate and legal references (USD)', 'مراحل مفصلة مع الوعاء والمعدل والمراجع القانونية (USD)')}
               </CardDescription>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {hasNpf && <TabBtn id="npf" label={fr ? 'NPF' : 'MFN'} tone="red" />}
+            {hasNpf && <TabBtn id="npf" label={pick(language, 'NPF', 'MFN', 'NPF')} tone="red" />}
             {hasZlc && <TabBtn id="zlecaf" label="ZLECAf" tone="emerald" />}
           </div>
         </div>

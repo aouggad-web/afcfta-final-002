@@ -38,18 +38,18 @@
 01064100;-- Bees;01;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 01064900;-- Other;01;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 01069000;- Other;01;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02011000;- Carcasses and half-carcasses;02;kg;20;16;39.2;COMPLET;;;N2
-02012000;- Other cuts with bone in;02;kg;20;16;39.2;COMPLET;;;N2
-02013000;- Boneless;02;kg;20;16;39.2;COMPLET;;;N2
-02021000;- Carcasses and half-carcasses;02;kg;20;16;39.2;COMPLET;;;N2
-02022000;- Other cuts with bone in;02;kg;20;16;39.2;COMPLET;;;N2
-02023000;- Boneless;02;kg;20;16;39.2;COMPLET;;;N2
-02031100;-- Carcasses and half-carcasses;02;kg;20;16;39.2;COMPLET;;;N2
-02031200;-- Hams, shoulders and cuts thereof, with bone in;02;kg;20;16;39.2;COMPLET;;;N2
-02031900;-- Other;02;kg;20;16;39.2;COMPLET;;;N2
-02032100;-- Carcasses and half-carcasses;02;kg;20;16;39.2;COMPLET;;;N2
-02032200;-- Hams, shoulders and cuts thereof, with bone in;02;kg;20;16;39.2;COMPLET;;;N2
-02032900;-- Other;02;kg;20;16;39.2;COMPLET;;;N2
+02011000;- Carcasses and half-carcasses;02;kg;20;n.d.;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N2 N3
+02012000;- Other cuts with bone in;02;kg;20;n.d.;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N2 N3
+02013000;- Boneless;02;kg;20;n.d.;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N2 N3
+02021000;- Carcasses and half-carcasses;02;kg;20;n.d.;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N2 N3
+02022000;- Other cuts with bone in;02;kg;20;n.d.;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N2 N3
+02023000;- Boneless;02;kg;20;n.d.;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N2 N3
+02031100;-- Carcasses and half-carcasses;02;kg;20;n.d.;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N2 N3
+02031200;-- Hams, shoulders and cuts thereof, with bone in;02;kg;20;n.d.;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N2 N3
+02031900;-- Other;02;kg;20;n.d.;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N2 N3
+02032100;-- Carcasses and half-carcasses;02;kg;20;n.d.;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N2 N3
+02032200;-- Hams, shoulders and cuts thereof, with bone in;02;kg;20;n.d.;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N2 N3
+02032900;-- Other;02;kg;20;n.d.;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N2 N3
 02041000;- Carcasses and half-carcasses of lamb, fresh or chilled;02;kg;20;16;39.2;COMPLET;;;N2
 02042100;-- Carcasses and half-carcasses;02;kg;20;16;39.2;COMPLET;;;N2
 02042200;-- Other cuts with bone in;02;kg;20;16;39.2;COMPLET;;;N2
@@ -60,34 +60,34 @@
 02044300;-- Boneless;02;kg;20;16;39.2;COMPLET;;;N2
 02045000;- Meat of goats;02;kg;20;16;39.2;COMPLET;;;N2
 02050000;Meat of horses, asses, mules or hinnies, fresh, chilled or frozen.;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02061000;- Of bovine animals, fresh or chilled;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02062100;-- Tongues;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02062200;-- Livers;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02062900;-- Other;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02063000;- Of swine, fresh or chilled;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02064100;-- Livers;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02064900;-- Other;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02068000;- Other, fresh or chilled;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02069000;- Other, frozen;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02071100;-- Not cut in pieces, fresh or chilled;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02071200;-- Not cut in pieces, frozen;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02071300;-- Cuts and offal, fresh or chilled;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02071400;-- Cuts and offal, frozen;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02072400;-- Not cut in pieces, fresh or chilled;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02072500;-- Not cut in pieces, frozen;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02072600;-- Cuts and offal, fresh or chilled;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02072700;-- Cuts and offal, frozen;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02074100;-- Not cut in pieces, fresh or chilled;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02074200;-- Not cut in pieces, frozen;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02074300;-- Fatty livers, fresh or chilled;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02074400;-- Other, fresh or chilled;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02074500;-- Other, frozen;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02075100;-- Not cut in pieces, fresh or chilled;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02075200;-- Not cut in pieces, frozen;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02075300;-- Fatty livers, fresh or chilled;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02075400;-- Other, fresh or chilled;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02075500;-- Other, frozen;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-02076000;- Of guinea fowls;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
+02061000;- Of bovine animals, fresh or chilled;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02062100;-- Tongues;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02062200;-- Livers;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02062900;-- Other;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02063000;- Of swine, fresh or chilled;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02064100;-- Livers;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02064900;-- Other;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02068000;- Other, fresh or chilled;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02069000;- Other, frozen;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02071100;-- Not cut in pieces, fresh or chilled;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02071200;-- Not cut in pieces, frozen;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02071300;-- Cuts and offal, fresh or chilled;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02071400;-- Cuts and offal, frozen;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02072400;-- Not cut in pieces, fresh or chilled;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02072500;-- Not cut in pieces, frozen;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02072600;-- Cuts and offal, fresh or chilled;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02072700;-- Cuts and offal, frozen;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02074100;-- Not cut in pieces, fresh or chilled;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02074200;-- Not cut in pieces, frozen;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02074300;-- Fatty livers, fresh or chilled;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02074400;-- Other, fresh or chilled;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02074500;-- Other, frozen;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02075100;-- Not cut in pieces, fresh or chilled;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02075200;-- Not cut in pieces, frozen;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02075300;-- Fatty livers, fresh or chilled;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02075400;-- Other, fresh or chilled;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02075500;-- Other, frozen;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+02076000;- Of guinea fowls;02;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
 02081000;- Of rabbits or hares;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 02083000;- Of primates;02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 02084000;"- Of whales, dolphins and porpoises (mammals of the order Cetacea); of manatees and dugongs (mammals of the order Sirenia); of seals, sea lions and walruses (mammals of the suborder Pinnipedia)";02;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -162,7 +162,7 @@
 03031300;-- Atlantic salmon (Salmo salar) and Danube salmon (Hucho hucho);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 03031400;-- Trout (Salmo trutta, Oncorhynchus mykiss, Oncorhynchus clarki, Oncorhynchus aguabonita, Oncorhynchus gilae, Oncorhynchus apache and Oncorhynchus chrysogaster);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 03031900;-- Other;03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-03032300;-- Tilapias (Oreochromis spp.);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
+03032300;-- Tilapias (Oreochromis spp.);03;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
 03032400;-- Catfish (Pangasius spp., Silurus spp., Clarias spp., Ictalurus spp.);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 03032500;-- Carp (Cyprinus spp., Carassius spp., Ctenopharyngodon idellus, Hypophthalmichthys spp., Cirrhinus spp., Mylopharyngodon piceus, Catla catla, Labeo spp., Osteochilus hasselti, Leptobarbus hoeveni, Megalobrama spp.);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 03032600;-- Eels (Anguilla spp.);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -182,7 +182,7 @@
 03035100;-- Herrings (Clupea harengus, Clupea pallasii);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 03035300;-- Sardines (Sardina pilchardus, Sardinops spp.), sardinella;03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 03035400;-- Mackerel (Scomber scombrus, Scomber australasicus, Scomber japonicus);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-03035500;-- Jack and horse mackerel (Trachurus spp.);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
+03035500;-- Jack and horse mackerel (Trachurus spp.);03;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
 03035600;-- Cobia (Rachycentron canadum);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 03035700;-- Swordfish (Xiphias gladius);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 03035900;-- Other;03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -258,11 +258,11 @@
 03054300;-- Trout (Salmo trutta, Oncorhynchus mykiss, Oncorhynchus clarki, Oncorhynchus aguabonita, Oncorhynchus gilae, Oncorhynchus apache and Oncorhynchus chrysogaster);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 03054400;-- Tilapias (Oreochromis spp.), catfish (Pangasius spp., Silurus spp., Clarias spp., Ictalurus spp.), carp (Cyprinus spp., Carassius spp., Ctenopharyngodon idellus, Hypophthalmichthys spp., Cirrhinus spp., Mylopharyngodon piceus, Catla catla, Labeo spp., Osteochilus hasselti, Leptobarbus hoeveni, Megalobrama spp.), eels (Anguilla spp.), Nile perch (Lates niloticus) and snakeheads (Channa spp);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 03054900;-- Other;03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-03055100;-- Cod (Gadus morhua, Gadus ogac, Gadus macrocephalus);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-03055200;-- Tilapias (Oreochromis spp.), catfish (Pangasius spp., Silurus spp., Clarias spp., Ictalurus spp.), carp (Cyprinus spp., Carassius spp., Ctenopharyngodon idellus, Hypophthalmichthys spp., Cirrhinus spp., Mylopharyngodon piceus, Catla catla, Labeo spp., Osteochilus hasselti, Leptobarbus hoeveni, Megalobrama spp.), eels (Anguilla spp.), Nile perch (Lates niloticus) and snakeheads (Channa spp.);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-03055300;-- Fish of the families Bregmacerotidae, Euclichthyidae, Gadidae, Macrouridae, Melanonidae, Merlucciidae, Moridae and Muraenolepididae, other than cod (Gadus morhua, Gadus ogac, Gadus macrocephalus);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-03055400;--Herrings (Clupea harengus, Clupea pallasii), anchovies (Engraulis spp.), sardines (Sardina pilchardus, Sardinops spp.), sardinella (Sardinella spp.), brisling or sprats (Sprattus sprattus), mackerel (Scomber scombrus, Scomber australasicus, Scomber japonicus), Indian mackerels (Rastrelliger spp.), seerfishes (Scomberomorus spp.), jack and horse mackerel (Trachurus spp.), jacks, crevalles (Caranx spp.), cobia (Rachycentron canadum), silver pomfrets spp.), capelin (Mallotus villosus), swordfish (Xiphias gladius), Kawakawa (Euthynnus affinis), bonitos (Sarda spp.), marlins, sailfishes, spearfish (Istiophoridae);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-03055900;-- Other;03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
+03055100;-- Cod (Gadus morhua, Gadus ogac, Gadus macrocephalus);03;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+03055200;-- Tilapias (Oreochromis spp.), catfish (Pangasius spp., Silurus spp., Clarias spp., Ictalurus spp.), carp (Cyprinus spp., Carassius spp., Ctenopharyngodon idellus, Hypophthalmichthys spp., Cirrhinus spp., Mylopharyngodon piceus, Catla catla, Labeo spp., Osteochilus hasselti, Leptobarbus hoeveni, Megalobrama spp.), eels (Anguilla spp.), Nile perch (Lates niloticus) and snakeheads (Channa spp.);03;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+03055300;-- Fish of the families Bregmacerotidae, Euclichthyidae, Gadidae, Macrouridae, Melanonidae, Merlucciidae, Moridae and Muraenolepididae, other than cod (Gadus morhua, Gadus ogac, Gadus macrocephalus);03;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+03055400;--Herrings (Clupea harengus, Clupea pallasii), anchovies (Engraulis spp.), sardines (Sardina pilchardus, Sardinops spp.), sardinella (Sardinella spp.), brisling or sprats (Sprattus sprattus), mackerel (Scomber scombrus, Scomber australasicus, Scomber japonicus), Indian mackerels (Rastrelliger spp.), seerfishes (Scomberomorus spp.), jack and horse mackerel (Trachurus spp.), jacks, crevalles (Caranx spp.), cobia (Rachycentron canadum), silver pomfrets spp.), capelin (Mallotus villosus), swordfish (Xiphias gladius), Kawakawa (Euthynnus affinis), bonitos (Sarda spp.), marlins, sailfishes, spearfish (Istiophoridae);03;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+03055900;-- Other;03;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
 03056100;-- Herrings (Clupea harengus, Clupea pallasii);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 03056200;-- Cod (Gadus morhua, Gadus ogac, Gadus macrocephalus);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 03056300;-- Anchovies (Engraulis spp.);03;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -333,11 +333,11 @@
 04012000;- Of a fat content, by weight, exceeding 1% but not exceeding;04;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 04014000;- Of a fat content, by weight, exceeding 6 % but not exceeding 10 %;04;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 04015000;- Of a fat content, by weight, exceeding 10 %;04;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-04021000;- In powder, granules or other solid forms, of a fat content, by weight, not exceeding 1.5%;04;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-04022100;-- Not containing added sugar or other sweetening matter;04;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-04022900;-- Other;04;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-04029100;-- Not containing added sugar or other sweetening matter;04;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-04029900;-- Other;04;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
+04021000;- In powder, granules or other solid forms, of a fat content, by weight, not exceeding 1.5%;04;;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+04022100;-- Not containing added sugar or other sweetening matter;04;;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+04022900;-- Other;04;;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+04029100;-- Not containing added sugar or other sweetening matter;04;;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+04029900;-- Other;04;;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
 04032000;- Yogurt;04;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 04039000;- Other;04;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 04041000;- Whey and modified whey, whether or not concentrated or containing added sugar or other sweetening matter;04;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -559,7 +559,7 @@
 09042100;-- Dried, neither crushed nor ground;09;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 09042200;-- Crushed or ground;09;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 09051000;- Neither crushed nor ground;09;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-09052000;- Crushed or ground.;09;kg;5;16;21.8;COMPLET;;;N3
+09052000;- Crushed or ground.;09;kg;5;16;21.8;COMPLET;;;N4
 09061100;-- Cinnamon (Cinnamomum zeylanicum Blume);09;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 09061900;-- Other;09;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 09062000;- Crushed or ground;09;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -597,9 +597,9 @@
 10051000;- Seed;10;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 10059000;- Other;10;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 10061000;- Rice in the husk (Paddy or rough) 75% or $345/MT whichever is higher;10;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-10062000;- Husked (Brown) rice 75% or $345/MT whichever is higher;10;No.;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-10063000;- Semi-Milled or wholly milled rice whether or not polished or glazed 75% or $345/MT whichever is higher;10;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-10064000;- Broken Rice 75% or $345/MT whichever is higher;10;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
+10062000;- Husked (Brown) rice 75% or $345/MT whichever is higher;10;No.;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+10063000;- Semi-Milled or wholly milled rice whether or not polished or glazed 75% or $345/MT whichever is higher;10;;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+10064000;- Broken Rice 75% or $345/MT whichever is higher;10;;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
 10071000;- Seed;10;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 10079000;- Other;10;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 10081000;- Buckwheat;10;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -658,7 +658,7 @@
 12077000;- Melon seeds;12;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 12079100;-- Poppy seeds;12;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 12079900;-- Other;12;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-12081000;- Of soya beans;12;kg;5;16;21.8;COMPLET;;;N3
+12081000;- Of soya beans;12;kg;5;16;21.8;COMPLET;;;N4
 12089000;- Other;12;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 12091000;- Sugar beet seeds;12;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 12092100;-- Lucerne (alfalfa) seeds;12;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -727,7 +727,7 @@
 15099000;- Other;15;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 15101000;- Crude olive pomace oil;15;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 15109000;- Other;15;Kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-15111000;- Crude oil;15;kg;10;16;27.6;COMPLET;;;N4
+15111000;- Crude oil;15;kg;10;16;27.6;COMPLET;;;N5
 15119010;--- Palm olein, fractions;15;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 15119020;--- Palm stearin, fractions;15;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 15119030;--- Palm olein, RBD;15;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -812,12 +812,12 @@
 17011410;--- Jaggery 100 % or $ 460/MT whichever is higher;17;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 17011490;--- Other 100 % or $ 460/MT whichever is higher;17;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 17019100;-- Containing added flavouring or colouring matter 100 % or $ 460/MT whichever is higher;17;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-17019910;---Sugar for industrial use 100 % or $ 460/MT whichever is higher;17;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-17019990;--- Other 100 % or $ 460/MT whichever is higher;17;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
+17019910;---Sugar for industrial use 100 % or $ 460/MT whichever is higher;17;;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+17019990;--- Other 100 % or $ 460/MT whichever is higher;17;;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
 17021100;-- Containing by weight 99% or more lactose, expressed as anhydrous lactose, calculated on the dry matter;17;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 17021900;-- Other;17;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 17022000;- Maple sugar and maple syrup;17;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-17023000;- Glucose and glucose syrup,not containing fructose or containing in the dry state less than 20% by weight of fructose;17;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N5
+17023000;- Glucose and glucose syrup,not containing fructose or containing in the dry state less than 20% by weight of fructose;17;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N6
 17024000;- Glucose and glucose syrup, containing in the dry state at least 20% but less than 50% by weight of fructose, excluding invert sugar;17;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 17025000;- Chemically pure fructose;17;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 17026000;- Other fructose and fructose syrup, containing in the dry state more than 50% by weight of fructose, excluding invert sugar;17;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -831,7 +831,7 @@
 18031000;- Not defatted;18;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 18032000;- Wholly or partly defatted;18;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 18040000;Cocoa butter, fat and oil.;18;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-18050000;Cocoa powder, not containing added sugar or other sweetening matter.;18;kg;5;16;21.8;COMPLET;;;N3
+18050000;Cocoa powder, not containing added sugar or other sweetening matter.;18;kg;5;16;21.8;COMPLET;;;N4
 18061000;- Cocoa powder, containing added sugar or other sweetening matter;18;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 18062000;- Other preparations in blocks, slabs or bars weighing more than 2 kg or in liquid, paste, powder, granular or other bulk form in containers or immediate packings, of a content exceeding 2 kg;18;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 18063100;-- Filled;18;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -840,10 +840,10 @@
 19011000;- Preparations suitable for infants or young children, put up for retail sale.;19;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 19012010;--- Biscuit Powder;19;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 19012090;--- Other;19;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-19019010;--- Malt extract;19;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-19019090;--- Other;19;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-19021100;-- Containing eggs;19;kg;10;16;27.6;COMPLET;;;N4
-19021900;-- Other;19;kg;10;16;27.6;COMPLET;;;N4
+19019010;--- Malt extract;19;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+19019090;--- Other;19;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+19021100;-- Containing eggs;19;kg;10;16;27.6;COMPLET;;;N5
+19021900;-- Other;19;kg;10;16;27.6;COMPLET;;;N5
 19022000;- Stuffed pasta, whether or not cooked or otherwise prepared;19;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 19023000;- Other pasta;19;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 19024000;- Couscous;19;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -998,8 +998,8 @@
 24041100;--Containing tobacco or reconstituted tobacco;24;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 24041200;-- Other, containing nicotine;24;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 24041900;-- Other;24;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-25010010;--- Raw salt;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-25010090;--- Other;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
+25010010;--- Raw salt;25;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
+25010090;--- Other;25;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
 25020000;Unroasted iron pyrites;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 25030000;Sulphur of all kinds, other than sublimed sulphur, precipitated sulphur and colloidal sulphur.;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 25041000;- In powder or in flakes;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -1036,14 +1036,14 @@
 25173000;- Tarred macadam;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 25174100;-- Of marble;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 25174900;-- Other;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-25181000;- Dolomite, not calcined or sintered;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N6
-25182000;- Calcined or sintered dolomite;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N6
+25181000;- Dolomite, not calcined or sintered;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N7
+25182000;- Calcined or sintered dolomite;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N7
 25191000;- Natural magnesium carbonate (magnesite);25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 25199000;- Other;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 25201000;"-Gypsum; anhydrite";25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 25202000;- Plasters;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 25210000;"Limestone flux; limestone and other calcareous stone, of a kind used for the manufacture of lime or cement.";25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-25221000;- Quicklime;25;kg;5;16;21.8;COMPLET;;;N3
+25221000;- Quicklime;25;kg;5;16;21.8;COMPLET;;;N4
 25222000;- Slaked lime;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 25223000;- Hydraulic lime;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 25231000;- Cement clinkers;25;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -1812,7 +1812,7 @@
 31021000;- Urea, whether or not in aqueous solution;31;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 31022100;-- Ammonium sulphate;31;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 31022900;-- Other;31;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-31023000;- Ammonium nitrate, whether or not in aqueous solution;31;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N7
+31023000;- Ammonium nitrate, whether or not in aqueous solution;31;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N8
 31024000;- Mixtures of ammonium nitrate with calcium carbonate or other inorganic non-fertilising substances;31;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 31025000;- Sodium nitrate;31;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 31026000;- Double salts and mixtures of calcium nitrate and ammonium nitrate;31;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -1914,7 +1914,7 @@
 33052000;- Preparations for permanent waving or straightening;33;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 33053000;- Hair lacquers;33;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 33059000;- Other;33;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-33061000;- Dentifrices;33;kg;10;16;27.6;COMPLET;;;N4
+33061000;- Dentifrices;33;kg;10;16;27.6;COMPLET;;;N5
 33062000;- Yarn used to clean between the teeth (dental floss);33;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 33069000;- Other;33;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 33071000;- Pre-shave, shaving or after-shave preparations;33;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -1924,7 +1924,7 @@
 33074900;-- Other;33;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 33079000;-Other;33;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 34011100;-- For toilet use (including medicated products);34;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-34011900;-- Other;34;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
+34011900;-- Other;34;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
 34012010;--- Noodles for manufacture of toilet soap;34;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 34012090;--- Other;34;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 34013000;- Organic surface-active products and preparations for washing the skin, in the form of liquid or cream and put up for retail sale, whether or not containing soap;34;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -1934,7 +1934,7 @@
 34024200;-- Non-ionic;34;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 34024900;-- Other;34;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 34025000;- Preparations put up for retail sale;34;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-34029000;- Other;34;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N8
+34029000;- Other;34;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9
 34031100;-- Preparations for the treatment of textile materials, leather, furskins or other materials;34;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 34031900;-- Other;34;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 34039100;-- Preparations for the treatment of textile materials, leather, furskins or other materials;34;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -1964,7 +1964,7 @@
 35071000;- Rennet and concentrates thereof;35;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 35079000;- Other;35;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 36010000;Propellent powders.;36;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-36020000;Prepared explosives, other than propellent powders.;36;kg;20;16;39.2;COMPLET;;;N2
+36020000;Prepared explosives, other than propellent powders.;36;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
 36031000;- Safety fuses;36;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 36032000;- Detonating cords;36;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 36033000;- Percussion caps;36;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -1973,7 +1973,7 @@
 36036000;- Electric detonators;36;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 36041000;- Fireworks;36;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 36049000;- Other;36;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-36050000;Matches, other than pyrotechnic articles of heading 36.04.;36;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
+36050000;Matches, other than pyrotechnic articles of heading 36.04.;36;kg;n.d.;n.d.;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1 N3
 36061000;- Liquid or liquefied-gas fuels in containers of a kind used for filling or refilling cigarette or similar lighters and of a capacity not exceeding 300 cm3;36;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 36069000;- Other;36;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 37011000;- For X-ray m²;37;;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -2073,24 +2073,24 @@
 38231300;-- Tall oil fatty acids;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 38231900;-- Other;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 38237000;- Industrial fatty alcohols;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-38241000;- Prepared binders for foundry moulds or cores;38;kg;20;16;39.2;COMPLET;;;N2
-38243000;- Non-agglomerated metal carbides mixed together or with metallic binders;38;kg;20;16;39.2;COMPLET;;;N2
-38244000;- Prepared additives for cements, mortars or concretes;38;kg;20;16;39.2;COMPLET;;;N2
-38245000;- Non-refractory mortars and concretes;38;kg;20;16;39.2;COMPLET;;;N2
-38246000;- Sorbitol other than that of subheading 2905.44;38;kg;20;16;39.2;COMPLET;;;N2
-38248100;-- Containing oxirane (ethylene oxide);38;kg;20;16;39.2;COMPLET;;;N2
-38248200;-- Containing polychlorinated biphenyls (PCBs), polychlorinated terphenyls (PCTs) or polybrominated biphenyls (PBBs);38;kg;20;16;39.2;COMPLET;;;N2
-38248300;-- Containing tris(2,3-dibromopropyl) phosphate;38;kg;20;16;39.2;COMPLET;;;N2
-38248400;-- Containing aldrin (ISO), camphechlor (ISO) (toxaphene), chlordane (ISO), chlordecone (ISO), DDT (ISO) (clofenotane (INN), 1,1,1- trichloro-2,2-bis(p-chlorophenyl)ethane), dieldrin (ISO, INN), endosulfan (ISO), endrin (ISO), heptachlor (ISO) or mirex (ISO);38;kg;20;16;39.2;COMPLET;;;N2
-38248500;-- Containing 1,2,3,4,5,6-hexachlorocyclohexane (HCH (ISO)), including lindane (ISO, INN);38;kg;20;16;39.2;COMPLET;;;N2
-38248600;-- Containing pentachlorobenzene (ISO) or hexachlorobenzene (ISO);38;kg;20;16;39.2;COMPLET;;;N2
-38248700;-- Containing perfluorooctane sulphonic acid, its salts, perfluorooctane sulphonamides, or perfluorooctane sulphonyl fluoride;38;kg;20;16;39.2;COMPLET;;;N2
-38248800;-- Containing tetra-, penta-, hexa-, hepta-or octabromodiphenyl ethers;38;kg;20;16;39.2;COMPLET;;;N2
-38248900;-- Containing short-chain chlorinated paraffins;38;kg;20;16;39.2;COMPLET;;;N2
-38249100;-- Mixtures and preparations consisting mainly of (5-ethyl-2- methyl-2-oxido-1,3,2-dioxaphosphinan-5-yl)methyl methyl ethylphosphonate and bis[(5-ethyl-2-methyl-2-oxido-1,3,2- dioxaphosphinan-5-yl)methyl] methylphosphonate;38;kg;20;16;39.2;COMPLET;;;N2
-38249200;-- Polyglycol esters of methylphosphonic acid;38;kg;20;16;39.2;COMPLET;;;N2
-38249910;--- “Grey oxide” and “Black oxide” (“Lead dust”);38;kg;20;16;39.2;COMPLET;;;N2
-38249990;--- Other;38;Kg;20;16;39.2;COMPLET;;;N2
+38241000;- Prepared binders for foundry moulds or cores;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38243000;- Non-agglomerated metal carbides mixed together or with metallic binders;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38244000;- Prepared additives for cements, mortars or concretes;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38245000;- Non-refractory mortars and concretes;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38246000;- Sorbitol other than that of subheading 2905.44;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38248100;-- Containing oxirane (ethylene oxide);38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38248200;-- Containing polychlorinated biphenyls (PCBs), polychlorinated terphenyls (PCTs) or polybrominated biphenyls (PBBs);38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38248300;-- Containing tris(2,3-dibromopropyl) phosphate;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38248400;-- Containing aldrin (ISO), camphechlor (ISO) (toxaphene), chlordane (ISO), chlordecone (ISO), DDT (ISO) (clofenotane (INN), 1,1,1- trichloro-2,2-bis(p-chlorophenyl)ethane), dieldrin (ISO, INN), endosulfan (ISO), endrin (ISO), heptachlor (ISO) or mirex (ISO);38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38248500;-- Containing 1,2,3,4,5,6-hexachlorocyclohexane (HCH (ISO)), including lindane (ISO, INN);38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38248600;-- Containing pentachlorobenzene (ISO) or hexachlorobenzene (ISO);38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38248700;-- Containing perfluorooctane sulphonic acid, its salts, perfluorooctane sulphonamides, or perfluorooctane sulphonyl fluoride;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38248800;-- Containing tetra-, penta-, hexa-, hepta-or octabromodiphenyl ethers;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38248900;-- Containing short-chain chlorinated paraffins;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38249100;-- Mixtures and preparations consisting mainly of (5-ethyl-2- methyl-2-oxido-1,3,2-dioxaphosphinan-5-yl)methyl methyl ethylphosphonate and bis[(5-ethyl-2-methyl-2-oxido-1,3,2- dioxaphosphinan-5-yl)methyl] methylphosphonate;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38249200;-- Polyglycol esters of methylphosphonic acid;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38249910;--- “Grey oxide” and “Black oxide” (“Lead dust”);38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+38249990;--- Other;38;Kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
 38251000;- Municipal waste;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 38252000;- Sewage sludge;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 38253000;- Clinical waste;38;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -2203,7 +2203,7 @@
 39174000;- Fittings;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39181000;- Of polymers of vinyl chloride;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39189000;- Of other plastics;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-39191000;- In rolls of a width not exceeding 20 cm;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9
+39191000;- In rolls of a width not exceeding 20 cm;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N11
 39199010;--- In rolls of a width exceeding 20 cm, unprinted;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39199090;---Other;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39201010;--- Unprinted;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -2261,7 +2261,7 @@
 39231000;- Boxes, cases, crates and similar articles;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39232100;-- Of polymers of ethylene;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39232900;-- Of other plastics;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-39233000;- Carboys, bottles, flasks and similar articles;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+39233000;- Carboys, bottles, flasks and similar articles;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N12
 39234000;- Spools, cops, bobbins and similar supports;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39235010;--- Inserts;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39235090;--- Other;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -2328,22 +2328,22 @@
 40103500;-- Endless synchronous belts, of an outside circumference exceeding 60 cm but not exceeding 150cm;40;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40103600;-- Endless synchronous belts, of an outside circumference exceeding 150 cm but not exceeding 198 cm;40;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40103900;-- Other;40;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-40111000;- Of a kind used on motor cars (including station wagons and racing cars);40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N11
+40111000;- Of a kind used on motor cars (including station wagons and racing cars);40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13
 40112010;--- With a rim size below 17 inches;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40112020;--- With a rim size of 17 inches and above;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40113000;- Of a kind used on aircraft;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-40114000;- Of a kind used on motorcycles;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N12
+40114000;- Of a kind used on motorcycles;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14
 40115000;- Of a kind used on bicycles;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40117000;- Of a kind used on agricultural or forestry vehicles and machines;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40118000;- Of a kind used on construction, mining or industrial handling vehicles and machines;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40119000;- Other;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-40121100;-- Of a kind used on motor cars (including station wagons and racing cars);40;u;10;16;27.6;COMPLET;;;N4
-40121200;-- Of a kind used on buses or lorries;40;u;10;16;27.6;COMPLET;;;N4
-40121300;-- Of a kind used on aircraft;40;u;10;16;27.6;COMPLET;;;N4
-40121900;-- Other;40;u;10;16;27.6;COMPLET;;;N4
-40122000;- Used pneumatic tyres;40;u;10;16;27.6;COMPLET;;;N4
-40129010;--- Treads for cold retreading;40;kg;10;16;27.6;COMPLET;;;N4
-40129090;--- Other;40;kg;10;16;27.6;COMPLET;;;N4
+40121100;-- Of a kind used on motor cars (including station wagons and racing cars);40;u;10;16;27.6;COMPLET;;;N5
+40121200;-- Of a kind used on buses or lorries;40;u;10;16;27.6;COMPLET;;;N5
+40121300;-- Of a kind used on aircraft;40;u;10;16;27.6;COMPLET;;;N5
+40121900;-- Other;40;u;10;16;27.6;COMPLET;;;N5
+40122000;- Used pneumatic tyres;40;u;10;16;27.6;COMPLET;;;N5
+40129010;--- Treads for cold retreading;40;kg;10;16;27.6;COMPLET;;;N5
+40129090;--- Other;40;kg;10;16;27.6;COMPLET;;;N5
 40131000;- Of a kind used on motor cars (including station wagons and racing cars), buses or lorries;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40132000;- Of a kind used on bicycles;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40139000;- Other;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -2611,7 +2611,7 @@
 48026100;-- In rolls;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 48026200;-- In sheets with one side not exceeding 435 mm and the other side not exceeding 297 mm in the unfolded state;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 48026900;-- Other;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-48030000;Toilet or facial tissue stock, towel or napkin stock and similar paper of a kind used for household or sanitary purposes, cellulose wadding and webs of cellulose fibres, whether or not creped, crinkled, embossed, perforated, surface-coloured, surface-decorated or printed, in rolls or sheets.;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13
+48030000;Toilet or facial tissue stock, towel or napkin stock and similar paper of a kind used for household or sanitary purposes, cellulose wadding and webs of cellulose fibres, whether or not creped, crinkled, embossed, perforated, surface-coloured, surface-decorated or printed, in rolls or sheets.;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15
 48041100;-- Unbleached;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 48041910;--- Dry battery Kraftliner;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 48041990;--- Other;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -2682,7 +2682,7 @@
 48183000;- Tablecloths and serviettes;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 48185000;- Articles of apparel and clothing accessories;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 48189000;- Other;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-48191000;- Cartons, boxes and cases, of corrugated paper or paperboard;48;kg;5;16;21.8;COMPLET;;;N3
+48191000;- Cartons, boxes and cases, of corrugated paper or paperboard;48;kg;5;16;21.8;COMPLET;;;N4
 48192010;--- Skillets, free hinge lid packets;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 48192090;--- Other;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 48193000;- Sacks and bags, having a base of a width of 40 cm or more;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -3613,8 +3613,8 @@
 68071000;- In rolls;68;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 68079000;- Other;68;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 68080000;Panels, boards, tiles, blocks and similar articles of vegetable fibre, of straw or of shavings, chips, particles, Sawdust or other waste, of wood, agglomerated with cement, plaster or other mineral binders.;68;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-68091100;-- Faced or reinforced with paper or paperboard only;68;kg;10;16;27.6;COMPLET;;;N4
-68091900;-- Other;68;kg;10;16;27.6;COMPLET;;;N4
+68091100;-- Faced or reinforced with paper or paperboard only;68;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N16
+68091900;-- Other;68;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N16
 68099000;- Other articles;68;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 68101100;-- Building blocks and bricks;68;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 68101900;-- Other;68;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -3843,41 +3843,41 @@
 72072000;- Containing by weight 0.25% or more of carbon;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72081000;- In coils, not further worked than hot-rolled, with patterns in relief;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72082500;-- Of a thickness of 4.75 mm or more;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-72082600;-- Of a thickness of 3 mm or more but less than 4.75 mm;72;kg;5;16;21.8;COMPLET;;;N3
-72082700;-- Of a thickness of less than 3 mm;72;kg;5;16;21.8;COMPLET;;;N3
+72082600;-- Of a thickness of 3 mm or more but less than 4.75 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
+72082700;-- Of a thickness of less than 3 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
 72083600;-- Of a thickness exceeding 10 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72083700;-- Of a thickness of 4.75 mm or more but not exceeding 10 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-72083800;-- Of a thickness of 3 mm or more but less than 4.75 mm;72;kg;5;16;21.8;COMPLET;;;N3
-72083900;-- Of a thickness of less than 3 mm;72;kg;5;16;21.8;COMPLET;;;N3
+72083800;-- Of a thickness of 3 mm or more but less than 4.75 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
+72083900;-- Of a thickness of less than 3 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
 72084000;- Not in coils, not further worked than hot-rolled, with patterns in relief;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72085100;-- Of a thickness exceeding 10 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72085200;-- Of a thickness of 4.75 mm or more but not exceeding 10 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72085300;-- Of a thickness of 3 mm or more but less than 4.75 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72085400;-- Of a thickness of less than 3 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72089000;- Other;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-72091500;-- Of a thickness of 3 mm or more;72;kg;5;16;21.8;COMPLET;;;N3
-72091600;-- Of a thickness exceeding 1 mm but less than 3 mm;72;kg;5;16;21.8;COMPLET;;;N3
-72091700;-- Of a thickness of 0.5 mm or more but not exceeding 1 mm;72;kg;5;16;21.8;COMPLET;;;N3
+72091500;-- Of a thickness of 3 mm or more;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
+72091600;-- Of a thickness exceeding 1 mm but less than 3 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
+72091700;-- Of a thickness of 0.5 mm or more but not exceeding 1 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
 72091800;-- Of a thickness of less than 0.5 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72092500;-- Of a thickness of 3 mm or more;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-72092600;-- Of a thickness exceeding 1 mm but less than 3 mm;72;kg;20;16;39.2;COMPLET;;;N2
-72092700;-- Of a thickness of 0.5 mm or more but not exceeding 1 mm;72;kg;20;16;39.2;COMPLET;;;N2
+72092600;-- Of a thickness exceeding 1 mm but less than 3 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+72092700;-- Of a thickness of 0.5 mm or more but not exceeding 1 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
 72092800;-- Of a thickness of less than 0.5 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72099000;- Other;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-72101100;-- Of a thickness of 0.5 mm or more;72;kg;20;16;39.2;COMPLET;;;N2
-72101200;-- Of a thickness of less than 0.5 mm;72;kg;20;16;39.2;COMPLET;;;N2
-72102000;- Plated or coated with lead, including terne-plate;72;kg;20;16;39.2;COMPLET;;;N2
-72103000;- Electrolytically plated or coated with zinc;72;kg;20;16;39.2;COMPLET;;;N2
-72104100;-- Corrugated;72;kg;20;16;39.2;COMPLET;;;N2
-72104900;-- Other 25% or $200/MT whichever is higher;72;kg;20;16;39.2;COMPLET;;;N2
-72105000;- Plated or coated with chromium oxides or with chromium and chromium oxides;72;kg;20;16;39.2;COMPLET;;;N2
-72106100;-- Plated or coated with aluminium-zinc alloys 25% or $200/MT whichever is higher;72;kg;20;16;39.2;COMPLET;;;N2
-72106900;-- Other 25% or $200/MT whichever is higher;72;kg;20;16;39.2;COMPLET;;;N2
-72107000;- Painted, Vanished or coated with plastics 25% or $200/MT whichever is higher;72;kg;20;16;39.2;COMPLET;;;N2
-72109000;- Other 25% or $200/MT whichever is higher;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14
+72101100;-- Of a thickness of 0.5 mm or more;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N18
+72101200;-- Of a thickness of less than 0.5 mm;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N18
+72102000;- Plated or coated with lead, including terne-plate;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N18
+72103000;- Electrolytically plated or coated with zinc;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N18
+72104100;-- Corrugated;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N18
+72104900;-- Other 25% or $200/MT whichever is higher;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N18
+72105000;- Plated or coated with chromium oxides or with chromium and chromium oxides;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N18
+72106100;-- Plated or coated with aluminium-zinc alloys 25% or $200/MT whichever is higher;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N18
+72106900;-- Other 25% or $200/MT whichever is higher;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N18
+72107000;- Painted, Vanished or coated with plastics 25% or $200/MT whichever is higher;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N18
+72109000;- Other 25% or $200/MT whichever is higher;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N18
 72111300;-- Rolled on four faces or in a closed box pass, of a width exceeding 150 mm and a thickness of not less than 4 mm,not in coils and without patterns in relief;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72111400;-- Other, of a thickness of 4.75 mm or more;72;kg;20;16;39.2;COMPLET;;;N2
-72111900;-- Other;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15
+72111900;-- Other;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N19
 72112300;-- Containing by weight less than 0.25% of carbon;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72112900;-- Other;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72119000;- Other;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -4009,12 +4009,12 @@
 73061900;-- Other;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73062100;-- Welded, of stainless steel;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73062900;-- Other;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-73063000;- Other, welded, of circular cross-section, of iron or non-alloy steel;73;kg;20;16;39.2;COMPLET;;;N2
-73064000;- Other, welded, of circular cross-section, of stainless steel;73;kg;20;16;39.2;COMPLET;;;N2
-73065000;- Other, welded, of circular cross-section, of other alloy steel;73;kg;20;16;39.2;COMPLET;;;N2
-73066100;-- Of square or rectangular cross-section;73;kg;20;16;39.2;COMPLET;;;N2
-73066900;-- Of other non-circular cross-section;73;kg;20;16;39.2;COMPLET;;;N2
-73069000;- Other;73;kg;20;16;39.2;COMPLET;;;N2
+73063000;- Other, welded, of circular cross-section, of iron or non-alloy steel;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+73064000;- Other, welded, of circular cross-section, of stainless steel;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+73065000;- Other, welded, of circular cross-section, of other alloy steel;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+73066100;-- Of square or rectangular cross-section;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+73066900;-- Of other non-circular cross-section;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+73069000;- Other;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
 73071100;-- Of non-malleable cast iron;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73071900;-- Other;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73072100;-- Flanges;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -4024,7 +4024,7 @@
 73079100;-- Flanges;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73079200;-- Threaded elbows, bends and sleeves;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73079300;-- Butt welding fittings;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-73079900;-- Other;73;kg;5;16;21.8;COMPLET;;;N3
+73079900;-- Other;73;kg;5;16;21.8;COMPLET;;;N4
 73081000;- Bridges and bridge‑sections;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73082000;- Towers and lattice masts;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73083000;- Doors, windows and their frames and thresholds for doors;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -4061,7 +4061,7 @@
 73158900;-- Other;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73159000;- Other parts;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73160000;Anchors, grapnels and parts thereof, of iron or steel.;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-73170000;Nails, tacks, drawing pins, corrugated nails, staples (other than those of heading 83.05) and similar articles, of iron or steel, whether or not with heads of other material, but excluding such articles with heads of copper.;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N16
+73170000;Nails, tacks, drawing pins, corrugated nails, staples (other than those of heading 83.05) and similar articles, of iron or steel, whether or not with heads of other material, but excluding such articles with heads of copper.;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N20
 73181100;-- Coach screws;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73181200;-- Other wood screws;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73181300;-- Screw hooks and screw rings;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -4103,8 +4103,8 @@
 73251000;- Of non-malleable cast iron;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73259100;-- Grinding balls and similar articles for mills;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73259900;-- Other;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-73261100;-- Grinding balls and similar articles for mills;73;kg;20;16;39.2;COMPLET;;;N2
-73261900;-- Other;73;kg;20;16;39.2;COMPLET;;;N2
+73261100;-- Grinding balls and similar articles for mills;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+73261900;-- Other;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
 73262000;- Articles of iron or steel wire;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73269010;--- Traps and sneers for the destruction of pests;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73269020;--- Reels for fire hose;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -4161,7 +4161,7 @@
 74198000;- Other;74;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 75011000;- Nickel mattes;75;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 75012000;- Nickel oxide sinters and other intermediate products of nickel metallurgy;75;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-75021000;- Nickel, not alloyed;75;kg;5;16;21.8;COMPLET;;;N3
+75021000;- Nickel, not alloyed;75;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
 75022000;- Nickel alloys;75;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 75030000;Nickel waste and scrap.;75;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 75040000;Nickel powders and flakes.;75;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -4193,8 +4193,8 @@
 76069100;-- Of aluminium, not alloyed;76;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 76069200;-- Of aluminium alloys;76;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 76071100;-- Rolled but not further worked;76;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-76071910;--- Unprinted aluminium foil;76;kg;5;16;21.8;COMPLET;;;N3
-76071990;--- Other;76;kg;5;16;21.8;COMPLET;;;N3
+76071910;--- Unprinted aluminium foil;76;kg;5;16;21.8;COMPLET;;;N4
+76071990;--- Other;76;kg;5;16;21.8;COMPLET;;;N4
 76072010;--- Unprinted aluminium foil;76;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 76072090;--- Other;76;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 76081000;- Of aluminium, not alloyed;76;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -4221,10 +4221,10 @@
 76161000;- Nails,tacks, staples (other than those of heading 83.05), screws, bolts, nuts, screw hooks, rivets, cotters, cotter-pins, washers and similar articles;76;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 76169100;-- Cloth, grill, netting and fencing, of aluminium wire;76;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 76169900;-- Other;76;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-78011000;- Refined lead;78;kg;5;16;21.8;COMPLET;;;N3
+78011000;- Refined lead;78;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
 78019100;-- Containing by weight antimony as the principal other element;78;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-78019900;-- Other;78;kg;5;16;21.8;COMPLET;;;N3
-78020000;Lead waste and scrap.;78;kg;5;16;21.8;COMPLET;;;N3
+78019900;-- Other;78;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
+78020000;Lead waste and scrap.;78;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
 78041100;-- Sheets, strip and foil of a thickness (excluding any backing) not exceeding 0.2 mm;78;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 78041900;-- Other;78;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 78042000;- Powders and flakes;78;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -4233,7 +4233,7 @@
 79011200;-- Containing by weight less than 99.99% of zinc;79;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 79012000;- Zinc alloys;79;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 79020000;Zinc waste and scrap.;79;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-79031000;- Zinc dust;79;kg;5;16;21.8;COMPLET;;;N3
+79031000;- Zinc dust;79;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
 79039000;- Other;79;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 79040000;Zinc bars, rods, profiles and wire.;79;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 79050000;Zinc plates, sheets, strip and foil.;79;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -5912,7 +5912,7 @@
 96162000;- Powder-puffs and pads for the application of cosmetics or toilet preparations;96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 96170000;"Vacuum flasks and other vacuum vessels, complete; parts thereof other than glass inners.";96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 96180000;"Tailors’ dummies and other lay figures; automata and other animated displays used for shop window dressing.";96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-96190010;--- Sanitary towels (pads) and tampons;96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
+96190010;--- Sanitary towels (pads) and tampons;96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N21
 96190090;--- Other;96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 96200000;Monopods, bipods, tripods and similar articles.;96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 97012100;-- Paintings, drawings and pastels;97;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1

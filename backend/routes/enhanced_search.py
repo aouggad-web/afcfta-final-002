@@ -184,7 +184,9 @@ def _semantic_matches(
 
 @router.get("/hs-codes")
 async def enhanced_hs_code_search(
-    q: str = Query(..., min_length=2, description="Search query (product name or HS code)"),
+    q: str = Query(
+        ..., min_length=2, max_length=100, description="Search query (product name or HS code)"
+    ),
     language: str = Query("en", description="Language for labels: en or fr"),
     limit: int = Query(20, ge=1, le=100, description="Maximum results per match type"),
 ):
@@ -275,7 +277,9 @@ def _search_engine():
 
 @router.get("/hs-codes")
 async def search_hs_codes(
-    q: str = Query(..., min_length=2, description="Search query (code or description)"),
+    q: str = Query(
+        ..., min_length=2, max_length=100, description="Search query (code or description)"
+    ),
     lang: str = Query("en", description="Response language: en | fr"),
     limit: int = Query(20, ge=1, le=100),
 ):
@@ -295,8 +299,8 @@ async def search_hs_codes(
 
         return results
     except Exception as exc:
-        logger.error(f"HS search error: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"HS search error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.post("/investment-opportunities")
@@ -333,13 +337,13 @@ async def search_investment_opportunities(request: InvestmentSearchRequest):
         }
         return result
     except Exception as exc:
-        logger.error(f"Investment search error: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Investment search error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/autocomplete")
 async def autocomplete(
-    q: str = Query(..., min_length=1),
+    q: str = Query(..., min_length=1, max_length=100),
     type: str = Query("all", description="all | hs_code | country | sector"),
     limit: int = Query(8, ge=1, le=20),
 ):

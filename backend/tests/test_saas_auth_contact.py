@@ -56,7 +56,7 @@ def session():
     s = requests.Session()
     resp = s.get(f"{BASE_URL}/api/health", timeout=15)
     assert resp.status_code == 200
-    token = resp.headers.get("X-CSRF-Token") or s.cookies.get("csrf_token")
+    token = resp.headers.get("X-CSRF-Token") or s.cookies.get("__Host-csrf_token") or s.cookies.get("csrf_token")
     assert token, "CSRF token was not issued by /api/health"
     s.headers.update({"X-CSRF-Token": token})
     return s
@@ -90,7 +90,11 @@ class TestRegister:
         # New session (fresh CSRF) to attempt duplicate registration
         s2 = requests.Session()
         r2 = s2.get(f"{BASE_URL}/api/health", timeout=15)
-        token2 = r2.headers.get("X-CSRF-Token") or s2.cookies.get("csrf_token")
+        token2 = (
+            r2.headers.get("X-CSRF-Token")
+            or s2.cookies.get("__Host-csrf_token")
+            or s2.cookies.get("csrf_token")
+        )
         s2.headers.update({"X-CSRF-Token": token2})
         dup = s2.post(f"{BASE_URL}/api/auth/register", json=payload, timeout=15)
         assert dup.status_code == 409

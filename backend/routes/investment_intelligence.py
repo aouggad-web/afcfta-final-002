@@ -63,8 +63,8 @@ async def get_data_freshness():
         report = intel.get_data_freshness()
         return report.to_dict()
     except Exception as exc:
-        logger.error(f"Data freshness check failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Data freshness check failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/agreements")
@@ -80,8 +80,8 @@ async def get_preferential_agreements_matrix():
         intel = _get_intel()
         return intel.get_preferential_agreements_matrix()
     except Exception as exc:
-        logger.error(f"Agreements matrix failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Agreements matrix failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.post("/market-entry")
@@ -102,8 +102,8 @@ async def recommend_market_entry(request: MarketEntryRequest):
         )
         return result
     except Exception as exc:
-        logger.error(f"Market entry recommendation failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Market entry recommendation failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/dataset")
@@ -125,5 +125,5 @@ async def get_regional_dataset(
         result = intel.export_regional_dataset(include_countries=include)
         return result
     except Exception as exc:
-        logger.error(f"Regional dataset export failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Regional dataset export failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")

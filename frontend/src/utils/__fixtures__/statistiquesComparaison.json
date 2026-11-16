@@ -1,0 +1,77 @@
+{
+ "NGA": {
+  "iso3": "NGA",
+  "country_name": "Nigéria",
+  "economic_indicators": {
+   "gdp_billion_usd": 290.79,
+   "gdp_per_capita_usd": 1224.25410237743,
+   "gdp_growth_percent": 4.01336180700973,
+   "inflation_percent": 23.0101235833333,
+   "unemployment_percent": 3.064,
+   "population_millions": 237.53
+  },
+  "trade_summary": {
+   "total_exports_musd": 63600.0,
+   "total_imports_musd": 50900.0,
+   "trade_balance_musd": 12700.0,
+   "intra_african_trade_percent": 13.4
+  },
+  "development_indices": {
+   "hdi_score": 0.56,
+   "hdi_world_rank": null,
+   "gai_score": 19.0,
+   "gai_world_rank": 137
+  },
+  "data_source": "Banque Mondiale (WDI 2024), OEC/IMF WEO 2024, Mo Ibrahim GAI 2025"
+ },
+ "ZAF": {
+  "iso3": "ZAF",
+  "country_name": "Afrique du Sud",
+  "economic_indicators": {
+   "gdp_billion_usd": 427.18,
+   "gdp_per_capita_usd": 6597.71450918774,
+   "gdp_growth_percent": 1.11462608103956,
+   "inflation_percent": 3.20550474112603,
+   "unemployment_percent": 32.391,
+   "population_millions": 64.75
+  },
+  "trade_summary": {
+   "total_exports_musd": 151300.0,
+   "total_imports_musd": 100900.0,
+   "trade_balance_musd": 50400.0,
+   "intra_african_trade_percent": 19.0
+  },
+  "development_indices": {
+   "hdi_score": 0.741,
+   "hdi_world_rank": null,
+   "gai_score": 26.8,
+   "gai_world_rank": 96
+  },
+  "data_source": "Banque Mondiale (WDI 2024), OEC/IMF WEO 2024, Mo Ibrahim GAI 2025"
+ },
+ "SSD": {
+  "iso3": "SSD",
+  "country_name": "Soudan du Sud",
+  "economic_indicators": {
+   "gdp_billion_usd": 7.5,
+   "gdp_per_capita_usd": 276,
+   "gdp_growth_percent": null,
+   "inflation_percent": 91.4408220769045,
+   "unemployment_percent": 12.374,
+   "population_millions": 12.19
+  },
+  "trade_summary": {
+   "total_exports_musd": null,
+   "total_imports_musd": null,
+   "trade_balance_musd": null,
+   "intra_african_trade_percent": null
+  },
+  "development_indices": {
+   "hdi_score": 0.388,
+   "hdi_world_rank": null,
+   "gai_score": 5.8,
+   "gai_world_rank": 221
+  },
+  "data_source": "Banque Mondiale (WDI 2024), OEC/IMF WEO 2024, Mo Ibrahim GAI 2025"
+ }
+}

@@ -1,0 +1,216 @@
+{
+ "corridor_id": "CORR-ABIDJAN-LAGOS-002",
+ "corridor_name": "Corridor Abidjan-Lagos (Autoroute Transafricaine)",
+ "corridor_type": "road",
+ "countries_spanned": [
+  "CIV",
+  "GHA",
+  "TGO",
+  "BEN",
+  "NGA"
+ ],
+ "start_node": "Abidjan",
+ "end_node": "Lagos",
+ "length_km": 992,
+ "status": "Opérationnel",
+ "infra_details": "Route côtière A1 (CIV), N1 (GHA), RNIE1 (TGO), RNIE1 (BEN), A121 (NGA) - Sections pavées et non pavées",
+ "importance": "high",
+ "description": "Axe vital du commerce intra-CEDEAO, relie les deux principales économies d'Afrique de l'Ouest",
+ "source_org": "PIDA, CEDEAO",
+ "coordinates": [
+  [
+   5.3364,
+   -4.0267
+  ],
+  [
+   5.6037,
+   -0.187
+  ],
+  [
+   6.1256,
+   1.2223
+  ],
+  [
+   6.4969,
+   2.6289
+  ],
+  [
+   6.4541,
+   3.3958
+  ]
+ ],
+ "nodes": [
+  {
+   "node_id": "NODE-ELUBO-001",
+   "node_name": "Poste Frontière Elubo (CIV-GHA)",
+   "node_type": "border_crossing",
+   "country_iso": "CIV",
+   "geo_lat": 5.1372,
+   "geo_lon": -2.8354,
+   "is_osbp": false,
+   "notes": "Point de passage majeur, congestion fréquente"
+  },
+  {
+   "node_id": "NODE-AFLAO-001",
+   "node_name": "Poste Frontière OSBP Aflao (GHA-TGO)",
+   "node_type": "border_crossing",
+   "country_iso": "GHA",
+   "geo_lat": 6.1156,
+   "geo_lon": 1.1934,
+   "is_osbp": true,
+   "notes": "OSBP opérationnel depuis 2019"
+  },
+  {
+   "node_id": "NODE-HILLACONDJI-001",
+   "node_name": "Poste Frontière OSBP Hillacondji (TGO-BEN)",
+   "node_type": "border_crossing",
+   "country_iso": "TGO",
+   "geo_lat": 6.6289,
+   "geo_lon": 1.7786,
+   "is_osbp": true,
+   "notes": "OSBP moderne, réduit délais significativement"
+  },
+  {
+   "node_id": "NODE-SEME-001",
+   "node_name": "Poste Frontière Seme-Krake (BEN-NGA)",
+   "node_type": "border_crossing",
+   "country_iso": "BEN",
+   "geo_lat": 6.3667,
+   "geo_lon": 2.65,
+   "is_osbp": false,
+   "notes": "Point le plus congestionné, OSBP en construction"
+  }
+ ],
+ "stats": {
+  "year": 2024,
+  "avg_transit_time_hours": 48,
+  "avg_border_crossing_time_hours": 18,
+  "freight_throughput_tons": 8500000,
+  "truck_volumes_daily": 1850,
+  "source_org": "CEDEAO Commission",
+  "source_url": "https://www.ecowas.int/"
+ },
+ "operators": [
+  {
+   "operator_name": "STMA (Société de Transport Moderne Africain)",
+   "operator_type": "trucking_company",
+   "group": "Regional",
+   "fleet_size": 420,
+   "country_iso": "CIV"
+  }
+ ],
+ "logistics_network": {
+  "global_3pl_present": [
+   "Bolloré Logistics Africa",
+   "DHL Supply Chain Africa",
+   "Kuehne+Nagel Africa",
+   "DB Schenker Africa",
+   "DSV (ex-Panalpina) Africa"
+  ],
+  "regional_trucking_operators": [
+   "CTS – Cross Trade Solutions West Africa"
+  ],
+  "rail_operators_present": [],
+  "corridor_management_bodies": [
+   "PIDA-AU – Programme for Infrastructure Development in Africa",
+   "ECOWAS – Economic Community of West African States",
+   "OPA-BICC – Observatoire des Pratiques Anormales"
+  ],
+  "local_agents_by_country": {
+   "CIV": [
+    {
+     "company_name": "SOCOPAO Côte d'Ivoire",
+     "agent_type": "freight_forwarder",
+     "city": "Abidjan",
+     "address": "Zone Portuaire, 01 BP 1297, Abidjan 01",
+     "phone": "+225 27 20 21 03 03",
+     "email": "socopao@socopao.ci",
+     "website": "https://www.socopao.ci",
+     "services": [
+      "Transit",
+      "Customs clearance",
+      "Trucking",
+      "Warehousing"
+     ],
+     "certifications": [
+      "OEA",
+      "ISO 9001"
+     ],
+     "operating_hours": "Lun-Ven 07h30-18h00"
+    },
+    {
+     "company_name": "SAGA CI (CMA CGM Group)",
+     "agent_type": "freight_forwarder",
+     "city": "Abidjan",
+     "address": "Résidence Les Harmonies, Boulevard Latrille, Abidjan",
+     "phone": "+225 27 22 40 36 00",
+     "email": "saga@saga.ci",
+     "website": "https://www.saga.ci",
+     "services": [
+      "FCL",
+      "LCL",
+      "Customs",
+      "Inland transport",
+      "Corridor services"
+     ],
+     "certifications": [
+      "ISO 9001",
+      "OEA"
+     ],
+     "operating_hours": "Lun-Ven 08h-17h30"
+    }
+   ],
+   "GHA": [
+    {
+     "company_name": "MERIDIAN PORT SERVICES (MPS)",
+     "agent_type": "port_logistics",
+     "city": "Tema",
+     "address": "Port of Tema, Ghana",
+     "phone": "+233 30 290 0000",
+     "email": "info@mps.com.gh",
+     "website": "https://www.mps.com.gh",
+     "services": [
+      "Port operations",
+      "Container handling",
+      "Customs liaison",
+      "Tema-Ouaga corridor"
+     ],
+     "certifications": [
+      "ISO 9001",
+      "ISPS"
+     ],
+     "operating_hours": "24h/7j"
+    }
+   ],
+   "NGA": [
+    {
+     "company_name": "Sifax Group",
+     "agent_type": "logistics_provider",
+     "city": "Lagos",
+     "address": "Apapa Port, Lagos, Nigeria",
+     "phone": "+234 1 271 3800",
+     "email": "info@sifaxgroup.com",
+     "website": "https://www.sifaxgroup.com",
+     "services": [
+      "Port operations",
+      "Customs",
+      "Inland container depot",
+      "Haulage"
+     ],
+     "certifications": [
+      "ISO 9001",
+      "NCS-approved"
+     ],
+     "operating_hours": "Mon-Fri 08h-17h"
+    }
+   ]
+  },
+  "service_providers_available": [
+   "Customs brokers",
+   "Freight forwarders",
+   "Trucking companies",
+   "Warehouse operators",
+   "Border crossing agents"
+  ]
+ }
+}

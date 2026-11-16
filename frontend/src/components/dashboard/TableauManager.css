@@ -1,0 +1,69 @@
+/* Ligne des dernières dépêches du tableau de bord de direction.
+   - Elle ne défile que si les titres dépassent le cadre (classe
+     ligne-depeches--defile, posée par TableauManager.jsx) : deux copies de la
+     liste, la piste glisse d'une copie puis recommence, sans couture.
+   - Arrêt au survol, au bouton pause (en-pause) et au clavier : quand un lien
+     a le focus clavier (:focus-visible, pas un clic de souris), la piste revient
+     au repos et le cadre se fait défiler pour montrer le lien.
+   - Animations réduites : rien ne bouge, la ligne se fait défiler à la main,
+     la seconde copie et le bouton pause sont masqués. */
+
+.ligne-depeches {
+  overflow: hidden;
+}
+
+.ligne-depeches__piste {
+  display: inline-flex;
+  gap: 2.5rem;
+  white-space: nowrap;
+}
+
+.ligne-depeches__copie {
+  display: inline-flex;
+  gap: 2.5rem;
+}
+
+.ligne-depeches--defile {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+}
+
+/* Deux copies et un espace après chacune : glisser de 50 % ramène au départ. */
+.ligne-depeches--defile .ligne-depeches__piste {
+  padding-inline-end: 2.5rem;
+  animation: defilement-depeches 120s linear infinite;
+}
+
+.ligne-depeches--defile[dir='rtl'] .ligne-depeches__piste {
+  animation-name: defilement-depeches-rtl;
+}
+
+.ligne-depeches--defile:hover .ligne-depeches__piste,
+.ligne-depeches--defile.en-pause .ligne-depeches__piste {
+  animation-play-state: paused;
+}
+
+.ligne-depeches:has(:focus-visible) {
+  overflow-x: auto;
+}
+
+.ligne-depeches:has(:focus-visible) .ligne-depeches__piste {
+  animation: none;
+  transform: none;
+}
+
+@keyframes defilement-depeches {
+  to { transform: translateX(-50%); }
+}
+
+@keyframes defilement-depeches-rtl {
+  to { transform: translateX(50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ligne-depeches { overflow-x: auto; }
+  .ligne-depeches--defile { -webkit-mask-image: none; mask-image: none; }
+  .ligne-depeches--defile .ligne-depeches__piste { animation: none; padding-inline-end: 0; }
+  .ligne-depeches__copie[aria-hidden='true'],
+  .ligne-depeches-pause { display: none; }
+}

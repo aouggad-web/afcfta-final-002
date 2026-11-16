@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { X, Filter, RotateCcw } from 'lucide-react';
+import { pick } from '../../i18n/lang';
 
 // Color palettes for different node types
 const SOURCE_COLORS = ['#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe'];
@@ -147,7 +148,12 @@ export default function TradeSankeyDiagram({
   mode = 'export',
   onFilterChange
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
+  // Libellés de repli des nœuds sans nom.
+  const SRC = pick(language, 'Source', 'Source', 'المصدر');
+  const PRODUCT = pick(language, 'Produit', 'Produit', 'المنتَج');
+  const DEST = pick(language, 'Destination', 'Destination', 'الوجهة');
   const [valueType, setValueType] = useState('potential'); // potential or current
   const [activeFilters, setActiveFilters] = useState({
     source: '',
@@ -215,33 +221,33 @@ export default function TradeSankeyDiagram({
       let sourceName, productName, targetName, value;
 
       if (mode === 'export') {
-        sourceName = opp.exportingCountry || opp.country || 'Source';
-        productName = opp.product_name || opp.product?.name || 'Produit';
-        targetName = opp.potential_partner || opp.potentialPartner || 'Destination';
+        sourceName = opp.exportingCountry || opp.country || SRC;
+        productName = opp.product_name || opp.product?.name || PRODUCT;
+        targetName = opp.potential_partner || opp.potentialPartner || DEST;
         value = valueType === 'potential' 
           ? (opp.potential_value_musd || opp.potentialTradeValue || 0)
           : (opp.current_value_musd || opp.currentTradeValue || 0);
       } else if (mode === 'import') {
-        sourceName = opp.potential_supplier || opp.currentSource || 'Source';
-        productName = opp.product_name || opp.product?.name || 'Produit';
-        targetName = opp.importingCountry || opp.country || 'Destination';
+        sourceName = opp.potential_supplier || opp.currentSource || SRC;
+        productName = opp.product_name || opp.product?.name || PRODUCT;
+        targetName = opp.importingCountry || opp.country || DEST;
         value = opp.substitution_potential_musd || opp.import_value_musd || opp.importValue || 0;
       } else if (mode === 'industrial') {
         // Industrial/Value Chain mode: input -> output transformation
-        sourceName = opp.country || opp.exportingCountry || 'Source';
-        productName = opp.output_product || opp.product_name || 'Produit Fini';
+        sourceName = opp.country || opp.exportingCountry || SRC;
+        productName = opp.output_product || opp.product_name || pick(language, 'Produit Fini', 'Produit Fini', 'منتَج نهائي');
         // For industrial mode, target markets is an array - use first one
         const targets = opp.target_markets || [];
-        targetName = Array.isArray(targets) ? targets[0] : (targets || 'Destination');
+        targetName = Array.isArray(targets) ? targets[0] : (targets || DEST);
         // Parse estimated_output which may be string like "1800 MUSD"
         const outputStr = opp.estimated_output || '';
         const match = outputStr.match(/(\d+)/);
         value = match ? parseFloat(match[1]) : 0;
       } else {
         // Product analysis mode
-        sourceName = opp.country || opp.exportingCountry || 'Source';
-        productName = opp.product_name || opp.product?.name || 'Produit';
-        targetName = opp.partner || opp.importingCountry || 'Destination';
+        sourceName = opp.country || opp.exportingCountry || SRC;
+        productName = opp.product_name || opp.product?.name || PRODUCT;
+        targetName = opp.partner || opp.importingCountry || DEST;
         value = opp.trade_value || opp.value || 0;
       }
 
@@ -266,7 +272,7 @@ export default function TradeSankeyDiagram({
     });
 
     return { nodes, links };
-  }, [opportunities, mode, valueType, activeFilters]);
+  }, [opportunities, mode, valueType, activeFilters, language]);
 
   // Empty state
   if (data.nodes.length === 0) {

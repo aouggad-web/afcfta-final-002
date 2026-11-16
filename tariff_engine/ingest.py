@@ -2,9 +2,6 @@ from pathlib import Path
 
 import pandas as pd
 import requests
-import urllib3
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 BASE = Path("tariff_engine")
 PDF_DIR = BASE / "pdf_sources"
@@ -21,26 +18,14 @@ def download(url: str, out: Path) -> None:
 
     print("Downloading:", url)
 
-    # 1) tentative normale (SSL strict)
-    try:
-        r = requests.get(url, timeout=90, headers={"User-Agent": "Mozilla/5.0 (TariffBot/1.0)"})
-        r.raise_for_status()
-        out.write_bytes(r.content)
-        print("Saved:", out, f"({out.stat().st_size} bytes)")
-        return
-    except requests.exceptions.SSLError as e:
-        print("SSL error (will retry insecure):", e)
-
-    # 2) retry en mode tolérant (SSL cassé côté serveur)
-    r = requests.get(
-        url,
-        timeout=90,
-        verify=False,
-        headers={"User-Agent": "Mozilla/5.0 (TariffBot/1.0)"},
-    )
+    # TLS toujours vérifié (audit INFO-7) : plus de nouvel essai sans
+    # vérification, qui laissait un intermédiaire réseau substituer le PDF
+    # tarifaire. Un serveur qui n'envoie pas son certificat intermédiaire se
+    # traite en fournissant celui-ci (voir scripts/releve_dgd_dza.py).
+    r = requests.get(url, timeout=90, headers={"User-Agent": "Mozilla/5.0 (TariffBot/1.0)"})
     r.raise_for_status()
     out.write_bytes(r.content)
-    print("Saved (insecure SSL):", out, f"({out.stat().st_size} bytes)")
+    print("Saved:", out, f"({out.stat().st_size} bytes)")
 
 
 def ingest_row(row: dict) -> None:

@@ -4,6 +4,7 @@ import { Badge } from '../ui/badge';
 import MonitoringDashboard from './MonitoringDashboard';
 import TariffDownloads from './TariffDownloads';
 import BusinessAtlasModule from './BusinessAtlasModule';
+import { pick } from '../../i18n/lang';
 
 export default function ToolsTab({ language = 'fr' }) {
   const texts = {
@@ -96,10 +97,55 @@ export default function ToolsTab({ language = 'fr' }) {
       uneca: "UNECA",
       unecaDesc: "Economic Commission for Africa",
       sourceLabel: "Sources: African Union, PAPSS, tralac, World Bank, UNECA"
+    },
+    ar: {
+      title: "أدوات وموارد منطقة التجارة الحرة القارية الأفريقية",
+      subtitle: "المنصات الرسمية والبروتوكولات والمبادرات",
+      ntbTitle: "الحواجز غير الجمركية",
+      ntbDesc: "أبلغ عن الحواجز غير الجمركية (NTB) أو اطّلع عليها عبر المنصة الرسمية لمنطقة التجارة الحرة القارية الأفريقية. آلية حلّ على المستوى القاري.",
+      ntbStatus: "قيد التشغيل",
+      ntbCountries: "البلدان المشمولة:",
+      ntbBtn: "الدخول إلى منصة NTB",
+      digitalTitle: "بروتوكول التجارة الرقمية",
+      digitalDesc: "اعتُمد في 18 فبراير 2024. مواءمة القواعد المتعلقة بالتدفقات العابرة للحدود والثقة الرقمية والهوية الرقمية.",
+      digitalAdoption: "الاعتماد:",
+      digitalStatus: "معتمد",
+      digitalBtn: "عرض بروتوكول الاتحاد الأفريقي",
+      gtiTitle: "مبادرة التجارة الموجَّهة (GTI)",
+      gtiDesc: "مبادرة تجريبية للتنفيذ التدريجي. تابع البلدان النشطة والممرات التجارية والمسارات ذات الأولوية في منطقة التجارة الحرة القارية الأفريقية.",
+      gtiStatus: "نشطة",
+      gtiFocus: "التركيز:",
+      gtiCorridors: "8 ممرات ذات أولوية",
+      gtiBtn: "عرض بلدان GTI",
+      papssTitle: "PAPSS - نظام الدفع والتسوية الأفريقي",
+      papssSubtitle: "بنية تحتية للمدفوعات والتسويات العابرة للحدود",
+      papssAbout: "حول PAPSS",
+      papssDesc: "يتيح نظام الدفع والتسوية الأفريقي (PAPSS) إجراء معاملات فورية بالعملات المحلية بين البلدان الأفريقية، مما يقلّل الاعتماد على الدولار الأمريكي وتكاليف الصرف.",
+      papssBenefit1: "خفض تكاليف المعاملات",
+      papssBenefit2: "مدفوعات فورية على مدار الساعة طوال أيام الأسبوع",
+      papssBenefit3: "دعم العملات المحلية",
+      papssAdvantages: "المزايا للتجارة",
+      papssCost: "توفير التكاليف",
+      papssCostDesc: "تخفيض يصل إلى 80% في الرسوم المصرفية",
+      papssSpeed: "السرعة",
+      papssSpeedDesc: "تسويات آنية مقابل 3-7 أيام",
+      papssSecurity: "الأمان",
+      papssSecurityDesc: "المعايير الدولية ISO 20022",
+      papssDeployment: "النشر جارٍ",
+      resourcesTitle: "موارد إضافية",
+      secretariat: "أمانة منطقة التجارة الحرة القارية الأفريقية",
+      secretariatDesc: "الاتحاد الأفريقي - الموقع الرسمي",
+      tralac: "tralac",
+      tralacDesc: "مركز القانون التجاري",
+      worldBank: "البنك الدولي",
+      worldBankDesc: "دراسات وتوقعات",
+      uneca: "UNECA",
+      unecaDesc: "اللجنة الاقتصادية لأفريقيا",
+      sourceLabel: "المصادر: الاتحاد الأفريقي، PAPSS، tralac، البنك الدولي، اللجنة الاقتصادية لأفريقيا"
     }
   };
 
-  const t = texts[language];
+  const t = texts[language] || texts.fr;
 
   return (
     <div className="space-y-6">
@@ -131,8 +177,8 @@ export default function ToolsTab({ language = 'fr' }) {
               {t.ntbDesc}
             </p>
             <div className="p-3 rounded-lg mb-3" style={{background:'var(--overlay)'}}>
-              <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>Status:</strong> <Badge className="bg-[var(--success)] text-[var(--bg)] ml-2">{t.ntbStatus}</Badge></p>
-              <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{t.ntbCountries}</strong> 55 {language === 'fr' ? 'membres ZLECAf' : 'AfCFTA members'}</p>
+              <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{pick(language, 'Status:', 'Status:', 'الحالة:')}</strong> <Badge className="bg-[var(--success)] text-[var(--bg)] ml-2">{t.ntbStatus}</Badge></p>
+              <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{t.ntbCountries}</strong> 55 {pick(language, 'membres ZLECAf', 'AfCFTA members', 'عضوًا في زليكاف')}</p>
             </div>
             <a 
               href="https://tradebarriers.africa" 
@@ -154,8 +200,8 @@ export default function ToolsTab({ language = 'fr' }) {
               {t.digitalDesc}
             </p>
             <div className="p-3 rounded-lg mb-3" style={{background:'var(--overlay)'}}>
-              <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{t.digitalAdoption}</strong> 18 {language === 'fr' ? 'février' : 'February'} 2024</p>
-              <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>Status:</strong> <Badge className="bg-[var(--success)] text-[var(--bg)] ml-2">{t.digitalStatus}</Badge></p>
+              <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{t.digitalAdoption}</strong> 18 {pick(language, 'février', 'February', 'فبراير')} 2024</p>
+              <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{pick(language, 'Status:', 'Status:', 'الحالة:')}</strong> <Badge className="bg-[var(--success)] text-[var(--bg)] ml-2">{t.digitalStatus}</Badge></p>
             </div>
             <a 
               href="https://au.int/en/treaties/protocol-digital-trade" 
@@ -177,7 +223,7 @@ export default function ToolsTab({ language = 'fr' }) {
               {t.gtiDesc}
             </p>
             <div className="p-3 rounded-lg mb-3" style={{background:'var(--overlay)'}}>
-              <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>Status:</strong> <Badge className="bg-[var(--success)] text-[var(--bg)] ml-2">{t.gtiStatus}</Badge></p>
+              <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{pick(language, 'Status:', 'Status:', 'الحالة:')}</strong> <Badge className="bg-[var(--success)] text-[var(--bg)] ml-2">{t.gtiStatus}</Badge></p>
               <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{t.gtiFocus}</strong> {t.gtiCorridors}</p>
             </div>
             <a 

@@ -105,8 +105,8 @@ async def start_all_crawl(options: Optional[NorthAfricaCrawlRequest] = None):
             "job": job.summary,
         }
     except Exception as exc:
-        logger.error(f"Failed to start North Africa crawl: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Failed to start North Africa crawl: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.post("/start")
@@ -133,8 +133,8 @@ async def start_selective_crawl(request: NorthAfricaCrawlRequest):
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
     except Exception as exc:
-        logger.error(f"Failed to start selective crawl: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Failed to start selective crawl: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/status")
@@ -210,8 +210,8 @@ async def sync_and_validate():
             "validation": result.to_dict(),
         }
     except Exception as exc:
-        logger.error(f"Cross-validation failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Cross-validation failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/countries")
@@ -280,8 +280,8 @@ async def investment_location_analysis(request: InvestmentAnalysisRequest):
         )
         return result
     except Exception as exc:
-        logger.error(f"Investment analysis failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Investment analysis failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/trade-flows")
@@ -299,8 +299,8 @@ async def get_regional_trade_flows():
         intel = _get_intelligence()
         return intel.get_trade_flows()
     except Exception as exc:
-        logger.error(f"Trade flows query failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Trade flows query failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.post("/opportunity-map")
@@ -321,5 +321,5 @@ async def get_opportunity_map(request: OpportunityMapRequest):
         result = intel.get_opportunity_map(sectors=request.sectors)
         return result
     except Exception as exc:
-        logger.error(f"Opportunity map generation failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Opportunity map generation failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")

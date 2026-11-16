@@ -1,4 +1,5 @@
 import React from 'react';
+import { pick } from '../../i18n/lang';
 
 const emptyValue = {
   answer: 'unknown',
@@ -9,19 +10,26 @@ const emptyValue = {
   authorizedGoods: '',
 };
 
-export default function KenyaRemissionAuthorization({ value = emptyValue, onChange }) {
+export default function KenyaRemissionAuthorization({ value = emptyValue, onChange, language = 'fr' }) {
   const update = (field, next) => onChange?.({ ...emptyValue, ...value, [field]: next });
   return (
     <fieldset className="rounded-xl border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] p-4 space-y-3">
       <legend className="px-2 text-sm font-semibold text-[var(--gold)]">
-        Disposez-vous d’une autorisation ou d’une allocation officielle couvrant cette
-        marchandise au titre de cette remission ?
+        {pick(
+          language,
+          <>
+            Disposez-vous d’une autorisation ou d’une allocation officielle couvrant cette
+            marchandise au titre de cette remission ?
+          </>,
+          'Do you hold an official authorization or allocation covering these goods under this remission?',
+          'هل لديكم ترخيص أو حصة رسمية تشمل هذه البضاعة في إطار هذا الإعفاء؟',
+        )}
       </legend>
-      <div className="flex flex-wrap gap-4" role="radiogroup" aria-label="Éligibilité à la remission">
+      <div className="flex flex-wrap gap-4" role="radiogroup" aria-label={pick(language, 'Éligibilité à la remission', 'Remission eligibility', 'الأهلية للإعفاء')}>
         {[
-          ['no', 'Non'],
-          ['yes', 'Oui'],
-          ['unknown', 'Je ne sais pas'],
+          ['no', pick(language, 'Non', 'No', 'لا')],
+          ['yes', pick(language, 'Oui', 'Yes', 'نعم')],
+          ['unknown', pick(language, 'Je ne sais pas', "I don't know", 'لا أعرف')],
         ].map(([answer, label]) => (
           <label key={answer} className="flex items-center gap-2 text-sm text-[var(--text)]">
             <input
@@ -38,7 +46,7 @@ export default function KenyaRemissionAuthorization({ value = emptyValue, onChan
       {value.answer === 'yes' && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3" data-testid="kenya-authorization-details">
           <label className="text-xs text-[var(--text)]">
-            Référence officielle
+            {pick(language, 'Référence officielle', 'Official reference', 'المرجع الرسمي')}
             <input
               className="mt-1 w-full rounded border border-[var(--afcfta-border)] bg-[var(--overlay)] p-2"
               value={value.reference}
@@ -46,7 +54,7 @@ export default function KenyaRemissionAuthorization({ value = emptyValue, onChan
             />
           </label>
           <label className="text-xs text-[var(--text)]">
-            Début de validité
+            {pick(language, 'Début de validité', 'Valid from', 'بداية الصلاحية')}
             <input
               type="date"
               className="mt-1 w-full rounded border border-[var(--afcfta-border)] bg-[var(--overlay)] p-2"
@@ -55,7 +63,7 @@ export default function KenyaRemissionAuthorization({ value = emptyValue, onChan
             />
           </label>
           <label className="text-xs text-[var(--text)]">
-            Fin de validité
+            {pick(language, 'Fin de validité', 'Valid until', 'نهاية الصلاحية')}
             <input
               type="date"
               className="mt-1 w-full rounded border border-[var(--afcfta-border)] bg-[var(--overlay)] p-2"
@@ -64,7 +72,7 @@ export default function KenyaRemissionAuthorization({ value = emptyValue, onChan
             />
           </label>
           <label className="text-xs text-[var(--text)]">
-            Lignes tarifaires exactes autorisées, séparées par des virgules
+            {pick(language, 'Lignes tarifaires exactes autorisées, séparées par des virgules', 'Exact authorized tariff lines, comma-separated', 'البنود التعريفية المرخَّصة بدقة، مفصولة بفواصل')}
             <input
               className="mt-1 w-full rounded border border-[var(--afcfta-border)] bg-[var(--overlay)] p-2 font-mono"
               value={value.authorizedTariffLines}
@@ -73,7 +81,7 @@ export default function KenyaRemissionAuthorization({ value = emptyValue, onChan
             />
           </label>
           <label className="text-xs text-[var(--text)] md:col-span-2">
-            Marchandises détaillées figurant sur l’autorisation
+            {pick(language, 'Marchandises détaillées figurant sur l’autorisation', 'Detailed goods listed on the authorization', 'البضائع المفصَّلة الواردة في الترخيص')}
             <textarea
               className="mt-1 w-full rounded border border-[var(--afcfta-border)] bg-[var(--overlay)] p-2"
               value={value.authorizedGoods}
@@ -83,7 +91,12 @@ export default function KenyaRemissionAuthorization({ value = emptyValue, onChan
         </div>
       )}
       <p className="text-xs text-[var(--gold)]">
-        Sans autorisation vérifiable couvrant la ligne exacte, la remission n’est pas appliquée.
+        {pick(
+          language,
+          'Sans autorisation vérifiable couvrant la ligne exacte, la remission n’est pas appliquée.',
+          'Without a verifiable authorization covering the exact line, the remission is not applied.',
+          'في غياب ترخيص يمكن التحقق منه يشمل البند بدقة، لا يُطبَّق الإعفاء.',
+        )}
       </p>
     </fieldset>
   );

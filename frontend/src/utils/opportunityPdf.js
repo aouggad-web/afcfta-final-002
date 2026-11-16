@@ -14,12 +14,18 @@
  */
 import jsPDF from 'jspdf';
 import { THEME_LIGHT, THEME_DARK, espacesSimples } from './tradeReportPdf';
+import { dessinerLogo, nomSaas } from './pdfMarque';
+import { estArabe, preparerArabe } from './pdfArabe';
 
 const MM = { pageW: 210, pageH: 297, margin: 13 };
+// Logo du site, à droite du bandeau ; le titre s'arrête avant lui.
+const LOGO = 22;
+const TEXTE_BANDEAU = MM.pageW - 2 * MM.margin - LOGO - 4;
 
 const I18N = {
   fr: { page: 'Page', source: 'SOURCE', consulted: 'Consultation', module: 'MODULE OPPORTUNITÉS' },
   en: { page: 'Page', source: 'SOURCE', consulted: 'Consulted', module: 'OPPORTUNITIES MODULE' },
+  ar: { page: 'الصفحة', source: 'المصدر', consulted: 'تاريخ الاطلاع', module: 'وحدة الفرص' },
 };
 
 const ACCENTS = { green: 'green', red: 'red', gold: 'gold', terra: 'terra' };
@@ -40,7 +46,7 @@ function drawMasthead(doc, theme, { badge, title, subtitle, language, moduleLabe
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
   doc.setTextColor(...theme.onBand);
-  const wordmark = 'AFCFTA / ZLECAf';
+  const wordmark = nomSaas(language);
   doc.text(wordmark, MM.margin, 8);
   const wordmarkWidth = doc.getTextWidth(wordmark);
   doc.setFont('helvetica', 'normal');
@@ -64,14 +70,15 @@ function drawMasthead(doc, theme, { badge, title, subtitle, language, moduleLabe
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(15.5);
   doc.setTextColor(...theme.onBand);
-  doc.text(title || '', MM.margin, 23, { maxWidth: MM.pageW - 2 * MM.margin });
+  doc.text(title || '', MM.margin, 23, { maxWidth: TEXTE_BANDEAU });
 
   if (subtitle) {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.setTextColor(...theme.gold);
-    doc.text(subtitle, MM.margin, 27.6, { maxWidth: MM.pageW - 2 * MM.margin });
+    doc.text(subtitle, MM.margin, 27.6, { maxWidth: TEXTE_BANDEAU });
   }
+  dessinerLogo(doc, MM.pageW - MM.margin - LOGO, (bandH - LOGO) / 2, LOGO);
   return bandH + 6;
 }
 
@@ -211,23 +218,36 @@ function drawTable(doc, theme, table, startY) {
 }
 
 function drawKeyValues(doc, theme, keyValues, startY) {
+  // Une valeur longue (désignation, référence légale) s'enroule sur
+  // plusieurs lignes : la hauteur de la ligne suit le texte, sinon la
+  // deuxième ligne déborderait sur la suivante.
+  const totalW = MM.pageW - 2 * MM.margin;
+  const labelW = totalW * 0.36;
+  const valueW = totalW - labelW - 5;
   let y = startY;
   keyValues.forEach(({ label, value }) => {
-    y = ensureRoom(doc, theme, y, 6);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6.8);
+    const labelLines = doc.splitTextToSize(String(label), labelW);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.2);
+    const valueLines = doc.splitTextToSize(String(value ?? '—'), valueW);
+    const lines = Math.max(labelLines.length, valueLines.length);
+    const h = 5.6 + (lines - 1) * 3.1;
+    y = ensureRoom(doc, theme, y, h + 1);
     doc.setFillColor(...theme.surface);
-    doc.roundedRect(MM.margin, y, MM.pageW - 2 * MM.margin, 5.6, 1, 1, 'F');
+    doc.roundedRect(MM.margin, y, totalW, h, 1, 1, 'F');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(6.8);
     doc.setTextColor(...theme.muted);
-    doc.text(String(label), MM.margin + 2.5, y + 3.8);
+    doc.text(labelLines, MM.margin + 2.5, y + 3.8);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.2);
     doc.setTextColor(...theme.text);
-    doc.text(String(value ?? '—'), MM.pageW - MM.margin - 2.5, y + 3.8, {
-      align: 'right',
-      maxWidth: (MM.pageW - 2 * MM.margin) * 0.6,
-    });
-    y += 6.6;
+    // Une ligne : alignée à droite ; plusieurs : un paragraphe aligné à gauche.
+    if (valueLines.length > 1) doc.text(valueLines, MM.pageW - MM.margin - 2.5 - valueW, y + 3.8);
+    else doc.text(valueLines, MM.pageW - MM.margin - 2.5, y + 3.8, { align: 'right' });
+    y += h + 1;
   });
   return y + 2;
 }
@@ -246,9 +266,35 @@ function drawParagraphs(doc, theme, paragraphs, startY) {
   return y + 1;
 }
 
+/**
+ * Encadré « à savoir » : fond teinté, filet doré à gauche. Sert aux réserves
+ * qui doivent se lire même en survolant le document (simulation non
+ * opposable, montant indicatif, donnée manquante).
+ */
+function drawNotice(doc, theme, paragraphs, startY) {
+  const totalW = MM.pageW - 2 * MM.margin;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7.4);
+  const blocs = paragraphs.map((p) => doc.splitTextToSize(String(p), totalW - 8));
+  const h = blocs.reduce((sum, lines) => sum + lines.length * 3.5 + 1.6, 0) + 3;
+  let y = ensureRoom(doc, theme, startY, Math.min(h, 120));
+  doc.setFillColor(...theme.card2);
+  doc.roundedRect(MM.margin, y, totalW, h, 1.4, 1.4, 'F');
+  doc.setFillColor(...theme.gold);
+  doc.rect(MM.margin, y, 1.2, h, 'F');
+  doc.setTextColor(...theme.text);
+  let yy = y + 4.6;
+  blocs.forEach((lines) => {
+    doc.text(lines, MM.margin + 4.5, yy);
+    yy += lines.length * 3.5 + 1.6;
+  });
+  return y + h + 3;
+}
+
 function drawFooters(doc, theme, { language, source }) {
   const t = I18N[language] || I18N.fr;
-  const consulted = new Date().toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US');
+  // En arabe, la date en chiffres (jj/mm/aaaa), comme sur l'écran.
+  const consulted = new Date().toLocaleDateString(language === 'en' ? 'en-US' : 'fr-FR');
   const total = doc.internal.getNumberOfPages();
   for (let i = 1; i <= total; i++) {
     doc.setPage(i);
@@ -262,9 +308,13 @@ function drawFooters(doc, theme, { language, source }) {
     doc.text(t.source, MM.margin, y + 3.8);
     const labelW = doc.getTextWidth(t.source);
     doc.setFont('helvetica', 'normal');
-    doc.text(`${source || '—'} • ${t.consulted}: ${consulted}`, MM.margin + labelW + 2, y + 3.8, {
-      maxWidth: MM.pageW - 2 * MM.margin - labelW - 22,
-    });
+    // La source (souvent en français ou en anglais) et la date d'accès en
+    // deux textes : en arabe, chacun garde son sens d'écriture.
+    const xSource = MM.margin + labelW + 2;
+    const largeurSource = MM.pageW - 2 * MM.margin - labelW - 22 - 38;
+    const ligneSource = doc.splitTextToSize(`${source || '—'} •`, largeurSource)[0];
+    doc.text(ligneSource, xSource, y + 3.8);
+    doc.text(`${t.consulted}: ${consulted}`, xSource + doc.getTextWidth(ligneSource) + 1.5, y + 3.8);
     doc.setFont('helvetica', 'bold');
     doc.text(`${t.page} ${i}/${total}`, MM.pageW - MM.margin, y + 3.8, { align: 'right' });
   }
@@ -277,10 +327,10 @@ function drawFooters(doc, theme, { language, source }) {
  * @param {string} spec.title
  * @param {string} [spec.subtitle]
  * @param {string} [spec.badge]      Pastille sous le wordmark (nom du sous-module)
- * @param {'fr'|'en'} [spec.language]
+ * @param {'fr'|'en'|'ar'} [spec.language]  En arabe, attendre d'abord chargerPoliceArabe().
  * @param {'light'|'dark'} [spec.theme]
  * @param {Array}  [spec.kpis]       [{label, value, sub, accent}]
- * @param {Array}  [spec.sections]   [{title, table}|{title, keyValues}|{title, paragraphs}, ...]
+ * @param {Array}  [spec.sections]   [{title, table}|{title, keyValues}|{title, paragraphs}|{title, notice}, ...]
  * @param {string} [spec.source]
  * @param {string} [spec.moduleLabel] Libellé du module dans le bandeau (défaut : Opportunités)
  */
@@ -288,6 +338,8 @@ export function buildOpportunityPdf(spec) {
   const theme = spec.theme === 'dark' ? THEME_DARK : THEME_LIGHT;
   const language = spec.language || 'fr';
   const doc = espacesSimples(new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' }));
+  // En arabe : police arabe et page de droite à gauche (police chargée par l'appelant).
+  if (estArabe(language)) preparerArabe(doc);
   paintPage(doc, theme);
 
   let y = drawMasthead(doc, theme, { ...spec, language });
@@ -299,6 +351,7 @@ export function buildOpportunityPdf(spec) {
     if (section.table) y = drawTable(doc, theme, section.table, y);
     else if (section.keyValues?.length) y = drawKeyValues(doc, theme, section.keyValues, y);
     else if (section.paragraphs?.length) y = drawParagraphs(doc, theme, section.paragraphs, y);
+    else if (section.notice?.length) y = drawNotice(doc, theme, section.notice, y);
   });
 
   drawFooters(doc, theme, { language, source: spec.source });

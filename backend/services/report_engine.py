@@ -170,8 +170,8 @@ def _supply_component(origin_iso3: str, hs_code: str) -> Dict:
 
         cap = get_capacity(origin_iso3, hs_code)
     except Exception as exc:
-        _log.warning("production capacity unavailable: %s", exc)
-        return {"available": False, "subscore": None, "note": str(exc)}
+        _log.warning("production capacity unavailable: %s", exc, exc_info=True)
+        return {"available": False, "subscore": None, "note": "Service temporarily unavailable"}
 
     if not cap.get("available"):
         return {"available": False, "subscore": None, "reason": cap.get("reason"), "detail": cap}
@@ -244,48 +244,12 @@ def _resolve_logistics_and_landed(
     shipment: Optional[Dict],
     trade_finance: Optional[Dict] = None,
 ) -> tuple:
-    """Compute the logistics profile + landed cost with UNIFORM cargo handling.
-
-    Single source of truth for the container-vs-vraquier décision, shared by
-    the bilateral report and the value-chain legs so the démarche is identical
-    everywhere:
-
-    - **Vrac sec au-dessus du seuil** : la logistique est calculée sur le
-      TONNAGE COMPLET (l'option d'affrètement vraquier ``sea_bulk`` remonte
-      alors), et le coût rendu utilise le total d'affrètement directement.
-    - **Sinon** : logistique d'UN conteneur (× nombre de conteneurs dans le
-      coût rendu), comportement historique inchangé.
-    """
-    bulk = shipment_estimator.classify_bulk_commodity(hs_code) if hs_code else None
-    total_weight_kg = None
+    """Compare all routes for the full shipment, then compute its landed cost."""
     if shipment and shipment.get("available"):
-        total_weight_kg = float(shipment.get("weight_kg") or 0)
-
-    threshold_kg = (bulk or {}).get("container_threshold_tonnes", 0) * 1000.0 if bulk else 0
-    use_bulk = bool(
-        bulk
-        and not bulk.get("is_liquid")
-        and total_weight_kg is not None
-        and total_weight_kg >= threshold_kg > 0
-    )
-
-    if use_bulk:
-        # Tonnage complet : c'est ici que l'affrètement vraquier devient éligible.
         log_profile = logistics.get_logistics_profile(
             origin_iso3,
             destination_iso3,
-            total_weight_kg,
-            volume_m3,
-            hs_code=hs_code,
-        )
-    elif shipment and shipment.get("available"):
-        one_container_kg = min(
-            float(shipment["weight_kg"]), float(shipment["container_capacity_kg"])
-        )
-        log_profile = logistics.get_logistics_profile(
-            origin_iso3,
-            destination_iso3,
-            one_container_kg,
+            float(shipment.get("weight_kg") or weight_kg),
             volume_m3,
             container_type=shipment["container_type"],
             hs_code=hs_code,
@@ -314,6 +278,9 @@ def _landed_cost(
     trade_finance: Optional[Dict] = None,
 ) -> Dict:
     """Coût rendu = FOB + fret + assurance estimée + frais bancaires ; null si une jambe manque.
+
+    Le comparateur transmet le fret pour le lot complet. Pour les anciens
+    appelants sans indication d'assiette, le tarif conteneur reste unitaire.
 
     Deux régimes de fret, choisis selon le mode opérationnel le moins cher :
 
@@ -386,6 +353,22 @@ def _landed_cost(
                     f" Poids estimé via un ratio {vtw['usd_per_kg']} USD/kg "
                     f"(chapitre SH {vtw.get('hs_chapter', '?')}, estimation de dimensionnement)."
                 )
+    elif (cheapest_option or {}).get("cost_basis") == "shipment":
+        total_freight = round(freight_usd, 2)
+        n_containers = cheapest_option.get("containers_needed", 1)
+        breakdown = {
+            "goods_value_fob_usd": goods_value_usd,
+            "freight_mode": cheapest_option.get("mode"),
+            "best_operational_freight_usd": total_freight,
+            "estimated_weight_kg": (shipment or {}).get("weight_kg"),
+            "weight_source": (shipment or {}).get("weight_source"),
+        }
+        if cheapest_option.get("containers_needed"):
+            breakdown["containers_needed"] = n_containers
+            breakdown["container_type"] = (shipment or {}).get("container_type")
+            if cheapest_option.get("mode") == "sea":
+                breakdown["freight_per_container_usd"] = round(total_freight / n_containers, 2)
+        note = "Fret estimé pour le lot complet."
     else:
         per_container_freight_usd = freight_usd
         n_containers = 1
@@ -1505,8 +1488,8 @@ def _supply_side(hs_code: str) -> Dict:
 
         prod = get_continental_producers(hs_code)
     except Exception as exc:
-        _log.warning("continental producers unavailable: %s", exc)
-        return {"available": False, "producers": [], "note": str(exc)}
+        _log.warning("continental producers unavailable: %s", exc, exc_info=True)
+        return {"available": False, "producers": [], "note": "Service temporarily unavailable"}
 
     if not prod.get("available"):
         return {"available": False, "producers": [], "reason": prod.get("reason")}

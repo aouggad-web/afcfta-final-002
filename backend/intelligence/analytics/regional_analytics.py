@@ -239,7 +239,9 @@ class RegionalAnalyticsEngine:
         if metrics is None:
             metrics = ["tariff_avg", "investment_score", "infrastructure", "trade_integration"]
 
-        blocs = [b.upper() for b in blocs]
+        # Dédoublonnés et bornés (constat E2) : le coût croît en blocs × métriques.
+        blocs = list(dict.fromkeys(b.upper() for b in blocs))[:20]
+        metrics = list(dict.fromkeys(metrics))[:20]
         comparison: Dict[str, Any] = {
             "blocs": {},
             "rankings": {},

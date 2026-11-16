@@ -1,0 +1,131 @@
+{
+  "airport_id": "ZAF-JNB-001",
+  "airport_name": "Johannesburg - O.R. Tambo International",
+  "country_iso": "ZAF",
+  "country_name": "Afrique du Sud",
+  "iata_code": "JNB",
+  "icao_code": "FAOR",
+  "geo_lat": -26.1392,
+  "geo_lon": 28.246,
+  "cargo_terminal_area_sqm": 42000,
+  "annual_capacity_tons": 450000,
+  "cargo_infra_notes": "Terminal cargo dédié, capacité chaîne du froid, hub principal Afrique Australe",
+  "historical_stats": [
+    {
+      "year": 2024,
+      "cargo_throughput_tons": 405000,
+      "mail_throughput_tons": 12500,
+      "cargo_aircraft_movements": 8200,
+      "source_org": "ACSA",
+      "source_url": "https://www.acsa.co.za/"
+    },
+    {
+      "year": 2023,
+      "cargo_throughput_tons": 385000,
+      "mail_throughput_tons": 11800,
+      "cargo_aircraft_movements": 7950,
+      "source_org": "ACSA",
+      "source_url": "https://www.acsa.co.za/"
+    },
+    {
+      "year": 2022,
+      "cargo_throughput_tons": 362000,
+      "mail_throughput_tons": 11200,
+      "cargo_aircraft_movements": 7600,
+      "source_org": "ACSA",
+      "source_url": "https://www.acsa.co.za/"
+    }
+  ],
+  "actors": [
+    {
+      "actor_name": "South African Airways Cargo",
+      "actor_type": "airline",
+      "group": "National"
+    },
+    {
+      "actor_name": "Ethiopian Cargo",
+      "actor_type": "airline",
+      "group": "International (Ethiopia)"
+    },
+    {
+      "actor_name": "Emirates SkyCargo",
+      "actor_type": "airline",
+      "group": "International (UAE)"
+    },
+    {
+      "actor_name": "Qatar Airways Cargo",
+      "actor_type": "airline",
+      "group": "International (Qatar)"
+    },
+    {
+      "actor_name": "Turkish Cargo",
+      "actor_type": "airline",
+      "group": "International (Turkey)"
+    },
+    {
+      "actor_name": "Cargolux",
+      "actor_type": "airline",
+      "group": "International (Luxembourg)"
+    },
+    {
+      "actor_name": "DHL Aviation",
+      "actor_type": "airline",
+      "group": "Integrator (Germany)"
+    },
+    {
+      "actor_name": "FedEx Express",
+      "actor_type": "airline",
+      "group": "Integrator (USA)"
+    },
+    {
+      "actor_name": "Swissport",
+      "actor_type": "handler",
+      "group": "International"
+    },
+    {
+      "actor_name": "Menzies Aviation",
+      "actor_type": "handler",
+      "group": "International"
+    },
+    {
+      "actor_name": "Bolloré Logistics",
+      "actor_type": "forwarder",
+      "group": "International (France)"
+    },
+    {
+      "actor_name": "Panalpina (DSV)",
+      "actor_type": "forwarder",
+      "group": "International (Switzerland)"
+    }
+  ],
+  "routes": [
+    {
+      "carrier": "Ethiopian Cargo",
+      "route_description": "East Africa-Southern Africa-Asia",
+      "frequency": "Daily",
+      "aircraft_types": "B777F, B787F",
+      "rotation": "ADD-NBO-JNB-HKG"
+    },
+    {
+      "carrier": "Emirates SkyCargo",
+      "route_description": "Middle East-Africa",
+      "frequency": "5x/week",
+      "aircraft_types": "B777F",
+      "rotation": "DXB-JNB-DXB"
+    },
+    {
+      "carrier": "Turkish Cargo",
+      "route_description": "Europe-Africa",
+      "frequency": "3x/week",
+      "aircraft_types": "A330-200F",
+      "rotation": "IST-JNB-CPT-IST"
+    },
+    {
+      "carrier": "Cargolux",
+      "route_description": "Europe-Africa",
+      "frequency": "2x/week",
+      "aircraft_types": "B747-8F",
+      "rotation": "LUX-JNB-LUX"
+    }
+  ]
+}

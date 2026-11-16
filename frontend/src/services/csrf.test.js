@@ -149,3 +149,126 @@ describe('CSRF cookie SameSite attribute', () => {
     expect(written).not.toContain('Secure');
   });
 });
+
+describe('Cookie CSRF préfixé __Host- en HTTPS (audit INFO-4)', () => {
+  const originalLocation = window.location;
+
+  beforeEach(() => {
+    Object.defineProperty(window, 'location', {
+      value: { ...originalLocation, protocol: 'https:' },
+      writable: true,
+      configurable: true,
+    });
+    vi.stubGlobal('fetch', vi.fn());
+  });
+
+  afterEach(() => {
+    Object.defineProperty(window, 'location', {
+      value: originalLocation,
+      writable: true,
+      configurable: true,
+    });
+    vi.restoreAllMocks();
+  });
+
+  it('écrit __Host-csrf_token avec Path=/, Secure, sans Domain', async () => {
+    const cookieSetter = vi.spyOn(document, 'cookie', 'set');
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      headers: new Headers({ 'X-CSRF-Token': 'jeton-https' }),
+    });
+
+    // Même réserve que plus haut : jsdom tourne sur une origine http.
+    await getCsrfToken({ forceRefresh: true }).catch(() => {});
+
+    const ecrit = cookieSetter.mock.calls.map(([value]) => value);
+    expect(ecrit.some((c) => c.startsWith('__Host-csrf_token=jeton-https'))).toBe(true);
+    const cookie = ecrit.find((c) => c.startsWith('__Host-csrf_token='));
+    expect(cookie).toContain('; Path=/; SameSite=None; Secure; Partitioned');
+    expect(cookie).not.toContain('Domain=');
+  });
+
+  it('lit le cookie préfixé et ignore un csrf_token planté sous l’ancien nom', async () => {
+    vi.spyOn(document, 'cookie', 'get').mockReturnValue(
+      'csrf_token=plante; __Host-csrf_token=bon'
+    );
+
+    await expect(getCsrfToken()).resolves.toBe('bon');
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it('réamorce le jeton quand seul l’ancien nom est présent', async () => {
+    vi.spyOn(document, 'cookie', 'get').mockReturnValue('csrf_token=ancien');
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      headers: new Headers({ 'X-CSRF-Token': 'neuf' }),
+    });
+
+    await getCsrfToken().catch(() => {});
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch.mock.calls[0][0]).toContain('/api/health');
+  });
+});
+
+describe('csrfFetch : une seule relance après un refus CSRF', () => {
+  function reponse(status, detail) {
+    return {
+      ok: status < 400,
+      status,
+      headers: new Headers(),
+      clone: () => ({ json: async () => ({ detail }) }),
+    };
+  }
+  const sante = () => ({
+    ok: true,
+    headers: new Headers({ 'X-CSRF-Token': 'jeton-neuf' }),
+  });
+
+  beforeEach(() => {
+    document.cookie = 'csrf_token=jeton-perime; Path=/';
+    vi.stubGlobal('fetch', vi.fn());
+  });
+
+  it('réamorce le jeton et rejoue une fois', async () => {
+    fetch
+      .mockResolvedValueOnce(reponse(403, 'CSRF token invalid'))
+      .mockResolvedValueOnce(sante())
+      .mockResolvedValueOnce(reponse(200));
+
+    const resultat = await csrfFetch('/api/v2/ai/recommendations', {
+      method: 'POST',
+      body: '{}',
+    });
+
+    expect(resultat.status).toBe(200);
+    expect(fetch).toHaveBeenCalledTimes(3);
+    expect(fetch.mock.calls[1][0]).toContain('/api/health');
+    expect(fetch.mock.calls[2][1].headers.get('X-CSRF-Token')).toBe('jeton-neuf');
+    expect(fetch.mock.calls[2][1].body).toBe('{}');
+  });
+
+  it('ne relance pas une deuxième fois', async () => {
+    fetch
+      .mockResolvedValueOnce(reponse(403, 'CSRF token missing'))
+      .mockResolvedValueOnce(sante())
+      .mockResolvedValueOnce(reponse(403, 'CSRF token missing'));
+
+    const resultat = await csrfFetch('/api/resource', { method: 'POST' });
+
+    expect(resultat.status).toBe(403);
+    expect(fetch).toHaveBeenCalledTimes(3);
+  });
+
+  it.each([
+    [401, 'Not authenticated'],
+    [403, 'upgrade_required'],
+  ])('ne relance pas un %s « %s »', async (status, detail) => {
+    fetch.mockResolvedValueOnce(reponse(status, detail));
+
+    const resultat = await csrfFetch('/api/resource', { method: 'POST' });
+
+    expect(resultat.status).toBe(status);
+    expect(fetch).toHaveBeenCalledTimes(1);
+  });
+});

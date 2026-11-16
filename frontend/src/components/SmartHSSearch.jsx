@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Search } from 'lucide-react';
 import { ISO2_TO_ISO3 } from '../utils/countryCodes';
+import { pick } from '../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -51,6 +52,19 @@ export default function SmartHSSearch({
       excluded: "Excluded",
       useCode: "Use this code",
       viewDetails: "View details"
+    },
+    ar: {
+      searchPlaceholder: "ابحث بالرمز أو بكلمة مفتاحية (مثال: سيارة، 870323، بن)",
+      noResults: "لم يُعثر على أي نتيجة",
+      chooseDestination: "اختر بلد المقصد أولًا",
+      selectSubPosition: "اختيار هذا البند الفرعي",
+      sensitivity: "الحساسية",
+      category: "الفئة",
+      sensitive: "حساس",
+      normal: "عادي",
+      excluded: "مستبعد",
+      useCode: "استخدام هذا الرمز",
+      viewDetails: "عرض التفاصيل"
     }
   };
 
@@ -207,7 +221,7 @@ export default function SmartHSSearch({
         {showResults && searchResults.length > 0 && (
           <div className="absolute z-50 w-full mt-1 bg-[var(--afcfta-card)] border border-[var(--afcfta-border)] rounded-lg shadow-2xl max-h-96 overflow-y-auto">
             {searchResults.map((result) => {
-              const description = language === 'fr' ? result.description_fr : (result.description_en || result.description_fr);
+              const description = pick(language, result.description_fr, result.description_en || result.description_fr, result.description_fr);
               return (
                 <div
                   key={result.code}
@@ -219,10 +233,10 @@ export default function SmartHSSearch({
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-mono tabular-nums font-bold text-[var(--gold)] bg-[var(--goldSoft)] px-2 py-0.5 rounded text-base">{result.code}</span>
                         {result.dd_rate != null && (
-                          <Badge className="bg-[var(--goldSoft)] text-[var(--gold)] text-xs tabular-nums border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">DD: {result.dd_rate}%</Badge>
+                          <Badge className="bg-[var(--goldSoft)] text-[var(--gold)] text-xs tabular-nums border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">{pick(language, 'DD:', 'DD:', 'الرسم الجمركي:')} {result.dd_rate}%</Badge>
                         )}
                         {result.dd_rate == null && result.dd_expression && (
-                          <Badge className="bg-[var(--goldSoft)] text-[var(--gold)] text-xs font-mono border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">DD: {result.dd_expression}</Badge>
+                          <Badge className="bg-[var(--goldSoft)] text-[var(--gold)] text-xs font-mono border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">{pick(language, 'DD:', 'DD:', 'الرسم الجمركي:')} {result.dd_expression}</Badge>
                         )}
                       </div>
                       <p className="text-[var(--text)] mt-1 text-sm leading-snug">{description}</p>

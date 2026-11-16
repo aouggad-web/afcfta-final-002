@@ -19,28 +19,35 @@ import {
   Tag,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { pick } from "../i18n/lang";
 
 /* ─── Flat nav items ─────────────────────────────────────────── */
-const NAV_ITEMS = (isFrench) => [
-  { id: "dashboard",  label: isFrench ? "Tableau de bord" : "Dashboard",      icon: LayoutDashboard },
-  { id: "calculator", label: isFrench ? "Calculateur"     : "Calculator",     icon: Calculator },
-  { id: "stats",      label: isFrench ? "Statistiques"    : "Statistics",     icon: BarChart3 },
-  { id: "production", label: isFrench ? "Production"      : "Production",     icon: Factory },
-  { id: "logistics",  label: isFrench ? "Logistique"      : "Logistics",      icon: Ship },
-  { id: "banking",    label: isFrench ? "Finance"         : "Finance",        icon: Landmark },
-  { id: "tools",      label: isFrench ? "Outils"          : "Tools",          icon: Wrench },
-  { id: "roo",        label: isFrench ? "R. d'Origine"    : "Rules of Origin",icon: FileCheck },
-  { id: "profiles",   label: isFrench ? "Profils"         : "Profiles",       icon: Globe2 },
-  { id: "reports",    label: isFrench ? "Opportunités"    : "Opportunities",  icon: TrendingUp },
-  { id: "contact",    label: isFrench ? "Contact"         : "Contact",        icon: Mail },
+const NAV_ITEMS = (lang) => [
+  { id: "dashboard",  label: pick(lang, "Tableau de bord", "Dashboard", "لوحة القيادة"),      icon: LayoutDashboard },
+  { id: "calculator", label: pick(lang, "Calculateur", "Calculator", "الحاسبة"),     icon: Calculator },
+  { id: "stats",      label: pick(lang, "Statistiques", "Statistics", "الإحصائيات"),     icon: BarChart3 },
+  { id: "production", label: pick(lang, "Production", "Production", "الإنتاج"),     icon: Factory },
+  { id: "logistics",  label: pick(lang, "Logistique", "Logistics", "اللوجستيك"),      icon: Ship },
+  { id: "banking",    label: pick(lang, "Finance", "Finance", "التمويل"),        icon: Landmark },
+  { id: "tools",      label: pick(lang, "Outils", "Tools", "الأدوات"),          icon: Wrench },
+  { id: "roo",        label: pick(lang, "R. d'Origine", "Rules of Origin", "قواعد المنشأ"),icon: FileCheck },
+  { id: "profiles",   label: pick(lang, "Profils", "Profiles", "ملفات البلدان"),       icon: Globe2 },
+  { id: "reports",    label: pick(lang, "Opportunités", "Opportunities", "الفرص"),  icon: TrendingUp },
+  { id: "contact",    label: pick(lang, "Contact", "Contact", "اتصل بنا"),        icon: Mail },
+];
+
+/* ─── Langues de l'interface ─────────────────────────────────── */
+const LANG_BUTTONS = [
+  { code: "fr", label: "FR", name: "Français" },
+  { code: "en", label: "EN", name: "English" },
+  { code: "ar", label: "ع", name: "العربية" },
 ];
 
 /* ─── Horizontal topbar component ───────────────────────────── */
 export default function AfcftaTopbar({ active = "dashboard", onTabChange, language = "fr", theme = "dark", onThemeToggle, onOpenAuth }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const isFrench = language === "fr";
   const isLight = theme === "light";
-  const items = NAV_ITEMS(isFrench);
+  const items = NAV_ITEMS(language);
   const { user } = useAuth() || {};
 
   const handleTab = (id) => {
@@ -61,7 +68,7 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
             height={32}
           />
           <span className="afcfta-topHeader__brandName">
-            {isFrench ? "ZLECAf Intelligence" : "AfCFTA Intelligence"}
+            {pick(language, "ZLECAf Intelligence", "AfCFTA Intelligence", "ZLECAf Intelligence")}
           </span>
         </div>
 
@@ -69,7 +76,9 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
         <button
           className="afcfta-btn-sm afcfta-btn-secondary afcfta-topHeader__menuBtn"
           onClick={() => setMobileOpen((o) => !o)}
-          aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
+          aria-label={mobileOpen
+            ? pick(language, "Fermer le menu", "Close menu", "إغلاق القائمة")
+            : pick(language, "Ouvrir le menu", "Open menu", "فتح القائمة")}
           style={{ padding: "8px", borderRadius: "8px" }}
           aria-expanded={mobileOpen}
           aria-controls="afcfta-mobile-nav"
@@ -86,13 +95,13 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
             style={{ display: "flex", alignItems: "center", gap: 6, textDecoration: "none" }}
           >
             <Tag size={14} />
-            <span className="afcfta-pricing-label">{isFrench ? "Tarifs" : "Pricing"}</span>
+            <span className="afcfta-pricing-label">{pick(language, "Tarifs", "Pricing", "الأسعار")}</span>
           </a>
           {user ? (
             <button
               className="afcfta-btn-sm afcfta-btn-secondary"
               onClick={onOpenAuth}
-              title={isFrench ? "Mon compte" : "My account"}
+              title={pick(language, "Mon compte", "My account", "حسابي")}
               data-testid="topbar-account-btn"
               style={{ display: "flex", alignItems: "center", gap: 6 }}
             >
@@ -102,49 +111,47 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
             <button
               className="afcfta-btn-sm afcfta-btn-secondary"
               onClick={onOpenAuth}
-              aria-label={isFrench ? "Connexion" : "Login"}
+              aria-label={pick(language, "Connexion", "Login", "تسجيل الدخول")}
               data-testid="topbar-login-btn"
               style={{ display: "flex", alignItems: "center", gap: 6 }}
             >
-              <User size={14} /> <span className="afcfta-account-label">{isFrench ? "Connexion" : "Login"}</span>
+              <User size={14} /> <span className="afcfta-account-label">{pick(language, "Connexion", "Login", "تسجيل الدخول")}</span>
             </button>
           )}
           {onThemeToggle && (
             <button
               className="afcfta-themeToggle"
               onClick={onThemeToggle}
-              aria-label={isFrench
-                ? (isLight ? "Activer le mode sombre" : "Activer le mode clair")
-                : (isLight ? "Switch to dark mode" : "Switch to light mode")}
-              title={isFrench
-                ? (isLight ? "Mode sombre" : "Mode clair")
-                : (isLight ? "Dark mode" : "Light mode")}
+              aria-label={isLight
+                ? pick(language, "Activer le mode sombre", "Switch to dark mode", "تفعيل الوضع الداكن")
+                : pick(language, "Activer le mode clair", "Switch to light mode", "تفعيل الوضع الفاتح")}
+              title={isLight
+                ? pick(language, "Mode sombre", "Dark mode", "الوضع الداكن")
+                : pick(language, "Mode clair", "Light mode", "الوضع الفاتح")}
               data-testid="theme-toggle-btn"
             >
               {isLight ? <Moon size={16} /> : <Sun size={16} />}
             </button>
           )}
-          <button
-            className={`afcfta-langBtn ${isFrench ? "active" : ""}`}
-            onClick={() => onTabChange && onTabChange("language", "fr")}
-            aria-pressed={isFrench}
-          >
-            FR
-          </button>
-          <button
-            className={`afcfta-langBtn ${!isFrench ? "active" : ""}`}
-            onClick={() => onTabChange && onTabChange("language", "en")}
-            aria-pressed={!isFrench}
-          >
-            EN
-          </button>
+          {LANG_BUTTONS.map(({ code, label, name }) => (
+            <button
+              key={code}
+              className={`afcfta-langBtn ${language === code ? "active" : ""}`}
+              onClick={() => onTabChange && onTabChange("language", code)}
+              aria-pressed={language === code}
+              title={name}
+              lang={code}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
 
       {/* ── Horizontal nav tabs ── */}
       <nav
         className="afcfta-topHeader__nav"
-        aria-label={isFrench ? "Navigation principale" : "Main navigation"}
+        aria-label={pick(language, "Navigation principale", "Main navigation", "التنقل الرئيسي")}
       >
         {items.map(({ id, label, icon: Icon }) => (
           <button

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { Badge } from '../ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import {
@@ -11,6 +11,16 @@ import {
   Tag,
   Sparkles,
 } from 'lucide-react';
+import { pick, intlLocale } from '../../i18n/lang';
+import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
+import { useAuth } from '../../context/AuthContext';
+import NewsRedaction from './NewsRedaction';
+import { EVENEMENT_FIL } from './TableauManager';
+import { csrfFetch } from '../../services/csrf';
+
+// Rédacteur en chef : retrait d'un article du fil public depuis sa carte.
+// Fourni seulement au compte admin ; absent, les cartes n'ont pas de bouton.
+const RetraitPublic = createContext(null);
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -23,6 +33,31 @@ const REGION_ACCENTS = {
   'Afrique Australe': '#9b6ef5',
   Afrique: '#9aa7b8',
 };
+
+// Libellés arabes des régions et catégories (valeurs françaises renvoyées par l'API).
+const REGION_AR = {
+  'Afrique du Nord': 'شمال أفريقيا',
+  "Afrique de l'Ouest": 'غرب أفريقيا',
+  'Afrique Centrale': 'وسط أفريقيا',
+  "Afrique de l'Est": 'شرق أفريقيا',
+  'Afrique Australe': 'الجنوب الأفريقي',
+  Afrique: 'أفريقيا',
+};
+
+const CATEGORY_AR = {
+  Finance: 'المالية',
+  Commerce: 'التجارة',
+  Énergie: 'الطاقة',
+  Agriculture: 'الزراعة',
+  Mines: 'المناجم',
+  Télécoms: 'الاتصالات',
+  Infrastructure: 'البنية التحتية',
+  Gouvernance: 'الحوكمة',
+  Économie: 'الاقتصاد',
+};
+
+const regionLabel = (region, language) => pick(language, region, region, REGION_AR[region] || region);
+const categoryLabel = (category, language) => pick(language, category, category, CATEGORY_AR[category] || category);
 
 const CATEGORY_ACCENTS = {
   Finance: { icon: '💰', accent: '#20c997' },
@@ -37,10 +72,10 @@ const CATEGORY_ACCENTS = {
 };
 
 const CONTENT_TAG_LABELS = {
-  statistics: { fr: 'Statistiques', en: 'Statistics', icon: '📊', accent: '#38bdf8' },
-  opportunities: { fr: 'Opportunités', en: 'Opportunities', icon: '💡', accent: '#d4a017' },
-  development: { fr: 'Développement', en: 'Development', icon: '🚀', accent: '#20c997' },
-  events: { fr: 'Événement', en: 'Event', icon: '📅', accent: '#9b6ef5' },
+  statistics: { fr: 'Statistiques', en: 'Statistics', ar: 'الإحصائيات', icon: '📊', accent: '#38bdf8' },
+  opportunities: { fr: 'Opportunités', en: 'Opportunities', ar: 'الفرص', icon: '💡', accent: '#d4a017' },
+  development: { fr: 'Développement', en: 'Development', ar: 'التنمية', icon: '🚀', accent: '#20c997' },
+  events: { fr: 'Événement', en: 'Event', ar: 'حدث', icon: '📅', accent: '#9b6ef5' },
 };
 
 const translations = {
@@ -56,6 +91,7 @@ const translations = {
     readMore: "Lire l'article",
     articles: 'articles',
     noArticles: 'Aucun article disponible',
+    pinned: 'À la une',
     loading: 'Chargement des actualités...',
     error: 'Erreur de chargement',
     source: 'Source',
@@ -81,6 +117,7 @@ const translations = {
     readMore: 'Read article',
     articles: 'articles',
     noArticles: 'No articles available',
+    pinned: 'Featured',
     loading: 'Loading news...',
     error: 'Loading error',
     source: 'Source',
@@ -93,6 +130,32 @@ const translations = {
     countryOfWeekLead: 'Strengths and prospects',
     footer:
       'News aggregated from Agence Ecofin, AllAfrica and related feeds. Full articles remain available on source websites.',
+  },
+  ar: {
+    title: 'موجز الأخبار الاقتصادية الأفريقية',
+    subtitle: 'المصادر: وكالة إيكوفين، AllAfrica، وسائل إعلام محلية (أكثر من 20 بلدًا)، أخبار Google',
+    lastUpdate: 'آخر تحديث',
+    refresh: 'تحديث',
+    refreshing: 'جارٍ التحديث…',
+    byRegion: 'حسب المنطقة',
+    byCategory: 'حسب الفئة',
+    allNews: 'جميع الأخبار',
+    readMore: 'قراءة المقال',
+    articles: 'مقالات',
+    noArticles: 'لا توجد مقالات متاحة',
+    pinned: 'في الواجهة',
+    loading: 'جارٍ تحميل الأخبار…',
+    error: 'خطأ في التحميل',
+    source: 'المصدر',
+    today: 'اليوم',
+    yesterday: 'أمس',
+    daysAgo: 'منذ {days} أيام',
+    strategicHeadline: 'قراءة استراتيجية لموجز الأخبار الاقتصادية الأفريقية',
+    strategicLead: 'رصد إشارات التجارة والمالية والطاقة والبنية التحتية وسلاسل الإمداد.',
+    countryOfWeek: 'بلد الأسبوع',
+    countryOfWeekLead: 'نقاط القوة والآفاق',
+    footer:
+      'أخبار مجمَّعة من وكالة إيكوفين وAllAfrica ومصادر مرتبطة. تبقى المقالات الكاملة متاحة على مواقع المصادر.',
   },
 };
 
@@ -107,7 +170,50 @@ const formatRelativeDate = (dateString, t) => {
   return t.daysAgo.replace('{days}', diffDays);
 };
 
+// Vignette à la hauteur des 4 lignes du résumé : l'image copiée par le
+// rédacteur (servie par notre API, réduite à 320 × 240), sinon une
+// illustration maison selon la catégorie.
+export const ArticleIllustration = ({ article, categoryStyle, featured = false, t }) => {
+  const [enErreur, setEnErreur] = useState(false);
+  const taille = featured ? 'w-32 h-24' : 'w-28 h-20';
+
+  if (article.has_image && !enErreur) {
+    return (
+      <figure className={`relative shrink-0 ${taille} overflow-hidden rounded-lg`}>
+        <img
+          src={`${API}/news/images/${encodeURIComponent(article.id)}`}
+          alt=""
+          loading="lazy"
+          className="h-full w-full object-cover"
+          onError={() => setEnErreur(true)}
+        />
+        <figcaption
+          className="absolute bottom-0 inset-x-0 truncate px-1 text-[9px] leading-4 text-white"
+          style={{ background: 'rgba(0,0,0,0.55)' }}
+        >
+          © {article.source}
+        </figcaption>
+      </figure>
+    );
+  }
+
+  return (
+    <div
+      aria-hidden="true"
+      data-testid="illustration-maison"
+      className={`shrink-0 ${taille} rounded-lg flex items-center justify-center text-3xl`}
+      style={{
+        background: `linear-gradient(135deg, ${categoryStyle.accent}33, ${categoryStyle.accent}0d)`,
+        border: `1px solid ${categoryStyle.accent}33`,
+      }}
+    >
+      {categoryStyle.icon}
+    </div>
+  );
+};
+
 const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
+  const retirer = useContext(RetraitPublic);
   const regionAccent = REGION_ACCENTS[article.region] || REGION_ACCENTS.Afrique;
   const categoryStyle = CATEGORY_ACCENTS[article.category] || CATEGORY_ACCENTS.Économie;
   const contentTags = article.content_tags || [];
@@ -122,6 +228,18 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
       }}
     >
       <div className="flex flex-wrap items-center gap-2 mb-3">
+        {article.pinned && (
+          <Badge
+            className="border"
+            style={{
+              background: 'color-mix(in srgb, var(--gold) 18%, transparent)',
+              color: 'var(--text)',
+              borderColor: 'color-mix(in srgb, var(--gold) 45%, transparent)',
+            }}
+          >
+            ★ {t.pinned}
+          </Badge>
+        )}
         <Badge
           className="border"
           style={{
@@ -130,7 +248,7 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
             borderColor: `${categoryStyle.accent}40`,
           }}
         >
-          {categoryStyle.icon} {article.category}
+          {categoryStyle.icon} {categoryLabel(article.category, language)}
         </Badge>
 
         <Badge
@@ -143,7 +261,7 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
           }}
         >
           <MapPin className="w-3 h-3 mr-1" />
-          {article.region}
+          {regionLabel(article.region, language)}
         </Badge>
 
         {contentTags.map((tag) => {
@@ -163,6 +281,17 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
             </Badge>
           );
         })}
+        {retirer && (
+          <button
+            type="button"
+            onClick={() => retirer(article)}
+            title="Visible par vous seul : l’article passe dans l’onglet Masqués de la rédaction, d’où il peut être rétabli."
+            className="ml-auto px-2 py-0.5 rounded-md text-xs font-medium border"
+            style={{ borderColor: 'color-mix(in srgb, var(--danger) 45%, transparent)', color: 'var(--text)' }}
+          >
+            Retirer du fil public
+          </button>
+        )}
       </div>
 
       <h3
@@ -180,9 +309,16 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
         </a>
       </h3>
 
-      <p className={`text-[var(--afcfta-muted)] mb-4 ${featured ? 'text-sm md:text-base' : 'text-sm'} line-clamp-3`}>
-        {article.summary}
-      </p>
+      <div className="flex gap-3 mb-4">
+        <ArticleIllustration article={article} categoryStyle={categoryStyle} featured={featured} t={t} />
+        <p
+          className={`min-w-0 flex-1 text-[var(--afcfta-muted)] ${
+            featured ? 'text-sm md:text-base' : 'text-sm'
+          } line-clamp-4`}
+        >
+          {article.summary}
+        </p>
+      </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-[var(--afcfta-muted)]">
         <div className="flex flex-wrap items-center gap-3">
@@ -227,7 +363,7 @@ const RegionSection = ({ region, articles, t, language }) => {
           }}
         >
           <Globe className="w-4 h-4" />
-          {region}
+          {regionLabel(region, language)}
         </div>
 
         <span className="text-xs text-[var(--afcfta-muted)]">
@@ -259,7 +395,7 @@ const CategorySection = ({ category, articles, t, language }) => {
           }}
         >
           <span>{categoryStyle.icon}</span>
-          {category}
+          {categoryLabel(category, language)}
         </div>
 
         <span className="text-xs text-[var(--afcfta-muted)]">
@@ -278,8 +414,8 @@ const CategorySection = ({ category, articles, t, language }) => {
 
 const CountrySpotlight = ({ spotlight, t, language }) => {
   if (!spotlight || !spotlight.country) return null;
-  const countryName = language === 'fr' ? spotlight.country_name_fr : spotlight.country_name_en;
-  const profile = language === 'fr' ? spotlight.profile_fr : spotlight.profile_en;
+  const countryName = pick(language, spotlight.country_name_fr, spotlight.country_name_en, AFRICAN_COUNTRIES[spotlight.country]?.name_ar || spotlight.country_name_fr);
+  const profile = pick(language, spotlight.profile_fr, spotlight.profile_en, spotlight.profile_ar || spotlight.profile_fr);
 
   return (
     <section
@@ -333,10 +469,18 @@ const NewsDashboard = ({ language = 'fr' }) => {
   const featuredArticles = useMemo(() => news.articles.slice(0, 3), [news.articles]);
   const remainingArticles = useMemo(() => news.articles.slice(3, 15), [news.articles]);
 
-  const fetchNews = async (forceRefresh = false) => {
+  // Rédacteur en chef : le compte admin voit le panneau de rédaction.
+  const estRedacteur = useAuth()?.user?.role === 'admin';
+  // Le panneau garde son propre état : on le remonte après un retrait fait
+  // depuis une carte, pour que ses onglets suivent.
+  const [versionRedaction, setVersionRedaction] = useState(0);
+
+  // `silencieux` : après une action de rédaction, rafraîchir le fil sans
+  // remplacer la page par l'indicateur de chargement.
+  const fetchNews = async (forceRefresh = false, silencieux = false) => {
     try {
       if (forceRefresh) setRefreshing(true);
-      else setLoading(true);
+      else if (!silencieux) setLoading(true);
 
       const [allNews, byRegion, byCategory] = await Promise.all([
         fetch(`${API}/news?force_refresh=${forceRefresh}`).then((r) => r.json()),
@@ -423,7 +567,33 @@ const NewsDashboard = ({ language = 'fr' }) => {
     );
   }
 
+  // Fil changé par le rédacteur : ce fil-ci est relu, et le tableau de bord de
+  // direction (ligne des dépêches, à la une) est prévenu.
+  const filModifie = async () => {
+    await fetchNews(false, true);
+    window.dispatchEvent(new Event(EVENEMENT_FIL));
+  };
+
+  // Retrait depuis une carte : même décision que « Retirer du fil public »
+  // dans le panneau (l'article est masqué, rétablissable).
+  const retirerDuFil = async (article) => {
+    if (!window.confirm(`Retirer du fil public : « ${article.title} » ?`)) return;
+    try {
+      const reponse = await csrfFetch(`${API}/news/redaction/decision`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: article.id, action: 'masquer' }),
+      });
+      if (!reponse.ok) throw new Error(`HTTP ${reponse.status}`);
+      setVersionRedaction((v) => v + 1);
+      await filModifie();
+    } catch (e) {
+      window.alert(`Retrait impossible : ${e.message}`);
+    }
+  };
+
   return (
+    <RetraitPublic.Provider value={estRedacteur ? retirerDuFil : null}>
     <section className="space-y-4">
       <div
         className="rounded-2xl border overflow-hidden"
@@ -437,7 +607,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 text-xs font-bold text-[var(--gold)] mb-3">
                 <Sparkles className="w-4 h-4" />
-                intelligence feed
+                {pick(language, 'intelligence feed', 'intelligence feed', 'موجز الرصد')}
               </div>
 
               <h3 className="text-2xl md:text-3xl font-bold text-[var(--text)]">
@@ -461,7 +631,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
               {lastUpdate && (
                 <div className="text-xs md:text-sm text-[var(--afcfta-muted)] inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-[var(--overlay)]">
                   <Clock className="w-4 h-4" />
-                  {t.lastUpdate}: {new Date(lastUpdate).toLocaleString(language === 'fr' ? 'fr-FR' : 'en-US')}
+                  {t.lastUpdate}: {new Date(lastUpdate).toLocaleString(intlLocale(language))}
                 </div>
               )}
 
@@ -482,6 +652,8 @@ const NewsDashboard = ({ language = 'fr' }) => {
           </div>
         </div>
       </div>
+
+      {estRedacteur && <NewsRedaction key={versionRedaction} onChange={filModifie} />}
 
       <CountrySpotlight spotlight={countryOfWeek} t={t} language={language} />
 
@@ -558,6 +730,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
         📰 {t.footer}
       </div>
     </section>
+    </RetraitPublic.Provider>
   );
 };
 

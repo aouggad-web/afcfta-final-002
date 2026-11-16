@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { Search, X, Loader2, CheckCircle, AlertCircle, ChevronRight } from 'lucide-react';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -58,7 +59,7 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
       setTotal(res.data.total || 0);
       setOpen(true);
     } catch (e) {
-      setError(language === 'fr' ? 'Erreur de recherche' : 'Search error');
+      setError(pick(language, 'Erreur de recherche', 'Search error', 'خطأ في البحث'));
       setResults([]);
     } finally {
       setLoading(false);
@@ -88,7 +89,7 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
 
   const handleSelect = (item) => {
     const code = item.code;
-    const desc = language === 'fr' ? item.description_fr : (item.description_en || item.description_fr);
+    const desc = pick(language, item.description_fr, item.description_en || item.description_fr, item.description_fr);
     setSelected({ code, desc, item });
     setQuery(desc.length > 60 ? desc.slice(0, 60) + '…' : desc);
     setOpen(false);
@@ -104,14 +105,17 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
     inputRef.current?.focus();
   };
 
-  const placeholder = language === 'fr'
-    ? 'Ex: aluminium, chaussures, téléphone, blé...'
-    : 'Ex: aluminium, shoes, telephone, wheat...';
+  const placeholder = pick(
+    language,
+    'Ex: aluminium, chaussures, téléphone, blé...',
+    'Ex: aluminium, shoes, telephone, wheat...',
+    'مثال: ألومنيوم، أحذية، هاتف، قمح…',
+  );
 
-  const labelText = language === 'fr' ? 'Recherche par mot-clé produit' : 'Product keyword search';
+  const labelText = pick(language, 'Recherche par mot-clé produit', 'Product keyword search', 'البحث بكلمة مفتاحية عن المنتج');
   const hintText = iso3
-    ? (language === 'fr' ? `Recherche dans le tarif national ${iso3}` : `Search in the ${iso3} national tariff`)
-    : (language === 'fr' ? 'Choisissez d’abord le pays de destination' : 'Choose the destination country first');
+    ? pick(language, `Recherche dans le tarif national ${iso3}`, `Search in the ${iso3} national tariff`, `البحث في التعريفة الوطنية ${iso3}`)
+    : pick(language, 'Choisissez d’abord le pays de destination', 'Choose the destination country first', 'اختر بلد المقصد أولًا');
 
   return (
     <div ref={containerRef} className="relative w-full">
@@ -166,7 +170,7 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
 
           {!error && results.length === 0 && !loading && (
             <div className="px-4 py-4 text-[var(--afcfta-muted)] text-sm text-center">
-              {language === 'fr' ? 'Aucun résultat pour' : 'No results for'} <span className="text-[var(--text)]">"{query}"</span>
+              {pick(language, 'Aucun résultat pour', 'No results for', 'لا توجد نتائج لـ')} <span className="text-[var(--text)]">"{query}"</span>
             </div>
           )}
 
@@ -174,7 +178,7 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
             <>
               <div className="px-4 py-2 border-b border-[var(--afcfta-border)] flex items-center justify-between">
                 <span className="text-xs text-[var(--afcfta-muted)]">
-                  {total > results.length ? `${results.length} / ${total}` : results.length} {language === 'fr' ? 'résultats' : 'results'}
+                  {total > results.length ? `${results.length} / ${total}` : results.length} {pick(language, 'résultats', 'results', 'نتيجة')}
                   {iso3 && <span className="ml-1 text-[var(--violet)]">· {iso3}</span>}
                 </span>
               </div>
@@ -182,7 +186,7 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
               <ul className="max-h-80 overflow-y-auto divide-y divide-[var(--afcfta-border)]">
                 {results.map((item, i) => {
                   const code = item.code;
-                  const desc = language === 'fr' ? item.description_fr : (item.description_en || item.description_fr);
+                  const desc = pick(language, item.description_fr, item.description_en || item.description_fr, item.description_fr);
 
                   return (
                     <li key={i}>

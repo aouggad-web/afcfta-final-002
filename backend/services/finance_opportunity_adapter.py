@@ -77,8 +77,8 @@ def get_trade_finance(
         instruments = recommend_instruments(_iso2(destination_iso3), transaction_type, amount_usd)
         return {"available": True, "instruments": _serialize(instruments)}
     except Exception as exc:
-        _log.warning("trade finance unavailable: %s", exc)
-        return {"available": False, "instruments": [], "note": str(exc)}
+        _log.warning("trade finance unavailable: %s", exc, exc_info=True)
+        return {"available": False, "instruments": [], "note": "Service temporarily unavailable"}
 
 
 def get_payment_coverage(origin_iso3: str, destination_iso3: str) -> Dict:
@@ -100,8 +100,13 @@ def get_payment_coverage(origin_iso3: str, destination_iso3: str) -> Dict:
             "papss_covered": papss,
         }
     except Exception as exc:
-        _log.warning("payment systems unavailable: %s", exc)
-        return {"available": False, "shared_systems": [], "papss_covered": None, "note": str(exc)}
+        _log.warning("payment systems unavailable: %s", exc, exc_info=True)
+        return {
+            "available": False,
+            "shared_systems": [],
+            "papss_covered": None,
+            "note": "Service temporarily unavailable",
+        }
 
 
 def get_country_risk(destination_iso3: str, amount_usd: float = 0.0) -> Dict:
@@ -112,8 +117,8 @@ def get_country_risk(destination_iso3: str, amount_usd: float = 0.0) -> Dict:
         res = assess_transaction_risk(_iso2(destination_iso3), amount_usd, "export")
         return {"available": True, **_serialize(res)}
     except Exception as exc:
-        _log.warning("risk assessment unavailable: %s", exc)
-        return {"available": False, "note": str(exc)}
+        _log.warning("risk assessment unavailable: %s", exc, exc_info=True)
+        return {"available": False, "note": "Service temporarily unavailable"}
 
 
 def get_fx(origin_iso3: str, destination_iso3: str) -> Dict:
@@ -144,8 +149,8 @@ def get_fx(origin_iso3: str, destination_iso3: str) -> Dict:
         )
         return result
     except Exception as exc:
-        _log.warning("fx rate unavailable: %s", exc)
-        result["note"] = str(exc)
+        _log.warning("fx rate unavailable: %s", exc, exc_info=True)
+        result["note"] = "Service temporarily unavailable"
         return result
 
 

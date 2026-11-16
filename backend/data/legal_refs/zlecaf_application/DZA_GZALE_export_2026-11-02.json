@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "objet": "Zone arabe à l'exportation algérienne : taux préférentiels que la Tunisie et la Libye publient, ligne par ligne, pour l'origine algérienne ; et liste DAPS algérienne en vigueur au regard des origines préférentielles",
+  "destination_iso3": [
+    "TUN",
+    "LBY",
+    "DZA"
+  ],
+  "agreement": "GZALE / GAFTA ; tarifs nationaux tunisien et libyen",
+  "verified_at": "2026-11-02",
+  "etabli": true,
+  "evidence_level": "primaire : Tarif Web 2026 de la douane tunisienne et tarif 2022 de la douane libyenne (relevés au dépôt) ; arrêtés DAPS des 26 janvier et 8 avril 2019 (JO n° 06 et n° 26 de 2019, archivés). Égypte, Maroc, Soudan : aucune source nationale par ligne trouvée.",
+  "source": {
+    "url": "https://www.douane.gov.tn/tarifweb2026/",
+    "institution": "Douane tunisienne ; Autorité douanière libyenne ; JORADP"
+  },
+  "determinations": [
+    {
+      "objet": "Tunisie, origine algérienne",
+      "valeur": "Droit de douane : le taux que le Tarif Web 2026 publie pour « ALGERIE » (code pays 12, zone « ZALE ») ; 0 % sur les 13 362 lignes qui le portent. Ligne sans taux publié : NPF. Seul le droit de douane est réduit.",
+      "verbatim": "country_code: 12 | country_name: ALGERIE | rate: 0 % | zone: ZALE",
+      "reference": "Tarif Web 2026, préférences publiées par ligne (ex. 25070020105)",
+      "portee": "backend/services/preference.py, _zone_arabe (TUN) : table {DD: taux de la colonne DZA du socle}. La colonne n'est plus montrée en simulation, et note_zale ne la signale plus comme non calculée.",
+      "texte_archive": "sources/DZA_GZALE_export_DAPS.texte-extrait.txt",
+      "sha256": "4a758a0438871492079f5560ae3d90285e3b16f781e18ac0ae5439ee6d490f16"
+    },
+    {
+      "objet": "Libye, origines membres africains de la GZALE (DZA, EGY, MAR, SDN, TUN)",
+      "valeur": "Droit de douane : la colonne « tarif préférentiel des États de la Ligue des États arabes » du tarif libyen ; 0 % (« معفاة ») sur les 5 849 lignes qui la portent. Ligne sans colonne : NPF. Seul le droit de douane est réduit.",
+      "verbatim": "التعريفة التفضيلية لدول جامعة الدول العربية : معفاة",
+      "reference": "Tarif douanier libyen 2022 (customs.gov.ly), colonne préférentielle (ex. 01012100)",
+      "portee": "backend/services/preference.py, _zone_arabe (LBY). Les membres de la Ligue hors GZALE (Mauritanie, Comores, Djibouti, Somalie) n'en reçoivent rien : la composition que la douane libyenne retient n'est établie par aucune source, et seuls les États à la fois membres de la Ligue et de la zone relèvent de la colonne sous toute lecture.",
+      "texte_archive": "sources/DZA_GZALE_export_DAPS.texte-extrait.txt",
+      "sha256": "4a758a0438871492079f5560ae3d90285e3b16f781e18ac0ae5439ee6d490f16"
+    },
+    {
+      "objet": "Algérie, DAPS face aux origines préférentielles",
+      "valeur": "La liste DAPS en vigueur est celle de l'arrêté du 26 janvier 2019, remplacée par l'arrêté du 8 avril 2019 (JO n° 26) : elle ne distingue pas l'origine. Le DAPS reste dû sous la GZALE.",
+      "verbatim": "Art. 2. — La liste des marchandises soumises au droit additionnel provisoire de sauvegarde et les taux correspondants, citée à l'annexe de l'arrêté du 19 Joumada El Oula 1440 correspondant au 26 janvier 2019, susvisé, est remplacée par la liste annexée au présent arrêté.",
+      "reference": "Arrêté du 8 avril 2019, art. 2 (JO n° 26 du 21/04/2019) ; arrêté du 26 janvier 2019, art. 1er et 2 (JO n° 06 du 27/01/2019)",
+      "portee": "Note du régime GZALE à l'importation en Algérie : « Le DAPS reste dû : la liste en vigueur (arrêté du 8 avril 2019, JO n° 26) ne distingue pas l'origine. »",
+      "texte_archive": "sources/DZA_GZALE_export_DAPS.texte-extrait.txt",
+      "sha256": "4a758a0438871492079f5560ae3d90285e3b16f781e18ac0ae5439ee6d490f16"
+    }
+  ],
+  "decisions": [
+    "Le régime est servi seulement là où le tarif de destination publie lui-même un taux par ligne : la Tunisie (pour l'Algérie) et la Libye. Une règle générale de franchise, sans taux par ligne ni texte national, n'est pas servie.",
+    "Égypte : le tarif de la douane égyptienne (customs.gov.eg) porte, ligne par ligne, les instructions de chaque accord (UE, AELE, Turquie, Mercosur, ZLECAf, accords bilatéraux avec la Tunisie et le Maroc), mais aucune pour la GZALE ni pour l'Algérie. Le décret présidentiel n° 337 de 1997 approuve la convention et son programme exécutif ; aucune circulaire d'application à l'origine algérienne n'a été trouvée. Non servi.",
+    "Maroc : le portail ADIL, seule source par ligne des accords, rejette les requêtes (« Request Rejected ») ; aucun texte national appliquant la GZALE à l'origine algérienne n'a été trouvé. Non servi.",
+    "Soudan : ni tarif par accord ni texte d'application trouvés. Non servi.",
+    "Tunisie, origines égyptienne et marocaine : le Tarif Web publie aussi leurs taux (GAFTA, Agadir, accords bilatéraux), certains de 63 à 89 %, qui ressemblent aux coefficients ZLECAf déjà écartés ; ils restent une information (note_zale), hors du périmètre de ce lot."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Liste DAPS annoncée en janvier 2022 (2 608 produits, dont 141 « clauses tarifaires » pour les origines préférentielles) : introuvable au JORADP (n° 85 à 101 de 2021, n° 1 à 90 de 2022) ; le tarif DGD ne renvoie qu'aux arrêtés de 2019.",
+    "Règles d'origine (origine arabe, 40 % de valeur ajoutée locale, transport direct) : dites, non vérifiées par le moteur.",
+    "Accord bilatéral tuniso-algérien : son texte n'est pas lu ; le taux servi est celui que le tarif publie."
+  ],
+  "doutes": [
+    "L'annonce ministérielle de janvier 2022 (141 positions DAPS pour les origines préférentielles) n'a pas de texte trouvé : si une liste distincte a été appliquée sans publication, le DAPS compté pour les origines arabes peut être surévalué."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/DZA_GZALE_export_DAPS.texte-extrait.txt",
+      "sha256": "4a758a0438871492079f5560ae3d90285e3b16f781e18ac0ae5439ee6d490f16"
+    },
+    {
+      "document_non_archive": "Arrêté du 26 janvier 2019, JO n° 06 — fichier JO_2019-06_arrete_daps_2019-01-26.pdf de l'archive de la législation algérienne (manifeste DZA/legislation/_manifest.json)",
+      "pdf_sha256": "5953ae05b15e6de17fcf7bd01f2cee08c452297ebfac42db93c5d3e0ce6f4ace"
+    },
+    {
+      "document_non_archive": "Arrêté du 8 avril 2019, JO n° 26 — fichier JO_2019-26_arrete_daps_2019-04-08.pdf de la même archive",
+      "pdf_sha256": "7837a30741b9b35c7912a96752e1d45f81eec8a738320ddc50b97add267fe9df"
+    }
+  ]
+}

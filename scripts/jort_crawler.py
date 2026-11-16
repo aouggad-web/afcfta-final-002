@@ -18,9 +18,11 @@ from pathlib import Path
 BASE = "http://www.iort.gov.tn"
 CONNECT = f"{BASE}/WD120AWP/WD120Awp.exe/CONNECT/SITEIORT"
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/126.0"
+# TLS vérifié (audit INFO-7) si le site passe en https. Le certificat
+# *.iort.gov.tn est émis par Sectigo DV R36, intermédiaire fourni par le dépôt.
+INTERMEDIAIRE = Path(__file__).resolve().parents[1] / "data/dza/sectigo_dv_r36.crt"
 CTXSSL = ssl.create_default_context()
-CTXSSL.check_hostname = False
-CTXSSL.verify_mode = ssl.CERT_NONE
+CTXSSL.load_verify_locations(cafile=str(INTERMEDIAIRE))
 JAR = CookieJar()
 OPENER = rq.build_opener(rq.HTTPSHandler(context=CTXSSL), rq.HTTPCookieProcessor(JAR))
 

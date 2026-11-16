@@ -14,7 +14,8 @@ from typing import Dict, Optional
 from constants import AFRICAN_COUNTRIES
 from country_data import REAL_COUNTRY_DATA, get_country_data
 from data_loader import get_country_customs_info
-from fastapi import APIRouter, HTTPException, Query
+from entitlement_guard import require_module_consultation
+from fastapi import APIRouter, Depends, HTTPException, Query
 from gold_reserves_data import GOLD_RESERVES_GAI_DATA
 from models import CountryEconomicProfile, CountryInfo
 from projects_data import get_country_ongoing_projects
@@ -149,7 +150,12 @@ async def get_country_official_stats(country_iso3: str):
     return stats
 
 
-@router.get("/country-profile/{country_code}")
+# Module Profils pays : même règle que les autres modules de consultation
+# (connexion requise, 5 recherches par mois sans abonnement).
+@router.get(
+    "/country-profile/{country_code}",
+    dependencies=[Depends(require_module_consultation("profiles"))],
+)
 async def get_country_profile(country_code: str) -> CountryEconomicProfile:
     """Récupérer le profil économique complet d'un pays avec données réelles et commerce 2024
 

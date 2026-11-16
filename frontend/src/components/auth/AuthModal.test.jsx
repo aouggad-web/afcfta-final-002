@@ -200,5 +200,34 @@ describe('AuthModal', () => {
     expect(screen.queryByTestId('manage-billing-btn')).toBeNull();
     expect(screen.getByRole('button', { name: 'Renouveler' })).toBeInTheDocument();
   });
-});
 
+  it("demande confirmation avant d'utiliser un lien d'e-mail non attendu", async () => {
+    const confirmerLienEmail = vi.fn().mockResolvedValue(null);
+    const ignorerLienEmail = vi.fn();
+    const onClose = vi.fn();
+    useAuth.mockReturnValue({
+      login,
+      register,
+      lienEnAttente: { tokenHash: 'h', type: 'email' },
+      confirmerLienEmail,
+      ignorerLienEmail,
+    });
+    const user = userEvent.setup();
+    render(<AuthModal open onClose={onClose} onAuthenticated={vi.fn()} language="fr" />);
+
+    expect(screen.getByTestId('lien-email')).toHaveTextContent('Continuez seulement si vous venez de le demander');
+    await user.click(screen.getByRole('button', { name: 'Continuer' }));
+    expect(confirmerLienEmail).toHaveBeenCalledTimes(1);
+
+    await user.click(screen.getByRole('button', { name: 'Annuler' }));
+    expect(ignorerLienEmail).toHaveBeenCalledTimes(1);
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it('affiche le compte concerné sur la saisie du nouveau mot de passe', () => {
+    useAuth.mockReturnValue({ login, register, recovery: true, user: { email: 'alice@example.com' } });
+    render(<AuthModal open onClose={vi.fn()} onAuthenticated={vi.fn()} language="fr" />);
+
+    expect(screen.getByTestId('recovery-account')).toHaveTextContent('alice@example.com');
+  });
+});

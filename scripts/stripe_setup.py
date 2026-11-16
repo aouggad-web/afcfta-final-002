@@ -55,12 +55,12 @@ PLANS = [
     {
         "slug": "starter",
         "name": "ZLECAf Starter",
-        "description": "54 pays, export CSV — indépendants et petits importateurs/exportateurs.",
+        "description": "54 pays — indépendants et petits importateurs/exportateurs.",
     },
     {
         "slug": "pro",
         "name": "ZLECAf Pro",
-        "description": "Export CSV+Excel+PDF, profils complets, alertes tarifaires — exportateurs, traders, consultants.",
+        "description": "Export PDF, profils complets, alertes tarifaires — exportateurs, traders, consultants.",
     },
     {
         "slug": "business",

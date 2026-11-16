@@ -1,0 +1,21 @@
+{
+ "country_iso3": "COM",
+ "country_name": null,
+ "data_by_commodity": {},
+ "total_records": 0,
+ "years_covered": [],
+ "latest_year": null,
+ "coverage": {
+  "status": "NOT_LISTED_BY_SOURCES",
+  "listed_by_usgs": false,
+  "sources_consulted": [
+   "USGS Mineral Commodity Summaries 2025 (minéraux)",
+   "EIA International Energy Statistics (pétrole, gaz)",
+   "OPEC Annual Statistical Bulletin (pétrole)",
+   "World Nuclear Association (uranium)"
+  ],
+  "usgs_edition": "Mineral Commodity Summaries 2025 Data Release (ver. 2.0, avril 2025)",
+  "usgs_source_url": "https://www.sciencebase.gov/catalog/item/677eaf95d34e760b392c4970",
+  "note": "Aucune production rapportée pour ce pays par les sources consultées. Cela ne signifie pas qu'il n'extrait rien : USGS ne recense ni la production artisanale, ni les volumes sous son seuil de significativité ; les hydrocarbures et l'uranium relèvent des autres sources listées, qui ne le mentionnent pas davantage."
+ }
+}

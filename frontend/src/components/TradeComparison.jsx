@@ -4,6 +4,9 @@ import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
 import axios from 'axios';
 import { Globe, TrendingUp } from 'lucide-react';
 import { montantUnite, chiffres } from '../utils/nombres';
+import { AFRICAN_COUNTRIES, ISO2_TO_ISO3 } from '../utils/countryCodes';
+import { pick } from '../i18n/lang';
+import { trDonnee } from '../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API_URL = BACKEND_URL || '';
@@ -115,10 +118,66 @@ const TEXTS = {
     sourceWorld: 'All African countries — OEC, WB, IMF',
     sourceIntra: 'All African countries — OEC, UNCTAD, AfDB',
   },
+  ar: {
+    loading: 'جارٍ تحميل البيانات التجارية…',
+    selectYear: 'السنة',
+    intraNoteTitle: 'بيانات التجارة البينية الأفريقية',
+    intraNoteBodyPre: 'تمثل البيانات أدناه فقط ',
+    intraNoteBodyStrong: 'المبادلات التجارية بين البلدان الأفريقية',
+    intraNoteBodyMid: '، استنادًا إلى البيانات الرسمية لـ',
+    intraNoteBodyPost: '.',
+    intraNoteSharePre: 'تمثل التجارة البينية الأفريقية حاليًا نحو ',
+    intraNoteShareVal: '15-17%',
+    intraNoteShareMid: ' من إجمالي التجارة الأفريقية. هدف زليكاف: ',
+    intraNoteShareGoal: '25-30% بحلول 2030',
+    totalAfricaTitle: 'إجمالي التجارة الأفريقية (مع العالم بأسره)',
+    totalAfricaBodyPre: 'تمثل هذه الأرقام ',
+    totalAfricaBodyStrong: 'إجمالي تجارة أفريقيا مع جميع شركائها',
+    totalAfricaBodyPost: ' (أوروبا، آسيا، الأمريكتان، إلخ).',
+    kpiGdp: 'الناتج المحلي الإجمالي الأفريقي',
+    kpiGdpFooter: 'مع جميع الشركاء',
+    kpiExports: 'الصادرات (العالم)',
+    kpiExportsFooter: 'إلى جميع البلدان',
+    kpiImports: 'الواردات (العالم)',
+    kpiImportsFooter: 'من جميع البلدان',
+    kpiBalance: 'الميزان التجاري',
+    surplus: 'فائض',
+    deficit: 'عجز',
+    intraChartTitle: 'التجارة البينية الأفريقية (بين البلدان الأفريقية فقط)',
+    intraChartSubtitle: 'تجارة تتم فقط بين البلدان الأفريقية الـ55 الأعضاء في منطقة التجارة الحرة القارية الأفريقية',
+    intra2023: 'التجارة البينية الأفريقية 2023',
+    intra2024: 'التجارة البينية الأفريقية 2024',
+    billionUsd: 'مليار USD',
+    growth2324: 'النمو 2023-2024',
+    commerceLabel: 'التجارة البينية الأفريقية',
+    tariffTitle: 'تطور التعريفات: NPF مقابل زليكاف (2025-2035)',
+    tariffSubtitle: 'التفكيك التدريجي للرسوم الجمركية',
+    tariffNpf: 'تعريفة NPF',
+    tariffZlecaf: 'تعريفة زليكاف',
+    tariffEconomy: 'الوفر %',
+    tariffNote: 'بحلول 2035، تبلغ تعريفات زليكاف 0% للمنتجات غير الحساسة، ما يتيح وفرًا أقصى قدره 15.5% مقارنة بتعريفات الدولة الأولى بالرعاية (NPF).',
+    tableWorldTitle: 'التجارة العالمية',
+    tableWorldSubtitle: 'جميع الشركاء — OEC، البنك الدولي، صندوق النقد الدولي',
+    tableIntraTitle: 'التجارة البينية الأفريقية',
+    tableIntraSubtitle: 'بين البلدان الأفريقية — OEC، الأونكتاد/البنك الأفريقي للتنمية',
+    tableIntraBanner: 'تجارة بين البلدان الأفريقية فقط',
+    colCountry: 'البلد',
+    colExports: 'الصادرات',
+    colImports: 'الواردات',
+    colBalance: 'الرصيد',
+    colEconomy: 'الوفر',
+    nonSignatories: 'بلدان غير موقِّعة على زليكاف',
+    eritrea: 'إريتريا',
+    sourceWorld: 'جميع البلدان الأفريقية — OEC، البنك الدولي، صندوق النقد الدولي',
+    sourceIntra: 'جميع البلدان الأفريقية — OEC، الأونكتاد، البنك الأفريقي للتنمية',
+  },
 };
 
 const TradeComparison = ({ language = 'fr' }) => {
   const t = TEXTS[language] || TEXTS.fr;
+  // Nom d'un pays (code ISO2 ou ISO3) ; l'arabe vient du référentiel local.
+  const nomPays = (item) => pick(language, item.name, item.name,
+    (AFRICAN_COUNTRIES[item.country] || AFRICAN_COUNTRIES[ISO2_TO_ISO3[item.country]])?.name_ar || item.name);
 
   const [selectedYear, setSelectedYear] = useState('2024');
   const [loading, setLoading] = useState(true);
@@ -353,7 +412,7 @@ const TradeComparison = ({ language = 'fr' }) => {
               <div className="stats-kpi-card gold">
                 <p className="stats-kpi-label">{t.growth2324}</p>
                 <p className="stats-kpi-value gold">+{statistics.trade_evolution.growth_rate_2023_2024}%</p>
-                <p className="stats-kpi-footer">{statistics.trade_evolution.trend}</p>
+                <p className="stats-kpi-footer">{trDonnee(statistics.trade_evolution.trend, language)}</p>
               </div>
             </div>
 
@@ -382,7 +441,7 @@ const TradeComparison = ({ language = 'fr' }) => {
                   axisLine={false} tickLine={false}
                 />
                 <Tooltip
-                  formatter={(value) => [`${montantUnite(value, 'B', language, 1)}${language === 'en' ? ' USD' : ''}`, t.commerceLabel]}
+                  formatter={(value) => [`${montantUnite(value, 'B', language, 1)}${pick(language, '', ' USD', '')}`, t.commerceLabel]}
                   contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
                   labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                 />
@@ -458,7 +517,7 @@ const TradeComparison = ({ language = 'fr' }) => {
               <TableBody>
                 {calculationsGlobal.map((item) => (
                   <tr key={item.country}>
-                    <td style={{ fontWeight: 600 }}>{item.name}</td>
+                    <td style={{ fontWeight: 600 }}>{nomPays(item)}</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>{montantUnite(item.exports, 'B', language, 1)}</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--terra)' }}>{montantUnite(item.imports, 'B', language, 1)}</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: item.balance >= 0 ? 'var(--success)' : 'var(--danger)' }}>
@@ -509,7 +568,7 @@ const TradeComparison = ({ language = 'fr' }) => {
               <TableBody>
                 {calculationsIntraAfrican.map((item) => (
                   <tr key={item.country}>
-                    <td style={{ fontWeight: 600 }}>{item.name}</td>
+                    <td style={{ fontWeight: 600 }}>{nomPays(item)}</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>{montantUnite(item.exports, 'B', language, 1)}</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>{montantUnite(item.imports, 'B', language, 1)}</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: item.balance >= 0 ? 'var(--success)' : 'var(--danger)' }}>

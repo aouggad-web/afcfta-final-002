@@ -90,10 +90,10 @@ class DataSourceSelector:
                     return results
 
             except Exception as e:
-                logger.error(f"OEC error: {str(e)}")
+                logger.error(f"OEC error: {str(e)}", exc_info=True)
                 self._update_source_status("OEC", success=False)
                 results["sources_checked"].append(
-                    {"source": "OEC", "status": "error", "error": str(e)}
+                    {"source": "OEC", "status": "error", "error": "Upstream service error"}
                 )
 
         # Fallback to WTO (mainly for tariff data)
@@ -117,10 +117,10 @@ class DataSourceSelector:
                     return results
 
             except Exception as e:
-                logger.error(f"WTO error: {str(e)}")
+                logger.error(f"WTO error: {str(e)}", exc_info=True)
                 self._update_source_status("WTO", success=False)
                 results["sources_checked"].append(
-                    {"source": "WTO", "status": "error", "error": str(e)}
+                    {"source": "WTO", "status": "error", "error": "Upstream service error"}
                 )
 
         return results

@@ -31,12 +31,16 @@ COLORS = {
     "deploiement": "#03A762",
 }
 LABELS = {
-    "non_signataire": ("Non signataire", "Not signed"),
-    "signe_non_ratifie": ("Signé, non ratifié", "Signed, not ratified"),
-    "ratifie": ("Ratifié", "Ratified"),
-    "offre_tarifaire": ("Offre tarifaire", "Tariff offer"),
-    "instrument_adopte": ("Instrument national adopté", "National instrument adopted"),
-    "deploiement": ("Déploiement", "Implementation"),
+    "non_signataire": ("Non signataire", "Not signed", "غير موقِّعة"),
+    "signe_non_ratifie": ("Signé, non ratifié", "Signed, not ratified", "موقِّعة، غير مصادِقة"),
+    "ratifie": ("Ratifié", "Ratified", "مصادِقة"),
+    "offre_tarifaire": ("Offre tarifaire", "Tariff offer", "عرض التعريفات الجمركية"),
+    "instrument_adopte": (
+        "Instrument national adopté",
+        "National instrument adopted",
+        "صك وطني معتمد",
+    ),
+    "deploiement": ("Déploiement", "Implementation", "قيد التطبيق"),
 }
 SURFACE = "#0C1219"
 K, R_MIN, MARGE = 0.2, 0.55, 4.5
@@ -147,15 +151,20 @@ legende = []
 for niveau in reversed(net["niveaux"]):
     if not compte.get(niveau):
         continue
-    fr, en = LABELS[niveau]
+    fr, en, ar = LABELS[niveau]
     sw = (
         '<i class="sw hollow"></i>'
         if niveau == "non_signataire"
         else f'<i class="sw" style="background:{COLORS[niveau]}"></i>'
     )
-    legende.append(f'<li>{sw}<b>{compte[niveau]}</b> {fr} <span class="en">· {en}</span></li>')
+    legende.append(
+        f'<li>{sw}<b>{compte[niveau]}</b> {fr} <span class="en">· {en}</span>'
+        f' <span class="ar">·&nbsp;<span lang="ar" dir="rtl">{ar}</span></span></li>'
+    )
 legende.append(
-    '<li><i class="link-sw"></i>Liaison : un État applique la préférence ZLECAf aux produits de l’autre</li>'
+    '<li><i class="link-sw"></i>Liaison : un État applique la préférence ZLECAf aux produits de l’autre'
+    ' <span class="en">· Link: one State applies the AfCFTA preference to the other’s goods</span>'
+    ' <span class="ar">·&nbsp;<span lang="ar" dir="rtl">الرابط: دولة تطبق تفضيل زليكاف على سلع الدولة الأخرى</span></span></li>'
 )
 
 mois = [
@@ -174,16 +183,39 @@ mois = [
 ]
 an, mo, jo = (int(v) for v in net["date"].split("-"))
 date_fr = f"{'1ᵉʳ' if jo == 1 else jo} {mois[mo - 1]} {an}"
+mois_ar = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+]
+date_ar = f"{jo} {mois_ar[mo - 1]} {an}"
+mois_en = (
+    "January February March April May June July August September October November December".split()
+)
+date_en = f"{mois_en[mo - 1]} {jo}, {an}"
 
 bloc = f"""<!-- RESEAU:START -->
 <section class="network" aria-labelledby="reseau-titre">
-  <h2 id="reseau-titre">Le réseau ZLECAf en un coup d’œil</h2>
+  <h2 id="reseau-titre">Le réseau ZLECAf en un coup d’œil
+    <span class="en" lang="en"><span class="sr-only"> · </span>The AfCFTA network at a glance</span>
+    <span class="ar" lang="ar" dir="rtl"><span class="sr-only"> · </span>شبكة زليكاف في لمحة</span></h2>
   <p class="network-sub">
     Chaque rond est une capitale : sa surface suit le PIB {annee}, sa couleur le stade de mise en œuvre
     de l’accord. Les traits relient deux États quand l’un applique la préférence ZLECAf aux produits de
     l’autre. Survolez une capitale pour son détail.
     <span class="en">Each circle is a capital, sized by {annee} GDP and coloured by implementation status;
     lines link States that apply the AfCFTA preference to each other’s goods.</span>
+    <span class="ar" lang="ar" dir="rtl">تمثل كل دائرة عاصمةً: تتناسب مساحتها مع الناتج المحلي الإجمالي لعام {annee}،
+    ويدل لونها على مرحلة تنفيذ الاتفاقية. تربط الخطوط بين دولتين عندما تطبق إحداهما تفضيل زليكاف على سلع الأخرى.</span>
   </p>
   <div class="map">
 {svg}
@@ -194,6 +226,10 @@ bloc = f"""<!-- RESEAU:START -->
   <p class="network-note">
     Statuts au {date_fr}, établis à partir des sources officielles citées dans la plateforme
     ({len(paires)} liaisons entre {len(noeuds)} États). PIB : {html.escape(net["pib_source"])}.
+    <span class="en" lang="en">Statuses as of {date_en}, from the official sources cited in the platform
+    ({len(paires)} links between {len(noeuds)} States). GDP: World Bank (WDI API), current US dollars.</span>
+    <span class="ar" lang="ar" dir="rtl">الحالات بتاريخ {date_ar}، استنادًا إلى المصادر الرسمية المذكورة في المنصة
+    ({len(paires)} رابطًا بين {len(noeuds)} دولة). الناتج المحلي الإجمالي: البنك الدولي (واجهة WDI)، بالدولار الأمريكي الجاري.</span>
   </p>
 </section>
 <!-- RESEAU:END -->"""

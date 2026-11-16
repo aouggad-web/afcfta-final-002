@@ -49,9 +49,13 @@ NOMS = {
     "GHA": "Ghana",
     "KEN": "Kenya",
     "MAR": "Maroc",
+    "NAM": "Namibie",
     "NGA": "Nigeria",
     "RWA": "Rwanda",
+    "SYC": "Seychelles",
     "TUN": "Tunisie",
+    "TZA": "Tanzanie",
+    "UGA": "Ouganda",
     "ZAF": "Afrique du Sud",
     "ZMB": "Zambie",
 }
@@ -112,6 +116,7 @@ def listes_verifiees() -> dict[str, dict]:
     """
     from services.zlecaf_implementation_registry import RECORDS
     from services.zlecaf_schedule_dza import ACTIVE_PARTNERS
+    from services.zlecaf_schedule_nam import DATES_ENTREE_NAM
     from services.zlecaf_schedule_zaf import ACTIVE_PARTNERS_ZAF
 
     listes: dict[str, dict] = {}
@@ -164,7 +169,49 @@ def listes_verifiees() -> dict[str, dict]:
         "fiche": None,
     }
 
-    # --- Tunisie : origines publiées au tarif, sens du taux non tranché ---
+    # --- Tanzanie, Rwanda, Ouganda : règle B, même avis EAC que le Kenya ---
+    # Les origines sont celles de l'Annexe 1 de la Directive 1/2021, que le
+    # registre traite comme un plafond : la case ACCORDEE dit que l'origine
+    # figure au plafond, non qu'un échange préférentiel a été constaté.
+    for iso in ("TZA", "RWA", "UGA"):
+        rec = RECORDS[iso]
+        listes[iso] = {
+            "origines": {o: None for o in sorted(rec.accepted_origins)},
+            "instrument": rec.instrument_id,
+            "preuve": "primaire — avis EAC et Directive 1/2021 archivés (règle B)",
+            "fiche": None,
+            "reserve": (
+                "Origines de l'Annexe 1 de la Directive 1/2021, traitées comme un "
+                "plafond par le registre."
+            ),
+        }
+
+    # --- Seychelles : S.I. 113 of 2022, Schedule VI -----------------------
+    syc = RECORDS["SYC"]
+    listes["SYC"] = {
+        "origines": {o: None for o in sorted(syc.accepted_origins)},
+        "instrument": syc.instrument_id,
+        "preuve": "primaire — règlement publié au Supplement to Official Gazette (28/10/2022)",
+        "fiche": "SYC_application_2026-09-28.json",
+        "reserve": (
+            "La Schedule VI nomme des « State Parties » : une liste d'États parties, "
+            "non de partenaires vérifiés bilatéralement."
+        ),
+    }
+
+    # --- Namibie : General Note O du Schedule No. 1 -----------------------
+    listes["NAM"] = {
+        "origines": {o: None for o in sorted(DATES_ENTREE_NAM)},
+        "instrument": "General Note O, Schedule No. 1 (GN 390/2024, GN 229/2025)",
+        "preuve": "primaire — Government Gazette de Namibie (copies archivées)",
+        "fiche": "NAM_zlecaf_2026-10-25.json",
+        "reserve": (
+            "Les membres de la SACU et de la SADC sont absents : la Namibie échange "
+            "avec eux sous ces régimes, pas sous la ZLECAf."
+        ),
+    }
+
+    # --- Tunisie : origines publiées au tarif, sens du taux tranché -------
     tun = _fiche("TUN_application_2026-09-13.json")
     listes["TUN"] = {
         "origines": {e["iso3"]: None for e in tun["accepted_origins"]["detail"]},
@@ -172,10 +219,9 @@ def listes_verifiees() -> dict[str, dict]:
         "preuve": "primaire — portail tarifaire officiel scellé dans le dépôt",
         "fiche": "TUN_application_2026-09-13.json",
         "reserve": (
-            "Les origines sont établies, mais le SENS du taux préférentiel "
-            "publié ne l'est pas (40 % affiché contre 36 % de NPF). Une case "
-            "ACCORDEE dit ici que la Tunisie sert cette origine sous régime "
-            "ZLECAf, pas quel droit en résulte."
+            "Le taux publié est un coefficient du texte TA n°016/2023 : le droit "
+            "servi est ce coefficient appliqué au droit de base 2019, plafonné "
+            "au NPF (TUN_droit_de_base_2019_2026-10-03.json)."
         ),
     }
 

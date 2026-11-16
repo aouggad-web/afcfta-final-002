@@ -1,0 +1,149 @@
+/* ================================================================
+   Arabe — mise en page de droite à gauche
+   i18n pose dir="rtl" sur <html> quand l'arabe est actif (voir
+   src/i18n/index.js). Le sens des blocs, des flex et du texte suit
+   alors tout seul ; cette feuille ne corrige que ce qui est écrit en
+   propriétés physiques (gauche / droite) : la coquille (barre latérale,
+   marge du contenu) et les utilitaires Tailwind effectivement employés.
+   ================================================================ */
+
+/* Typographie : Readex Pro (déjà chargée) couvre l'arabe ; Young Serif,
+   non. L'espacement des lettres casse la liaison des lettres arabes. */
+:root[dir="rtl"] {
+  --font-display: 'Readex Pro', system-ui, sans-serif;
+}
+[dir="rtl"] * {
+  letter-spacing: normal !important;
+}
+
+/* ── Coquille : barre latérale à droite ───────────────────────── */
+[dir="rtl"] .afcfta-sidebar {
+  left: auto;
+  right: 0;
+  border-right: none;
+  border-left: 1px solid var(--afcfta-border);
+}
+[dir="rtl"] .afcfta-nav-item {
+  text-align: right;
+}
+[dir="rtl"] .afcfta-nav-item.active::before {
+  left: auto;
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+[dir="rtl"] .afcfta-kpi::before {
+  left: auto;
+  right: 0;
+}
+@media (min-width: 1025px) {
+  [dir="rtl"] .afcfta-main-v2 {
+    margin-left: 0;
+    margin-right: var(--sidebar-w);
+    transition: margin-right 0.25s ease;
+  }
+  [dir="rtl"] .afcfta-sidebar.collapsed ~ .afcfta-main-v2 {
+    margin-left: 0;
+    margin-right: var(--sidebar-collapsed);
+  }
+}
+
+/* ── Graphiques et cartes : axes et tuiles restent de gauche à droite ── */
+[dir="rtl"] .recharts-wrapper svg,
+[dir="rtl"] .leaflet-container {
+  direction: ltr;
+}
+
+/* ── Alignements écrits en style en ligne (textAlign) ─────────── */
+[dir="rtl"] [style*="text-align: left"] { text-align: right !important; }
+[dir="rtl"] [style*="text-align: right"] { text-align: left !important; }
+
+/* ── Utilitaires Tailwind physiques ───────────────────────────── */
+[dir="rtl"] .text-left { text-align: right; }
+[dir="rtl"] .text-right { text-align: left; }
+[dir="rtl"] [class*="space-x-"] > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+
+/* Marges, retraits et positions : d'abord on annule le côté d'origine,
+   puis on pose le côté opposé — dans cet ordre, pour qu'un élément qui
+   porte à la fois pl-* et pr-* (icône dans un champ) garde ses deux
+   valeurs, échangées. */
+[dir="rtl"] .ml-1 { margin-left: 0; }
+[dir="rtl"] .ml-1\.5 { margin-left: 0; }
+[dir="rtl"] .ml-2 { margin-left: 0; }
+[dir="rtl"] .ml-3 { margin-left: 0; }
+[dir="rtl"] .ml-4 { margin-left: 0; }
+[dir="rtl"] .ml-6 { margin-left: 0; }
+[dir="rtl"] .ml-auto { margin-left: 0; }
+[dir="rtl"] .mr-0\.5 { margin-right: 0; }
+[dir="rtl"] .mr-1 { margin-right: 0; }
+[dir="rtl"] .mr-1\.5 { margin-right: 0; }
+[dir="rtl"] .mr-2 { margin-right: 0; }
+[dir="rtl"] .pl-2 { padding-left: 0; }
+[dir="rtl"] .pl-2\.5 { padding-left: 0; }
+[dir="rtl"] .pl-3 { padding-left: 0; }
+[dir="rtl"] .pl-4 { padding-left: 0; }
+[dir="rtl"] .pl-5 { padding-left: 0; }
+[dir="rtl"] .pl-8 { padding-left: 0; }
+[dir="rtl"] .pl-9 { padding-left: 0; }
+[dir="rtl"] .pl-10 { padding-left: 0; }
+[dir="rtl"] .pl-16 { padding-left: 0; }
+[dir="rtl"] .pr-1 { padding-right: 0; }
+[dir="rtl"] .pr-2 { padding-right: 0; }
+[dir="rtl"] .pr-2\.5 { padding-right: 0; }
+[dir="rtl"] .pr-3 { padding-right: 0; }
+[dir="rtl"] .pr-4 { padding-right: 0; }
+[dir="rtl"] .pr-6 { padding-right: 0; }
+[dir="rtl"] .pr-8 { padding-right: 0; }
+[dir="rtl"] .pr-9 { padding-right: 0; }
+[dir="rtl"] .pr-10 { padding-right: 0; }
+[dir="rtl"] .left-0 { left: auto; }
+[dir="rtl"] .left-1 { left: auto; }
+[dir="rtl"] .left-2 { left: auto; }
+[dir="rtl"] .left-3 { left: auto; }
+[dir="rtl"] .left-4 { left: auto; }
+[dir="rtl"] .right-0 { right: auto; }
+[dir="rtl"] .right-1 { right: auto; }
+[dir="rtl"] .right-2 { right: auto; }
+[dir="rtl"] .right-3 { right: auto; }
+[dir="rtl"] .right-4 { right: auto; }
+
+[dir="rtl"] .ml-1 { margin-right: 0.25rem; }
+[dir="rtl"] .ml-1\.5 { margin-right: 0.375rem; }
+[dir="rtl"] .ml-2 { margin-right: 0.5rem; }
+[dir="rtl"] .ml-3 { margin-right: 0.75rem; }
+[dir="rtl"] .ml-4 { margin-right: 1rem; }
+[dir="rtl"] .ml-6 { margin-right: 1.5rem; }
+[dir="rtl"] .ml-auto { margin-right: auto; }
+[dir="rtl"] .mr-0\.5 { margin-left: 0.125rem; }
+[dir="rtl"] .mr-1 { margin-left: 0.25rem; }
+[dir="rtl"] .mr-1\.5 { margin-left: 0.375rem; }
+[dir="rtl"] .mr-2 { margin-left: 0.5rem; }
+[dir="rtl"] .pl-2 { padding-right: 0.5rem; }
+[dir="rtl"] .pl-2\.5 { padding-right: 0.625rem; }
+[dir="rtl"] .pl-3 { padding-right: 0.75rem; }
+[dir="rtl"] .pl-4 { padding-right: 1rem; }
+[dir="rtl"] .pl-5 { padding-right: 1.25rem; }
+[dir="rtl"] .pl-8 { padding-right: 2rem; }
+[dir="rtl"] .pl-9 { padding-right: 2.25rem; }
+[dir="rtl"] .pl-10 { padding-right: 2.5rem; }
+[dir="rtl"] .pl-16 { padding-right: 4rem; }
+[dir="rtl"] .pr-1 { padding-left: 0.25rem; }
+[dir="rtl"] .pr-2 { padding-left: 0.5rem; }
+[dir="rtl"] .pr-2\.5 { padding-left: 0.625rem; }
+[dir="rtl"] .pr-3 { padding-left: 0.75rem; }
+[dir="rtl"] .pr-4 { padding-left: 1rem; }
+[dir="rtl"] .pr-6 { padding-left: 1.5rem; }
+[dir="rtl"] .pr-8 { padding-left: 2rem; }
+[dir="rtl"] .pr-9 { padding-left: 2.25rem; }
+[dir="rtl"] .pr-10 { padding-left: 2.5rem; }
+[dir="rtl"] .left-0 { right: 0px; }
+[dir="rtl"] .left-1 { right: 0.25rem; }
+[dir="rtl"] .left-2 { right: 0.5rem; }
+[dir="rtl"] .left-3 { right: 0.75rem; }
+[dir="rtl"] .left-4 { right: 1rem; }
+[dir="rtl"] .right-0 { left: 0px; }
+[dir="rtl"] .right-1 { left: 0.25rem; }
+[dir="rtl"] .right-2 { left: 0.5rem; }
+[dir="rtl"] .right-3 { left: 0.75rem; }
+[dir="rtl"] .right-4 { left: 1rem; }

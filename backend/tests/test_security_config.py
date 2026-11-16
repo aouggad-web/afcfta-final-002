@@ -103,3 +103,29 @@ def test_un_mot_de_passe_solide_deverrouille_le_compte(monkeypatch):
     users = _Users({"email": "admin@example.invalid", "password_hash": "!verrouille"})
     _amorcer(monkeypatch, users, nouveau)
     assert verify_password(nouveau, users.doc["password_hash"])
+
+
+# ── Middlewares de sécurité obligatoires (constat M10) ──────────────────────
+
+
+def test_server_installe_csp_csrf_et_limitation_de_debit():
+    import server
+    from middlewares import CSRFMiddleware, RateLimitMiddleware, SecurityHeadersMiddleware
+
+    installes = {m.cls for m in server.app.user_middleware}
+    assert {SecurityHeadersMiddleware, CSRFMiddleware, RateLimitMiddleware} <= installes
+
+
+def test_import_des_middlewares_n_est_pas_rattrape():
+    """Un `try/except ImportError` autour de l'import laisserait démarrer l'API
+    sans CSP, CSRF ni limitation de débit après un déploiement partiel."""
+    import ast
+    from pathlib import Path
+
+    source = (Path(__file__).resolve().parents[1] / "server.py").read_text(encoding="utf-8")
+    au_premier_niveau = [
+        noeud
+        for noeud in ast.parse(source).body
+        if isinstance(noeud, ast.ImportFrom) and noeud.module == "middlewares"
+    ]
+    assert au_premier_niveau, "l'import des middlewares de sécurité doit rester obligatoire"

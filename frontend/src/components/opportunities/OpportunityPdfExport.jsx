@@ -9,18 +9,23 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FileDown, Moon, Loader2 } from 'lucide-react';
 import { buildOpportunityPdf, opportunityPdfFilename } from '../../utils/opportunityPdf';
+import { chargerPoliceArabe, estArabe } from '../../utils/pdfArabe';
 
 export default function OpportunityPdfExport({ getSpec, disabled = false, language = 'fr' }) {
   const { t } = useTranslation();
+  // Le PDF sort dans la langue de l'écran, arabe compris (police arabe
+  // chargée à la demande). `getSpec(t, langue)` reçoit le `t` et la langue.
+  const pdfLang = estArabe(language) ? 'ar' : language;
   const [exporting, setExporting] = useState(null); // null | 'light' | 'dark'
 
-  const run = (theme) => {
+  const run = async (theme) => {
     if (disabled || exporting) return;
     setExporting(theme);
     try {
-      const spec = getSpec();
+      if (pdfLang === 'ar') await chargerPoliceArabe();
+      const spec = getSpec(t, pdfLang);
       if (!spec) return;
-      const doc = buildOpportunityPdf({ ...spec, theme, language });
+      const doc = buildOpportunityPdf({ ...spec, theme, language: pdfLang });
       doc.save(`${spec.filename || opportunityPdfFilename(spec.badge || 'rapport')}_${theme}.pdf`);
     } catch (err) {
       console.error('Opportunity PDF export failed:', err);

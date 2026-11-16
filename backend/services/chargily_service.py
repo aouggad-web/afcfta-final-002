@@ -71,10 +71,12 @@ def resolve_amount_dzd(plan: str, cycle: str) -> int:
             detail=f"Plan/cycle inconnu : {plan}/{cycle}.",
         )
     except pricing.InvalidPrice as exc:
+        # Message bâti sur la configuration du serveur : au journal seulement (M9).
+        logger.error("Tarif Chargily mal configuré : %s", exc)
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=str(exc),
-        )
+            detail="Paiement local momentanément indisponible.",
+        ) from exc
 
 
 def create_checkout(
@@ -115,23 +117,24 @@ def create_checkout(
         try:
             resp = httpx.post(url, json=payload, headers=headers, timeout=20)
         except (httpx.ConnectError, httpx.ConnectTimeout) as exc:
-            last_detail = f"Chargily injoignable : {exc}"
             if attempt < _CHECKOUT_ATTEMPTS:
                 logger.warning(
                     "Chargily checkout: tentative %d/%d échouée avant envoi (%s) — retry",
                     attempt,
                     _CHECKOUT_ATTEMPTS,
-                    last_detail,
+                    exc,
                 )
                 time.sleep(_CHECKOUT_BACKOFF * (2 ** (attempt - 1)))
                 continue
+            logger.error("Chargily injoignable : %s", exc, exc_info=True)
             raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=last_detail)
         except httpx.HTTPError as exc:
             # Timeout après écriture ou autre erreur ambiguë : la requête a pu
             # atteindre Chargily. Ne jamais rejouer un paiement en double.
+            logger.error("Chargily : état du paiement incertain (%s)", exc, exc_info=True)
             raise HTTPException(
                 status_code=status.HTTP_502_BAD_GATEWAY,
-                detail=f"Chargily : état du paiement incertain ({exc}). Ne pas rejouer automatiquement.",
+                detail="Chargily : état du paiement incertain. Ne pas rejouer automatiquement.",
             )
 
         if resp.status_code < 400:
@@ -173,4 +176,4 @@ def verify_and_parse(payload: bytes, signature_header: str | None) -> dict:
     try:
         return json.loads(payload.decode("utf-8"))
     except (ValueError, UnicodeDecodeError) as exc:
-        raise ValueError(f"Corps de webhook illisible : {exc}") from exc
+        raise ValueError("Corps de webhook illisible.") from exc

@@ -13,10 +13,11 @@
  */
 import { describe, it, expect } from 'vitest';
 
+import ar from './locales/ar.json';
 import en from './locales/en.json';
 import fr from './locales/fr.json';
 
-const LOCALES = { fr, en };
+const LOCALES = { fr, en, ar };
 const REFERENCE = 'fr';
 
 /** Chemins de toutes les feuilles d'un objet, en notation pointée. */
@@ -81,6 +82,7 @@ describe('parité des locales', () => {
       'valueChains', 'byProduct', 'comparison'].forEach((id) => {
       expect(fr.opportunities.tabs[id]).toBeTruthy();
       expect(en.opportunities.tabs[id]).toBeTruthy();
+      expect(ar.opportunities.tabs[id]).toBeTruthy();
     });
   });
 });

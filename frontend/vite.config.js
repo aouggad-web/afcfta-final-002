@@ -2,6 +2,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { entetesSecurite } from './securite/entetes.js';
 
 // Configuration HMR (Hot Module Replacement) — CAUSE DU BUG « l'app revient au
 // dashboard / la page se recharge toute seule chaque minute ».
@@ -68,7 +69,7 @@ if (_resolvedBackendUrl) {
 const backendUrl = _resolvedBackendUrl || 'http://localhost:8000';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), entetesSecurite()],
   esbuild: {
     loader: 'jsx',
     include: /src\/.*\.[jt]sx?$/,

@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "objet": "ZLECAf à l'importation chez quatre partenaires directs de l'Algérie jamais recherchés (Mauritanie, Sénégal, Mali, Niger) : parcours de la liste fixe de sources du plan, sans acte national d'application ni liste d'origines admises trouvés",
+  "agreement": "ZLECAf / AfCFTA",
+  "verification_status": "RECHERCHE_NON_CONCLUANTE",
+  "verified_at": "2026-11-02",
+  "etabli": false,
+  "evidence_level": "contrôles négatifs datés sur les sources officielles joignables (douanes, journal officiel, ministère du Commerce, gazettes.africa) et recherche web ciblée en français et en arabe ; aucune valeur établie : ces destinations restent au NPF pour l'origine algérienne comme pour toute autre",
+  "motif": "Priorité donnée aux partenaires africains de l'Algérie (demande du 02/11/2026). Côté importation en Algérie, la liste des neuf origines admises (circulaire n° 482/DGD/SP/D.042/24) et le calendrier, liste B comprise depuis le 1er janvier 2026, sont déjà servis (DZA_application_2026-09-14.json). Côté exportation, l'Égypte, le Maroc et l'Afrique du Sud admettent l'Algérie ; le Ghana et le Nigeria l'admettent par une règle non résolue ; le Kenya et la Tunisie ne la nomment pas. Ces quatre pays étaient « non recherchés ».",
+  "pays": {
+    "MRT": {
+      "controles": [
+        "Douanes (douanes.mr) : HTTP 404 le 02/11/2026.",
+        "Journal officiel (msgg.gov.mr) : page d'accueil joignable, aucune mention de la ZLECAf.",
+        "Ministère du Commerce (commerce.gouv.mr) : injoignable le 02/11/2026.",
+        "gazettes.africa : la Mauritanie n'est pas couverte (404).",
+        "Lois de finances 2025 et 2026 et LFR 2026 (lues pour le NPF) : aucune disposition sur la ZLECAf ; l'exposé des motifs de la LFI 2025 ne cite que l'adoption du TEC CEDEAO (accord d'association du 05/05/2017).",
+        "Recherche web en français et en arabe : aucun acte, aucune note de la douane, aucun premier certificat d'origine ZLECAf mauritanien ; seule une zone d'échange frontalière algéro-mauritanienne (Tindouf), régime bilatéral distinct de la ZLECAf."
+      ],
+      "pistes": "Offre tarifaire : la Mauritanie figure avec la CEDEAO à l'annexe 1 ; acte d'application à chercher au JO quand le moteur de recherche du msgg sera exploitable."
+    },
+    "SEN": {
+      "controles": [
+        "Douanes (douanes.sn) : recherche « ZLECAf » du site, flux RSS des résultats : deux actualités générales (31/03/2026, 25/09/2025), aucun acte d'application ni liste d'origines.",
+        "Journal officiel (jo.gouv.sn) : injoignable le 02/11/2026.",
+        "Ministère du Commerce (commerce.gouv.sn) : HTTP 503 le 02/11/2026 ; son portail publie seulement le projet d'annexes consolidées de l'Accord.",
+        "gazettes.africa : le Sénégal est couvert, aucune mention de la ZLECAf sur la page du pays.",
+        "Recherche web : aucun décret, arrêté ou note de la douane sénégalaise sur le tarif préférentiel ZLECAf."
+      ],
+      "pistes": "Offre CEDEAO archivée (e-Tariff Book) ; l'acte national et la liste des origines restent à trouver."
+    },
+    "MLI": {
+      "controles": [
+        "Douanes (douanes.gouv.ml) : recherche « ZLECAf » du site sans résultat.",
+        "Secrétariat général du Gouvernement (JO) : injoignable le 02/11/2026.",
+        "Ministère du Commerce (commerce.gouv.ml) : injoignable le 02/11/2026.",
+        "gazettes.africa : le Mali n'est pas couvert (404).",
+        "Recherche web : seulement un atelier de formation sur la ZLECAf (ministère de l'Intégration africaine, 29/04/2026), aucun acte."
+      ],
+      "pistes": "Le Mali a quitté la CEDEAO (29/01/2025, Confédération AES) : l'offre CEDEAO, au titre de laquelle son barème a été soumis, ne le couvre peut-être plus ; un régime préférentiel confédéral AES est en préparation (réunion d'experts douaniers, Ouagadougou, 12-14/10/2026)."
+    },
+    "NER": {
+      "controles": [
+        "Douanes (douanes.ne) et Secrétariat général du Gouvernement (sgg.gouv.ne) : injoignables le 02/11/2026.",
+        "Ministère du Commerce (commerce.gouv.ne) : joignable, aucune mention de la ZLECAf.",
+        "gazettes.africa : le Niger n'est pas couvert (404).",
+        "Loi de finances 2026 (1er cahier, lue pour le NPF) : la ZLECAf n'apparaît que dans l'exposé de la conjoncture et de la stratégie nationale, sans disposition tarifaire.",
+        "Recherche web : aucun acte ni note de la douane nigérienne."
+      ],
+      "pistes": "Même situation que le Mali (sortie de la CEDEAO, AES)."
+    }
+  },
+  "ne_tranche_pas": [
+    "L'absence d'acte trouvé n'est pas la preuve d'une non-application : ces pays restent au NPF faute de preuve, jamais par un refus constaté.",
+    "Sort de l'offre CEDEAO pour les États de l'AES sortis de la Communauté (Burkina Faso, Mali, Niger).",
+    "Grande zone arabe de libre-échange (GZALE) : régime distinct, souvent plus favorable que la ZLECAf entre l'Algérie et ses partenaires arabes (Tunisie, Égypte, Maroc, Libye, Mauritanie) ; non traité ici."
+  ],
+  "doutes": [
+    "Aucun acte national d'application ni liste d'origines admises trouvés pour la Mauritanie, le Sénégal, le Mali et le Niger ; plusieurs sources officielles (journaux officiels du Sénégal, du Mali et du Niger, douanes du Niger et de la Mauritanie) étaient injoignables le 02/11/2026 et sont à revoir."
+  ]
+}

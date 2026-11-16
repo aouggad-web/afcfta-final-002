@@ -17,6 +17,10 @@ import {
 } from 'recharts';
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { montantCompact } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
+import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
+import { specMacroPdf } from '../../utils/productionRapportsPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -170,6 +174,12 @@ function ProductionMacro({ language = 'fr' }) {
                   <Badge className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
                     {sectorNames.length} {t('production.macro.panel.sectors')}
                   </Badge>
+                  {!loading && macroData.data_by_sector && (
+                    <OpportunityPdfExport
+                      language={language}
+                      getSpec={(_, langue) => specMacroPdf(macroData, langue)}
+                    />
+                  )}
                 </div>
               )}
             </div>
@@ -224,6 +234,7 @@ function ProductionMacro({ language = 'fr' }) {
                       key={sector}
                       type="monotone"
                       dataKey={sector}
+                      name={trDonnee(sector, language)}
                       stroke={seriesColors[index % seriesColors.length]}
                       strokeWidth={2.5}
                       dot={{ r: 4 }}
@@ -270,6 +281,7 @@ function ProductionMacro({ language = 'fr' }) {
                     <Bar
                       key={sector}
                       dataKey={sector}
+                      name={trDonnee(sector, language)}
                       fill={seriesColors[index % seriesColors.length]}
                       radius={[6, 6, 0, 0]}
                     />
@@ -342,13 +354,13 @@ function ProductionMacro({ language = 'fr' }) {
                           borderColor: 'rgba(212,137,26,0.12)',
                         }}
                       >
-                        <p className="text-sm text-[var(--afcfta-muted)]">{sectorName}</p>
+                        <p className="text-sm text-[var(--afcfta-muted)]">{trDonnee(sectorName, language)}</p>
                         <p className="text-xl font-bold mt-1 text-[var(--text)]">
                           {formatUsd(latest.value)}
                         </p>
                         <p className="text-xs text-[var(--afcfta-muted)] mt-1">
                           {latest.year} · {series.length} {t('production.macro.panel.year').toLowerCase()}
-                          {series.length > 1 ? 's' : ''}
+                          {series.length > 1 ? pick(language, 's', 's', '') : ''}
                         </p>
                       </div>
                     );
@@ -376,7 +388,7 @@ function ProductionMacro({ language = 'fr' }) {
                     }}
                   >
                     <div className="flex items-center justify-between gap-3 flex-wrap mb-3">
-                      <h4 className="font-semibold text-[var(--text)]">{sectorName}</h4>
+                      <h4 className="font-semibold text-[var(--text)]">{trDonnee(sectorName, language)}</h4>
                       <Badge
                         className="border"
                         style={{
@@ -418,7 +430,7 @@ function ProductionMacro({ language = 'fr' }) {
                           </div>
                           <p className="text-xl font-bold mt-1 text-[var(--text)]">{record.value}%</p>
                           <p className="text-[11px] text-[var(--afcfta-muted)] mt-2 line-clamp-2">
-                            {record.indicator_label}
+                            {trDonnee(record.indicator_label, language)}
                           </p>
                         </div>
                       ))}

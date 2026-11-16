@@ -2,6 +2,9 @@ import React, { useState, useMemo } from 'react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
+import { useTranslation } from 'react-i18next';
+import { pick } from '../../i18n/lang';
+import { getCountryName, getRegionName } from '../../utils/translations';
 
 // Tous les pays africains regroupés par région
 const AFRICAN_COUNTRIES_BY_REGION = {
@@ -75,7 +78,14 @@ const AFRICAN_COUNTRIES_BY_REGION = {
 // Grandes économies à mettre en avant
 const MAJOR_ECONOMIES = ['ZAF', 'NGA', 'EGY', 'KEN', 'GHA', 'ETH', 'MAR', 'DZA', 'TZA', 'CIV'];
 
-function CountrySelector({ value, onChange, label = "Sélectionner un pays", showStats = false }) {
+function CountrySelector({ value, onChange, label, showStats = false }) {
+  const { i18n } = useTranslation();
+  const language = i18n.language;
+  const isAr = String(language || '').startsWith('ar');
+  // Noms du référentiel en français ; en arabe, depuis utils/translations.
+  const nameOf = (country) => (isAr ? getCountryName(country.code, 'ar') : country.name);
+  const regionOf = (region) => (isAr ? getRegionName(region, 'ar') : region);
+  const fieldLabel = label ?? pick(language, 'Sélectionner un pays', 'Sélectionner un pays', 'اختر بلداً');
   const [searchTerm, setSearchTerm] = useState('');
 
   // Obtenir tous les pays dans une liste plate
@@ -99,7 +109,7 @@ function CountrySelector({ value, onChange, label = "Sélectionner un pays", sho
     const filtered = {};
     Object.entries(AFRICAN_COUNTRIES_BY_REGION).forEach(([region, countries]) => {
       const matchedCountries = countries.filter(country =>
-        country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        nameOf(country).toLowerCase().includes(searchTerm.toLowerCase()) ||
         country.code.toLowerCase().includes(searchTerm.toLowerCase())
       );
       if (matchedCountries.length > 0) {
@@ -107,23 +117,23 @@ function CountrySelector({ value, onChange, label = "Sélectionner un pays", sho
       }
     });
     return filtered;
-  }, [searchTerm]);
+  }, [searchTerm, isAr]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Grandes économies filtrées
   const majorEconomiesFiltered = useMemo(() => {
     const majors = allCountries.filter(c => MAJOR_ECONOMIES.includes(c.code));
     if (!searchTerm) return majors;
     return majors.filter(country =>
-      country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      nameOf(country).toLowerCase().includes(searchTerm.toLowerCase()) ||
       country.code.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [searchTerm, allCountries]);
+  }, [searchTerm, allCountries, isAr]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-4">
         <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">
-          {label}:
+          {fieldLabel}:
         </label>
         
         <Select value={value} onValueChange={onChange}>
@@ -132,11 +142,11 @@ function CountrySelector({ value, onChange, label = "Sélectionner un pays", sho
               {selectedCountry ? (
                 <span className="flex items-center gap-2">
                   <span className="text-2xl">{selectedCountry.flag}</span>
-                  <span className="font-medium">{selectedCountry.name}</span>
+                  <span className="font-medium">{nameOf(selectedCountry)}</span>
                   <Badge variant="outline" className="text-xs">{selectedCountry.code}</Badge>
                 </span>
               ) : (
-                "Choisir un pays..."
+                pick(language, 'Choisir un pays...', 'Choisir un pays...', 'اختر بلداً…')
               )}
             </SelectValue>
           </SelectTrigger>
@@ -146,7 +156,7 @@ function CountrySelector({ value, onChange, label = "Sélectionner un pays", sho
             <div className="p-2 border-b sticky top-0 bg-white z-10">
               <Input
                 type="text"
-                placeholder="🔍 Rechercher un pays..."
+                placeholder={pick(language, '🔍 Rechercher un pays...', '🔍 Rechercher un pays...', '🔍 ابحث عن بلد…')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full"
@@ -157,13 +167,13 @@ function CountrySelector({ value, onChange, label = "Sélectionner un pays", sho
             {majorEconomiesFiltered.length > 0 && !searchTerm && (
               <SelectGroup>
                 <SelectLabel className="text-xs font-bold text-purple-700 bg-purple-50 py-2">
-                  ⭐ Grandes Économies
+                  ⭐ {pick(language, 'Grandes Économies', 'Grandes Économies', 'الاقتصادات الكبرى')}
                 </SelectLabel>
                 {majorEconomiesFiltered.map(country => (
                   <SelectItem key={country.code} value={country.code} className="cursor-pointer hover:bg-purple-50">
                     <div className="flex items-center gap-2 py-1">
                       <span className="text-xl">{country.flag}</span>
-                      <span className="font-medium">{country.name}</span>
+                      <span className="font-medium">{nameOf(country)}</span>
                       <Badge variant="outline" className="text-xs ml-auto">{country.code}</Badge>
                     </div>
                   </SelectItem>
@@ -175,13 +185,13 @@ function CountrySelector({ value, onChange, label = "Sélectionner un pays", sho
             {Object.entries(filteredRegions).map(([region, countries]) => (
               <SelectGroup key={region}>
                 <SelectLabel className="text-xs font-bold text-gray-700 bg-gray-50 py-2">
-                  {region} ({countries.length})
+                  {regionOf(region)} ({countries.length})
                 </SelectLabel>
                 {countries.map(country => (
                   <SelectItem key={country.code} value={country.code} className="cursor-pointer hover:bg-gray-50">
                     <div className="flex items-center gap-2 py-1">
                       <span className="text-xl">{country.flag}</span>
-                      <span>{country.name}</span>
+                      <span>{nameOf(country)}</span>
                       <Badge variant="outline" className="text-xs ml-auto">{country.code}</Badge>
                     </div>
                   </SelectItem>
@@ -192,7 +202,7 @@ function CountrySelector({ value, onChange, label = "Sélectionner un pays", sho
             {/* Aucun résultat */}
             {Object.keys(filteredRegions).length === 0 && (
               <div className="p-4 text-center text-gray-500">
-                Aucun pays trouvé pour "{searchTerm}"
+                {pick(language, 'Aucun pays trouvé pour', 'Aucun pays trouvé pour', 'لم يُعثر على أي بلد يطابق')} "{searchTerm}"
               </div>
             )}
           </SelectContent>
@@ -201,7 +211,7 @@ function CountrySelector({ value, onChange, label = "Sélectionner un pays", sho
         {showStats && selectedCountry && (
           <div className="flex gap-2">
             <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-200">
-              {selectedCountry.flag} {selectedCountry.name}
+              {selectedCountry.flag} {nameOf(selectedCountry)}
             </Badge>
           </div>
         )}
@@ -209,9 +219,9 @@ function CountrySelector({ value, onChange, label = "Sélectionner un pays", sho
 
       {/* Info sur le nombre total de pays */}
       <div className="text-xs text-gray-500 flex items-center gap-2">
-        <span>📊 {allCountries.length} pays africains disponibles</span>
+        <span>📊 {allCountries.length} {pick(language, 'pays africains disponibles', 'pays africains disponibles', 'بلداً أفريقياً متاحاً')}</span>
         {searchTerm && (
-          <span>• {Object.values(filteredRegions).flat().length} pays trouvés</span>
+          <span>• {Object.values(filteredRegions).flat().length} {pick(language, 'pays trouvés', 'pays trouvés', 'بلداً مطابقاً')}</span>
         )}
       </div>
     </div>

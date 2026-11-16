@@ -225,7 +225,9 @@ async def search_hs_codes_endpoint(
 
 @router.get("/product-index")
 async def search_product_index(
-    q: str = Query(..., min_length=2, description="Nom courant du produit/marchandise"),
+    q: str = Query(
+        ..., min_length=2, max_length=200, description="Nom courant du produit/marchandise"
+    ),
     language: str = Query("fr", description="Language: fr or en"),
     limit: int = Query(20, ge=1, le=100, description="Maximum results"),
 ):

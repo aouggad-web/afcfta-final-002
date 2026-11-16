@@ -9,7 +9,9 @@ from __future__ import annotations
 import logging
 from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from auth import require_auth
+from entitlement_guard import check_export_format, get_optional_subscriber
+from fastapi import APIRouter, Depends, HTTPException, Query
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +49,8 @@ async def get_bloc_summary(bloc: str):
     try:
         return _analytics().get_bloc_summary(bloc.upper())
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Bloc summary failed for {bloc}: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/compare")
@@ -64,7 +67,8 @@ async def compare_regions(
         metric_list = [m.strip() for m in metrics.split(",")] if metrics else None
         return _analytics().compare_regions(blocs=bloc_list, metrics=metric_list)
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Regional comparison failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/heatmap")
@@ -76,7 +80,8 @@ async def get_investment_heatmap():
     try:
         return {"heatmap": _analytics().get_investment_heatmap()}
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Investment heatmap failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/corridors")
@@ -91,7 +96,8 @@ async def get_trade_corridors(
             )
         }
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Trade corridor analysis failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/visualization/{chart_type}")
@@ -137,13 +143,27 @@ async def get_visualization_data(
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error(f"Visualization error for {chart_type}: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Visualization error for {chart_type}: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+async def _format_d_export(
+    format: str = Query("excel", description="Output format: excel | pdf | json"),
+    user: Optional[dict] = Depends(get_optional_subscriber),
+    key_doc: dict = Depends(require_auth),
+) -> str:
+    """Format demandé, contrôlé contre la formule (audit E1) : le pdf est
+    accordé à toutes les formules, l'excel au seul compte admin (décision du
+    06/11/2026), json reste libre. Le handler reçoit le format d'ici, sans
+    second paramètre dont le défaut pourrait diverger."""
+    if format in ("excel", "pdf"):
+        check_export_format(format, user, key_doc)
+    return format
 
 
 @router.get("/export")
 async def export_analysis(
-    format: str = Query("excel", description="Output format: excel | pdf | json"),
+    format: str = Depends(_format_d_export),
     blocs: Optional[str] = Query(None),
     sector: str = Query("general"),
 ):
@@ -154,9 +174,19 @@ async def export_analysis(
     from fastapi.responses import Response
     from intelligence.ai_engine.investment_scoring import (
         COUNTRY_INDICATORS,
+        SECTOR_MULTIPLIERS,
         get_intelligence_engine,
     )
     from search.enhanced_search import get_search_engine
+
+    # Le secteur est recopié dans chaque ligne du fichier : une valeur libre y
+    # glisserait une formule de tableur (audit M5).
+    secteurs = ["general", *SECTOR_MULTIPLIERS]
+    if sector not in secteurs:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Secteur inconnu. Valeurs admises : {', '.join(secteurs)}.",
+        )
 
     engine = get_intelligence_engine()
     countries = list(COUNTRY_INDICATORS.keys())

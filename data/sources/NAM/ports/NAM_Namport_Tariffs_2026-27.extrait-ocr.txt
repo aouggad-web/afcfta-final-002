@@ -1,0 +1,118 @@
+Namibian Ports Authority (Namport) — Port and Syncrolift Tariffs 2026/2027 : extraits (relevés le 2026-11-02)
+URL : https://www.namport.com.na/files/documents/Namport_Port%20%26%20Syncrolift%20Tariffs%202026_27.pdf
+sha256 du PDF : 401264950cdc13fd3cf296630d6fefaaf191c272fbc4a4c859da855ed724e473 (76 pages, image sans couche texte ; 13 Mo, non archivé)
+Texte obtenu par reconnaissance optique (tesseract 5, anglais, 250 et 350 dpi) ; lignes vides retirées, coquilles de l'OCR laissées telles quelles (« Lideritz » pour Lüderitz).
+Les montants des sections 4.3.1 et 6.2.1 ont été rapprochés du barème 2025/2026 (texte natif) : hausse uniforme de 4 %, arrondie à l'unité.
+
+=== Page 8 — 1.2 ===
+1.2 APPLICATION OF DUES AND CHARGES
+The dues and charges set herein apply to the Port of Walvis Bay and the Port of
+Lideritz with effect from 1 April every year.
+
+=== Page 11 — 1.9 et 1.10 ===
+19 VALUE ADDED TAX
+Value Added Tax (VAT) of 15% is applicable on all services as stipulated per the VAT Act
+of 2000 and will be added to this Tariff.
+1.10 CURRENCY
+All the tariffs as stipulated in the Tariff Book are denoted in Namibian Dollars (N$).
+
+=== Page 27 — 4.1 et 4.2.1 ===
+Chapter 4
+BASE TARIFF
+41 BASE TARIFF
+The Base Tariff on cargo i.e. all commodities, articles, things or containers is levied where such
+cargo is handled within port jurisdiction.
+4.2 FISH AND FISH PRODUCTS (Break bulk)
+4.2.1 Imported
+All fish imported per ton of a 1,000 kg 44.00
+
+=== Pages 28 et 29 — 4.3.1 General Cargo (extraits ; certaines lignes illisibles à l'OCR) ===
+Building Materials 40.00
+Canned Fish 137.00
+Cans And Lids 274.00
+Casings 537.00
+Chemicals 249.00
+Cigars & Cigarettes 274.00
+Clothing/Textiles 509.00
+Dangerous Cargo 330.00
+Diamond Gravel 33.00
+Electrical Equipment 274.00
+Empty Bags 274.00
+Exhibition Goods 95.00
+Fertilizer 108.00
+Fishmeal 108.00
+Fish oil 37.00
+Flat Cartons 291.00
+Foodstuff 564.00
+Footwear 564.00
+Glass & Glass Products 440.00
+Grain 52.00
+Granite | 40.00
+Guano 130.00
+Hardware & Tools 564.00
+Household & Personal Effects | 564.00
+Ice 26.00
+Iron Pipe & Fittings 564.00
+Machinery 564.00
+Maize 52.00
+Malt 120.00
+Marble 52.00
+Meat 360.00
+Milk powder 167.00
+Non-alcoholic products 267.00
+Ore Concentrate 272.00
+Paint 495.00
+Paper & Paper Products 40.00
+Petroleum products (per kilolitre) 48.00
+Plastic 458.00
+Rice 274.00
+Rubber products 264.00
+Salt 33.00
+Ships Spares/Stores 310.00
+Soda Ash 274.00
+
+=== Page 30 — 4.3.1 (suite), 4.5 ===
+Vehicles 564.00
+NOTE: Tariffs for all other commodities will be quoted on request.
+All cargo per ton | 185.00 |
+
+=== Page 38 — 6.2 et 6.2.1 ===
+6.2 TERMINAL HANDLING AT THE CONTAINER TERMINAL
+The following services are covered:
+- Acceptance/delivery of the container at the terminal
+- Stacking/Destacking, making reefer connections
+- Conveyance between the stack and ship
+- Base Tariff
+- Port security
+NOTE:
+a) The transport of containers within harbour boundaries, including to and from the
+State Warehouse will be undertaken by Namport and charged for as per Clause 6.2.4.
+6.2.1 Containers landed/shipped
+6m/20' Containers 7,526.00
+12m/40' Containers 10,031.00
+13.7m/45' Containers 14,767.00
+IMDG Containers (All Classes)
+6m/20’ Containers 8,595.00
+12m/40’ Containers 12,158.00
+13.7m/45' Containers 15,403.00
+Abnormal Containers
+6m/20’ Containers 8,595.00
+12m/40' Containers 12,158.00
+13.7m/45' Containers 15,403.00
+Ports within the SACU Region
+6m/20’ Containers 2,572.00
+12m/40' Containers 3,926.00
+13.7m/45' Containers 5,949.00
+
+=== Page 39 — 6.2.1 (suite) ===
+Ports within the SACU Region IMDG Containers (All Classes)
+6m/20’ Containers 2,901.00
+12m/40’ Containers 4,414.00
+13.7m/45' Containers 6,719.00
+Low value commodities (Salt, Scrap Metal, Guano, Charcoal, Marble & Granite)
+6m/20’ Containers 5,802.00
+12m/40’ Containers 7,723.00
+13.7m/45' Containers 10,764.00
+Empty rate on Containers
+6m/20’ Containers 1,779.00
+12m/40' Containers 2,306.00

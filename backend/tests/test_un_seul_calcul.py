@@ -7,7 +7,7 @@ toujours par rendre deux montants. Ce test empêche qu'un second chemin
 revienne sans qu'on le voie.
 """
 
-from fastapi.routing import APIRoute
+from backend.tests.routes_effectives import routes_api
 
 #: Routes dont le chemin parle de calcul et qui restent légitimes : le calcul
 #: lui-même, le calcul des droits de sortie (un autre impôt, liquidé par le même
@@ -25,8 +25,8 @@ def test_post_calcul_est_le_seul_calcul():
 
     routes = {
         (methode, route.path)
-        for route in app.routes
-        if isinstance(route, APIRoute) and "calcul" in route.path.lower()
+        for route in routes_api(app)
+        if "calcul" in route.path.lower()
         for methode in route.methods
     }
     assert routes == AUTORISEES
@@ -51,8 +51,8 @@ def test_seul_le_calcul_decompte_le_quota():
 
     routes = {
         (methode, route.path): route
-        for route in app.routes
-        if isinstance(route, APIRoute) and route.path.startswith("/api/calcul")
+        for route in routes_api(app)
+        if route.path.startswith("/api/calcul")
         for methode in route.methods
     }
     assert _porte_le_quota(routes[("POST", "/api/calcul")])

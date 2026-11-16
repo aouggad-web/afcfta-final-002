@@ -1,5 +1,32 @@
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+// html2canvas-pro : même API qu'html2canvas, mais comprend les couleurs CSS
+// modernes du thème (color(), color-mix(), oklch) sur lesquelles html2canvas
+// 1.4 plantait — aucun PDF ni image ne sortait.
+import html2canvas from 'html2canvas-pro';
+import { dessinerLogo, nomSaas } from './pdfMarque';
+import { chargerPoliceArabe, estArabe, preparerArabe } from './pdfArabe';
+
+// Textes du cadre (en-tête, pied) dans les trois langues.
+const CADRE = {
+  fr: {
+    date: (d) => `Généré le ${d}`,
+    notice: 'Simulation informative des droits et taxes à l’importation',
+    footerNotice: 'Simulation informative — non opposable à l’administration douanière.',
+    page: (i, n) => `Page ${i} sur ${n}`,
+  },
+  en: {
+    date: (d) => `Generated on ${d}`,
+    notice: 'Informative simulation of import duties and taxes',
+    footerNotice: 'Informative estimate — not binding on customs administration.',
+    page: (i, n) => `Page ${i} of ${n}`,
+  },
+  ar: {
+    date: (d) => `أُنشئ في ${d}`,
+    notice: 'محاكاة إرشادية للرسوم والضرائب عند الاستيراد',
+    footerNotice: 'محاكاة إرشادية — لا يُحتج بها أمام إدارة الجمارك.',
+    page: (i, n) => `الصفحة ${i} من ${n}`,
+  },
+};
 
 /**
  * Export a DOM element to PDF
@@ -29,22 +56,38 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
       backgroundColor: '#ffffff'
     });
 
-    const imgData = canvas.toDataURL('image/png');
+    // JPEG : une capture pleine page en PNG pesait 20 à 60 Mo ; en JPEG
+    // qualité 0,85, quelques Mo, sans perte visible à l'impression.
+    const imgData = canvas.toDataURL('image/jpeg', 0.85);
     const pdf = new jsPDF({
       orientation: orientation,
       unit: 'mm',
       format: format
     });
 
+    // En arabe : police arabe, même mise en page.
+    const langue = estArabe(language) ? 'ar' : language === 'en' ? 'en' : 'fr';
+    const cadre = CADRE[langue];
+    if (langue === 'ar') {
+      await chargerPoliceArabe();
+      preparerArabe(pdf);
+    }
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
 
-    // Add header if title provided
-    let yOffset = margin;
+    // Marque du site : logo en haut à droite, nom au-dessus du titre.
+    const logo = 16;
+    dessinerLogo(pdf, pageWidth - margin - logo, margin, logo);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(9);
+    pdf.setTextColor(184, 118, 26);
+    pdf.text(nomSaas(language), margin, margin + 4);
+    pdf.setFont('helvetica', 'normal');
+    let yOffset = margin + 4;
     if (title) {
       pdf.setFontSize(18);
       pdf.setTextColor(30, 64, 175); // Blue color
-      pdf.text(title, margin, yOffset + 10);
+      pdf.text(title, margin, yOffset + 10, { maxWidth: pageWidth - 2 * margin - logo - 4 });
       yOffset += 15;
 
       if (subtitle) {
@@ -58,9 +101,7 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
       if (showDate) {
         pdf.setFontSize(10);
         pdf.setTextColor(150, 150, 150);
-        const dateText = language === 'fr' 
-          ? `Généré le ${new Date().toLocaleDateString('fr-FR')}`
-          : `Generated on ${new Date().toLocaleDateString('en-US')}`;
+        const dateText = cadre.date(new Date().toLocaleDateString(langue === 'en' ? 'en-US' : 'fr-FR'));
         pdf.text(dateText, margin, yOffset + 5);
         yOffset += 10;
       }
@@ -68,13 +109,7 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
       if (informationalNotice) {
         pdf.setFontSize(9);
         pdf.setTextColor(180, 90, 20);
-        pdf.text(
-          language === 'fr'
-            ? 'Simulation informative des droits et taxes à l’importation'
-            : 'Informative simulation of import duties and taxes',
-          margin,
-          yOffset + 5
-        );
+        pdf.text(cadre.notice, margin, yOffset + 5);
         yOffset += 8;
       }
 
@@ -83,6 +118,7 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
       pdf.line(margin, yOffset, pageWidth - margin, yOffset);
       yOffset += 5;
     }
+    yOffset = Math.max(yOffset, margin + logo + 3);
 
     // Calculate image dimensions
     const imgWidth = pageWidth - (margin * 2);
@@ -93,7 +129,7 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
 
     if (imgHeight <= availableHeight) {
       // Single page
-      pdf.addImage(imgData, 'PNG', margin, yOffset, imgWidth, imgHeight);
+      pdf.addImage(imgData, 'JPEG', margin, yOffset, imgWidth, imgHeight);
     } else {
       // Multiple pages
       let remainingHeight = imgHeight;
@@ -120,8 +156,8 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
           0, 0, canvas.width, sourceHeight
         );
 
-        const tempImgData = tempCanvas.toDataURL('image/png');
-        pdf.addImage(tempImgData, 'PNG', margin, yOffset, imgWidth, currentHeight);
+        const tempImgData = tempCanvas.toDataURL('image/jpeg', 0.85);
+        pdf.addImage(tempImgData, 'JPEG', margin, yOffset, imgWidth, currentHeight);
 
         sourceY += sourceHeight;
         remainingHeight -= currentHeight;
@@ -137,9 +173,7 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
         pdf.setFontSize(7);
         pdf.setTextColor(180, 90, 20);
         pdf.text(
-          language === 'fr'
-            ? 'Simulation informative — non opposable à l’administration douanière.'
-            : 'Informative estimate — not binding on customs administration.',
+          cadre.footerNotice,
           pageWidth / 2,
           pageHeight - 9,
           { align: 'center' }
@@ -147,9 +181,7 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
       }
       pdf.setFontSize(8);
       pdf.setTextColor(150, 150, 150);
-      const footerText = language === 'fr' 
-        ? `Page ${i} sur ${totalPages} - ZLECAf Analytics`
-        : `Page ${i} of ${totalPages} - AfCFTA Analytics`;
+      const footerText = `${cadre.page(i, totalPages)} - ${nomSaas(language)}`;
       pdf.text(footerText, pageWidth / 2, pageHeight - 5, { align: 'center' });
     }
 

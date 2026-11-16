@@ -23,6 +23,9 @@ import TradeSankeyDiagram from './TradeSankeyDiagram';
 import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
 import OpportunityPdfExport from './OpportunityPdfExport';
 import { opportunityPdfFilename } from '../../utils/opportunityPdf';
+import { pick } from '../../i18n/lang';
+import { getCountryName } from '../../utils/translations';
+import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -138,7 +141,10 @@ const OfficialRuleOfOrigin = ({ hs6Code, lang }) => {
   }, [hs6Code, lang]);
 
   const primaryRule = rule?.rules?.primary_rule;
-  if (!primaryRule || !primaryRule.explanation) return null;
+  // A row whose text states no single criterion has no generic explanation:
+  // its Appendix IV text (authoritative, in French) is shown instead.
+  const ruleText = rule?.rules?.rule_text_fr;
+  if (!primaryRule || !(primaryRule.explanation || ruleText)) return null;
 
   return (
     <div style={{
@@ -160,8 +166,16 @@ const OfficialRuleOfOrigin = ({ hs6Code, lang }) => {
         )}
       </div>
       <p style={{ fontSize: 11, color: 'var(--afcfta-muted)', lineHeight: 1.4, margin: 0 }}>
-        {primaryRule.explanation}
+        {primaryRule.explanation || (
+          <bdi lang="fr" dir="ltr" data-testid="official-rule-text">{ruleText}</bdi>
+        )}
       </p>
+      {/* Note 2.5: the printed 60 % ceiling is 55 % since 1 January 2026. */}
+      {rule.rules?.threshold_note_fr && (
+        <p style={{ fontSize: 11, color: 'var(--gold)', lineHeight: 1.4, margin: '4px 0 0' }} data-testid="official-rule-threshold-note">
+          <bdi lang="fr" dir="ltr">{rule.rules.threshold_note_fr}</bdi>
+        </p>
+      )}
     </div>
   );
 };
@@ -866,7 +880,7 @@ const ExpectedResults = ({ data, mode }) => {
 
 // ── Summary KPI Strip ─────────────────────────────────────────────────────────
 const SummaryStrip = ({ data, mode }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const opps = data?.opportunities || [];
   if (!opps.length) return null;
 
@@ -902,7 +916,7 @@ const SummaryStrip = ({ data, mode }) => {
         ? t('opportunities.aiAnalysis.verified')
         : quality === 'estimated'
         ? t('opportunities.aiAnalysis.estimated')
-        : 'Mixed',
+        : pick(i18n.language, 'Mixed', 'Mixed', 'مختلطة'),
       color: quality === 'verified' ? 'var(--green)' : 'var(--gold)',
     },
   ];
@@ -1099,8 +1113,8 @@ export default function AIAnalysis({ language = 'fr' }) {
                   <SelectValue placeholder={t('opportunities.aiAnalysis.selectCountry')} />
                 </SelectTrigger>
                 <SelectContent>
-                  {countries.map(c => (
-                    <SelectItem key={c.iso3} value={c.iso3}>{c.name}</SelectItem>
+                  {trierPays(countries, (c) => pick(lang, c.name, c.name, getCountryName(c.iso3, 'ar')), lang).map(c => (
+                    <SelectItem key={c.iso3} value={c.iso3}>{pick(lang, c.name, c.name, getCountryName(c.iso3, 'ar'))}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -1208,11 +1222,15 @@ export default function AIAnalysis({ language = 'fr' }) {
           </div>
           {data.grounding_stats && (
             <p style={{ fontSize: 12, color: 'var(--afcfta-muted)', margin: 0 }}>
-              {lang === 'fr'
-                ? `${data.grounding_stats.production_products || 0} produits de production réelle, `
-                  + `${data.grounding_stats.oec_flows || 0} flux commerciaux observés`
-                : `${data.grounding_stats.production_products || 0} real production products, `
-                  + `${data.grounding_stats.oec_flows || 0} observed trade flows`}
+              {pick(
+                lang,
+                `${data.grounding_stats.production_products || 0} produits de production réelle, `
+                  + `${data.grounding_stats.oec_flows || 0} flux commerciaux observés`,
+                `${data.grounding_stats.production_products || 0} real production products, `
+                  + `${data.grounding_stats.oec_flows || 0} observed trade flows`,
+                `${data.grounding_stats.production_products || 0} منتَجاً من الإنتاج الفعلي، `
+                  + `${data.grounding_stats.oec_flows || 0} تدفقاً تجارياً مرصوداً`,
+              )}
               {data.grounding_stats.oec_year ? ` (${data.grounding_stats.oec_year})` : ''}
             </p>
           )}
@@ -1241,7 +1259,7 @@ export default function AIAnalysis({ language = 'fr' }) {
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <OpportunityPdfExport
               language={lang}
-              getSpec={() => {
+              getSpec={(t, lang) => {
                 const fr = lang !== 'en';
                 const opps = data.opportunities || [];
                 const musd = (v) => (v ? `$${Number(v).toLocaleString(fr ? 'fr-FR' : 'en-US', { maximumFractionDigits: 1 })}M` : '—');

@@ -17,6 +17,7 @@ qu'elle vient de régénérer.
 """
 
 import os
+import re
 
 import pytest  # noqa: F401
 import yaml
@@ -61,7 +62,8 @@ def test_the_commit_step_stages_the_sources_with_the_dataset():
 def test_nothing_is_committed_when_the_run_did_not_ask_for_it():
     # Contrôle miroir : élargir ce qui est committé ne doit pas transformer un
     # passage de vérification en écriture sur la branche.
-    commit_steps = [s for s in _steps() if "git push" in s.get("run", "")]
+    # `git_auth push` : le jeton n'est passé qu'aux commandes qui poussent.
+    commit_steps = [s for s in _steps() if re.search(r"\bgit(?:_auth)? push\b", s.get("run", ""))]
     assert commit_steps, "aucune étape de push trouvée"
     for step in commit_steps:
         assert "inputs.commit_data" in str(step.get("if", "")), step.get("name")

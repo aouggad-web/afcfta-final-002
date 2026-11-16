@@ -20,13 +20,19 @@ const FINE = / /g;
 // Du plus grand au plus petit ; la clé est celle que l'appelant utilise
 // pour fixer ses décimales.
 const UNITES = [
-  { cle: 'T', div: 1e12, fr: 'Md', en: 'T' },
-  { cle: 'B', div: 1e9, fr: 'Md', en: 'B' },
-  { cle: 'M', div: 1e6, fr: 'M', en: 'M' },
-  { cle: 'K', div: 1e3, fr: 'k', en: 'K' },
+  { cle: 'T', div: 1e12, fr: 'Md', en: 'T', ar: 'مليار' },
+  { cle: 'B', div: 1e9, fr: 'Md', en: 'B', ar: 'مليار' },
+  { cle: 'M', div: 1e6, fr: 'M', en: 'M', ar: 'مليون' },
+  { cle: 'K', div: 1e3, fr: 'k', en: 'K', ar: 'ألف' },
 ];
 
 export const estAnglais = (langue) => String(langue || 'fr').toLowerCase().startsWith('en');
+
+// Arabe : la forme française (virgule décimale, chiffres latins), avec
+// l'unité en toutes lettres — « 235 مليار $ » se lit de droite à gauche
+// dans le bon ordre, là où « Md » se retrouverait inversé (« $ Md 235 »).
+const estArabe = (langue) => String(langue || '').toLowerCase().startsWith('ar');
+const libelle = (u, langue) => (estArabe(langue) ? u.ar : u.fr);
 
 /** Chiffres seuls, décimales fixes : chiffres(4.25, 'fr', 1) → « 4,3 ». */
 export function chiffres(n, langue = 'fr', decimales = 0) {
@@ -47,9 +53,9 @@ function decoupe(valeur, decimales, langue) {
   if (!u) return { n: valeur, d: decimales.u ?? 0, fr: '', en: '' };
   if (u.cle === 'T' && !estAnglais(langue)) {
     // Billions comptés en milliards : 3 décimales de moins, même valeur.
-    return { n: valeur / 1e9, d: Math.max(0, decimales.T - 3), fr: 'Md', en: 'T' };
+    return { n: valeur / 1e9, d: Math.max(0, decimales.T - 3), fr: libelle(u, langue), en: 'T' };
   }
-  return { n: valeur / u.div, d: decimales[u.cle], fr: u.fr, en: u.en };
+  return { n: valeur / u.div, d: decimales[u.cle], fr: libelle(u, langue), en: u.en };
 }
 
 /**
@@ -92,7 +98,10 @@ export function montant(valeur, langue = 'fr', maxDecimales = 0) {
   return estAnglais(langue) ? `$${n}` : `${n}${NBSP}$`;
 }
 
-const unite = (cle) => UNITES.find((x) => x.cle === cle) || { fr: '', en: '' };
+const unite = (cle, langue) => {
+  const u = UNITES.find((x) => x.cle === cle);
+  return u ? { fr: libelle(u, langue), en: u.en } : { fr: '', en: '' };
+};
 
 /**
  * Montant dans une unité imposée, pour une valeur déjà exprimée en
@@ -107,7 +116,7 @@ const unite = (cle) => UNITES.find((x) => x.cle === cle) || { fr: '', en: '' };
  * → « $1,234.5M ».
  */
 export function montantUnite(n, cle, langue = 'fr', decimales, { max = false } = {}) {
-  const u = unite(cle);
+  const u = unite(cle, langue);
   if (estAnglais(langue)) {
     if (max) return `$${nombre(n, 'en', decimales)}${u.en}`;
     return `$${decimales == null ? n : Number(n).toFixed(decimales)}${u.en}`;
@@ -121,7 +130,7 @@ export function montantUnite(n, cle, langue = 'fr', decimales, { max = false } =
  * → « 47,4 M » ; en anglais → « 47.4M ».
  */
 export function nombreUnite(n, cle, langue = 'fr', decimales = 0) {
-  const u = unite(cle);
+  const u = unite(cle, langue);
   if (estAnglais(langue)) return `${Number(n).toFixed(decimales)}${u.en}`;
   return u.fr ? `${chiffres(n, 'fr', decimales)}${NBSP}${u.fr}` : chiffres(n, 'fr', decimales);
 }

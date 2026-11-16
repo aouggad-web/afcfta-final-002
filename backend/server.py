@@ -18,7 +18,7 @@ if str(_backend_dir) not in sys.path:
 # Ensure the repository root is on sys.path as well: backend services import the
 # top-level ``engine`` package (legal overrides, customs calculation), which is a
 # sibling of ``backend/`` and therefore invisible when the server is started with
-# ``cd backend && uvicorn server:app`` (start.sh, scripts/start.sh, .replit).
+# ``cd backend && uvicorn server:app`` (start.sh, scripts/start.sh).
 #
 # Appended rather than inserted, deliberately. Position is irrelevant to
 # resolving ``engine``: neither ``engine/`` nor ``backend/engine/`` carries an
@@ -55,14 +55,13 @@ logging.config.dictConfig(build_logging_config(os.environ.get("LOG_LEVEL", "INFO
 logger = logging.getLogger(__name__)
 
 import auth as _auth_module
-from cors_config import resolve_cors_origin_regex, resolve_cors_origins
+from cors_config import resolve_cors_origins
 from entitlement_guard import set_database as set_entitlement_guard_db
 
 # Import routes module for modular endpoint registration
 from routes import register_routes
 from routes.admin_keys import router as admin_keys_router
 from routes.contact import set_database as set_contact_db
-from routes.substitution import register_routes as register_substitution_routes
 from routes.user_auth import set_database as set_user_auth_db
 
 # Billing en défaut mou UNIQUEMENT quand la dépendance externe `stripe` manque
@@ -131,7 +130,7 @@ app = FastAPI(
     ),
     contact={
         "name": "AfCFTA Trade Calculator Support",
-        "url": "https://afcfta.trade",
+        "url": "https://www.afcfta-zlecaf.com",
     },
     license_info={
         "name": "MIT",
@@ -152,46 +151,47 @@ app = FastAPI(
     ],
 )
 
-# CORS middleware — origins controlled via ALLOWED_ORIGINS env variable, plus
-# a regex covering Emergent preview subdomains (see cors_config.py for why).
+# CORS middleware — origines exactes : ALLOWED_ORIGINS, FRONTEND_URL et la
+# seule URL de préversion de ce pod (voir cors_config.py).
 _cors_origins = resolve_cors_origins(os.environ)
-_allow_origin_regex = resolve_cors_origin_regex(os.environ)
 
-# Security middlewares (optional)
-try:
-    from middlewares import CSRFMiddleware, RateLimitMiddleware, SecurityHeadersMiddleware
+# Middlewares de sécurité (CSP, CSRF, limitation de débit) : import obligatoire.
+# Un déploiement partiel doit échouer au démarrage plutôt que servir l'API sans
+# protection (constat M10 de l'audit de sécurité).
+from middlewares import CSRFMiddleware, RateLimitMiddleware, SecurityHeadersMiddleware
+from middlewares.access_log import AccessLogMiddleware
 
-    app.add_middleware(SecurityHeadersMiddleware)
-    app.add_middleware(
-        CSRFMiddleware,
-        exempt_paths=[
-            "/api/docs",
-            "/api/openapi.json",
-            "/api/redoc",
-            "/api/health",
-            "/api/",
-            # Webhooks paiement : appels serveur-à-serveur signés, sans cookie
-            # ni jeton CSRF — authentifiés par leur propre signature.
-            "/api/billing/webhook",
-            "/api/billing/chargily/webhook",
-        ],
-    )
-    # Quotas et liste d'exemptions : voir backend/middlewares/rate_limiter.py.
-    # Pilotables par RATE_LIMIT_* (dont RATE_LIMIT_ENABLED pour couper vite).
-    app.add_middleware(RateLimitMiddleware)
-    logger.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
-except ImportError as e:
-    logger.warning(f"Security middlewares not loaded: {e}")
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(
+    CSRFMiddleware,
+    exempt_paths=[
+        "/api/docs",
+        "/api/openapi.json",
+        "/api/redoc",
+        "/api/health",
+        "/api/",
+        # Webhooks paiement : appels serveur-à-serveur signés, sans cookie
+        # ni jeton CSRF — authentifiés par leur propre signature.
+        "/api/billing/webhook",
+        "/api/billing/chargily/webhook",
+    ],
+)
+# Quotas et liste d'exemptions : voir backend/middlewares/rate_limiter.py.
+# Pilotables par RATE_LIMIT_* (dont RATE_LIMIT_ENABLED pour couper vite).
+app.add_middleware(RateLimitMiddleware)
+logger.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_cors_origins,
-    allow_origin_regex=_allow_origin_regex,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization", "X-CSRF-Token", "X-Requested-With"],
     expose_headers=["X-CSRF-Token"],
 )
+# Ajouté en dernier, donc le plus à l'extérieur : une ligne par requête, y
+# compris les réponses des middlewares ci-dessus (point 17 de l'audit).
+app.add_middleware(AccessLogMiddleware)
 
 # API Router with /api prefix
 api_router = APIRouter(prefix="/api")
@@ -418,13 +418,22 @@ async def startup_load_tariff_data():
     except Exception as e:
         logger.warning(f"Exchange rate scheduler startup failed: {e}")
 
+    # Contrôle horaire des crons, sur le pod Emergent seulement (point 17).
+    try:
+        import surveillance_crons
+
+        surveillance_crons.demarrer()
+    except Exception as e:
+        logger.warning(f"Cron monitoring startup failed: {e}")
+
 
 # =============================================================================
 # REGISTER ALL ROUTES
 # =============================================================================
 
+# Le routeur de substitution est inclus par register_routes, avec le contrôle
+# d'abonnement de l'onglet Opportunités : ne pas le réinclure ici.
 register_routes(api_router)
-register_substitution_routes(api_router)
 api_router.include_router(admin_keys_router, tags=["Admin: API Keys"])
 
 # Include the router in the main app

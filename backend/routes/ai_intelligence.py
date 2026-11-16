@@ -79,8 +79,8 @@ async def get_investment_score(request: InvestmentScoreRequest):
         )
         return score.to_dict()
     except Exception as exc:
-        logger.error(f"Investment score error: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Investment score error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.post("/recommendations")
@@ -104,8 +104,8 @@ async def get_recommendations(request: RecommendationRequest):
             "user_profile": user_profile,
         }
     except Exception as exc:
-        logger.error(f"Recommendations error: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Recommendations error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.post("/predict-trade-flows")
@@ -124,8 +124,8 @@ async def predict_trade_flows(request: TradeFlowRequest):
         )
         return prediction.to_dict()
     except Exception as exc:
-        logger.error(f"Trade flow prediction error: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Trade flow prediction error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/risk-assessment/{country}")
@@ -142,8 +142,8 @@ async def get_risk_assessment(
         engine = _engine()
         return engine.assess_risk(country.upper(), sector, investment_size)
     except Exception as exc:
-        logger.error(f"Risk assessment error: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Risk assessment error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.post("/bulk-score")
@@ -169,8 +169,8 @@ async def bulk_investment_score(request: BulkScoreRequest):
             "scores": results,
         }
     except Exception as exc:
-        logger.error(f"Bulk score error: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
+        logger.error(f"Bulk score error: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/scoring-algorithm")

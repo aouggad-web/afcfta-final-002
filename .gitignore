@@ -111,6 +111,9 @@ backend/data/geoip/
 .emergent/cron/webhook-crons
 .emergent/cron/applied.hash
 .emergent/markers/
+# Anomalie de crons retenue par backend/surveillance_crons.py : propre au pod,
+# elle doit survivre au `git clean -fd` de sync_emergent.sh.
+/.afcfta-crons-anomalie
 
 # Notes de session locales au pod (identifiants de test, URLs de preview
 # éphémères) — jamais de valeur en clair depuis le nettoyage du 2026-08-14,
