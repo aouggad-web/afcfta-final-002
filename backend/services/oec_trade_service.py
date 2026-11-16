@@ -308,7 +308,11 @@ class OECTradeService:
             except httpx.HTTPStatusError as e:
                 # Status code only — avoid echoing the URL (which carries the token).
                 logger.error(f"OEC API error: {e.response.status_code}")
-                self._register_circuit_failure()
+                # Audit D4 : seule une panne de l'OEC (5xx) ou un refus pour
+                # débit (429) ouvre le disjoncteur ; une requête refusée pour
+                # ses paramètres (4xx) ne coupe pas l'OEC pour tout le monde.
+                if e.response.status_code >= 500 or e.response.status_code == 429:
+                    self._register_circuit_failure()
                 return _on_failure(f"OEC API error {e.response.status_code}")
             except Exception as e:
                 # La trace passe par RedactingFormatter (log_redaction), qui

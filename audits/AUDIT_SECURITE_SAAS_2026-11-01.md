@@ -78,9 +78,9 @@ La liste compte 30 constats ; le décompte du §1 en annonçait 29 (9 faibles ou
 |---|---|---|---|
 | D1 | Politique d'accès du 09/11 non appliquée par le serveur hors des cinq modules | Élevé | ✅ corrigé (lot 1) |
 | D2 | Appels réseau bloquants dans la boucle d'événements, déclenchables sans compte | Élevé | ✅ corrigé (lot 2) |
-| D3 | « Denial of wallet » sur les clés tierces (Comtrade, OEC, change) | Moyen | code confirmé ; dépend des clés présentes sur le pod |
-| D4 | Disjoncteur OEC déclenchable sans compte ; cache disque sans plafond | Moyen | plausible |
-| D5 | `POST /api/insurance/quotes/batch` sans borne | Moyen | confirmé, mesuré |
+| D3 | « Denial of wallet » sur les clés tierces (Comtrade, OEC, change) | Moyen | change ✅ (lot 2) ; reste rattaché aux routes sans appelant (décision du 16/11) |
+| D4 | Disjoncteur OEC déclenchable sans compte ; cache disque sans plafond | Moyen | ✅ corrigé (lot 3) |
+| D5 | `POST /api/insurance/quotes/batch` sans borne | Moyen | ✅ corrigé (lot 3) |
 | D6 | Quota Découverte vidé par les listes générales et des paramètres non comptés | Faible | confirmé |
 | D7 | `/api/marches/apercu` collecte les sources pendant la requête | Faible | ✅ corrigé (lot 2) |
 | D8 | 110 routes sans appelant exposées | Faible | confirmé |
@@ -111,13 +111,13 @@ La liste compte 30 constats ; le décompte du §1 en annonçait 29 (9 faibles ou
   - Reste : `/api/exchange-rates/historical/{date}` (sans appelant) interroge encore Frankfurter pour une date absente de l'historique, dans un thread (route synchrone), borné par le plafond de débit.
 
 #### D3 — « Denial of wallet » sur les clés tierces 🟡 Moyen
-`/api/oec/trade-series/sources/{iso3}` sonde chaque source « même désactivée » (`services/trade_series_orchestrator.py:362-379`), soit plusieurs appels Comtrade à clé par requête et sans cache. `/api/ai/product/{hs}?lang=…` (valeur libre dans la clé de cache, `real_product_service.py:91` ; cache non borné) coûte 16 appels OEC par absence en cache ; `/api/ai/compare`, `/api/ai/oec-health` et `/api/reports/oec-health` appellent l'OEC à chaque requête. Change : un appel à clé (CurrencyFreaks, Fixer) à chaque changement de base (D2). Les routes Anthropic restent derrière `check_ai_quota`. **Correctif** : routes `/api/ai/*` restantes et `trade-series/sources` démontées ou réservées à l'admin, `lang` limité à `fr|en`.
+`/api/oec/trade-series/sources/{iso3}` sonde chaque source « même désactivée » (`services/trade_series_orchestrator.py:362-379`), soit plusieurs appels Comtrade à clé par requête et sans cache. `/api/ai/product/{hs}?lang=…` (valeur libre dans la clé de cache, `real_product_service.py:91` ; cache non borné) coûte 16 appels OEC par absence en cache ; `/api/ai/compare`, `/api/ai/oec-health` et `/api/reports/oec-health` appellent l'OEC à chaque requête. Change : un appel à clé (CurrencyFreaks, Fixer) à chaque changement de base (D2). Les routes Anthropic restent derrière `check_ai_quota`. **Correctif** : routes `/api/ai/*` restantes et `trade-series/sources` démontées ou réservées à l'admin, `lang` limité à `fr|en`. **Décision de l'exploitant (16/11/2026)** : traité avec les routes sans appelant. Vérifié : les cinq routes `/api/ai/*` n'ont plus d'appelant (l'onglet `OpportunitiesTab` qui les appelait n'est plus monté), pas plus que la sonde `trade-series/sources`, désormais derrière la garde Statistiques (compte requis). La part « change » de ce constat est corrigée par le lot 2 (plus aucun appel aux fournisseurs payants sur une requête). Reste `/api/reports/oec-health`, diagnostic public par décision du 03/11 : un appel OEC par requête, à mettre en cache avec ce lot.
 
 #### D4 — Disjoncteur OEC déclenchable sans compte 🟡 Moyen (plausible)
-`hs_level` est libre sur `/oec/exports`, `/oec/imports` et `/oec/bilateral` (`oec.py:57, 71, 184`) et passe tel quel à l'OEC (`oec_trade_service.py:390, 438, 822`) ; trois erreurs de suite ouvrent le disjoncteur 30 s pour toute l'application (`:308-312`), Statistiques et Opportunités compris. `year` non borné fait rater le cache à volonté ; le cache disque n'a pas de plafond (`cache_service.py:125-137`). **Correctif** : `Literal["HS2","HS4","HS6"]`, années bornées, disjoncteur réservé aux 5xx et délais dépassés.
+`hs_level` est libre sur `/oec/exports`, `/oec/imports` et `/oec/bilateral` (`oec.py:57, 71, 184`) et passe tel quel à l'OEC (`oec_trade_service.py:390, 438, 822`) ; trois erreurs de suite ouvrent le disjoncteur 30 s pour toute l'application (`:308-312`), Statistiques et Opportunités compris. `year` non borné fait rater le cache à volonté ; le cache disque n'a pas de plafond (`cache_service.py:125-137`). **Correctif** : `Literal["HS2","HS4","HS6"]`, années bornées, disjoncteur réservé aux 5xx et délais dépassés. ✅ **Corrigé (lot 3, PR #809)** : `hs_level` en liste fermée (HS2, HS4, HS6) sur les cinq routes qui le prennent ; années bornées à celles du cube HS Rev. 2017 (2018 à 2024) sur les neuf routes qui en prennent une ; limites entre 1 et 500 ; sens du flux en liste fermée ; hors bornes, 422 sans appel à l'OEC. Disjoncteur : seuls une panne (5xx), un refus pour débit (429), un délai dépassé ou une erreur réseau l'ouvrent ; une requête refusée pour ses paramètres (4xx) ne coupe plus l'OEC pour tout le monde. Les valeurs de l'onglet Statistiques (2018 à 2024, HS2 à HS6, limites de 20 à 40) passent. Le plafond du cache disque n'a pas été ajouté : années, niveaux et limites bornés, l'espace des clés l'est aussi. 16 tests, 13 en échec sur l'ancien code (les 3 autres vérifient ce qui doit rester : panne et débit ouvrent le disjoncteur).
 
 #### D5 — Lot de devis d'assurance sans borne 🟡 Moyen
-`product_types` n'a ni limite ni dédoublonnage (`insurance.py:53, 211-238`, `async`) et l'application ne plafonne pas la taille des corps : 50 000 éléments (850 Ko) coûtent 0,29 s de boucle d'événements par requête, sans compte. **Correctif** : `max_length=10`, doublons retirés.
+`product_types` n'a ni limite ni dédoublonnage (`insurance.py:53, 211-238`, `async`) et l'application ne plafonne pas la taille des corps : 50 000 éléments (850 Ko) coûtent 0,29 s de boucle d'événements par requête, sans compte. **Correctif** : `max_length=10`, doublons retirés. ✅ **Corrigé (lot 3, PR #809)** : au plus 10 types de produits (422 au-delà, sans calcul), doublons retirés ; l'écran Assurance, qui n'envoie pas de liste, est inchangé. Désormais derrière la garde Finance (lot 1). 3 tests.
 
 #### D6 — Quota Découverte contourné par les listes 🟢 Faible
 Seuls les paramètres de la liste blanche sont comptés (`entitlement_guard.py:356-376`) ; `/production/agriculture` sans filtre rend tous les enregistrements (`production.py:478-491`), de même `mining`, `manufacturing`, `macro`, `logistics/ports`, `air/airports` ; `locode`, `isic_code`, `indicator_code`, `sector` ne sont pas comptés. **Correctif** : exiger un filtre en Découverte sur les listes par pays (ou compter un terme « * ») et compléter `_PARAMETRES_DE_RECHERCHE`.
@@ -149,9 +149,9 @@ Le lien brut du flux est conservé (`etl/news_aggregator.py:1316`) et affiché t
 |---|---|---|---|
 | 1 | ✅ Gardes de module sur les routeurs ouverts (Finance et consultation du tarif comptées) ; test d'inventaire des routes en CI | D1 | fait |
 | 2 | ✅ Taux de change sans réseau sur les requêtes, OMC en thread et borné, marchés rafraîchis en tâche de fond | D2, D7 | fait |
-| 3 | Bornes : `hs_level`, années, `lang`, lot d'assurance ; routes OEC et `/api/ai/*` restantes réservées à l'admin ; disjoncteur sur 5xx seulement | D3, D4, D5 | S |
+| 3 | ✅ Bornes OEC (`hs_level`, années, limites, flux), disjoncteur sur 5xx et 429, lot d'assurance borné ; D3 rattaché aux routes sans appelant | D4, D5 | fait |
 | 4 | Quota Découverte : listes filtrées, paramètres comptés | D6, D11 | S |
-| 5 | Surface morte démontée ou réservée à l'admin | D8 | S |
+| 5 | Surface morte démontée ou réservée à l'admin, avec les routes qui consomment des clés (`/api/ai/*`, sonde `trade-series/sources`, cache de `/api/reports/oec-health`) et `/api/exchange-rates/historical` | D8, D3 | S, sur décision de l'exploitant |
 | 6 | `soupsieve` ≥ 4.0.0, audit hebdomadaire des dépendances en CI, liens d'actualités en http(s) | D9, D10 | XS |
 | 7 | Réveil de la préproduction et contrôle passif après synchronisation ; vérifications §6.5 et §6.6 | — | XS |
 

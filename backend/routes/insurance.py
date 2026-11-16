@@ -50,8 +50,11 @@ class BatchQuoteRequest(BaseModel):
 
     country_code: str = Field(..., description="ISO2 code of buyer/counterparty country")
     contract_value_usd: float = Field(..., description="Transaction value in USD", gt=0)
+    # Audit D5 (16/11/2026) : liste bornée (doublons retirés à l'usage) ; une
+    # liste sans limite faisait autant de calculs, dans la boucle d'événements.
     product_types: Optional[List[str]] = Field(
         None,
+        max_length=10,
         description="Product types to compare; defaults to export_credit, political_risk, "
         "performance_guarantee",
     )
@@ -222,7 +225,9 @@ async def get_batch_quotes(request: BatchQuoteRequest):
         product_types = None
         if request.product_types:
             try:
-                product_types = [InsuranceProductType(p) for p in request.product_types]
+                product_types = list(
+                    dict.fromkeys(InsuranceProductType(p) for p in request.product_types)
+                )
             except ValueError:
                 valid = [p.value for p in InsuranceProductType]
                 raise HTTPException(

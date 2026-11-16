@@ -4,6 +4,8 @@ Observatory of Economic Complexity integration
 MISE À JOUR 2025: Données 2024 maintenant disponibles
 """
 
+from typing import Literal
+
 from fastapi import APIRouter, HTTPException, Query
 from services.oec_trade_service import (
     AFRICAN_COUNTRIES_OEC,
@@ -15,6 +17,13 @@ from services.oec_trade_service import (
 from services.trade_series_orchestrator import get_trade_series_resilient, probe_sources
 
 router = APIRouter(prefix="/oec")
+
+# Audit D4 (16/11/2026) : paramètres bornés avant tout appel à l'OEC. Libres,
+# un niveau SH ou une année invalides faisaient échouer la requête OEC (trois
+# échecs de suite ouvraient le disjoncteur pour toute l'application) et une
+# année arbitraire faisait rater le cache à volonté.
+NiveauSH = Literal["HS2", "HS4", "HS6"]
+PREMIERE_ANNEE = 2018  # cube HS Rev. 2017 (oec_service.get_available_years)
 
 
 @router.get("/countries")
@@ -53,9 +62,9 @@ async def get_oec_available_years():
 @router.get("/exports/{country_iso3}")
 async def get_oec_country_exports(
     country_iso3: str,
-    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
-    hs_level: str = Query("HS4"),
-    limit: int = Query(50),
+    year: int = Query(DEFAULT_YEAR, ge=PREMIERE_ANNEE, le=DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    hs_level: NiveauSH = Query("HS4"),
+    limit: int = Query(50, ge=1, le=500),
 ):
     """Exportations d'un pays africain par produit HS"""
     result = await oec_service.get_exports_by_product(country_iso3, year, hs_level, limit)
@@ -67,9 +76,9 @@ async def get_oec_country_exports(
 @router.get("/imports/{country_iso3}")
 async def get_oec_country_imports(
     country_iso3: str,
-    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
-    hs_level: str = Query("HS4"),
-    limit: int = Query(50),
+    year: int = Query(DEFAULT_YEAR, ge=PREMIERE_ANNEE, le=DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    hs_level: NiveauSH = Query("HS4"),
+    limit: int = Query(50, ge=1, le=500),
 ):
     """Importations d'un pays africain par produit HS"""
     result = await oec_service.get_imports_by_product(country_iso3, year, hs_level, limit)
@@ -81,9 +90,9 @@ async def get_oec_country_imports(
 @router.get("/product/{hs_code}")
 async def get_oec_product_trade(
     hs_code: str,
-    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
-    trade_flow: str = Query("exports"),
-    limit: int = Query(50),
+    year: int = Query(DEFAULT_YEAR, ge=PREMIERE_ANNEE, le=DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    trade_flow: Literal["exports", "imports"] = Query("exports"),
+    limit: int = Query(50, ge=1, le=500),
 ):
     """Statistiques commerciales mondiales pour un code HS"""
     result = await oec_service.get_trade_by_hs_code(hs_code, year, trade_flow, limit)
@@ -95,8 +104,8 @@ async def get_oec_product_trade(
 @router.get("/product/{hs_code}/africa")
 async def get_oec_african_exporters(
     hs_code: str,
-    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
-    limit: int = Query(20),
+    year: int = Query(DEFAULT_YEAR, ge=PREMIERE_ANNEE, le=DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    limit: int = Query(20, ge=1, le=500),
 ):
     """Top exportateurs africains pour un produit HS"""
     result = await oec_service.get_top_african_exporters(hs_code, year, limit)
@@ -111,7 +120,10 @@ async def get_country_hs6_history(
     hs_code: str,
     years: int = Query(5, ge=2, le=10, description="Nombre d'années (2 à 10)"),
     end_year: int = Query(
-        DEFAULT_YEAR, description="Dernière année (par défaut: dernière disponible)"
+        DEFAULT_YEAR,
+        ge=PREMIERE_ANNEE,
+        le=DEFAULT_YEAR,
+        description="Dernière année (par défaut: dernière disponible)",
     ),
     level: str = Query(None, description="Niveau SH: hs2 | hs4 | hs6 (auto si non fourni)"),
 ):
@@ -180,9 +192,9 @@ async def get_trade_series_sources_health(
 async def get_oec_bilateral_trade(
     exporter_iso3: str,
     importer_iso3: str,
-    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
-    hs_level: str = Query("HS4"),
-    limit: int = Query(50),
+    year: int = Query(DEFAULT_YEAR, ge=PREMIERE_ANNEE, le=DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    hs_level: NiveauSH = Query("HS4"),
+    limit: int = Query(50, ge=1, le=500),
 ):
     """Commerce bilatéral entre deux pays africains"""
     result = await oec_service.get_bilateral_trade(
@@ -196,9 +208,9 @@ async def get_oec_bilateral_trade(
 @router.get("/rca/{country_iso3}")
 async def get_oec_rca(
     country_iso3: str,
-    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
-    hs_level: str = Query("HS4", description="Niveau SH: HS2, HS4 ou HS6"),
-    limit: int = Query(30, description="Nombre de produits à retourner"),
+    year: int = Query(DEFAULT_YEAR, ge=PREMIERE_ANNEE, le=DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    hs_level: NiveauSH = Query("HS4", description="Niveau SH: HS2, HS4 ou HS6"),
+    limit: int = Query(30, ge=1, le=500, description="Nombre de produits à retourner"),
 ):
     """
     Avantage comparatif révélé (RCA, indice de Balassa) d'un pays africain,
@@ -216,9 +228,9 @@ async def get_oec_rca(
 async def get_oec_trade_complementarity(
     exporter_iso3: str,
     importer_iso3: str,
-    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
-    hs_level: str = Query("HS4", description="Niveau SH: HS2, HS4 ou HS6"),
-    limit: int = Query(20, description="Nombre d'opportunités à retourner"),
+    year: int = Query(DEFAULT_YEAR, ge=PREMIERE_ANNEE, le=DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    hs_level: NiveauSH = Query("HS4", description="Niveau SH: HS2, HS4 ou HS6"),
+    limit: int = Query(20, ge=1, le=500, description="Nombre d'opportunités à retourner"),
 ):
     """
     Indice de complémentarité commerciale (TCI) entre un exportateur et un
@@ -235,7 +247,7 @@ async def get_oec_trade_complementarity(
 
 @router.get("/africa/totals")
 async def get_oec_africa_totals(
-    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)")
+    year: int = Query(DEFAULT_YEAR, ge=PREMIERE_ANNEE, le=DEFAULT_YEAR, description="Année (2024 par défaut)")
 ):
     """
     Récupère les totaux d'exportations et d'importations pour toute l'Afrique.

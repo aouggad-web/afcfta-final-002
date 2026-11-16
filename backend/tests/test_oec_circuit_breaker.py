@@ -136,3 +136,50 @@ def test_circuit_cooldown_constant_is_reasonable():
     # look "down" for too long once it recovers.
     assert 5 <= _CIRCUIT_COOLDOWN_SECONDS <= 300
     assert _CIRCUIT_FAILURE_THRESHOLD >= 2
+
+
+# ── Audit D4 (16/11/2026) : seuls 5xx et 429 ouvrent le disjoncteur ─────────
+
+
+def _statut(code):
+    def _reponse():
+        requete = httpx.Request("GET", "https://api.oec.world/tesseract/data.jsonrecords")
+
+        class _Reponse:
+            def raise_for_status(self):
+                raise httpx.HTTPStatusError(
+                    f"HTTP {code}", request=requete, response=httpx.Response(code, request=requete)
+                )
+
+            def json(self):
+                return {}
+
+        return _Reponse()
+
+    return _reponse
+
+
+@pytest.mark.parametrize("code", [400, 404, 422])
+def test_une_requete_refusee_pour_ses_parametres_n_ouvre_pas_le_disjoncteur(monkeypatch, code):
+    """Un niveau SH ou un code invalide (réponse 4xx) ne doit pas couper l'OEC
+    pour toute l'application : trois requêtes de ce genre suffisaient."""
+    svc = OECTradeService()
+    calls = _patch_client(monkeypatch, [_statut(code)])
+
+    for _ in range(_CIRCUIT_FAILURE_THRESHOLD + 2):
+        assert "error" in run(svc._make_request({"cube": "hs17"}))
+
+    assert svc._circuit_consecutive_failures == 0
+    assert calls["n"] == _CIRCUIT_FAILURE_THRESHOLD + 2  # chaque appel a joint l'OEC
+
+
+@pytest.mark.parametrize("code", [500, 503, 429])
+def test_une_panne_ou_un_refus_pour_debit_ouvre_le_disjoncteur(monkeypatch, code):
+    svc = OECTradeService()
+    _patch_client(monkeypatch, [_statut(code)])
+
+    for _ in range(_CIRCUIT_FAILURE_THRESHOLD):
+        run(svc._make_request({"cube": "hs17"}))
+
+    assert svc._circuit_consecutive_failures >= _CIRCUIT_FAILURE_THRESHOLD
+    assert "circuit ouvert" in run(svc._make_request({"cube": "hs17"}))["error"]
