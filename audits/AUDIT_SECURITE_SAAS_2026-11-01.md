@@ -77,12 +77,12 @@ La liste compte 30 constats ; le décompte du §1 en annonçait 29 (9 faibles ou
 | # | Constat | Gravité | Statut |
 |---|---|---|---|
 | D1 | Politique d'accès du 09/11 non appliquée par le serveur hors des cinq modules | Élevé | ✅ corrigé (lot 1) |
-| D2 | Appels réseau bloquants dans la boucle d'événements, déclenchables sans compte | Élevé | code confirmé, durées non mesurées |
+| D2 | Appels réseau bloquants dans la boucle d'événements, déclenchables sans compte | Élevé | ✅ corrigé (lot 2) |
 | D3 | « Denial of wallet » sur les clés tierces (Comtrade, OEC, change) | Moyen | code confirmé ; dépend des clés présentes sur le pod |
 | D4 | Disjoncteur OEC déclenchable sans compte ; cache disque sans plafond | Moyen | plausible |
 | D5 | `POST /api/insurance/quotes/batch` sans borne | Moyen | confirmé, mesuré |
 | D6 | Quota Découverte vidé par les listes générales et des paramètres non comptés | Faible | confirmé |
-| D7 | `/api/marches/apercu` collecte les sources pendant la requête | Faible | confirmé |
+| D7 | `/api/marches/apercu` collecte les sources pendant la requête | Faible | ✅ corrigé (lot 2) |
 | D8 | 110 routes sans appelant exposées | Faible | confirmé |
 | D9 | `soupsieve` 2.10 vulnérable ; aucune veille des dépendances en CI | Faible | confirmé, non atteignable |
 | D10 | Liens d'actualités sans contrôle de schéma | Info | confirmé |
@@ -105,6 +105,10 @@ La liste compte 30 constats ; le décompte du §1 en annonçait 29 (9 faibles ou
 - **Taux de change.** `/api/banking/forex/rates?base=…` et `/forex/convert` sont `async` (`banking.py:295-316, 375-404`) mais appellent `get_latest`, synchrone, qui relance toute la collecte dès que la devise de base change (`exchange_rates/service.py:186-189`) : quatre fournisseurs et les banques centrales par `requests.get` (délais de 10 à 15 s), une base inconnue n'étant jamais mise en cache. Un seul client sous le plafond de débit fige l'unique worker ; l'alternance normale EUR et USD suffit à relancer la collecte.
 - **OMC.** `/api/trade-data/wto/…` (`trade_data.py:51-55`) appelle `wto_service.py:41` : délai de 30 s, 5 essais, `time.sleep`. Aucun écran n'appelle ces routes.
 - **Correctif.** Démonter `trade_data` ; liste blanche ISO 4217 et `run_in_threadpool` (ou rafraîchissement en tâche de fond) pour les taux.
+- ✅ **Corrigé (lot 2, PR #809).**
+  - **Taux de change** (`exchange_rates/service.py`) : un seul jeu de taux en cache, en USD, rafraîchi par la tâche planifiée existante (toutes les 4 heures, en thread) ; les autres devises de base en sont dérivées par calcul. Aucune requête n'appelle plus le réseau : ni un changement de base (l'écran des banques alternait USD et EUR, soit deux collectes complètes par page, dans la boucle d'événements), ni une devise inconnue (qui interrogeait les banques centrales à chaque requête), ni un code invalide. Cache vide au démarrage : premier remplissage en tâche de fond, 503 en attendant. Collectes sérialisées par un verrou. 9 tests, tous en échec sur l'ancien code.
+  - **OMC** (`routes/trade_data.py`) : appels dans un thread, au plus deux à la fois, 503 immédiat au-delà, pour ne pas épuiser les threads qui servent aussi les fichiers ; codes pays (ISO3), code SH et nombre de pays comparés (10 au plus) validés avant tout appel. Le démontage de ces routes sans appelant reste à trancher (décision 3). 7 tests, tous en échec sur l'ancien code.
+  - Reste : `/api/exchange-rates/historical/{date}` (sans appelant) interroge encore Frankfurter pour une date absente de l'historique, dans un thread (route synchrone), borné par le plafond de débit.
 
 #### D3 — « Denial of wallet » sur les clés tierces 🟡 Moyen
 `/api/oec/trade-series/sources/{iso3}` sonde chaque source « même désactivée » (`services/trade_series_orchestrator.py:362-379`), soit plusieurs appels Comtrade à clé par requête et sans cache. `/api/ai/product/{hs}?lang=…` (valeur libre dans la clé de cache, `real_product_service.py:91` ; cache non borné) coûte 16 appels OEC par absence en cache ; `/api/ai/compare`, `/api/ai/oec-health` et `/api/reports/oec-health` appellent l'OEC à chaque requête. Change : un appel à clé (CurrencyFreaks, Fixer) à chaque changement de base (D2). Les routes Anthropic restent derrière `check_ai_quota`. **Correctif** : routes `/api/ai/*` restantes et `trade-series/sources` démontées ou réservées à l'admin, `lang` limité à `fr|en`.
@@ -119,7 +123,7 @@ La liste compte 30 constats ; le décompte du §1 en annonçait 29 (9 faibles ou
 Seuls les paramètres de la liste blanche sont comptés (`entitlement_guard.py:356-376`) ; `/production/agriculture` sans filtre rend tous les enregistrements (`production.py:478-491`), de même `mining`, `manufacturing`, `macro`, `logistics/ports`, `air/airports` ; `locode`, `isic_code`, `indicator_code`, `sector` ne sont pas comptés. **Correctif** : exiger un filtre en Découverte sur les listes par pays (ou compter un terme « * ») et compléter `_PARAMETRES_DE_RECHERCHE`.
 
 #### D7 — Collecte des marchés pendant la requête 🟢 Faible
-`etl/marches_africains.py:392-420` tient un verrou global pendant le `gather` des 7 sources (20 s chacune) ; le classeur de la Banque mondiale est lu par openpyxl dans la boucle d'événements (`:117-148, 334`) ; réponses lues sans plafond, redirections suivies (`:316-332`). Quand une bourse est lente, chaque visiteur du tableau de bord public attend. **Correctif** : servir le cache et rafraîchir en tâche de fond, `asyncio.to_thread` pour le classeur, taille plafonnée, `allow_redirects=False`.
+`etl/marches_africains.py:392-420` tient un verrou global pendant le `gather` des 7 sources (20 s chacune) ; le classeur de la Banque mondiale est lu par openpyxl dans la boucle d'événements (`:117-148, 334`) ; réponses lues sans plafond, redirections suivies (`:316-332`). Quand une bourse est lente, chaque visiteur du tableau de bord public attend. **Correctif** : servir le cache et rafraîchir en tâche de fond, `asyncio.to_thread` pour le classeur, taille plafonnée, `allow_redirects=False`. ✅ **Corrigé (lot 2, PR #809)** : collecte en tâche de fond, une seule à la fois, sans tenir le verrou pendant les téléchargements ; un visiteur attend au plus 3 s puis reçoit les dernières valeurs connues ; classeur lu par `asyncio.to_thread` ; réponse annoncée au-delà de 20 Mo refusée. Redirections conservées : les hôtes sont constants et le lien du classeur est contraint à `thedocs.worldbank.org`. 3 tests, tous en échec sur l'ancien code.
 
 #### D8 — Surface morte 🟢 Faible
 110 routes n'ont aucun appelant : `/regulatory-qa` (rapports qualité internes), `/ai-intelligence`, `/regions`, `/mining`, `/investment`, `/exchange-rates`, `/currencies`, `/enhanced-search`, `/mobile`, `/trade-data`, l'ancienne table `/tariffs` et `/hs6-tariffs` (320 SH6 codés en dur), entre autres. **Correctif** : les démonter ou les réserver à l'admin, après avoir vérifié qu'aucun client de l'API n'en dépend.
@@ -144,7 +148,7 @@ Le lien brut du flux est conservé (`etl/news_aggregator.py:1316`) et affiché t
 | Lot | Contenu | Constats | Effort |
 |---|---|---|---|
 | 1 | ✅ Gardes de module sur les routeurs ouverts (Finance et consultation du tarif comptées) ; test d'inventaire des routes en CI | D1 | fait |
-| 2 | Taux de change hors de la boucle d'événements, `trade_data` démonté, marchés rafraîchis en tâche de fond | D2, D7 | S |
+| 2 | ✅ Taux de change sans réseau sur les requêtes, OMC en thread et borné, marchés rafraîchis en tâche de fond | D2, D7 | fait |
 | 3 | Bornes : `hs_level`, années, `lang`, lot d'assurance ; routes OEC et `/api/ai/*` restantes réservées à l'admin ; disjoncteur sur 5xx seulement | D3, D4, D5 | S |
 | 4 | Quota Découverte : listes filtrées, paramètres comptés | D6, D11 | S |
 | 5 | Surface morte démontée ou réservée à l'admin | D8 | S |
