@@ -37,7 +37,7 @@ import logging
 import logging.config
 
 from dotenv import load_dotenv
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter, FastAPI, HTTPException
 from motor.motor_asyncio import AsyncIOMotorClient
 from starlette.middleware.cors import CORSMiddleware
 
@@ -461,6 +461,11 @@ if build_dir.exists() and (build_dir / "index.html").exists():
 
     @app.get("/{full_path:path}")
     async def serve_react(full_path: str):
+        # Un chemin /api/... inconnu (par exemple /api/docs, fermé en
+        # production) répond 404, pas la page de l'application : contrôle de
+        # l'exploitation du 16/11/2026.
+        if full_path == "api" or full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="Not Found")
         file_path = resolve_frontend_file(build_dir, full_path)
         if file_path is not None:
             return FileResponse(str(file_path))

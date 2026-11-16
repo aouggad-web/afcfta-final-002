@@ -74,6 +74,11 @@ export const ENTETES_COMMUNS = {
   // requêtes sans Referer.
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'geolocation=(), camera=(), microphone=()',
+  // Même valeur que le backend (middlewares/security_headers.py). Contrôle de
+  // l'exploitation du 16/11/2026 : les pages servies par `vite preview` n'en
+  // avaient pas. Un navigateur ignore cet en-tête reçu en http (RFC 6797,
+  // §8.1) : le développement local en http n'est pas touché.
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
 };
 
 function typeDeContenu(res, args) {

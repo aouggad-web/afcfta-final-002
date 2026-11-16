@@ -86,6 +86,7 @@ it('documents HTML seulement : pas de CSP sur les scripts, ni sur le service wor
   res.writeHead(200, { 'Content-Type': 'text/javascript' });
   expect(res.entetes['content-security-policy']).toBeUndefined();
   expect(res.entetes['x-content-type-options']).toBe('nosniff');
+  expect(res.entetes['strict-transport-security']).toBe('max-age=31536000; includeSubDomains');
   expect(res.entetes['referrer-policy']).toBe('strict-origin-when-cross-origin');
 });
 

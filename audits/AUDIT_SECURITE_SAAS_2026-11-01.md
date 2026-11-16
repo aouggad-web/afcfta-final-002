@@ -153,6 +153,31 @@ Le lien brut du flux est conservé (`etl/news_aggregator.py:1316`) et affiché t
 
 **Décisions de l'exploitant (16/11/2026)** : quota Découverte pour Finance ; consultation du tarif comptée comme une recherche ; routes sans appelant tranchées plus tard (aucun client de l'API à ce jour). Avant l'ouverture commerciale, un test d'intrusion externe, mené par un tiers sur la préproduction, compléterait cet audit.
 
+### 0.5 Contrôle de l'exploitation (16/11/2026, lecture seule)
+
+| Domaine | Constat | État | Qui agit |
+|---|---|---|---|
+| Supabase `afcfta-preprod` (seul projet, celui de la CSP) | Advisor sécurité : protection contre les mots de passe divulgués désactivée | ⚠️ | exploitant : Authentication › Providers › Email (offre Pro) |
+| Supabase | Advisor performance sans alerte ; schéma `public` sans table ; extensions par défaut, `pg_graphql` absent | ✅ | — (activer la RLS dès la première table) |
+| Supabase | Journaux Auth sur 24 h : 3 connexions, 1 échec, aucune rafale ; redémarrage d'Auth le 16/11 à 18 h 20 UTC | ✅ / ❓ | exploitant : confirmer être à l'origine du redémarrage |
+| Supabase | Redirect URLs, Site URL, limites de débit, CAPTCHA non lisibles avec les outils disponibles | ❓ | exploitant : https seulement, aucun joker |
+| Supabase | Les comptes réels sont dans un projet nommé « preprod » | ⚠️ | exploitant : renommer, ou projet de production distinct |
+| GitHub | Dépôt privé ; `main` protégée par le ruleset « Protéger main » (PR, 4 checks, ni force-push ni suppression, aucun contournement) | ✅ | — |
+| GitHub | Le check `frontend-build` n'est rattaché à aucune source | ⚠️ | exploitant : Settings › Rules, épingler sur GitHub Actions |
+| GitHub | Branche `Main` (majuscule) non protégée à côté de `main` | ⚠️ | exploitant : la supprimer si elle ne sert pas |
+| GitHub | Secret scanning indisponible (Advanced Security non activé) ; dernier commit balayé localement : valeurs d'exemple seulement ; historique non balayé | ❓ | exploitant : activer Secret Protection, ou gitleaks en CI (lot 6) |
+| DNS | Apex et `www` derrière Cloudflare ; MX Zoho ; SPF `include:zoho.com ~all` ; DKIM `resend` et `zmail` présents | ✅ | — |
+| DNS | DMARC `p=quarantine` | ✅ | exploitant : `p=reject` après 2 à 4 semaines de rapports propres |
+| DNS | Aucun enregistrement CAA ; DNSSEC absent | ⚠️ | exploitant : Cloudflare › DNS (CAA `pki.goog`, `letsencrypt.org` ; DNSSEC puis DS chez le registraire) |
+| TLS | Certificat Google Trust Services (Universal SSL, apex et `*.`) jusqu'au 08/01/2027 ; redirections http → https et apex → www en 301 | ✅ | exploitant : vérifier Minimum TLS 1.2 |
+| Vitrine (GitHub Pages) | Ni HSTS, ni CSP, ni X-Frame-Options, ni nosniff, ni Referrer-Policy (GitHub Pages ne permet pas d'en ajouter) | ⚠️ | exploitant : Cloudflare › HSTS et Transform Rules › Response Headers |
+| Préproduction | `/api/health` 200, HSTS, CSP à nonce ; cookie `__Host-csrf_token` `Secure` ; CORS refuse une origine étrangère ; `/api/statistics/unctad` 401 sans compte | ✅ | — |
+| Préproduction | Pages de l'interface (`vite preview`) sans HSTS | ✅ corrigé | code (PR #809) : HSTS dans `frontend/securite/entetes.js` |
+| Préproduction | `/api/docs` et `/api/openapi.json` rendaient la page de l'application (200), sans schéma | ✅ corrigé | code (PR #809) : 404 pour tout chemin `/api/...` inconnu (`serve_react`), test `test_api_inconnue_404.py` |
+| Préproduction | `/api/banking/countries` et `/api/consultation/DZA/recherche` ouverts sans compte | ✅ corrigé (D1) | en ligne après la synchronisation de la PR #809 |
+
+**Actions de l'exploitant, dans l'ordre :** (1) Cloudflare : HSTS et en-têtes de réponse de la vitrine ; (2) Supabase : protection contre les mots de passe divulgués, relecture des Redirect URLs et du Site URL, confirmation du redémarrage d'Auth ; (3) Cloudflare : DNSSEC, CAA, Minimum TLS 1.2 ; (4) GitHub : épingler `frontend-build` sur GitHub Actions, supprimer la branche `Main` ; (5) Resend : état « Verified », puis DMARC en `p=reject` ; (6) nom ou séparation du projet Supabase de production.
+
 
 ---
 
