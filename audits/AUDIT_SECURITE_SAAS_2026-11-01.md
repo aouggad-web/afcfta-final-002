@@ -31,7 +31,7 @@ La liste compte 30 constats ; le décompte du §1 en annonçait 29 (9 faibles ou
 | C2 | Jeton OEC journalisé | Moyen (reclassé) | ✅ Corrigé | PR #750 ; journaux d'uvicorn masqués depuis le 06/11 |
 | M1 | Chaîne CI | Moyen | ✅ Corrigé ; exception acceptée : `cleanup-branches.yml` (manuel) | PR #768, #770, chaîne CI du 06/11 ; `DATA_BOT_TOKEN` en place |
 | M2 | `.dockerignore` | Moyen | ✅ Corrigé | PR #771 |
-| M3 | Dépendances vulnérables | Moyen | ✅ Corrigé ; nouvelle alerte sur `soupsieve`, voir D-DEP | PR #770 |
+| M3 | Dépendances vulnérables | Moyen | ✅ Corrigé ; nouvelle alerte sur `soupsieve`, voir D9 | PR #770 |
 | M4 | Verrouillage de compte par e-mail | Moyen | ✅ Corrigé | PR #765 |
 | M5 | Injection de formules CSV/Excel | Moyen | ✅ Corrigé | PR #765, complément du 06/11 |
 | M6 | Client Supabase par défaut | Moyen | ✅ Corrigé ; vérification exploitant en attente (§6.5) | PR #773, #774 ; Supabase actif depuis le 05/11 |
@@ -51,7 +51,7 @@ La liste compte 30 constats ; le décompte du §1 en annonçait 29 (9 faibles ou
 | INFO-9 | Clé admin en `localStorage` | Info | ✅ Corrigé | composant supprimé le 06/11 |
 | INFO-10 | Hygiène des lockfiles | Info | ⚠️ Partiel : restent les empreintes (`--require-hashes`) et les dépendances indirectes de la racine et des workflows | PR #770, 06/11 |
 
-**Bilan :** 28 constats corrigés ou clos, 2 partiels acceptés (M7, INFO-10), aucun constat critique ou élevé ouvert. Les quatre phases du plan (§8) sont réalisées.
+**Bilan :** 28 constats corrigés ou clos, 2 partiels acceptés (M7, INFO-10), aucun constat critique ou élevé d'origine encore ouvert. Les quatre phases du plan (§8) sont réalisées. L'audit différentiel (§0.3) ouvre 11 constats nouveaux, dont 2 élevés (D1, D2), traités par la phase 4 (§0.4).
 
 ### 0.2 Risques résiduels acceptés
 
@@ -68,7 +68,84 @@ La liste compte 30 constats ; le décompte du §1 en annonçait 29 (9 faibles ou
 
 **Vérifications encore à faire par l'exploitant** (§6) : « Redirect URLs » de Supabase sans joker sur un domaine partagé (§6.5) ; utilisateur des programmes supervisord (§6.6) ; « Save to GitHub » d'Emergent vers une branche dédiée (C3).
 
-<!-- 0.3 AUDIT DIFFERENTIEL -->
+### 0.3 Audit différentiel des PR #790 à #807 (7 au 16 novembre)
+
+**Périmètre.** PDF (#790, #792, #793), actualités (#794), tableau de bord de direction et marchés (#795, #797), accès Découverte (#798, #799), règles d'origine (#800, #803, #804), comparateur multimodal (#802), calculateur (#807). L'énumération des routes ne montre qu'une route nouvelle (`GET /api/marches/apercu`, publique pour le tableau de bord) et 87 routes passées à `require_module_consultation`. Aucun workflow n'a changé.
+
+**Décision de référence.** Exploitant, 09/11/2026 (PR #798) : sans compte, seul le tableau de bord d'accueil (et le contact) est consultable ; un compte Découverte a 2 calculs et 5 recherches par mois et par module ; Opportunités et Outils restent payants. L'interface applique cette règle à tous les onglets (`frontend/src/components/acces/AccesModules.jsx`, `App.js`). Le serveur ne l'applique qu'aux cinq modules de consultation, au calculateur et à Opportunités : `require_auth` laisse passer tout appel anonyme tant que `PUBLIC_DATA_ACCESS` vaut `true`, ce qui est le cas en production (`backend/auth.py:93-94`). Sur les 172 routes protégées par `require_auth` seul, 7 servent légitimement l'accueil, 55 servent des écrans réservés aux comptes, 110 n'ont aucun appelant dans l'interface.
+
+| # | Constat | Gravité | Statut |
+|---|---|---|---|
+| D1 | Politique d'accès du 09/11 non appliquée par le serveur hors des cinq modules | Élevé | confirmé |
+| D2 | Appels réseau bloquants dans la boucle d'événements, déclenchables sans compte | Élevé | code confirmé, durées non mesurées |
+| D3 | « Denial of wallet » sur les clés tierces (Comtrade, OEC, change) | Moyen | code confirmé ; dépend des clés présentes sur le pod |
+| D4 | Disjoncteur OEC déclenchable sans compte ; cache disque sans plafond | Moyen | plausible |
+| D5 | `POST /api/insurance/quotes/batch` sans borne | Moyen | confirmé, mesuré |
+| D6 | Quota Découverte vidé par les listes générales et des paramètres non comptés | Faible | confirmé |
+| D7 | `/api/marches/apercu` collecte les sources pendant la requête | Faible | confirmé |
+| D8 | 110 routes sans appelant exposées | Faible | confirmé |
+| D9 | `soupsieve` 2.10 vulnérable ; aucune veille des dépendances en CI | Faible | confirmé, non atteignable |
+| D10 | Liens d'actualités sans contrôle de schéma | Info | confirmé |
+| D11 | Une recherche Découverte est comptée sur un simple GET | Info | plausible |
+
+#### D1 — Politique d'accès non appliquée par le serveur 🟠 Élevé
+- **Tarif et préférence sans compte.** `/api/consultation` (`routes/__init__.py:495`), `/api/dismantlement` (`:604`) et `/api/regulatory-engine` (`:510`) n'ont que `_auth`. `consultation.py:36-86, 162-233` rend le droit de douane de chaque ligne nationale lu au socle ; `dismantlement.py:49-103` rend le taux ZLECAf en vigueur ; `regulatory_engine.py:74` rend les totaux NPF et ZLECAf (si les fichiers canoniques du moteur sont présents sur le pod). Un anonyme aspire un tarif national complet (`recherche?q=<SH4>&limit=100`, environ 1 300 requêtes, une dizaine de minutes par pays au plafond de débit) alors que le calculateur exige un compte et que la formule Découverte en limite l'usage à 2 calculs par mois. Chaque requête recharge au besoin un fichier du socle (cache de 4 pays ; 0,41 s mesuré pour `GHA.json`, 46 Mo) : c'est le reste d'E2, désormais anonyme.
+- **Statistiques et Production hors garde.** `/api/oec` (`:427`), `/api/countries/economic-indicators` (`:439`) et `/api/faostat` (`:476`) n'ont que `_auth`, alors que les écrans RCA, Complémentarité, Marge préférentielle, Historique SH6 et Production › Agriculture les appellent (`statistics/RcaAnalysis.jsx:138`, `TradeComplementarity.jsx:133`, `PreferenceMargin.jsx:140`, `production/ProductionAgriculture.jsx:67`). Un compte Découverte n'est compté que sur `/api/statistics`.
+- **Finance entièrement ouverte.** `/api/banking` (26 routes) et `/api/insurance` (6) n'ont que `_auth` (`:571-582`) ; « finance » n'est pas un module de `entitlements.py`.
+- **Correctif.** Une dépendance « compte requis » (la branche anonyme de `require_module_consultation`) sur `consultation`, `dismantlement`, `regulatory-engine`, `banking`, `insurance` et la couverture du calculateur ; `oec` et `dismantlement` sous la garde Statistiques, `faostat` sous la garde Production. **Décisions de l'exploitant** : quota Découverte pour Finance ; comptage des consultations du tarif. Un test d'inventaire doit ensuite classer chaque route (publique, compte, module, payant, admin) et faire échouer la CI sur toute route nouvelle non classée.
+
+#### D2 — Appels réseau bloquants, sans compte 🟠 Élevé
+- **Taux de change.** `/api/banking/forex/rates?base=…` et `/forex/convert` sont `async` (`banking.py:295-316, 375-404`) mais appellent `get_latest`, synchrone, qui relance toute la collecte dès que la devise de base change (`exchange_rates/service.py:186-189`) : quatre fournisseurs et les banques centrales par `requests.get` (délais de 10 à 15 s), une base inconnue n'étant jamais mise en cache. Un seul client sous le plafond de débit fige l'unique worker ; l'alternance normale EUR et USD suffit à relancer la collecte.
+- **OMC.** `/api/trade-data/wto/…` (`trade_data.py:51-55`) appelle `wto_service.py:41` : délai de 30 s, 5 essais, `time.sleep`. Aucun écran n'appelle ces routes.
+- **Correctif.** Démonter `trade_data` ; liste blanche ISO 4217 et `run_in_threadpool` (ou rafraîchissement en tâche de fond) pour les taux.
+
+#### D3 — « Denial of wallet » sur les clés tierces 🟡 Moyen
+`/api/oec/trade-series/sources/{iso3}` sonde chaque source « même désactivée » (`services/trade_series_orchestrator.py:362-379`), soit plusieurs appels Comtrade à clé par requête et sans cache. `/api/ai/product/{hs}?lang=…` (valeur libre dans la clé de cache, `real_product_service.py:91` ; cache non borné) coûte 16 appels OEC par absence en cache ; `/api/ai/compare`, `/api/ai/oec-health` et `/api/reports/oec-health` appellent l'OEC à chaque requête. Change : un appel à clé (CurrencyFreaks, Fixer) à chaque changement de base (D2). Les routes Anthropic restent derrière `check_ai_quota`. **Correctif** : routes `/api/ai/*` restantes et `trade-series/sources` démontées ou réservées à l'admin, `lang` limité à `fr|en`.
+
+#### D4 — Disjoncteur OEC déclenchable sans compte 🟡 Moyen (plausible)
+`hs_level` est libre sur `/oec/exports`, `/oec/imports` et `/oec/bilateral` (`oec.py:57, 71, 184`) et passe tel quel à l'OEC (`oec_trade_service.py:390, 438, 822`) ; trois erreurs de suite ouvrent le disjoncteur 30 s pour toute l'application (`:308-312`), Statistiques et Opportunités compris. `year` non borné fait rater le cache à volonté ; le cache disque n'a pas de plafond (`cache_service.py:125-137`). **Correctif** : `Literal["HS2","HS4","HS6"]`, années bornées, disjoncteur réservé aux 5xx et délais dépassés.
+
+#### D5 — Lot de devis d'assurance sans borne 🟡 Moyen
+`product_types` n'a ni limite ni dédoublonnage (`insurance.py:53, 211-238`, `async`) et l'application ne plafonne pas la taille des corps : 50 000 éléments (850 Ko) coûtent 0,29 s de boucle d'événements par requête, sans compte. **Correctif** : `max_length=10`, doublons retirés.
+
+#### D6 — Quota Découverte contourné par les listes 🟢 Faible
+Seuls les paramètres de la liste blanche sont comptés (`entitlement_guard.py:356-376`) ; `/production/agriculture` sans filtre rend tous les enregistrements (`production.py:478-491`), de même `mining`, `manufacturing`, `macro`, `logistics/ports`, `air/airports` ; `locode`, `isic_code`, `indicator_code`, `sector` ne sont pas comptés. **Correctif** : exiger un filtre en Découverte sur les listes par pays (ou compter un terme « * ») et compléter `_PARAMETRES_DE_RECHERCHE`.
+
+#### D7 — Collecte des marchés pendant la requête 🟢 Faible
+`etl/marches_africains.py:392-420` tient un verrou global pendant le `gather` des 7 sources (20 s chacune) ; le classeur de la Banque mondiale est lu par openpyxl dans la boucle d'événements (`:117-148, 334`) ; réponses lues sans plafond, redirections suivies (`:316-332`). Quand une bourse est lente, chaque visiteur du tableau de bord public attend. **Correctif** : servir le cache et rafraîchir en tâche de fond, `asyncio.to_thread` pour le classeur, taille plafonnée, `allow_redirects=False`.
+
+#### D8 — Surface morte 🟢 Faible
+110 routes n'ont aucun appelant : `/regulatory-qa` (rapports qualité internes), `/ai-intelligence`, `/regions`, `/mining`, `/investment`, `/exchange-rates`, `/currencies`, `/enhanced-search`, `/mobile`, `/trade-data`, l'ancienne table `/tariffs` et `/hs6-tariffs` (320 SH6 codés en dur), entre autres. **Correctif** : les démonter ou les réserver à l'admin, après avoir vérifié qu'aucun client de l'API n'en dépend.
+
+#### D9 — Dépendances 🟢 Faible
+`pip-audit` : `soupsieve` 2.10 (`backend/requirements.txt`), CVE-2026-126190/-126191/-126193 (complexité polynomiale, récursion, retour arrière exponentiel). Non atteignable : aucun code n'utilise `select()` ni `select_one()`. `yarn audit` (production) : 0. Aucune tâche de la CI ne rejoue `pip-audit` ni `yarn audit` : cette alerte n'a été vue qu'à la main. **Correctif** : `soupsieve` ≥ 4.0.0 ; audit hebdomadaire des dépendances en CI.
+
+#### D10 — Liens d'actualités 🔵 Info
+Le lien brut du flux est conservé (`etl/news_aggregator.py:1316`) et affiché tel quel (`TableauManager.jsx:287, 533, 561`) ; feedparser garde les liens `javascript:`. Neutralisé aujourd'hui par React (URL `javascript:` bloquées) et la CSP à nonce, alors que #794 ajoute 8 flux lus en direct. **Correctif** : n'accepter que http(s) dans `fetch_feed`, comme `routes/news.py:275-281` pour les articles manuels.
+
+#### D11 — Recherche comptée sur un GET 🔵 Info (plausible)
+`entitlement_guard.py:471-474` compte une recherche sur un GET ; une image sur un site tiers pourrait consommer les recherches d'un compte Découverte. Les cookies partitionnés (`user_auth.py:161-176`) l'empêchent en pratique. Option : ne compter que si `Sec-Fetch-Site` vaut `same-origin` ou `same-site`.
+
+**Vérifié et sain.** Aucun `str(exc)` renvoyé (M9 tient) ; appels sortants vers des hôtes constants, TLS vérifié, délais posés, classeur de la Banque mondiale contraint à `https://thedocs.worldbank.org/` ; images servies par le proxy `/api/news/images/` (adresses publiques, 3 Mo, redirections revérifiées) ; aucun `innerHTML` ni `dangerouslySetInnerHTML` ajouté ; PDF en texte par jsPDF, polices et logo locaux, `html2canvas-pro` 2.5.0 épinglé avec empreinte ; `compter_recherches` sûr en concurrence et fermé en cas d'erreur de base (503) ; intercepteur axios sans boucle ; retrait d'articles derrière `require_redacteur` et CSRF ; comparateur multimodal et règles d'origine sur données statiques.
+
+**Tests et scanners.** Tests de sécurité du backend (accès, CSRF, CORS, exports, formules, masquage des journaux, Supabase, chemins statiques, sessions) : 487 réussis, 11 ignorés ; anti-déni de service, démarrage refusé sans protections et erreurs sans détail : 15 réussis. Suite complète en local : 5 188 réussis ; 13 échecs, tous sur les fichiers du socle COD et ZAF construits localement le 04/11 avant la dernière mise à jour du manifeste (artefacts non versionnés) ; la CI, qui reconstruit le socle, fait foi. `bandit` sur les fichiers modifiés : un MD5 servant d'identifiant d'article (`news_aggregator.py:1206`), sans rôle de sécurité.
+
+**Préproduction.** Le 16/11, `git-sync-41.preview.emergentagent.com` ne servait qu'une copie statique (`emergent-preview-state=static`, API en 404) : contrôles en ligne reportés au réveil du pod.
+
+### 0.4 Étape suivante : phase 4
+
+| Lot | Contenu | Constats | Effort |
+|---|---|---|---|
+| 1 | Garde « compte requis » et gardes de module sur les routeurs ouverts ; test d'inventaire des routes en CI | D1 | S/M |
+| 2 | Taux de change hors de la boucle d'événements, `trade_data` démonté, marchés rafraîchis en tâche de fond | D2, D7 | S |
+| 3 | Bornes : `hs_level`, années, `lang`, lot d'assurance ; routes OEC et `/api/ai/*` restantes réservées à l'admin ; disjoncteur sur 5xx seulement | D3, D4, D5 | S |
+| 4 | Quota Découverte : listes filtrées, paramètres comptés | D6, D11 | S |
+| 5 | Surface morte démontée ou réservée à l'admin | D8 | S |
+| 6 | `soupsieve` ≥ 4.0.0, audit hebdomadaire des dépendances en CI, liens d'actualités en http(s) | D9, D10 | XS |
+| 7 | Réveil de la préproduction et contrôle passif après synchronisation ; vérifications §6.5 et §6.6 | — | XS |
+
+**Décisions attendues de l'exploitant** : accès des comptes Découverte au module Finance (quota ou non) ; comptage des consultations du tarif ; maintien éventuel de routes sans appelant pour des clients de l'API. Avant l'ouverture commerciale, un test d'intrusion externe, mené par un tiers sur la préproduction, compléterait cet audit.
+
 
 ---
 
