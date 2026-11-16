@@ -25,6 +25,7 @@ from auth import require_admin, require_auth
 from entitlement_guard import (
     require_api_access,
     require_calculations_quota,
+    require_login,
     require_module_consultation,
     require_module_enabled,
     require_paid_module,
@@ -68,6 +69,10 @@ _stats_entitlement = [Depends(require_module_consultation("stats", chemins_publi
 _production_entitlement = [Depends(require_module_consultation("production"))]
 _logistics_entitlement = [Depends(require_module_consultation("logistics"))]
 _roo_entitlement = [Depends(require_module_consultation("roo"))]
+_reglementation_entitlement = [Depends(require_module_consultation("reglementation"))]
+# Routes que le calculateur partage (positions, recherche, formalités, pays servis) :
+# connexion exigée, rien de décompté — leur usage est compté au calcul ou à la fiche.
+_calculator_login = [Depends(require_login("calculator"))]
 _tools_entitlement = [Depends(require_module_enabled("tools"))]
 # Module Opportunités réservé aux abonnements payants (audit E1).
 _reports_entitlement = [Depends(require_paid_module("reports"))]
@@ -152,6 +157,7 @@ from .calcul import router_couverture as calcul_couverture_router
 from .calcul_export import router as calcul_export_router
 from .calcul_export import router_couverture as calcul_export_couverture_router
 from .consultation import router as consultation_router
+from .consultation import router_reglementation as consultation_reglementation_router
 
 try:
     from .gemini_analysis import router as gemini_router
@@ -481,7 +487,9 @@ def register_routes(api_router: APIRouter):
         tags=["Calculateur"],
         dependencies=_auth + _calculator_entitlement,
     )
-    api_router.include_router(calcul_couverture_router, tags=["Calculateur"], dependencies=_auth)
+    api_router.include_router(
+        calcul_couverture_router, tags=["Calculateur"], dependencies=_auth + _calculator_login
+    )
     # Droits de sortie : même socle, même moteur, et le même quota de calculs.
     api_router.include_router(
         calcul_export_router,
@@ -492,7 +500,17 @@ def register_routes(api_router: APIRouter):
         calcul_export_couverture_router, tags=["Calculateur export"], dependencies=_auth
     )
     # Consultation du tarif, servie par le même socle que le calcul.
-    api_router.include_router(consultation_router, tags=["Consultation"], dependencies=_auth)
+    api_router.include_router(
+        consultation_router, tags=["Consultation"], dependencies=_auth + _calculator_login
+    )
+    # La fiche d'une position (onglet Réglementation) : module de consultation,
+    # connexion puis 5 recherches par mois en formule Découverte (décision du 09/11/2026).
+    # Les routes ci-dessus, que le calculateur partage, restent hors quota.
+    api_router.include_router(
+        consultation_reglementation_router,
+        tags=["Consultation"],
+        dependencies=_auth + _reglementation_entitlement,
+    )
     if TRADE_DATA_AVAILABLE:
         api_router.include_router(
             trade_data_router, tags=["Trade Data Sources"], dependencies=_auth

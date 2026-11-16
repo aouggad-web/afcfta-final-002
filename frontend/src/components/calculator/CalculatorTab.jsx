@@ -98,6 +98,10 @@ const getFlag = (code) => {
 
 const countryFlags = countryFlagsISO2;
 
+// Valeur du sélecteur d'origine de l'onglet Réglementation quand aucune origine n'est choisie
+// (un Select ne porte pas de valeur vide).
+const AUCUNE_ORIGINE = '__aucune__';
+
 export default function CalculatorTab({ countries, language = 'fr' }) {
   const [originCountry, setOriginCountry] = useState('');
   const [destinationCountry, setDestinationCountry] = useState('');
@@ -134,6 +138,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const { label: hsCodeSimpleLabel } = useHsLabel(hsCode, language);
   const [regulatorySelectedPos, setRegulatorySelectedPos] = useState(null);
   const [regulatorySelectedPosDesc, setRegulatorySelectedPosDesc] = useState(null);
+  // Pays dont le socle — la source du calcul et de l'onglet Réglementation —
+  // sert au moins une position : seuls ils portent le badge « Disponible ».
+  // Sans réponse, aucun badge : jamais un badge affirmé sans preuve.
+  const [paysServis, setPaysServis] = useState([]);
+  useEffect(() => {
+    axios.get(`${API}/calcul/pays`).then(({ data }) => {
+      setPaysServis(Object.entries(data.pays || {}).filter(([, p]) => p.positions > 0).map(([iso3]) => iso3));
+    }).catch(() => {});
+  }, []);
+  // Une position choisie dans l'onglet Réglementation vaut pour un pays et un code
+  // SH. En changer — ici, ou dans l'onglet Calculateur, qui partage ces deux
+  // champs — la rend caduque : la garder servirait la fiche d'un autre tarif, ou
+  // d'un autre produit, sous la désignation de la première.
+  useEffect(() => {
+    setRegulatorySelectedPos(null);
+    setRegulatorySelectedPosDesc(null);
+  }, [hsCode, destinationCountry]);
   const [searchResetKey, setSearchResetKey] = useState(0);
   const [kenyaRemission, setKenyaRemission] = useState({
     answer: 'unknown',
@@ -2330,7 +2351,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               
               <CardContent className="relative space-y-6">
                 {/* Champs de recherche */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-2">
                     <Label className="text-[var(--text)] font-medium">
                       {pick(language, 'Pays de destination', 'Destination Country', 'بلد المقصد')}
@@ -2344,16 +2365,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       </SelectTrigger>
                       <SelectContent>
                         {countries.map((country) => {
-                          // Tous les 54 pays AfCFTA avec données canoniques du Moteur Réglementaire v3
-                          const REGULATORY_ENGINE_COUNTRIES = [
-                            'AGO', 'BDI', 'BEN', 'BFA', 'BWA', 'CAF', 'CIV', 'CMR', 'COD', 'COG',
-                            'COM', 'CPV', 'DJI', 'DZA', 'EGY', 'ERI', 'ETH', 'GAB', 'GHA', 'GIN',
-                            'GMB', 'GNB', 'GNQ', 'KEN', 'LBR', 'LBY', 'LSO', 'MAR', 'MDG', 'MLI',
-                            'MOZ', 'MRT', 'MUS', 'MWI', 'NAM', 'NER', 'NGA', 'RWA', 'SDN', 'SEN',
-                            'SLE', 'SOM', 'SSD', 'STP', 'SWZ', 'SYC', 'TCD', 'TGO', 'TUN', 'TZA',
-                            'UGA', 'ZAF', 'ZMB', 'ZWE'
-                          ];
-                          const hasRegulatoryData = REGULATORY_ENGINE_COUNTRIES.includes(country.code);
+                          const hasRegulatoryData = paysServis.includes(country.code);
                           return (
                             <SelectItem key={country.code} value={country.code}>
                               <span className="flex items-center gap-2">
@@ -2368,6 +2380,36 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                             </SelectItem>
                           );
                         })}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-[var(--text)] font-medium">
+                      {pick(language, "Pays d'origine (facultatif)", 'Origin Country (optional)', 'بلد المنشأ (اختياري)')}
+                    </Label>
+                    <Select
+                      value={originCountry || AUCUNE_ORIGINE}
+                      onValueChange={(valeur) => setOriginCountry(valeur === AUCUNE_ORIGINE ? '' : valeur)}
+                    >
+                      <SelectTrigger
+                        data-testid="regulatory-origin-select"
+                        className="h-12 bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--gold)_30%,transparent)] transition-colors"
+                      >
+                        <SelectValue placeholder={pick(language, "Aucune : tarif seul", 'None: tariff only', 'بلا: التعريفة فقط')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value={AUCUNE_ORIGINE}>
+                          {pick(language, "Aucune : tarif seul", 'None: tariff only', 'بلا: التعريفة فقط')}
+                        </SelectItem>
+                        {countries.map((country) => (
+                          <SelectItem key={country.code} value={country.code}>
+                            <span className="flex items-center gap-2">
+                              <span className="text-lg">{getFlag(country.iso2 || country.code)}</span>
+                              <span>{country.name}</span>
+                            </span>
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -2470,6 +2512,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               <RegulatoryDetailsPanel
                 countryCode={destinationCountry}
                 hsCode={regulatorySelectedPos || hsCode}
+                originCode={originCountry}
                 language={language}
               />
             )}

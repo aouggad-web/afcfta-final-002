@@ -21,7 +21,7 @@ TIERS = ("free", "starter", "pro", "business")
 
 # Feature modules gated per tier (mirrors the app's sidebar). Each tier grants
 # or denies each module and, when granted, may cap its usage over a period.
-MODULES = ("stats", "production", "logistics", "roo", "profiles", "tools", "reports")
+MODULES = ("stats", "production", "logistics", "roo", "profiles", "reglementation", "tools", "reports")
 
 # Reset window a module quota is counted over.
 #   "day"   — rolling/calendar day, reset nightly
@@ -113,6 +113,10 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "logistics": _capped(5, "month"),
             "roo": _capped(5, "month"),
             "profiles": _capped(5, "month"),
+            # Fiche réglementaire d'une position (onglet Réglementation du
+            # calculateur) : un pays et un produit cherchés comptent chacun une
+            # recherche, comme ailleurs.
+            "reglementation": _capped(5, "month"),
             "tools": _DENIED,
             # Module Opportunités réservé aux abonnements payants (audit E1).
             "reports": _DENIED,
@@ -132,6 +136,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
             "profiles": _UNLIMITED,
+            "reglementation": _UNLIMITED,
             "tools": _capped(10, "day"),
             "reports": _capped(10, "day"),
         },
@@ -150,6 +155,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
             "profiles": _UNLIMITED,
+            "reglementation": _UNLIMITED,
             "tools": _UNLIMITED,
             "reports": _capped(30, "day"),
         },
@@ -168,6 +174,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
             "profiles": _UNLIMITED,
+            "reglementation": _UNLIMITED,
             "tools": _UNLIMITED,
             "reports": _capped(200, "day"),
         },

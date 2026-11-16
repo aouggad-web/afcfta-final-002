@@ -101,6 +101,7 @@ def test_entitlements_endpoint_lists_all_tiers_and_modules(client):
             "logistics",
             "roo",
             "profiles",
+            "reglementation",
             "tools",
             "reports",
         }
