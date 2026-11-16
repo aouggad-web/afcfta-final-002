@@ -28,6 +28,7 @@ from entitlement_guard import (
     require_module_consultation,
     require_module_enabled,
     require_paid_module,
+    termes_consultation_tarif,
 )
 from fastapi import APIRouter, Depends
 
@@ -68,6 +69,14 @@ _stats_entitlement = [Depends(require_module_consultation("stats", chemins_publi
 _production_entitlement = [Depends(require_module_consultation("production"))]
 _logistics_entitlement = [Depends(require_module_consultation("logistics"))]
 _roo_entitlement = [Depends(require_module_consultation("roo"))]
+# Décisions de l'exploitant du 16/11/2026 (audit D1) : le module Finance
+# (banques, change, assurance) suit la même règle, et la consultation du tarif
+# national (positions, droits, formalités, préférence) compte comme une
+# recherche, par produit consulté (entitlement_guard.termes_consultation_tarif).
+_finance_entitlement = [Depends(require_module_consultation("finance"))]
+_tarif_entitlement = [
+    Depends(require_module_consultation("tariffs", termes=termes_consultation_tarif))
+]
 _tools_entitlement = [Depends(require_module_enabled("tools"))]
 # Module Opportunités réservé aux abonnements payants (audit E1).
 _reports_entitlement = [Depends(require_paid_module("reports"))]
@@ -424,7 +433,8 @@ def register_routes(api_router: APIRouter):
     # All other routers require a valid API key
     if NEWS_AVAILABLE:
         api_router.include_router(news_router, tags=["News"], dependencies=_auth)
-    api_router.include_router(oec_router, tags=["OEC Trade"], dependencies=_auth)
+    # Écrans du module Statistiques (RCA, complémentarité, séries, treemap).
+    api_router.include_router(oec_router, tags=["OEC Trade"], dependencies=_auth + _stats_entitlement)
     api_router.include_router(hs_codes_router, tags=["HS Codes"], dependencies=_auth)
     api_router.include_router(
         production_router,
@@ -473,7 +483,9 @@ def register_routes(api_router: APIRouter):
     )
     if FAOSTAT_AVAILABLE:
         api_router.include_router(
-            faostat_router, tags=["FAOSTAT Production 2024"], dependencies=_auth
+            faostat_router,
+            tags=["FAOSTAT Production 2024"],
+            dependencies=_auth + _production_entitlement,
         )
     # Route unique du calculateur (socle + moteur).
     api_router.include_router(
@@ -492,7 +504,9 @@ def register_routes(api_router: APIRouter):
         calcul_export_couverture_router, tags=["Calculateur export"], dependencies=_auth
     )
     # Consultation du tarif, servie par le même socle que le calcul.
-    api_router.include_router(consultation_router, tags=["Consultation"], dependencies=_auth)
+    api_router.include_router(
+        consultation_router, tags=["Consultation"], dependencies=_auth + _tarif_entitlement
+    )
     if TRADE_DATA_AVAILABLE:
         api_router.include_router(
             trade_data_router, tags=["Trade Data Sources"], dependencies=_auth
@@ -507,7 +521,9 @@ def register_routes(api_router: APIRouter):
         )
     if REGULATORY_ENGINE_AVAILABLE:
         api_router.include_router(
-            regulatory_engine_router, tags=["Regulatory Engine v3"], dependencies=_auth
+            regulatory_engine_router,
+            tags=["Regulatory Engine v3"],
+            dependencies=_auth + _tarif_entitlement,
         )
     if REGULATORY_COMPLIANCE_AVAILABLE:
         api_router.include_router(
@@ -568,18 +584,20 @@ def register_routes(api_router: APIRouter):
             performance_router, tags=["Performance Monitoring"], dependencies=_auth
         )
     if BANKING_AVAILABLE:
-        api_router.include_router(banking_router, tags=["Banking System"], dependencies=_auth)
+        api_router.include_router(
+            banking_router, tags=["Banking System"], dependencies=_auth + _finance_entitlement
+        )
     if BANKING_ENHANCEMENTS_AVAILABLE:
         api_router.include_router(
             banking_enhancements_router,
             tags=["Enhancements"],
-            dependencies=_auth,
+            dependencies=_auth + _finance_entitlement,
         )
     if INSURANCE_AVAILABLE:
         api_router.include_router(
             insurance_router,
             tags=["Insurance"],
-            dependencies=_auth,
+            dependencies=_auth + _finance_entitlement,
         )
     # GraphQL (/api/graphql, playground, /api/graphql/schema) n'est plus servi :
     # aucun appelant dans l'application, et il exposait aux anonymes la purge
@@ -601,7 +619,10 @@ def register_routes(api_router: APIRouter):
         )
     if DISMANTLEMENT_AVAILABLE:
         api_router.include_router(
-            dismantlement_router, tags=["ZLECAf Dismantlement Schedule"], dependencies=_auth
+            dismantlement_router,
+            tags=["ZLECAf Dismantlement Schedule"],
+            # Marge préférentielle, écran du module Statistiques.
+            dependencies=_auth + _stats_entitlement,
         )
     if REPORTS_AVAILABLE:
         api_router.include_router(

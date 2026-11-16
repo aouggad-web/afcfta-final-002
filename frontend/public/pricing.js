@@ -72,6 +72,8 @@ const MODULE_LABELS = {
   logistics: 'Données logistiques (ports, corridors)',
   roo: "Règles d'origine",
   profiles: 'Profils pays',
+  finance: 'Finance (banques, change, assurance)',
+  tariffs: 'Consultation du tarif national',
   tools: 'Outils (positions tarifaires nationales, suivi de la collecte)',
   reports: 'Rapports d\'opportunités'
 };

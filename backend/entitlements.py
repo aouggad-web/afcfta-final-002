@@ -21,7 +21,9 @@ TIERS = ("free", "starter", "pro", "business")
 
 # Feature modules gated per tier (mirrors the app's sidebar). Each tier grants
 # or denies each module and, when granted, may cap its usage over a period.
-MODULES = ("stats", "production", "logistics", "roo", "profiles", "tools", "reports")
+MODULES = (
+    "stats", "production", "logistics", "roo", "profiles", "finance", "tariffs", "tools", "reports",
+)
 
 # Reset window a module quota is counted over.
 #   "day"   — rolling/calendar day, reset nightly
@@ -113,6 +115,12 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "logistics": _capped(5, "month"),
             "roo": _capped(5, "month"),
             "profiles": _capped(5, "month"),
+            # Décisions de l'exploitant du 16/11/2026 : le module Finance
+            # (banques, change, assurance) a lui aussi un quota de recherches,
+            # et chaque consultation du tarif national (positions, droits,
+            # formalités) compte comme une recherche (audit D1).
+            "finance": _capped(5, "month"),
+            "tariffs": _capped(5, "month"),
             "tools": _DENIED,
             # Module Opportunités réservé aux abonnements payants (audit E1).
             "reports": _DENIED,
@@ -132,6 +140,8 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
             "profiles": _UNLIMITED,
+            "finance": _UNLIMITED,
+            "tariffs": _UNLIMITED,
             "tools": _capped(10, "day"),
             "reports": _capped(10, "day"),
         },
@@ -150,6 +160,8 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
             "profiles": _UNLIMITED,
+            "finance": _UNLIMITED,
+            "tariffs": _UNLIMITED,
             "tools": _UNLIMITED,
             "reports": _capped(30, "day"),
         },
@@ -168,6 +180,8 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
             "profiles": _UNLIMITED,
+            "finance": _UNLIMITED,
+            "tariffs": _UNLIMITED,
             "tools": _UNLIMITED,
             "reports": _capped(200, "day"),
         },

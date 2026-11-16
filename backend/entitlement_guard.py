@@ -24,6 +24,7 @@ Wire the database before first request, same pattern as `auth.py`/`billing.py`:
 from __future__ import annotations
 
 import logging
+import re
 from typing import Optional
 
 from auth import require_auth
@@ -376,6 +377,35 @@ def termes_de_recherche(request: Request) -> list:
     return sorted(termes)[:_MAX_TERMES]
 
 
+_PARAMETRES_PRODUIT = frozenset({"hs", "hs_code", "hs6", "code", "product", "produit"})
+
+
+def _terme_produit(valeur) -> str:
+    """Un code de produit ramené à sa sous-position SH6 (les huit à douze
+    chiffres d'une ligne nationale désignent le même produit que ses six
+    premiers) ; un mot-clé, en majuscules."""
+    texte = str(valeur).strip()
+    chiffres = re.sub(r"\D", "", texte)
+    if chiffres and len(chiffres) >= len(texte.replace(".", "").replace(" ", "")):
+        return chiffres[:6]
+    return texte.upper()[:64]
+
+
+def termes_consultation_tarif(request: Request) -> list:
+    """Ce que cherche une consultation du tarif national (décision de
+    l'exploitant du 16/11/2026 : chaque consultation compte comme une
+    recherche). Le produit compte, pas le pays : les sous-positions puis les
+    formalités d'un même produit, qu'affiche le calculateur après un calcul,
+    ne font qu'une recherche ; un mot-clé nouveau en fait une."""
+    valeurs = [v for nom, v in request.path_params.items() if nom.lower() in _PARAMETRES_PRODUIT]
+    valeurs += [
+        v for nom, v in request.query_params.multi_items()
+        if nom.lower() in _PARAMETRES_PRODUIT or nom.lower() in {"q", "query", "search"}
+    ]
+    termes = {_terme_produit(v) for v in valeurs} - {""}
+    return sorted(termes)[:_MAX_TERMES]
+
+
 async def compter_recherches(user: dict, module_id: str, termes: list, access: ModuleAccess) -> bool:
     """Vrai si les `termes` tiennent dans le quota de recherches du module pour
     la période : un terme déjà cherché dans la période ne compte pas de
@@ -440,7 +470,7 @@ def _recherches_epuisees(tier: str, module_id: str, access: ModuleAccess) -> HTT
     )
 
 
-def require_module_consultation(module_id: str, *, chemins_publics: tuple = ()):
+def require_module_consultation(module_id: str, *, chemins_publics: tuple = (), termes=None):
     """Module de consultation (Statistiques, Production, Logistique, Règles
     d'origine, Profils pays), décision de l'exploitant du 09/11/2026 :
 
@@ -451,7 +481,11 @@ def require_module_consultation(module_id: str, *, chemins_publics: tuple = ()):
     - formule avec un quota de recherches (découverte : 5 par mois) : chaque
       terme nouveau (pays, produit, port…) est compté, l'ouverture du module
       et les listes générales ne le sont pas ; au-delà, 429 ;
-    - formules payantes : sans limite."""
+    - formules payantes : sans limite.
+
+    `termes` remplace l'extraction par défaut (`termes_de_recherche`) quand un
+    module compte ses recherches autrement (consultation du tarif)."""
+    extraire_termes = termes or termes_de_recherche
 
     async def _dependency(
         request: Request,
@@ -469,8 +503,8 @@ def require_module_consultation(module_id: str, *, chemins_publics: tuple = ()):
         if not access.enabled:
             raise _forbidden(ent.tier, module_id)
         if access.quota is not None:
-            termes = termes_de_recherche(request)
-            if termes and not await compter_recherches(user, module_id, termes, access):
+            termes_cherches = extraire_termes(request)
+            if termes_cherches and not await compter_recherches(user, module_id, termes_cherches, access):
                 raise _recherches_epuisees(ent.tier, module_id, access)
         return ent
 

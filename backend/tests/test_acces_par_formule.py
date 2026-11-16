@@ -329,7 +329,13 @@ def test_consultation_sans_compte_demande_la_connexion():
 @pytest.mark.parametrize(
     "chemin",
     ["/api/production/macro/DZA", "/api/logistics/ports", "/api/rules-of-origin/stats",
-     "/api/country-profile/DZA", "/api/statistics/trade-performance"],
+     "/api/country-profile/DZA", "/api/statistics/trade-performance",
+     # Routeurs trouvés ouverts par l'audit du 16/11/2026 (D1).
+     "/api/banking/countries", "/api/banking/countries/DZ/banks", "/api/insurance/countries",
+     "/api/consultation/DZA/recherche?q=8462", "/api/consultation/DZA/sous-positions/846262",
+     "/api/regulatory-engine/countries", "/api/dismantlement/preference-profile/DZA",
+     "/api/oec/countries", "/api/faostat/statistics", "/api/countries/economic-indicators",
+     "/api/countries/official-stats/MUS"],
 )
 def test_vrais_modules_fermes_sans_compte(app_api, chemin):
     reponse = _client(app_api).get(chemin)
@@ -387,6 +393,71 @@ def test_termes_de_recherche():
         "path_params": {"country_iso3": "dza"},
     })
     assert entitlement_guard.termes_de_recherche(requete) == ["0901", "CAFE", "DZA"]
+
+
+def test_termes_d_une_consultation_du_tarif():
+    """Décision du 16/11/2026 : une consultation du tarif compte comme une
+    recherche, par produit ; le pays ne compte pas."""
+    from starlette.requests import Request
+
+    def termes(chemin_params, requete=b""):
+        return entitlement_guard.termes_consultation_tarif(Request({
+            "type": "http", "method": "GET", "path": "/x", "headers": [],
+            "query_string": requete, "path_params": chemin_params,
+        }))
+
+    # Sous-positions puis formalités d'un même produit : une seule recherche.
+    assert termes({"iso3": "DZA", "hs6": "846262"}) == ["846262"]
+    assert termes({"iso3": "DZA", "code": "8462.62.10.00"}) == ["846262"]
+    # Recherche par mot-clé ou par code ; pays et options ignorés.
+    assert termes({"iso3": "DZA"}, b"q=acier%20lamine&limit=25&langue=fr") == ["ACIER LAMINE"]
+    assert termes({"iso3": "DZA"}, b"q=8462") == ["8462"]
+    assert termes({}, b"country=DZA&code=8462621000&search_type=code") == ["846262"]
+    assert termes({"iso3": "DZA"}) == []
+
+
+def _app_consultation_tarif():
+    """Sonde montée avec la garde réelle de la consultation du tarif."""
+    sonde = APIRouter()
+
+    @sonde.get("/consultation/{iso3}/sous-positions/{hs6}")
+    async def sous_positions(iso3: str, hs6: str):
+        return {"ok": True}
+
+    @sonde.get("/consultation/{iso3}/formalites/{code}")
+    async def formalites(iso3: str, code: str):
+        return {"ok": True}
+
+    api = APIRouter(prefix="/api")
+    api.include_router(sonde, dependencies=routes._auth + routes._tarif_entitlement)
+    app = FastAPI()
+    app.include_router(api)
+    return app
+
+
+def test_consultation_du_tarif_cinq_produits_par_mois(base):
+    client = _client(_app_consultation_tarif(), abonne=ABONNES["free"])
+
+    for hs6 in ("846262", "690721", "252310", "310210", "720839"):
+        assert client.get(f"/api/consultation/DZA/sous-positions/{hs6}").status_code == 200
+        # Les formalités du même produit, dans un autre pays : rien de plus.
+        assert client.get(f"/api/consultation/ZAF/formalites/{hs6}1000").status_code == 200
+
+    reponse = client.get("/api/consultation/DZA/sous-positions/854449")
+    assert reponse.status_code == 429
+    assert reponse.json()["detail"]["module"] == "tariffs"
+    (doc,) = base.recherches_modules.docs.values()
+    assert doc["module"] == "tariffs" and len(doc["termes"]) == 5
+
+
+def test_module_finance_compte_ses_recherches(app_api, base):
+    client = _client(app_api, abonne=ABONNES["free"])
+
+    assert client.get("/api/banking/countries").status_code == 200
+    assert client.get("/api/banking/countries/DZ/banks").status_code == 200
+
+    (doc,) = base.recherches_modules.docs.values()
+    assert (doc["module"], doc["termes"]) == ("finance", ["DZ"])
 
 
 def test_parametre_de_requete_homonyme_ne_masque_pas_le_chemin(base):

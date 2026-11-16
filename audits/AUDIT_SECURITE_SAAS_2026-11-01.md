@@ -76,7 +76,7 @@ La liste compte 30 constats ; le décompte du §1 en annonçait 29 (9 faibles ou
 
 | # | Constat | Gravité | Statut |
 |---|---|---|---|
-| D1 | Politique d'accès du 09/11 non appliquée par le serveur hors des cinq modules | Élevé | confirmé |
+| D1 | Politique d'accès du 09/11 non appliquée par le serveur hors des cinq modules | Élevé | ✅ corrigé (lot 1) |
 | D2 | Appels réseau bloquants dans la boucle d'événements, déclenchables sans compte | Élevé | code confirmé, durées non mesurées |
 | D3 | « Denial of wallet » sur les clés tierces (Comtrade, OEC, change) | Moyen | code confirmé ; dépend des clés présentes sur le pod |
 | D4 | Disjoncteur OEC déclenchable sans compte ; cache disque sans plafond | Moyen | plausible |
@@ -93,6 +93,13 @@ La liste compte 30 constats ; le décompte du §1 en annonçait 29 (9 faibles ou
 - **Statistiques et Production hors garde.** `/api/oec` (`:427`), `/api/countries/economic-indicators` (`:439`) et `/api/faostat` (`:476`) n'ont que `_auth`, alors que les écrans RCA, Complémentarité, Marge préférentielle, Historique SH6 et Production › Agriculture les appellent (`statistics/RcaAnalysis.jsx:138`, `TradeComplementarity.jsx:133`, `PreferenceMargin.jsx:140`, `production/ProductionAgriculture.jsx:67`). Un compte Découverte n'est compté que sur `/api/statistics`.
 - **Finance entièrement ouverte.** `/api/banking` (26 routes) et `/api/insurance` (6) n'ont que `_auth` (`:571-582`) ; « finance » n'est pas un module de `entitlements.py`.
 - **Correctif.** Une dépendance « compte requis » (la branche anonyme de `require_module_consultation`) sur `consultation`, `dismantlement`, `regulatory-engine`, `banking`, `insurance` et la couverture du calculateur ; `oec` et `dismantlement` sous la garde Statistiques, `faostat` sous la garde Production. **Décisions de l'exploitant** : quota Découverte pour Finance ; comptage des consultations du tarif. Un test d'inventaire doit ensuite classer chaque route (publique, compte, module, payant, admin) et faire échouer la CI sur toute route nouvelle non classée.
+- ✅ **Corrigé (lot 1, PR #809)**, sur décisions de l'exploitant du 16/11/2026 : (1) le module Finance a un quota de 5 recherches par mois en Découverte ; (2) chaque consultation du tarif compte comme une recherche ; (3) le sort des routes sans appelant sera tranché plus tard (aucun client de l'API à ce jour).
+  - Deux modules nouveaux dans `entitlements.MODULES`, `finance` et `tariffs` : 5 recherches par mois en Découverte, sans limite pour les formules payantes.
+  - `/api/banking` (et ses compléments) et `/api/insurance` sous la garde `finance` ; `/api/consultation` et `/api/regulatory-engine` sous la garde `tariffs`, qui compte par produit consulté (`entitlement_guard.termes_consultation_tarif` : un code ramené à sa sous-position SH6, un mot-clé tel quel, le pays ignoré ; les sous-positions puis les formalités d'un même produit, affichées après un calcul, font une seule recherche).
+  - `/api/oec`, `/api/dismantlement` et `/api/countries/economic-indicators` sous la garde Statistiques ; `/api/faostat` sous la garde Production ; `/api/countries/official-stats` sous la garde Profils pays.
+  - Interface : libellés des deux modules sur la page Tarifs, FAQ mise à jour ; recherche par mot-clé du calculateur lancée en fin de frappe (700 ms) pour qu'une saisie ne consomme pas plusieurs recherches.
+  - `backend/tests/test_inventaire_routes.py` classe chaque route de l'application : gardée, publique (liste fermée de 42 chemins avec leur raison) ou sans appelant (85 routes, nombre figé par préfixe, en attendant la décision 3). Une route nouvelle non classée fait échouer la CI ; vérifié en faisant tourner le test sur le routage de `main` (2 échecs sur 3).
+  - Tests : 401 sans compte sur 11 routes de plus, comptage du tarif par produit (5 produits puis 429 `tariffs`), comptage Finance sur une vraie route.
 
 #### D2 — Appels réseau bloquants, sans compte 🟠 Élevé
 - **Taux de change.** `/api/banking/forex/rates?base=…` et `/forex/convert` sont `async` (`banking.py:295-316, 375-404`) mais appellent `get_latest`, synchrone, qui relance toute la collecte dès que la devise de base change (`exchange_rates/service.py:186-189`) : quatre fournisseurs et les banques centrales par `requests.get` (délais de 10 à 15 s), une base inconnue n'étant jamais mise en cache. Un seul client sous le plafond de débit fige l'unique worker ; l'alternance normale EUR et USD suffit à relancer la collecte.
@@ -136,7 +143,7 @@ Le lien brut du flux est conservé (`etl/news_aggregator.py:1316`) et affiché t
 
 | Lot | Contenu | Constats | Effort |
 |---|---|---|---|
-| 1 | Garde « compte requis » et gardes de module sur les routeurs ouverts ; test d'inventaire des routes en CI | D1 | S/M |
+| 1 | ✅ Gardes de module sur les routeurs ouverts (Finance et consultation du tarif comptées) ; test d'inventaire des routes en CI | D1 | fait |
 | 2 | Taux de change hors de la boucle d'événements, `trade_data` démonté, marchés rafraîchis en tâche de fond | D2, D7 | S |
 | 3 | Bornes : `hs_level`, années, `lang`, lot d'assurance ; routes OEC et `/api/ai/*` restantes réservées à l'admin ; disjoncteur sur 5xx seulement | D3, D4, D5 | S |
 | 4 | Quota Découverte : listes filtrées, paramètres comptés | D6, D11 | S |
@@ -144,7 +151,7 @@ Le lien brut du flux est conservé (`etl/news_aggregator.py:1316`) et affiché t
 | 6 | `soupsieve` ≥ 4.0.0, audit hebdomadaire des dépendances en CI, liens d'actualités en http(s) | D9, D10 | XS |
 | 7 | Réveil de la préproduction et contrôle passif après synchronisation ; vérifications §6.5 et §6.6 | — | XS |
 
-**Décisions attendues de l'exploitant** : accès des comptes Découverte au module Finance (quota ou non) ; comptage des consultations du tarif ; maintien éventuel de routes sans appelant pour des clients de l'API. Avant l'ouverture commerciale, un test d'intrusion externe, mené par un tiers sur la préproduction, compléterait cet audit.
+**Décisions de l'exploitant (16/11/2026)** : quota Découverte pour Finance ; consultation du tarif comptée comme une recherche ; routes sans appelant tranchées plus tard (aucun client de l'API à ce jour). Avant l'ouverture commerciale, un test d'intrusion externe, mené par un tiers sur la préproduction, compléterait cet audit.
 
 
 ---

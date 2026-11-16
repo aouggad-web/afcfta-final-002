@@ -66,10 +66,12 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
     }
   }, [iso3, language]);
 
+  // Chaque recherche envoyée compte dans le quota Découverte de consultation
+  // du tarif (décision du 16/11/2026) : on attend la fin de la frappe.
   useEffect(() => {
     clearTimeout(debounceRef.current);
     if (query.length >= 2) {
-      debounceRef.current = setTimeout(() => search(query), 350);
+      debounceRef.current = setTimeout(() => search(query), 700);
     } else {
       setResults([]);
       setOpen(false);
