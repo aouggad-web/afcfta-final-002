@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import { montant, montantUnite } from '../../utils/nombres';
+import { montant } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
 import { trierPays } from '../../utils/triPays';
@@ -32,85 +32,115 @@ const RISK_LEVEL_AR = {
 const texts = {
   fr: {
     title: '🛡️ Assurance Commerce Extérieur',
-    subtitle: 'Devis de primes et comparaison des assureurs',
+    subtitle: 'Estimation indicative des primes et assureurs à contacter',
     countryLabel: 'Pays acheteur',
     amountLabel: 'Valeur du contrat (USD)',
     productLabel: 'Produit',
     sectorLabel: 'Secteur (optionnel)',
-    submit: 'Obtenir un devis',
+    submit: 'Estimer la prime',
     submitBatch: 'Comparer tous les produits',
     loading: 'Calcul en cours…',
     error: 'Erreur',
     profile: 'Profil pays',
     riskLevel: 'Niveau de risque',
-    insurers: 'Assureurs disponibles',
+    insurers: 'Assureurs à contacter',
     products: 'Produits disponibles',
-    quote: 'Devis',
+    quote: 'Estimation indicative de prime',
     basePremium: 'Prime de base',
     finalPremium: 'Prime finale',
     coverage: 'Couverture',
     deductible: 'Franchise',
     adjustment: 'Ajustement risque',
     notes: 'Notes',
-    comparison: 'Comparaison des produits',
-    rating: 'Notation',
-    capacity: 'Capacité',
+    comparison: 'Comparaison des produits (estimations)',
+    avertissement:
+      "Estimation calculée par la plateforme à partir du risque du pays acheteur. Seul un assureur établit un devis : contactez-le avec les coordonnées ci-dessous.",
+    siteWeb: 'Site web',
+    roles: {
+      eca: "Agence publique d'assurance-crédit à l'export",
+      assureur_credit: 'Assureur-crédit',
+      multilateral: 'Assureur multilatéral (risque politique et crédit)',
+      assureur_general: 'Assureur',
+    },
+    souscriptionPays: 'Pour les entreprises établies : {pays}',
+    souscriptionMembres: 'Opérations liées à ses États membres (liste sur son site)',
+    souscriptionOuverte: 'Entreprises de tous pays, par ses implantations',
     country: 'Pays',
     noProfile: 'Aucun profil assurance disponible pour ce pays.',
   },
   en: {
     title: '🛡️ Trade Insurance',
-    subtitle: 'Premium quotes and insurer comparison',
+    subtitle: 'Indicative premium estimates and insurers to contact',
     countryLabel: 'Buyer country',
     amountLabel: 'Contract value (USD)',
     productLabel: 'Product',
     sectorLabel: 'Sector (optional)',
-    submit: 'Get a quote',
+    submit: 'Estimate the premium',
     submitBatch: 'Compare all products',
     loading: 'Calculating…',
     error: 'Error',
     profile: 'Country profile',
     riskLevel: 'Risk level',
-    insurers: 'Available insurers',
+    insurers: 'Insurers to contact',
     products: 'Available products',
-    quote: 'Quote',
+    quote: 'Indicative premium estimate',
     basePremium: 'Base premium',
     finalPremium: 'Final premium',
     coverage: 'Coverage',
     deductible: 'Deductible',
     adjustment: 'Risk adjustment',
     notes: 'Notes',
-    comparison: 'Product comparison',
-    rating: 'Rating',
-    capacity: 'Capacity',
+    comparison: 'Product comparison (estimates)',
+    avertissement:
+      'Estimate computed by the platform from the buyer country risk. Only an insurer issues a quote: contact one with the details below.',
+    siteWeb: 'Website',
+    roles: {
+      eca: 'Public export credit insurer',
+      assureur_credit: 'Credit insurer',
+      multilateral: 'Multilateral insurer (political and credit risk)',
+      assureur_general: 'Insurer',
+    },
+    souscriptionPays: 'For companies based in: {pays}',
+    souscriptionMembres: 'Transactions involving its member states (list on its website)',
+    souscriptionOuverte: 'Companies from any country, through its local offices',
     country: 'Country',
     noProfile: 'No insurance profile available for this country.',
   },
   ar: {
     title: '🛡️ تأمين التجارة الخارجية',
-    subtitle: 'عروض أسعار الأقساط ومقارنة شركات التأمين',
+    subtitle: 'تقدير إرشادي للأقساط وشركات التأمين للاتصال بها',
     countryLabel: 'بلد المشتري',
     amountLabel: 'قيمة العقد (USD)',
     productLabel: 'المنتج',
     sectorLabel: 'القطاع (اختياري)',
-    submit: 'الحصول على عرض سعر',
+    submit: 'تقدير القسط',
     submitBatch: 'مقارنة جميع المنتجات',
     loading: 'جارٍ الحساب…',
     error: 'خطأ',
     profile: 'ملف البلد',
     riskLevel: 'مستوى المخاطر',
-    insurers: 'شركات التأمين المتاحة',
+    insurers: 'شركات التأمين للاتصال بها',
     products: 'المنتجات المتاحة',
-    quote: 'عرض السعر',
+    quote: 'تقدير إرشادي للقسط',
     basePremium: 'القسط الأساسي',
     finalPremium: 'القسط النهائي',
     coverage: 'التغطية',
     deductible: 'مبلغ التحمل',
     adjustment: 'تعديل المخاطر',
     notes: 'ملاحظات',
-    comparison: 'مقارنة المنتجات',
-    rating: 'التصنيف',
-    capacity: 'الطاقة الاكتتابية',
+    comparison: 'مقارنة المنتجات (تقديرات)',
+    avertissement:
+      'تقدير تحسبه المنصة انطلاقاً من مخاطر بلد المشتري. وحدها شركة التأمين تُصدر عرض سعر: تواصلوا معها عبر البيانات أدناه.',
+    siteWeb: 'الموقع الإلكتروني',
+    roles: {
+      eca: 'هيئة عمومية لتأمين ائتمان الصادرات',
+      assureur_credit: 'شركة تأمين الائتمان',
+      multilateral: 'مؤسسة تأمين متعددة الأطراف (المخاطر السياسية والائتمانية)',
+      assureur_general: 'شركة تأمين',
+    },
+    souscriptionPays: 'للشركات المقيمة في: {pays}',
+    souscriptionMembres: 'العمليات المرتبطة بدوله الأعضاء (القائمة على موقعه)',
+    souscriptionOuverte: 'الشركات من جميع البلدان، عبر فروعه',
     country: 'البلد',
     noProfile: 'لا يتوفر ملف تأمين لهذا البلد.',
   },
@@ -118,6 +148,24 @@ const texts = {
 
 export default function Insurance({ language = 'en' }) {
   const t = texts[language] || texts.en;
+  // Qui peut souscrire auprès de l'assureur (registre : souscription, souscripteurs).
+  const nomPays = (code) => {
+    try {
+      return new Intl.DisplayNames([language], { type: 'region' }).of(code) || code;
+    } catch (e) {
+      return code;
+    }
+  };
+  const souscription = (ins) => {
+    if (ins.souscription === 'pays' && ins.souscripteurs?.length) {
+      return t.souscriptionPays.replace('{pays}', ins.souscripteurs.map(nomPays).join(', '));
+    }
+    if (ins.souscription === 'etats_membres') return t.souscriptionMembres;
+    if (ins.souscription === 'ouvert') return t.souscriptionOuverte;
+    return null;
+  };
+  // Lien externe : http(s) seulement.
+  const lienSur = (url) => typeof url === 'string' && /^https?:\/\//i.test(url);
   // « 12 345 $ » en français, « $12,345 » en anglais.
   const usd = (v) => (v == null ? '—' : montant(v, language, 3));
   const [countryCode, setCountryCode] = useState('DZ');
@@ -359,14 +407,34 @@ export default function Insurance({ language = 'en' }) {
                   {t.products}: {profile.available_products?.length || 0}
                 </div>
                 {profile.available_insurers?.length > 0 && (
-                  <ul className="mt-2 space-y-1">
-                    {profile.available_insurers.slice(0, 3).map((ins, i) => (
-                      <li key={i} className="text-xs text-[var(--text)]">
-                        • {ins.name} ({t.rating}: {ins.credit_rating || 'N/A'}
-                        {ins.total_capacity_usd_bn
-                          ? `, ${t.capacity}: ${montantUnite(ins.total_capacity_usd_bn, 'B', language)}`
-                          : ''}
-                        )
+                  <ul className="mt-2 space-y-3" data-testid="assureurs">
+                    {profile.available_insurers.map((ins) => (
+                      <li key={ins.abbreviation || ins.name} className="text-xs text-[var(--text)]">
+                        <div className="font-semibold">
+                          {ins.name}
+                          {ins.abbreviation ? ` (${ins.abbreviation})` : ''}
+                        </div>
+                        {t.roles[ins.role] && (
+                          <div className="text-[var(--afcfta-muted)]">{t.roles[ins.role]}</div>
+                        )}
+                        {souscription(ins) && <div className="italic">{souscription(ins)}</div>}
+                        <div className="flex flex-wrap gap-x-3 gap-y-1 mt-0.5">
+                          {lienSur(ins.website) && (
+                            <a href={ins.website} target="_blank" rel="noopener noreferrer" className="underline">
+                              {t.siteWeb}
+                            </a>
+                          )}
+                          {ins.email && (
+                            <a href={`mailto:${ins.email}`} className="underline" dir="ltr">
+                              {ins.email}
+                            </a>
+                          )}
+                          {ins.phone && (
+                            <a href={`tel:${ins.phone.replace(/[^+\d]/g, '')}`} dir="ltr">
+                              {ins.phone}
+                            </a>
+                          )}
+                        </div>
                       </li>
                     ))}
                   </ul>
@@ -387,6 +455,7 @@ export default function Insurance({ language = 'en' }) {
                 <CardTitle className="text-base">{t.quote}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
+                <p className="text-xs italic text-[var(--afcfta-muted)]">{t.avertissement}</p>
                 <div className="flex justify-between">
                   <span>{t.basePremium}:</span>
                   <strong>{usd(quote.base_premium_usd)}</strong>
@@ -420,6 +489,7 @@ export default function Insurance({ language = 'en' }) {
                 <CardTitle className="text-base">{t.comparison}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
+                <p className="text-xs italic text-[var(--afcfta-muted)]">{t.avertissement}</p>
                 {Object.entries(batch)
                   .sort((a, b) => a[1].final_premium_usd - b[1].final_premium_usd)
                   .map(([type, q], i) => (
