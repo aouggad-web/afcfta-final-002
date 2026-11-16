@@ -157,7 +157,7 @@ def _preference(position: dict, provenance: dict, destination: str, code: str, o
     Aucune valeur en douane : seuls les taux sont lus, jamais un montant."""
     if origine == destination:
         return {"origine": origine, "applique": False, "statut": "MEME_PAYS", "regime": None,
-                "libelle_bloc": None, "note": None, "perimetre": None}, {}
+                "libelle_bloc": None, "note": None, "reserve": None, "perimetre": None}, {}
     pref = taux_preferentiels(position, destination, origine, code)
     lignes = {}
     if pref.get("taux"):
@@ -175,6 +175,9 @@ def _preference(position: dict, provenance: dict, destination: str, code: str, o
         "regime": pref.get("regime"),
         "libelle_bloc": pref.get("libelle_bloc"),
         "note": pref.get("note"),
+        # « Servie, mais pas nécessairement accordée » : la règle d'origine de la
+        # rubrique n'est pas arrêtée. POST /calcul la garde, la fiche aussi.
+        "reserve": pref.get("reserve") or None,
         "perimetre": pref.get("perimetre") or None,
     }
     return bloc, lignes

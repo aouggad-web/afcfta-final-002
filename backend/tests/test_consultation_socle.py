@@ -684,6 +684,33 @@ def test_fiche_l_origine_est_le_pays_de_destination(client):
         "DZA", False, "MEME_PAYS")
 
 
+def test_fiche_la_reserve_sur_une_regle_d_origine_non_arretee_est_servie(client):
+    """KEN 51.11 depuis EGY : la préférence est servie, mais la règle d'origine de la
+    rubrique n'est pas arrêtée et la douane peut la refuser. POST /calcul le garde ;
+    la fiche ne montre pas une préférence sans l'incertitude qui l'accompagne."""
+    position, _ = socle.position("KEN", "51111100")
+    attendue = taux_preferentiels(position, "KEN", "EGY", "51111100").get("reserve")
+    if not attendue:
+        pytest.skip("la rubrique 51.11 ne porte plus de réserve de règle d'origine")
+
+    corps = _fiche_origine(client, "KEN", "51111100", "EGY")
+
+    assert corps["preference"]["reserve"] == attendue
+    assert "non arrêtée" in corps["preference"]["reserve"]
+    assert any(d["preference"] for d in corps["droits"])
+    calcul = client.post(
+        "/calcul", json={"destination": "KEN", "origine": "EGY", "code_sh": "51111100", "valeur_cif": 1000}
+    ).json()
+    assert calcul["preference_zlecaf"]["reserve"] == corps["preference"]["reserve"]
+
+
+@pytest.mark.parametrize("destination,code,origine", COUPLES)
+def test_fiche_sans_reserve_le_bloc_n_en_invente_pas(client, destination, code, origine):
+    position, _ = socle.position(destination, code)
+    attendue = taux_preferentiels(position, destination, origine, code).get("reserve") or None
+    assert _fiche_origine(client, destination, code, origine)["preference"]["reserve"] == attendue
+
+
 @pytest.mark.parametrize("origine", ["XX", "KENYA", "D1A", "", "K N"])
 def test_fiche_une_origine_invalide_est_refusee(client, origine):
     assert client.get("/consultation/DZA/position/0201101100", params={"origine": origine}).status_code == 422

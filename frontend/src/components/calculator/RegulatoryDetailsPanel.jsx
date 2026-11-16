@@ -134,6 +134,7 @@ const texts = {
     originSameCountry: (origine) => `Origine ${origine} : c'est le pays de destination, aucune préférence n'est à chercher.`,
     preferentialRate: (origine) => `Taux préférentiel (origine ${origine})`,
     preferentialSpecific: 'Droit spécifique : voir le Calculateur',
+    preferenceReserve: 'Préférence ZLECAf servie sous réserve',
     preferentialAmount: 'Le montant dépend de la quantité et de la valeur : voir le Calculateur',
     preferentialFloor: (taux) => `La préférence (${taux}) dépasserait le taux publié : le taux publié s'applique.`,
     requirements: 'Formalités',
@@ -196,6 +197,7 @@ const texts = {
     originSameCountry: (origine) => `Origin ${origine}: this is the destination country, there is no preference to look for.`,
     preferentialRate: (origine) => `Preferential rate (origin ${origine})`,
     preferentialSpecific: 'Specific duty: see the Calculator',
+    preferenceReserve: 'AfCFTA preference shown with a reservation',
     preferentialAmount: 'The amount depends on quantity and value: see the Calculator',
     preferentialFloor: (taux) => `The preference (${taux}) would exceed the published rate: the published rate applies.`,
     requirements: 'Formalities',
@@ -264,6 +266,7 @@ const texts = {
     originSameCountry: (origine) => `المنشأ ${origine}: هو بلد المقصد نفسه، فلا تفضيل يُطلب.`,
     preferentialRate: (origine) => `المعدل التفضيلي (المنشأ ${origine})`,
     preferentialSpecific: 'رسم نوعي: انظر الحاسبة',
+    preferenceReserve: 'التفضيل في إطار زليكاف معروض مع تحفظ',
     preferentialAmount: 'يتوقف المبلغ على الكمية والقيمة: انظر الحاسبة',
     preferentialFloor: (taux) => `التفضيل (${taux}) يتجاوز المعدل المنشور: يسري المعدل المنشور.`,
     requirements: 'الإجراءات',
@@ -711,6 +714,15 @@ export default function RegulatoryDetailsPanel({
                     {preference.statut !== 'MEME_PAYS' && preference.note && (
                       <p className="text-[var(--afcfta-muted)] text-xs mt-1 break-words" dir="auto">{preference.note}</p>
                     )}
+                  </div>
+                </div>
+              )}
+              {preference?.reserve && (
+                <div className="flex items-start gap-2 mb-4 p-3 rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))]" data-testid="regulatory-preference-reserve">
+                  <AlertCircle className="w-4 h-4 text-[var(--gold)] mt-0.5 shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-[var(--gold)] text-sm font-semibold">{t.preferenceReserve}</p>
+                    <p className="text-[var(--text)] text-sm mt-1 break-words" dir="auto">{preference.reserve}</p>
                   </div>
                 </div>
               )}

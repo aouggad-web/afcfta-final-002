@@ -1030,6 +1030,40 @@ describe('RegulatoryDetailsPanel', () => {
       expect(taux).toHaveTextContent('The amount depends on quantity and value');
     });
 
+    it("la réserve sur une règle d'origine non arrêtée se lit avec la préférence, telle que le serveur l'écrit", async () => {
+      const reserve = "Règle d'origine ZLECAf non arrêtée pour la rubrique 51.11. La préférence peut ne pas être accordée en douane.";
+      repondre({
+        position: avecOrigine(bloc({ origine: 'EGY', reserve }), { DD: { regime: 'preference', taux: 10, taux_ecarte: null } }),
+        formalite: formalites(),
+      });
+      await rendre({ originCode: 'EGY' });
+      await screen.findByText('De veaux');
+
+      const carte = screen.getByTestId('regulatory-preference-reserve');
+      expect(carte).toHaveTextContent('Préférence ZLECAf servie sous réserve');
+      expect(carte).toHaveTextContent(reserve);
+      // La préférence reste affichée : la réserve l'accompagne, elle ne la retire pas.
+      expect(screen.getByTestId('regulatory-preferential-rate')).toHaveTextContent('10%');
+    });
+
+    it("sans réserve, aucune carte de réserve ; la mention suit la langue de l'écran", async () => {
+      repondre({
+        position: avecOrigine(bloc(), { DD: { regime: 'preference', taux: 2.5, taux_ecarte: null } }),
+        formalite: formalites(),
+      });
+      const { rerender } = await rendre({ originCode: 'KEN', language: 'en' });
+      await screen.findByText('Of calves');
+      expect(screen.queryByTestId('regulatory-preference-reserve')).not.toBeInTheDocument();
+
+      repondre({
+        position: avecOrigine(bloc({ reserve: 'Reserve text' }), { DD: { regime: 'preference', taux: 2.5, taux_ecarte: null } }),
+        formalite: formalites(),
+      });
+      rerender(panneau({ originCode: 'EGY', language: 'en' }));
+      await avancer(500);
+      expect(await screen.findByTestId('regulatory-preference-reserve')).toHaveTextContent('AfCFTA preference shown with a reservation');
+    });
+
     it("quand la préférence dépasserait le taux publié, dit que le taux publié s'applique", async () => {
       repondre({
         position: avecOrigine(bloc(), { DD: { regime: 'npf_plancher', taux: 5, taux_ecarte: 7.5 } }),
