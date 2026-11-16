@@ -111,7 +111,7 @@ describe('AIAnalysis', () => {
 
 describe("AIAnalysis — règle d'origine officielle d'une opportunité", () => {
   const NOTE_25 =
-    "Note 2.5 de l'Appendice IV: la valeur des matières non originaires sera automatiquement ramenée de 60 % à 55 % à la fin d'une période de cinq (5) ans à compter du 1er janvier 2021.";
+    "Note 2.5 de l'Appendice IV: la valeur des matières non originaires sera automatiquement ramenée de 60 % à 55 % à la fin d'une période de cinq (5) ans, à compter du 1er janvier 2021.";
   // GET /api/rules-of-origin/841810, réduite à ce que lit la carte.
   const regle8418 = {
     hs_code: '841810',

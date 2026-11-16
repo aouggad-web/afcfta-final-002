@@ -14,7 +14,7 @@ const CH61 =
 const CH62 = 'Adopté par la 2ème réunion extraordinaire du Conseil des Ministres de la ZLECAf (mai 2023)';
 
 const NOTE_25 =
-  "Note 2.5 de l'Appendice IV: la valeur des matières non originaires sera automatiquement ramenée de 60 % à 55 % à la fin d'une période de cinq (5) ans à compter du 1er janvier 2021.";
+  "Note 2.5 de l'Appendice IV: la valeur des matières non originaires sera automatiquement ramenée de 60 % à 55 % à la fin d'une période de cinq (5) ans, à compter du 1er janvier 2021.";
 
 describe("Notes de l'Appendice IV", () => {
   it('liste les notes de la ligne (chapitre 61, réponse de GET /api/rules-of-origin/610910)', () => {

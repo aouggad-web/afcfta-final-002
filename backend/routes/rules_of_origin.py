@@ -127,12 +127,14 @@ _CRITERION_ARTICLES = {
 # text, so only the text (which alone is authoritative) is shown.
 _REVIEW_CLAUSE = (
     r"(?:[,.]?\s*(?:sous réserve d'(?:un réexamen|une révision)"
+    r"|avec une révision"  # Ex-chapitre 87 and 87.09 (Appendix IV pp. 114, 116)
     r"|règle devant faire l'objet d'un réexamen"
     r"|cette règle fera l'objet d'un réexamen)[^.]*)?"
 )
 _VALUE_TEXT = (
     r"fabrication (?:à partir de matières )?dans laquelle la valeur (?:de toutes les |des )matières "
-    r"(?:non originaires )?utilisées (?:n'excède pas|ne doit pas excéder) "
+    # 85.43 prints its value branch without "utilisées" (Appendix IV p. 112).
+    r"(?:non originaires )?(?:utilisées )?(?:n'excède pas|ne doit pas excéder) "
     r"\[?{pct}\]? ?% du prix départ usine du produit"
 )
 _CRITERION_TEXT = {
@@ -149,7 +151,6 @@ _CRITERION_TEXT = {
 
 def _rule_branches(raw_fr: str) -> list:
     text = re.sub(r"\s+", " ", (raw_fr or "").replace("’", "'")).strip()
-    text = re.sub(r"^Ex-[\d.]+:.*? — ", "", text)  # designation glued before the rule
     # "Ou" separates alternatives; the source text sometimes glues it to a
     # neighbouring word ("produitOu Fabrication", "OuFabrication").
     return [
@@ -225,12 +226,21 @@ def _criterion_articles(entry: dict) -> list:
 
 
 def _legal_reference(entry: dict, match_type: str, matched_code: str) -> dict:
-    """Cite the actual Appendix IV row selected by the resolver."""
-    labels = {"chapter": "chapitre", "heading": "position", "subheading": "sous-position"}
-    code = str(matched_code)
-    display_code = code[:4] + "." + code[4:] if len(code) == 6 else code
-    if len(code) == 4:
-        display_code = code[:2] + "." + code[2:]
+    """Cite the actual Appendix IV row selected by the resolver. An entry whose
+    row is printed under another column-1 code cites that code, row_code: an
+    "ex" row narrowed to the sub-positions its designation covers (Ex 15.12 on
+    1512.11 and 1512.19), or a grouped row ("4107-4113": 41.07 à 41.13)."""
+    labels = {2: "chapitre", 4: "position", 6: "sous-position"}
+    first, _, last = str(entry.get("row_code") or matched_code).partition("-")
+
+    def dotted(code: str) -> str:
+        if len(code) == 6:
+            return code[:4] + "." + code[4:]
+        return code[:2] + "." + code[2:] if len(code) == 4 else code
+
+    location = f"{labels[len(first)]} {dotted(first)}"
+    if last:
+        location = f"{labels[len(first)]}s {dotted(first)} à {dotted(last)}"
     scope = "ex " if entry.get("ex") else ""
     notes = []
     if entry.get("status") == "YTB":
@@ -245,7 +255,7 @@ def _legal_reference(entry: dict, match_type: str, matched_code: str) -> dict:
             "Accord portant création de la ZLECAf — Protocole sur le commerce des marchandises, "
             "Annexe 2 sur les règles d'origine, Appendice IV"
         ),
-        "location_fr": f"{scope}{labels[match_type]} {display_code}",
+        "location_fr": f"{scope}{location}",
         "ex": bool(entry.get("ex")),
         "articles_fr": _criterion_articles(entry),
         "matched_code": matched_code,
@@ -456,8 +466,7 @@ def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
     produced by etl.afcfta_rules_of_origin.get_rule_of_origin, which this
     supersedes — that module duplicated RULES_DATA in a separate,
     independently maintained Python dict and had drifted out of sync with
-    it (e.g. it was missing a heading-level rule for 62.03, see
-    headings['6203'] above).
+    it.
 
     Matching priority: 6-digit subheading -> 4-digit heading -> 2-digit chapter.
     """

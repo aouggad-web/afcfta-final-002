@@ -32,18 +32,39 @@ const position8414 = {
   },
 };
 
-// Réponse de GET /api/rules-of-origin/1512210000 (huile de coton brute) : la
-// seule ligne de 15.12 est « ex », limitée aux huiles de tournesol et de carthame.
+// Réponse de GET /api/rules-of-origin/1512110000 (huile de tournesol brute) : la
+// ligne « Ex 15.12 » ne vise que les huiles de tournesol et de carthame.
 const ligneEx1512 = {
-  hs_code: '1512210000',
+  hs_code: '1512110000',
   product_description_fr:
-    'Ex 15.12: Huiles de tournesol, de carthame et leurs fractions, même raffinées, mais non chimiquement modifiées',
+    'Huiles de tournesol, de carthame et leurs fractions, même raffinées, mais non chimiquement modifiées',
   legal_reference: {
     instrument_fr: INSTRUMENT,
     location_fr: 'ex position 15.12',
     ex: true,
     articles_fr: ["Annexe 2, article 6(2) (règles de l'Appendice IV)"],
-    matched_code: '1512',
+    matched_code: '151211',
+    match_type: 'subheading',
+    source_version: SOURCE,
+    notes_fr: [],
+  },
+};
+
+// Réponse de GET /api/rules-of-origin/7103910000 (rubis, saphirs, émeraudes) :
+// la ligne « Ex - 71.03 », rattachée à la position, ne vise que sa désignation.
+const ligneEx7103 = {
+  hs_code: '7103910000',
+  product_description_fr:
+    'Pierres gemmes (précieuses ou fines) autres que les diamants, même travaillées ou assorties, mais non enfilées, ni montées, ni serties ; pierres gemmes (précieuses ou fines) autres que les diamants, non assorties, enfilées temporairement pour la facilité du transport',
+  legal_reference: {
+    instrument_fr: INSTRUMENT,
+    location_fr: 'ex position 71.03',
+    ex: true,
+    articles_fr: [
+      "Annexe 2, article 6(2) (règles de l'Appendice IV)",
+      'Annexe 2, article 6(1)(e) (Processus Spécifique)',
+    ],
+    matched_code: '7103',
     match_type: 'heading',
     source_version: SOURCE,
     notes_fr: [],
@@ -76,14 +97,17 @@ describe("Base légale d'une règle d'origine", () => {
     expect(screen.getByTestId('origin-applied-to')).toHaveTextContent('تُطبَّق قاعدة البند');
   });
 
-  it('ligne « ex » : ne prétend pas que la règle vaut pour toute la position et montre sa désignation', () => {
-    render(<OriginLegalReference roo={ligneEx1512} language="fr" />);
+  it.each([
+    ['position', ligneEx7103, 'Pierres gemmes (précieuses ou fines) autres que les diamants'],
+    ['sous-position', ligneEx1512, 'Huiles de tournesol, de carthame'],
+  ])('ligne « ex » rattachée à la %s : ne prétend pas que la règle vaut pour toute la position et montre sa désignation', (_niveau, roo, designation) => {
+    render(<OriginLegalReference roo={roo} language="fr" />);
 
     const rattachement = screen.getByTestId('origin-applied-to');
     expect(rattachement).toHaveTextContent('ligne « ex » : elle ne vise que les produits de sa désignation');
     expect(rattachement).not.toHaveTextContent('règle de la position');
     expect(screen.getByTestId('origin-ex-description')).toHaveTextContent(
-      'Désignation de la ligne : Ex 15.12: Huiles de tournesol, de carthame'
+      `Désignation de la ligne : ${designation}`
     );
   });
 
