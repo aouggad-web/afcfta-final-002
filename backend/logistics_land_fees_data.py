@@ -21,6 +21,7 @@ Les taux sont ESTIMÉS par un modèle calibré ; les coûts réels varient forte
 (±20-30 %) selon l'état des routes, les temps d'attente aux frontières et les pratiques.
 """
 
+import re
 from functools import lru_cache
 from typing import Any, Dict, List, Optional
 
@@ -108,6 +109,8 @@ def _corridor_index() -> Dict[str, Dict[str, Any]]:
             "status": c.get("status"),
             "source_org": c.get("source_org"),
             "infra_details": c.get("infra_details"),
+            "nodes": c.get("nodes", []) or [],
+            "coordinates": c.get("coordinates", []) or [],
             "borders": borders,
             "osbp": osbp,
             "modes": _modes_for(c.get("corridor_type", "road")),
@@ -139,11 +142,33 @@ def get_cargo_types() -> List[Dict[str, Any]]:
     ]
 
 
+def crossed_country_pairs(corridor: Dict[str, Any], a: str, b: str):
+    """Adjacent country pairs along the requested part of a corridor."""
+    countries = [country.upper() for country in corridor["countries"]]
+    a, b = a.upper(), b.upper()
+    if a not in countries or b not in countries:
+        return None
+    start, end = sorted((countries.index(a), countries.index(b)))
+    return {
+        frozenset((countries[i], countries[i + 1]))
+        for i in range(start, end)
+    }
+
+
+def border_node_pair(node: Dict[str, Any]):
+    if node.get("node_type") != "border_crossing":
+        return None
+    match = re.search(r"\(([A-Z]{3})-([A-Z]{3})\)", node.get("node_name") or "")
+    return frozenset(match.groups()) if match else None
+
+
 def get_land_freight_cost(
     corridor_id: str,
     mode: str = "road",
     weight_tons: float = 30.0,
     cargo_type: str = "general",
+    length_km: Optional[float] = None,
+    country_pair: Optional[tuple[str, str]] = None,
 ) -> Optional[Dict[str, Any]]:
     """
     Calcule le coût de fret terrestre sur un corridor donné.
@@ -153,6 +178,9 @@ def get_land_freight_cost(
         mode : 'road' ou 'rail' (doit être disponible pour le corridor)
         weight_tons : tonnage transporté (tonnes)
         cargo_type : nature de la marchandise (clé de CARGO_FACTORS)
+        length_km : distance réellement parcourue sur le corridor (tronçon d'une
+            paire de pays). Par défaut : longueur totale du corridor.
+        country_pair : pays aux extrémités du tronçon pour calculer les frontières.
     """
     corridor = _corridor_index().get(corridor_id)
     if not corridor:
@@ -165,7 +193,8 @@ def get_land_freight_cost(
         mode = corridor["modes"][0]
 
     cargo = CARGO_FACTORS.get(cargo_type, CARGO_FACTORS["general"])
-    length = corridor["length_km"]
+    full_length = corridor["length_km"]
+    length = full_length if length_km is None else min(max(float(length_km), 0.0), full_length)
     factor = cargo["factor"]
 
     if mode == "multimodal":
@@ -187,20 +216,30 @@ def get_land_freight_cost(
         travel_days = length / _SPEED_KM_DAY[mode]
         rate_display = _RATE_TON_KM[mode]
 
+    borders, osbp = corridor["borders"], corridor["osbp"]
+    pairs = crossed_country_pairs(corridor, *country_pair) if country_pair else None
+    if pairs is not None:
+        borders = len(pairs)
+        osbp = len({
+            border_node_pair(node)
+            for node in corridor["nodes"]
+            if node.get("is_osbp") and border_node_pair(node) in pairs
+        })
+
     border_cost = (
-        corridor["osbp"] * _BORDER_COST_OSBP
-        + (corridor["borders"] - corridor["osbp"]) * _BORDER_COST_STD
+        osbp * _BORDER_COST_OSBP
+        + (borders - osbp) * _BORDER_COST_STD
     )
     subtotal = transport + transshipment + border_cost + _HANDLING_USD
     total = max(subtotal, _MIN_CHARGE_USD)
 
     # Délais
     border_days = (
-        corridor["osbp"] * _BORDER_DELAY_OSBP
-        + (corridor["borders"] - corridor["osbp"]) * _BORDER_DELAY_STD
+        osbp * _BORDER_DELAY_OSBP
+        + (borders - osbp) * _BORDER_DELAY_STD
     )
     transit_min = max(1, int(round(travel_days + border_days)))
-    transit_max = transit_min + max(1, corridor["borders"]) + 1
+    transit_max = transit_min + max(1, borders) + 1
 
     # Opérateurs pertinents pour le mode choisi
     if mode == "rail":
@@ -231,6 +270,7 @@ def get_land_freight_cost(
         "corridor_type": corridor["type"],
         "countries": corridor["countries"],
         "length_km": length,
+        "corridor_length_km": full_length,
         "weight_tons": round(weight_tons, 2),
         "cargo_type": cargo_type,
         "cargo_label": cargo["label_fr"],
@@ -238,8 +278,8 @@ def get_land_freight_cost(
         "rate_per_ton_km_usd": rate_display,
         "rail_km": round(rail_km),
         "road_km": round(road_km),
-        "border_crossings": corridor["borders"],
-        "osbp_crossings": corridor["osbp"],
+        "border_crossings": borders,
+        "osbp_crossings": osbp,
         "transport_cost_usd": round(transport),
         "transshipment_cost_usd": round(transshipment),
         "border_cost_usd": round(border_cost),
