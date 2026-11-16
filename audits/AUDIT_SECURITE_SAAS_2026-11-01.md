@@ -159,7 +159,7 @@ Le lien brut du flux est conservé (`etl/news_aggregator.py:1316`) et affiché t
 |---|---|---|---|
 | Supabase `afcfta-preprod` (seul projet, celui de la CSP) | Advisor sécurité : protection contre les mots de passe divulgués désactivée | ⚠️ | exploitant : Authentication › Providers › Email (offre Pro) |
 | Supabase | Advisor performance sans alerte ; schéma `public` sans table ; extensions par défaut, `pg_graphql` absent | ✅ | — (activer la RLS dès la première table) |
-| Supabase | Journaux Auth sur 24 h : 3 connexions, 1 échec, aucune rafale ; redémarrage d'Auth le 16/11 à 18 h 20 UTC | ✅ / ❓ | exploitant : confirmer être à l'origine du redémarrage |
+| Supabase | Journaux Auth sur 24 h : 3 connexions, 1 échec, aucune rafale ; redémarrage d'Auth le 16/11 à 18 h 20 UTC | ✅ | expliqué : l'exploitant était dans le tableau de bord Supabase à ce moment (confirmation du 16/11/2026) |
 | Supabase | Redirect URLs, Site URL, limites de débit, CAPTCHA non lisibles avec les outils disponibles | ❓ | exploitant : https seulement, aucun joker |
 | Supabase | Les comptes réels sont dans un projet nommé « preprod » | ⚠️ | exploitant : renommer, ou projet de production distinct |
 | GitHub | Dépôt privé ; `main` protégée par le ruleset « Protéger main » (PR, 4 checks, ni force-push ni suppression, aucun contournement) | ✅ | — |
@@ -176,7 +176,7 @@ Le lien brut du flux est conservé (`etl/news_aggregator.py:1316`) et affiché t
 | Préproduction | `/api/docs` et `/api/openapi.json` rendaient la page de l'application (200), sans schéma | ✅ corrigé | code (PR #809) : 404 pour tout chemin `/api/...` inconnu (`serve_react`), test `test_api_inconnue_404.py` |
 | Préproduction | `/api/banking/countries` et `/api/consultation/DZA/recherche` ouverts sans compte | ✅ corrigé (D1) | en ligne après la synchronisation de la PR #809 |
 
-**Actions de l'exploitant, dans l'ordre :** (1) Cloudflare : HSTS et en-têtes de réponse de la vitrine ; (2) Supabase : protection contre les mots de passe divulgués, relecture des Redirect URLs et du Site URL, confirmation du redémarrage d'Auth ; (3) Cloudflare : DNSSEC, CAA, Minimum TLS 1.2 ; (4) GitHub : épingler `frontend-build` sur GitHub Actions, supprimer la branche `Main` ; (5) Resend : état « Verified », puis DMARC en `p=reject` ; (6) nom ou séparation du projet Supabase de production.
+**Actions de l'exploitant, dans l'ordre :** (1) Cloudflare : HSTS et en-têtes de réponse de la vitrine ; (2) Supabase : protection contre les mots de passe divulgués, relecture des Redirect URLs et du Site URL (redémarrage d'Auth expliqué le 16/11) ; (3) Cloudflare : DNSSEC, CAA, Minimum TLS 1.2 ; (4) GitHub : épingler `frontend-build` sur GitHub Actions, supprimer la branche `Main` ; (5) Resend : état « Verified », puis DMARC en `p=reject` ; (6) nom ou séparation du projet Supabase de production.
 
 
 ---
