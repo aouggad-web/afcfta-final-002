@@ -1001,6 +1001,35 @@ describe('RegulatoryDetailsPanel', () => {
       expect(taux).not.toHaveTextContent('0%');
     });
 
+    it("un droit préférentiel cumulé ou composé se lit en entier : jamais sa composante en pourcentage", async () => {
+      repondre({
+        position: avecOrigine(bloc(), { DD: { regime: 'preference', taux: null, expression: '7%+SCR5/kg', taux_ecarte: null } }),
+        formalite: formalites(),
+      });
+      await rendre({ originCode: 'DZA' });
+      await screen.findByText('De veaux');
+
+      const taux = screen.getByTestId('regulatory-preferential-rate');
+      expect(taux).toHaveTextContent('7%+SCR5/kg');
+      expect(taux).toHaveTextContent('Le montant dépend de la quantité et de la valeur');
+      // Ni « 7% » seul, ni le renvoi des droits spécifiques sans expression.
+      expect(taux.textContent).not.toMatch(/(^|[^+\d])7%(?!\+)/);
+      expect(taux).not.toHaveTextContent('Droit spécifique : voir le Calculateur');
+    });
+
+    it("un droit composé s'affiche dans la langue de l'écran, l'expression restant celle de la source", async () => {
+      repondre({
+        position: avecOrigine(bloc(), { DD: { regime: 'preference', taux: null, expression: '40% or 240c/kg', taux_ecarte: null } }),
+        formalite: formalites(),
+      });
+      await rendre({ originCode: 'KEN', language: 'en' });
+      await screen.findByText('Of calves');
+
+      const taux = screen.getByTestId('regulatory-preferential-rate');
+      expect(taux).toHaveTextContent('40% or 240c/kg');
+      expect(taux).toHaveTextContent('The amount depends on quantity and value');
+    });
+
     it("quand la préférence dépasserait le taux publié, dit que le taux publié s'applique", async () => {
       repondre({
         position: avecOrigine(bloc(), { DD: { regime: 'npf_plancher', taux: 5, taux_ecarte: 7.5 } }),

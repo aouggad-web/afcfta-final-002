@@ -116,6 +116,35 @@ def sous_positions(iso3: str, hs6: str):
     }
 
 
+def _ligne_preferentielle(ligne, remise):
+    """Ce que devient une ligne sous préférence.
+
+    ``taux_pct`` du calcul n'est que la composante ad valorem du droit : un droit
+    préférentiel cumulé (« 7%+SCR5/kg »), composé (« 40% or 240c/kg »), réduit
+    (« 4% or 22c/kg less 36% ») ou plafonné porte davantage, et ne se réduit pas
+    à un pourcentage sans en faire un faux taux. Dans ce cas ``taux`` reste vide
+    et ``expression`` donne le droit tel que le moteur le conserve ; seul le
+    Calculateur, qui a la quantité et la valeur, en tire un montant."""
+    remise = remise if isinstance(remise, dict) else {}
+    specifique = remise.get("specifique")
+    simple = not (
+        specifique or remise.get("compose") or remise.get("cumulatif")
+        or remise.get("plafond_ad_valorem_pct") is not None
+        or remise.get("deduction_ad_valorem_pct") is not None
+    )
+    expression = None
+    if not simple:
+        expression = remise.get("expression_brute") or (
+            specifique.get("brut") if isinstance(specifique, dict) else specifique
+        )
+    return {
+        "regime": ligne["regime_applique"],
+        "taux": ligne.get("taux_pct") if simple else None,
+        "expression": expression,
+        "taux_ecarte": (ligne.get("plancher_npf") or {}).get("taux_preferentiel_ecarte_pct"),
+    }
+
+
 def _preference(position: dict, provenance: dict, destination: str, code: str, origine: str):
     """La préférence qu'une origine ouvre sur cette position : un bloc qui dit le
     régime et, quand il est refusé, pourquoi, et ce que chaque ligne devient.
@@ -138,11 +167,7 @@ def _preference(position: dict, provenance: dict, destination: str, code: str, o
         )
         for ligne in resultat["preference"]["lignes"]:
             if ligne.get("regime_applique") and ligne["code"] not in lignes:
-                lignes[ligne["code"]] = {
-                    "regime": ligne["regime_applique"],
-                    "taux": ligne.get("taux_pct"),
-                    "taux_ecarte": (ligne.get("plancher_npf") or {}).get("taux_preferentiel_ecarte_pct"),
-                }
+                lignes[ligne["code"]] = _ligne_preferentielle(ligne, pref["taux"].get(ligne["code"]))
     bloc = {
         "origine": origine,
         "applique": bool(pref.get("applique")),

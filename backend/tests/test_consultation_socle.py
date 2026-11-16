@@ -13,6 +13,7 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from services import socle
+from services.preference import taux_preferentiels
 from services.designation import designation_publiee, libelle_sh6_emprunte, texte_designation
 
 BACKEND = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -531,9 +532,17 @@ def test_fiche_les_taux_preferentiels_sont_ceux_que_le_calcul_retient(client, de
         "/calcul", json={"destination": destination, "origine": origine, "code_sh": code, "valeur_cif": 1000}
     ).json()
 
-    attendus = {l["code"]: l["taux_pct"] for l in calcul["preference"]["lignes"] if l.get("regime_applique")}
-    servis = {d["code"]: d["preference"]["taux"] for d in fiche["droits"] if d["preference"]}
-    assert servis == attendus and servis
+    attendus = {l["code"]: l for l in calcul["preference"]["lignes"] if l.get("regime_applique")}
+    servis = {d["code"]: d["preference"] for d in fiche["droits"] if d["preference"]}
+    assert set(servis) == set(attendus) and servis
+    for ligne, pref in servis.items():
+        assert pref["regime"] == attendus[ligne]["regime_applique"], ligne
+        if pref["taux"] is not None:
+            assert pref["taux"] == attendus[ligne]["taux_pct"], ligne
+        else:
+            # Un droit préférentiel qui n'est pas un simple ad valorem se dit par son
+            # expression, jamais par une de ses composantes.
+            assert pref["regime"] == "preference" and pref["expression"], ligne
     assert fiche["preference"]["statut"] == calcul["regime_commercial"]["statut"]
     assert fiche["preference"]["regime"] == calcul["regime_commercial"]["regime"]
 
@@ -548,6 +557,101 @@ def test_fiche_aucune_preference_ne_depasse_le_npf(client, destination, code, or
             assert pref["taux"] <= droit["taux"], droit
         if pref and pref["regime"] == "npf_plancher":
             assert pref["taux"] == droit["taux"] and pref["taux_ecarte"] > droit["taux"], droit
+
+
+def _remise_preferentielle(destination, code, origine, ligne):
+    """La préférence de la ligne dans la table du moteur, avant tout calcul."""
+    position, _ = socle.position(destination, code)
+    table = taux_preferentiels(position, destination, origine, code).get("taux") or {}
+    remise = table.get(ligne)
+    return remise if isinstance(remise, dict) else {"taux": remise}
+
+
+def _est_simple(remise):
+    return not (
+        remise.get("specifique") or remise.get("compose") or remise.get("cumulatif")
+        or remise.get("plafond_ad_valorem_pct") is not None
+        or remise.get("deduction_ad_valorem_pct") is not None
+    )
+
+
+def test_fiche_un_droit_preferentiel_compose_ou_specifique_n_est_pas_un_pourcentage(client):
+    """Le moteur conserve « 7%+SCR5/kg » ou « 40% or 240c/kg » : ne servir que leur
+    composante ad valorem, c'est afficher 7 % quand 5 SCR/kg sont aussi dus.
+
+    La table de préférences change chaque année : le test balaie des positions
+    qui portent des droits composés, et vérifie la règle, pas un taux."""
+    balayage = [("ZAF", "ZAF", ("02", "1901", "2106")), ("SYC", "SYC", ("0207", "0201", "1901"))]
+    origines = ("KEN", "DZA", "EGY")
+    vus_non_simples = 0
+    for destination, iso3, prefixes in balayage:
+        codes = [c for c in sorted(socle.charger(iso3)["positions"]) if c.startswith(prefixes)][:150]
+        for code in codes:
+            for origine in origines:
+                if origine == destination:
+                    continue
+                reponse = client.get(f"/consultation/{destination}/position/{code}", params={"origine": origine})
+                if reponse.status_code != 200:
+                    continue
+                for droit in reponse.json()["droits"]:
+                    pref = droit["preference"]
+                    if not pref or pref["regime"] != "preference":
+                        continue
+                    remise = _remise_preferentielle(destination, code, origine, droit["code"])
+                    if _est_simple(remise):
+                        assert pref["taux"] == remise["taux"] and pref["expression"] is None, (destination, code, origine, pref)
+                    else:
+                        vus_non_simples += 1
+                        assert pref["taux"] is None, (destination, code, origine, pref, remise)
+                        assert pref["expression"] and pref["expression"] != f"{remise['taux']}%", (destination, code, origine, pref)
+    if not vus_non_simples:
+        pytest.skip("aucun droit préférentiel composé ou spécifique dans l'échantillon à ce jour")
+
+
+@pytest.mark.parametrize("destination,code,origine", [("SYC", "02071200", "DZA"), ("ZAF", "020110", "KEN")])
+def test_fiche_exemples_de_droits_preferentiels_cumules_ou_composes(client, destination, code, origine):
+    corps = _fiche_origine(client, destination, code, origine)
+    ligne = next((d for d in corps["droits"] if d["code"] == "DD" and d["preference"]), None)
+    if ligne is None or _est_simple(_remise_preferentielle(destination, code, origine, "DD")):
+        pytest.skip("ce droit préférentiel n'est plus composé ou spécifique dans le socle")
+    assert ligne["preference"]["taux"] is None
+    assert re.search(r"\d%.*(kg|/)", ligne["preference"]["expression"]), ligne["preference"]
+
+
+LIGNE_PREFERENTIELLE = {"code": "DD", "regime_applique": "preference", "taux_pct": 7.0}
+
+
+@pytest.mark.parametrize(
+    "remise,attendu_taux,attendu_expression",
+    [
+        ({"taux": 7.0}, 7.0, None),
+        ({"taux": 0.0}, 0.0, None),
+        ({"taux": 7.0, "expression_brute": "7%"}, 7.0, None),
+        ({"taux": 7.0, "cumulatif": True, "expression_brute": "7%+SCR5/kg"}, None, "7%+SCR5/kg"),
+        ({"taux": 7.0, "compose": True, "expression_brute": "7% or 5c/kg"}, None, "7% or 5c/kg"),
+        ({"taux": 7.0, "plafond_ad_valorem_pct": 12.0, "expression_brute": "7% max 12%"}, None, "7% max 12%"),
+        ({"taux": 7.0, "deduction_ad_valorem_pct": 36.0, "expression_brute": "7% less 36%"}, None, "7% less 36%"),
+        ({"taux": None, "specifique": {"brut": "SCR5/kg"}}, None, "SCR5/kg"),
+        ({"taux": 7.0, "specifique": {"brut": "SCR5/kg"}, "expression_brute": None}, None, "SCR5/kg"),
+        ({"taux": 7.0, "specifique": "5c/kg"}, None, "5c/kg"),
+    ],
+)
+def test_ligne_preferentielle_un_pourcentage_seulement_si_le_droit_en_est_un(remise, attendu_taux, attendu_expression):
+    from routes.consultation import _ligne_preferentielle
+
+    servi = _ligne_preferentielle(LIGNE_PREFERENTIELLE | {"taux_pct": remise.get("taux")}, remise)
+
+    assert (servi["taux"], servi["expression"]) == (attendu_taux, attendu_expression)
+
+
+def test_ligne_preferentielle_le_plancher_npf_sert_le_taux_retenu_et_l_ecart():
+    from routes.consultation import _ligne_preferentielle
+
+    ligne = {"code": "DD", "regime_applique": "npf_plancher", "taux_pct": 5.0,
+             "plancher_npf": {"taux_preferentiel_ecarte_pct": 26.25}}
+    assert _ligne_preferentielle(ligne, {"taux": 26.25}) == {
+        "regime": "npf_plancher", "taux": 5.0, "expression": None, "taux_ecarte": 26.25,
+    }
 
 
 def test_fiche_la_zone_arabe_exonere_le_droit_de_douane(client):

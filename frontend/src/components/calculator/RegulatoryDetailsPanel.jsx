@@ -134,6 +134,7 @@ const texts = {
     originSameCountry: (origine) => `Origine ${origine} : c'est le pays de destination, aucune préférence n'est à chercher.`,
     preferentialRate: (origine) => `Taux préférentiel (origine ${origine})`,
     preferentialSpecific: 'Droit spécifique : voir le Calculateur',
+    preferentialAmount: 'Le montant dépend de la quantité et de la valeur : voir le Calculateur',
     preferentialFloor: (taux) => `La préférence (${taux}) dépasserait le taux publié : le taux publié s'applique.`,
     requirements: 'Formalités',
     requirementsDesc: "Documents et formalités à l'importation",
@@ -195,6 +196,7 @@ const texts = {
     originSameCountry: (origine) => `Origin ${origine}: this is the destination country, there is no preference to look for.`,
     preferentialRate: (origine) => `Preferential rate (origin ${origine})`,
     preferentialSpecific: 'Specific duty: see the Calculator',
+    preferentialAmount: 'The amount depends on quantity and value: see the Calculator',
     preferentialFloor: (taux) => `The preference (${taux}) would exceed the published rate: the published rate applies.`,
     requirements: 'Formalities',
     requirementsDesc: 'Documents and formalities for import',
@@ -262,6 +264,7 @@ const texts = {
     originSameCountry: (origine) => `المنشأ ${origine}: هو بلد المقصد نفسه، فلا تفضيل يُطلب.`,
     preferentialRate: (origine) => `المعدل التفضيلي (المنشأ ${origine})`,
     preferentialSpecific: 'رسم نوعي: انظر الحاسبة',
+    preferentialAmount: 'يتوقف المبلغ على الكمية والقيمة: انظر الحاسبة',
     preferentialFloor: (taux) => `التفضيل (${taux}) يتجاوز المعدل المنشور: يسري المعدل المنشور.`,
     requirements: 'الإجراءات',
     requirementsDesc: 'الوثائق والإجراءات عند الاستيراد',
@@ -775,6 +778,11 @@ export default function RegulatoryDetailsPanel({
                             <p className="text-[var(--afcfta-muted)] text-xs">{t.preferentialRate(preference.origine)}</p>
                             {pref.taux !== null && pref.taux !== undefined ? (
                               <p className="text-lg font-bold text-[var(--success)] break-words">{`${arrondi(pref.taux)}%`}</p>
+                            ) : pref.expression ? (
+                              <>
+                                <p className="text-base font-bold text-[var(--success)] break-words" dir="ltr">{pref.expression}</p>
+                                <p className="text-[var(--afcfta-muted)] text-xs mt-1">{t.preferentialAmount}</p>
+                              </>
                             ) : (
                               <p className="text-sm font-semibold text-[var(--afcfta-muted)]">{t.preferentialSpecific}</p>
                             )}
