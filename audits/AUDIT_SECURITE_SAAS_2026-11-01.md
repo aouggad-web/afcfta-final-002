@@ -157,7 +157,7 @@ Le lien brut du flux est conservé (`etl/news_aggregator.py:1316`) et affiché t
 
 | Domaine | Constat | État | Qui agit |
 |---|---|---|---|
-| Supabase `afcfta-preprod` (seul projet, celui de la CSP) | Advisor sécurité : protection contre les mots de passe divulgués désactivée | ✅ | activée par l'exploitant le 16/11/2026 (offre Pro ; configuration rechargée à 21 h 42 et 21 h 46 UTC). Le même jour, à 21 h 50, l'Advisor interrogé par l'API la signalait encore : résultat mis en cache, à revérifier |
+| Supabase `afcfta-preprod` (seul projet, celui de la CSP) | Advisor sécurité : protection contre les mots de passe divulgués désactivée | ✅ | activée par l'exploitant le 16/11/2026 (offre Pro ; configuration rechargée à 21 h 42 et 21 h 46 UTC) ; Advisor sécurité revérifié le même soir : aucune alerte |
 | Supabase | Advisor performance sans alerte ; schéma `public` sans table ; extensions par défaut, `pg_graphql` absent | ✅ | — (activer la RLS dès la première table) |
 | Supabase | Journaux Auth sur 24 h : 3 connexions, 1 échec, aucune rafale ; redémarrage d'Auth le 16/11 à 18 h 20 UTC | ✅ | expliqué : l'exploitant était dans le tableau de bord Supabase à ce moment (confirmation du 16/11/2026) |
 | Supabase | Réglages e-mail et adresses autorisées | ✅ | revus par l'exploitant le 16/11/2026 : changements d'adresse et de mot de passe sécurisés, 8 caractères au minimum ; Site URL et Redirect URLs limités à l'adresse https exacte de l'application, sans joker. Laissés tels quels à dessein : « mot de passe actuel requis » (bloquerait la réinitialisation), connexion par lien magique (le lien de confirmation d'inscription en dépend) |
