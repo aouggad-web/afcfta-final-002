@@ -176,7 +176,7 @@ Le lien brut du flux est conservé (`etl/news_aggregator.py:1316`) et affiché t
 | Préproduction | `/api/docs` et `/api/openapi.json` rendaient la page de l'application (200), sans schéma | ✅ corrigé | code (PR #809) : 404 pour tout chemin `/api/...` inconnu (`serve_react`), test `test_api_inconnue_404.py` |
 | Préproduction | `/api/banking/countries` et `/api/consultation/DZA/recherche` ouverts sans compte | ✅ corrigé (D1) | en ligne après la synchronisation de la PR #809 |
 
-**Actions de l'exploitant, dans l'ordre :** (1) Cloudflare : HSTS et en-têtes de réponse de la vitrine ; (2) ~~Supabase : protection contre les mots de passe divulgués, Redirect URLs et Site URL~~ fait le 16/11 ; (3) Cloudflare : DNSSEC, CAA, Minimum TLS 1.2 ; (4) GitHub : épingler `frontend-build` sur GitHub Actions, supprimer la branche `Main` ; (5) Resend : état « Verified », puis DMARC en `p=reject` ; (6) nom ou séparation du projet Supabase de production.
+**Actions de l'exploitant, dans l'ordre :** (1) Cloudflare : HSTS et en-têtes de réponse de la vitrine ; (2) ~~Supabase : protection contre les mots de passe divulgués, Redirect URLs et Site URL~~ fait le 16/11 ; (3) Cloudflare : DNSSEC, CAA, Minimum TLS 1.2 ; (4) GitHub : épingler `frontend-build` sur GitHub Actions, supprimer la branche `Main` ; (5) Resend : état « Verified », puis DMARC en `p=reject` ; (6) nom ou séparation du projet Supabase de production. **Décision de l'exploitant (16/11/2026) :** les actions Cloudflare (1 et 3 : HSTS et en-têtes de la vitrine, DNSSEC, CAA, TLS 1.2 minimum) sont reportées à la préparation du lancement ; elles figurent dans la liste de contrôle d'avant lancement.
 
 
 ---
