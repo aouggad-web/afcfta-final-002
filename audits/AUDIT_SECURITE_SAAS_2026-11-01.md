@@ -10,6 +10,68 @@
 
 ---
 
+## 0. Consolidation au 16 novembre 2026
+
+Point d'étape après les quatre phases du plan (§8) et les PR fusionnées depuis la dernière mise à jour de ce rapport (PR #789, 7 novembre). Méthode : relecture de l'état de chaque constat, énumération des 372 routes de `main` (`5490076e`) avec leurs dépendances d'accès comparée à celle du 7 novembre (`6535ba77`), relecture du code des PR #790 à #807, `pip-audit`, `yarn audit` et `bandit` rejoués, tests de sécurité rejoués. Aucun test intrusif.
+
+### 0.1 État des constats d'origine
+
+La liste compte 30 constats ; le décompte du §1 en annonçait 29 (9 faibles ou info au lieu de 10).
+
+| # | Constat | Gravité | État au 16/11/2026 | Où |
+|---|---|---|---|---|
+| C1 | Domaine `afcfta-zlecaf.com` non revendiqué | Critique | ✅ Corrigé | PR #750 ; domaine vérifié, Pages limité à `site/`, Cloudflare en SSL complet |
+| C3 | Déploiement de n'importe quelle branche avec les secrets | Critique | ✅ Corrigé | PR #750, #753, #761 ; ruleset « Protéger main » active depuis le 02/11 |
+| E1 | Quotas et accès payants non appliqués aux anonymes | Élevé | ✅ Corrigé ; voir D1 pour les modules restés ouverts | PR #765, puis #798 (calculateur sur compte) |
+| E2 | Déni de service anonyme sur un worker unique | Élevé | ✅ Corrigé ; restes acceptés (inventaire régional au redémarrage, actualisation > 30 s, reconnexion Redis) | PR #765 et suivantes |
+| E3 | Secrets d'exemple acceptés au démarrage | Élevé | ✅ Clos | contrôle du pod le 01/11 ; garde-fou de démarrage (PR #750) |
+| E4 | Cache admin exposé via GraphQL | Élevé | ✅ Corrigé | PR #765 : GraphQL n'est plus servi |
+| E5 | IP client falsifiable | Élevé | ✅ Corrigé ; reste accepté : un `TRUSTED_PROXY_HOPS` trop élevé | PR #765, vérifié sur la préproduction le 03/11 |
+| E6 | Origines CORS par défaut | Élevé | ✅ Corrigé | PR #771 |
+| C2 | Jeton OEC journalisé | Moyen (reclassé) | ✅ Corrigé | PR #750 ; journaux d'uvicorn masqués depuis le 06/11 |
+| M1 | Chaîne CI | Moyen | ✅ Corrigé ; exception acceptée : `cleanup-branches.yml` (manuel) | PR #768, #770, chaîne CI du 06/11 ; `DATA_BOT_TOKEN` en place |
+| M2 | `.dockerignore` | Moyen | ✅ Corrigé | PR #771 |
+| M3 | Dépendances vulnérables | Moyen | ✅ Corrigé ; nouvelle alerte sur `soupsieve`, voir D-DEP | PR #770 |
+| M4 | Verrouillage de compte par e-mail | Moyen | ✅ Corrigé | PR #765 |
+| M5 | Injection de formules CSV/Excel | Moyen | ✅ Corrigé | PR #765, complément du 06/11 |
+| M6 | Client Supabase par défaut | Moyen | ✅ Corrigé ; vérification exploitant en attente (§6.5) | PR #773, #774 ; Supabase actif depuis le 05/11 |
+| M7 | Script tiers sans SRI, iframe sans sandbox | Moyen | ⚠️ Partiel accepté : SRI en place, bac à sable écarté (l'Atlas ne lirait plus ses données) | PR #768 |
+| M8 | `HTTPS_ENABLED=false` | Moyen | ✅ Clos | pod le 01/11 ; HSTS et cookies `Secure` vérifiés |
+| M9 | `str(exc)` renvoyé au client | Moyen | ✅ Corrigé | PR #781 |
+| M10 | Middlewares de sécurité optionnels | Moyen | ✅ Corrigé | PR #765 |
+| M11 | WebSocket | Moyen | ✅ Corrigé | PR #781 : plus servis |
+| INFO-1 | Pages publiait la racine du dépôt | Info | ✅ Corrigé | PR #750 |
+| INFO-2 | jsDelivr dans la CSP | Info | ✅ Corrigé | PR #765 |
+| INFO-3 | HTML sans en-têtes (`vite preview`) | Info | ✅ Corrigé | PR #776, #777, #778 : CSP stricte à nonce |
+| INFO-4 | CSRF non lié à la session | Info | ✅ Corrigé ; restes acceptés : liaison HMAC écartée, `SameSite=None` imposé par l'iframe d'aperçu | 06/11 : cookie `__Host-csrf_token` |
+| INFO-5 | `docker-compose` | Info | ✅ Corrigé | PR #771 |
+| INFO-6 | `.replit` | Info | ✅ Corrigé | PR #771 : Replit retiré, projet supprimé |
+| INFO-7 | TLS désactivé dans deux collecteurs | Info | ✅ Corrigé | 06/11, et un troisième collecteur |
+| INFO-8 | `cleanup-branches.yml` destructif par défaut | Info | ✅ Corrigé | PR #768 |
+| INFO-9 | Clé admin en `localStorage` | Info | ✅ Corrigé | composant supprimé le 06/11 |
+| INFO-10 | Hygiène des lockfiles | Info | ⚠️ Partiel : restent les empreintes (`--require-hashes`) et les dépendances indirectes de la racine et des workflows | PR #770, 06/11 |
+
+**Bilan :** 28 constats corrigés ou clos, 2 partiels acceptés (M7, INFO-10), aucun constat critique ou élevé ouvert. Les quatre phases du plan (§8) sont réalisées.
+
+### 0.2 Risques résiduels acceptés
+
+| Constat | Risque résiduel | Pourquoi il est accepté |
+|---|---|---|
+| E1 | Une réponse 422 ou 404 consomme une unité de quota ; le compte admin a un accès illimité | choix tarifaire ; mot de passe admin fort, contrôlé au démarrage (E3) |
+| E2 | Première construction de l'inventaire régional (~10 s de CPU) après un redémarrage ; une collecte d'actualités de plus de 30 s rend le cache précédent ; reconnexion à Redis à chaque appel si Redis tombe | décisions d'exploitation, coût borné |
+| E5 | Un `TRUSTED_PROXY_HOPS` réglé trop haut rendrait l'IP falsifiable | réglage de déploiement, vérifié le 03/11 |
+| M1 | `cleanup-branches.yml` garde le jeton par défaut | lancé à la main seulement, aucun code tiers après le checkout |
+| M6, INFO-3 | Session Supabase en `localStorage` (choix de supabase-js) | CSP stricte à nonce sur toutes les pages |
+| M7 | Iframe de l'Atlas sans `sandbox` | sans `allow-same-origin`, l'Atlas ne lit plus ses données ; Chart.js vérifié par SRI |
+| INFO-4 | Jeton CSRF non lié à la session ; session en `SameSite=None` | CORS en liste blanche exacte ; l'iframe d'aperçu impose `SameSite=None` |
+| INFO-10 | Pas d'empreintes (`--require-hashes`) ; dépendances indirectes non figées à la racine et dans les workflows | une seule ligne sans empreinte bloquerait l'installation tant que l'agent Emergent édite `backend/requirements.txt` |
+
+**Vérifications encore à faire par l'exploitant** (§6) : « Redirect URLs » de Supabase sans joker sur un domaine partagé (§6.5) ; utilisateur des programmes supervisord (§6.6) ; « Save to GitHub » d'Emergent vers une branche dédiée (C3).
+
+<!-- 0.3 AUDIT DIFFERENTIEL -->
+
+---
+
 ## 1. Synthèse exécutive
 
 La base de sécurité applicative est **sérieuse** : CORS en liste blanche exacte, protection CSRF double-submit, signatures de webhooks Stripe/Chargily vérifiées, clés API hachées, quotas d'IA réellement appliqués, confinement du service de fichiers statiques, conteneur Docker durci (non-root, `read_only`, `cap_drop ALL`). **Il n'y a pas de faille d'injection SQL/NoSQL, de SSRF, ni de traversée de chemin exploitable depuis le réseau.**
@@ -66,7 +128,7 @@ Un attaquant disposant du domaine peut monter de fausses pages de connexion/paie
 >
 > **Clé UN Comtrade (le projet en possède une).** Vérifié le 01/11/2026 : le repli Comtrade est désactivé en production (`/api/oec/trade-series/sources/NGA` : `enabled: false`) et aucun workflow CI n'utilise la clé, qui n'a donc pas été exposée ; rotation inutile. La clé passe désormais dans l'en-tête `Ocp-Apim-Subscription-Key` et non plus dans l'URL (`backend/services/comtrade_service.py`, `scripts/update_comtrade_data.py`, y compris l'appel WTO du script), comme le faisait déjà `wto_service.py` ; l'API reconnaît l'en-tête (testé avec une clé factice : « invalid » et non « missing subscription key »). Tests : `backend/tests/test_comtrade_key_header.py`. La clé Anthropic, transmise en en-tête par le SDK officiel, n'a jamais été concernée.
 >
-> **Reste à faire, non bloquant :** pour le jeton OEC (non configuré à ce jour), les messages propres à uvicorn (exception non interceptée) ne passent pas par le formateur ; le filtre CI les couvre pour l'artefact, mais pas les journaux du superviseur Emergent.
+> **Reste à faire, non bloquant :** pour le jeton OEC (non configuré à ce jour), les messages propres à uvicorn (exception non interceptée) ne passent pas par le formateur ; le filtre CI les couvre pour l'artefact, mais pas les journaux du superviseur Emergent. ✅ **Fait le 06/11/2026** : `uvicorn` et `uvicorn.error` remontent au gestionnaire racine, qui masque les secrets (`backend/log_redaction.py`, §8 point 17).
 
 Le jeton d'API OEC (plan payant) est passé **en paramètre d'URL** :
 - `backend/services/real_trade_data_service.py:41` : `enriched["token"] = OEC_API_TOKEN` ;
@@ -105,7 +167,7 @@ Pire, la CI publie ce log : `.github/workflows/opportunites_module.yml` démarre
 
 > **Corrigé dans la PR #750 (01/11/2026), côté script.** `sync_emergent.sh` ne déploie plus que `main` : toute autre valeur de `BRANCH` est refusée avant la moindre commande git. La bascule est forcée (`git fetch` avec refspec explicite, puis `git checkout -f -B main origin/main`), si bien qu'un pod resté sur une autre branche avec des modifications locales, un fichier non suivi en conflit ou un clone mono-branche n'interrompt plus le déploiement (l'ancienne commande échouait dans ces trois cas, testé). L'installation du frontend est passée à `yarn install --frozen-lockfile --ignore-scripts`, sans repli : le lockfile était à jour et le build est identique à l'octet. Une nouvelle étape 1bis, non bloquante, signale toute ligne de `webhook-crons` hors de la grammaire d'Emergent, une variable répétée, un dispatch vers un hôte hors `emergentagent.com` (y compris via `user@hôte` dans l'URL) et une divergence entre les deux fichiers ; l'alerte est rappelée en fin de déploiement. Les scripts de la plateforme (`.emergent/cron/*.sh`) n'ont pas été modifiés : Emergent les régénère. Une relecture adverse indépendante a trouvé quatre contournements dans la première version du contrôle ; tous sont corrigés et couverts par des tests (rendus réels d'Emergent : aucune fausse alerte). Une deuxième relecture en a trouvé deux autres, reproduits jusqu'à la fuite du Bearer vers un hôte tiers : une barre oblique inverse acceptée juste après l'hôte (`x.emergentagent.com\@tiers`) et une troncature à 300 octets qui cachait un `@tiers` placé plus loin. Une troisième relecture en a trouvé un dernier, reproduit de la même façon : un `ENDPOINT_URL_B64=` inoffensif caché dans la valeur de `CRON_NAME` était lu à la place de la vraie affectation. Tous trois sont corrigés dans la PR #753 : l'hôte est lu sur la valeur décodée entière de l'affectation que sh exporte réellement, et tout base64 invalide, octet hors ASCII imprimable (NUL, saut de ligne, tabulation) ou valeur de plus de 2 048 octets est signalé. Limite connue : le contrôle accepte tout sous-domaine de `emergentagent.com`, y compris l'aperçu d'un autre client d'Emergent ; il ne vérifie pas que l'hôte est celui du pod.
 >
-> **Reste à faire (exploitant) :** activer une ruleset GitHub sur `main` (PR obligatoire, 4 checks de CI requis, force-push et suppression bloqués, **aucune exception**, car tous les agents agissent sous l'identité du propriétaire) ; régler « Save to GitHub » d'Emergent sur une branche dédiée ; ne plus lancer `production_etl.yml` depuis `main` (il y pousse directement). Non traité : `pip install --require-hashes` (Phase 2), et la branche npm du script, qui n'est durcie que lorsque yarn est présent, ce qui est le cas sur Emergent.
+> **Reste à faire (exploitant) :** activer une ruleset GitHub sur `main` (PR obligatoire, 4 checks de CI requis, force-push et suppression bloqués, **aucune exception**, car tous les agents agissent sous l'identité du propriétaire) ; régler « Save to GitHub » d'Emergent sur une branche dédiée ; ne plus lancer `production_etl.yml` depuis `main` (il y pousse directement). Non traité : `pip install --require-hashes` (Phase 2), et la branche npm du script, qui n'est durcie que lorsque yarn est présent, ce qui est le cas sur Emergent. ✅ **Point au 16/11/2026** : ruleset active depuis le 02/11 ; `production_etl.yml` ouvre une PR au lieu de pousser sur `main` (PR #768). Restent : « Save to GitHub » d'Emergent (réglage de l'exploitant, non vérifiable d'ici) et `--require-hashes` (INFO-10).
 
 ---
 
