@@ -65,7 +65,7 @@ describe('Fiches PDF du module Logistique', () => {
     expect(valeur(s, 'Autorité portuaire', 'Téléphone')).toBe('+213 21 24 34 96');
     expect(valeur(s, 'Autorité portuaire', 'Capitainerie')).toContain('VHF Canal 16');
     const trafic = s.sections.find((x) => x.title === 'Évolution du trafic').table;
-    expect(trafic.rows.map((r) => r.year)).toEqual(port.traffic_evolution.map((r) => String(r.year)).sort());
+    expect(trafic.rows.map((r) => r.year.slice(0, 4))).toEqual(port.traffic_evolution.map((r) => String(r.year)).sort());
     const agents = s.sections.find((x) => x.title === 'Agents maritimes et opérateurs').table.rows;
     expect(agents).toHaveLength(port.agents.length);
     expect(agents[0].contact.split('\n')[0]).toBe(port.agents[0].contact);
@@ -86,6 +86,24 @@ describe('Fiches PDF du module Logistique', () => {
     expect(valeur(fr, 'Autorité portuaire', 'Téléphone')).toBe('non publié');
     expect(specFichePortPdf(p, 'en').kpis.find((k) => k.label === 'Vessel calls').value).toBe('not published');
     expect(specFichePortPdf(p, 'ar').kpis.find((k) => k.label === 'توقفات السفن').value).toBe('غير منشور');
+  });
+
+  it('port : aucune valeur générée, les estimations portent « estimé »', () => {
+    const s = specFichePortPdf(port, 'fr');
+    const texte = JSON.stringify(s);
+    // Productivité, séjour au port et note d'efficacité ne sont plus servis.
+    expect(texte).not.toMatch(/mouvements\/heure|Productivité|Note d'efficacité|Séjour au port/);
+    const annees = s.sections.find((x) => x.title === 'Évolution du trafic').table.rows.map((r) => r.year);
+    expect(annees).toContain('2019 (estimé)');
+    expect(annees).toContain('2024');
+    expect(s.kpis.find((k) => k.label === 'Dwell time').sub).toContain('estimé');
+    expect(valeur(s, 'Performance portuaire', 'Source')).toContain('Kuehne+Nagel');
+
+    const p = structuredClone(port);
+    p.performance_metrics.nature = 'estimation';
+    const e = specFichePortPdf(p, 'en');
+    expect(e.kpis.find((k) => k.label === 'Anchorage waiting').sub).toBe('estimated');
+    expect(valeur(e, 'Port performance', 'Anchorage waiting time')).toMatch(/^144 h \(estimated\)/);
   });
 
   it('aéroport : statistiques, acteurs, lignes cargo et non publié', () => {

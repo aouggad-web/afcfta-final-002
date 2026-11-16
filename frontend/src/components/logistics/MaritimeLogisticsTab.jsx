@@ -277,6 +277,7 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
                        port.trs_analysis.container_dwell_time_days !== 'NA' && (
                         <Badge variant="secondary" className="text-xs">
                           {port.trs_analysis.container_dwell_time_days}{pick(language, 'j', 'j', ' يوم')}
+                          {port.trs_analysis.nature === 'estimation' && pick(language, ' · estimé', ' · estimated', ' · تقديري')}
                         </Badge>
                       )}
                     </div>

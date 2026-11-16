@@ -204,6 +204,7 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
                 <br />
                 <span className="text-xs">
                   📦 {port.latest_stats?.container_throughput_teu?.toLocaleString('fr-FR') || 'N/A'} TEU
+                  {port.latest_stats?.nature === 'estimation' && pick(language, ' (estimé)', ' (estimated)', ' (تقديري)')}
                 </span>
               </div>
             </Tooltip>
@@ -220,6 +221,7 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
                   <p className="font-semibold text-[var(--info)]">📦 {t.teuYear}</p>
                   <p className="text-[var(--info)] font-bold">
                     {port.latest_stats?.container_throughput_teu?.toLocaleString('fr-FR') || 'N/A'} TEU
+                    {port.latest_stats?.nature === 'estimation' && pick(language, ' (estimé)', ' (estimated)', ' (تقديري)')}
                   </p>
                 </div>
                 <button
