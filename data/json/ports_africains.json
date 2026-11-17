@@ -349,17 +349,11 @@
     "performance_metrics": {
       "avg_waiting_time_hours": 144,
       "avg_waiting_time_label": "6 jours — 2024 (Kuehne+Nagel / Ministère Transports DZ, confirmé)",
-      "avg_waiting_time_2025_hours": 24,
-      "avg_waiting_time_2025_label": "<1 jour petits navires / -50% grands navires (EPAL bilan 2025)",
-      "avg_port_stay_hours": 360,
-      "avg_port_stay_label": "15 jours dwell time — 2024 (incident documenté juillet 2024)",
       "quay_occupancy_rate_2024_pct": 98,
       "quay_occupancy_rate_2025_pct": 80,
-      "berth_productivity": 25.0,
-      "berth_productivity_unit": "mouvements/heure (TCA DPWorld post-modernisation)",
-      "efficiency_grade": "C+",
-      "efficiency_note": "2024: saturation critique (98% taux quais). 2025: amélioration spectaculaire post-modernisation DPWorld TCA. LPI Algérie 2023: 2.4/5 (rang 117 mondial). Résultat net EPAL T3 2025: 1,3 Md DA (+74.41%).",
-      "last_updated": "2025-02-21 (LNR-DZ bilan T3 2025 publié)"
+      "last_updated": "2025-02-21 (LNR-DZ bilan T3 2025 publié)",
+      "nature": "mesure",
+      "source": "Kuehne+Nagel, Operational Update (avril 2025) ; ministère des Transports (Algérie) ; EPAL / APS pour les taux d'occupation des quais"
     },
     "traffic_evolution": [
       {
@@ -370,7 +364,8 @@
         "cargo_tons": 24000000,
         "avg_wait_time": 72.0,
         "source": "Estimation — national UNCTAD 1 794K × part Alger ~43.8%",
-        "note": "Pré-COVID. UNCTAD national Algérie 2019: 1 793 990 EVP."
+        "note": "Pré-COVID. UNCTAD national Algérie 2019: 1 793 990 EVP.",
+        "nature": "estimation"
       },
       {
         "year": 2020,
@@ -380,7 +375,8 @@
         "cargo_tons": 20500000,
         "avg_wait_time": 96.0,
         "source": "Estimation — national UNCTAD 1 541K × part Alger ~41.5%. COVID -14.1% national.",
-        "note": "COVID-19 + restrictions importations DZ. UNCTAD national 2020: 1 541 273 EVP."
+        "note": "COVID-19 + restrictions importations DZ. UNCTAD national 2020: 1 541 273 EVP.",
+        "nature": "estimation"
       },
       {
         "year": 2021,
@@ -390,7 +386,8 @@
         "cargo_tons": 21500000,
         "avg_wait_time": 120.0,
         "source": "Estimation — reprise partielle, restrictions importations maintenues",
-        "note": "Loi finances 2021: maintien restrictions LIC. Reprise progressive."
+        "note": "Loi finances 2021: maintien restrictions LIC. Reprise progressive.",
+        "nature": "estimation"
       },
       {
         "year": 2022,
@@ -400,7 +397,8 @@
         "cargo_tons": 23000000,
         "avg_wait_time": 132.0,
         "source": "Estimation — T1 2022 EPAL: ~61 220 EVP (publié). Extrapolation annuelle.",
-        "note": "T1 2022 publié par EPAL: ~61 220 EVP. Saturation quais en progression."
+        "note": "T1 2022 publié par EPAL: ~61 220 EVP. Saturation quais en progression.",
+        "nature": "estimation"
       },
       {
         "year": 2023,
@@ -410,7 +408,8 @@
         "cargo_tons": 24000000,
         "avg_wait_time": 144.0,
         "source": "Estimation — T1 2023: 55 955 EVP (-8.6% YoY). T3 2023: 68 446 EVP (+8.18%). Hausse annuelle trafic >14% (APS 2023).",
-        "note": "EPAL publie: T1 2023=55 955 EVP, T3 2023=68 446 EVP. Taux d'occupation quais ~98% (saturation documentée). Attente navires: 6 jours (Kuehne+Nagel, confirmé)."
+        "note": "EPAL publie: T1 2023=55 955 EVP, T3 2023=68 446 EVP. Taux d'occupation quais ~98% (saturation documentée). Attente navires: 6 jours (Kuehne+Nagel, confirmé).",
+        "nature": "estimation"
       },
       {
         "year": 2024,
@@ -420,7 +419,8 @@
         "cargo_tons": 25000000,
         "avg_wait_time": 144.0,
         "source": "EPAL — DG Abdelhamid Boulaam, déclaration officielle, confirmé APS/Radio Algérienne",
-        "note": "700 000 EVP CONFIRMÉ. Taux d'occupation quais: ~98% (saturation). T3 2024: 71 383 EVP. Attente grands navires: maintien 6 jours."
+        "note": "700 000 EVP CONFIRMÉ. Taux d'occupation quais: ~98% (saturation). T3 2024: 71 383 EVP. Attente grands navires: maintien 6 jours.",
+        "nature": "mesure"
       },
       {
         "year": 2025,
@@ -428,9 +428,9 @@
         "vessels": 2000,
         "container_vessel_calls": 400,
         "cargo_tons": 27000000,
-        "avg_wait_time": 24.0,
         "source": "APS / Radio Algérienne / LNR-DZ — bilan 2025 publié (officiel)",
-        "note": "PREMIER MILLION D'EVP franchi. >400 navires porte-conteneurs. T3 2025: 106 293 EVP (+48.91% vs T3 2024). Taux d'occupation quais: ~80% (décongestionnement après modernisation DPWorld TCA). Attente petits navires: <1 jour (vs 10 jours en 2009). Attente grands navires: -50%."
+        "note": "PREMIER MILLION D'EVP franchi. >400 navires porte-conteneurs. T3 2025: 106 293 EVP (+48.91% vs T3 2024). Taux d'occupation quais: ~80% (décongestionnement après modernisation DPWorld TCA). Attente petits navires: <1 jour (vs 10 jours en 2009). Attente grands navires: -50%.",
+        "nature": "mesure"
       }
     ],
     "trs_analysis": {
@@ -465,7 +465,8 @@
         "Attente petits navires 2025: <1j (vs 10j en 2009) | Grands navires: -50%"
       ],
       "warning": "ℹ️ TEU 2024 (700 000 EVP) = DONNÉES EPAL OFFICIELLES (DG Boulaam). Historique 2019-2023 = estimations basées sur données fragmentaires EPAL + UNCTAD national. EPAL ne publie pas de rapport annuel normalisé.",
-      "source_reliability_label": "Estimation Régionale"
+      "source_reliability_label": "Estimation Régionale",
+      "nature": "estimation"
     },
     "lpi_2023": {
       "overall_score": 2.4,
@@ -535,7 +536,8 @@
       "cargo_throughput_tons": 18000000,
       "vessel_calls": 1650,
       "source": "EPO — Ministère des Transports DZ / APS 2024",
-      "note": "Oran est principalement un port de vrac et marchandises diverses (hydrocarbures SONATRACH, céréales OAIC, acier). Trafic conteneurs secondaire (~115K EVP). Total marchandises: ~18M tonnes (dont hydrocarbures)."
+      "note": "Oran est principalement un port de vrac et marchandises diverses (hydrocarbures SONATRACH, céréales OAIC, acier). Trafic conteneurs secondaire (~115K EVP). Total marchandises: ~18M tonnes (dont hydrocarbures).",
+      "nature": "estimation"
     },
     "port_authority": {
       "name": "Entreprise Portuaire d'Oran (EPO)",
@@ -782,13 +784,9 @@
     "performance_metrics": {
       "avg_waiting_time_hours": 72,
       "avg_waiting_time_label": "3 jours (48-96h) — Source: APS / opérateurs 2024",
-      "avg_port_stay_hours": 288,
-      "avg_port_stay_label": "12 jours dwell time estimé",
-      "berth_productivity": 20.0,
-      "berth_productivity_unit": "mouvements/heure (terminal conteneurs)",
-      "efficiency_grade": "C",
-      "efficiency_note": "LPI Algérie 2023: 2.4/5 (rang 117). Meilleure congestion qu'Alger mais modernisation en cours.",
-      "last_updated": "2024-12-01"
+      "last_updated": "2024-12-01",
+      "nature": "mesure",
+      "source": "APS / opérateurs portuaires (2024)"
     },
     "traffic_evolution": [
       {
@@ -798,7 +796,8 @@
         "cargo_tons": 17500000,
         "avg_wait_time": 48.0,
         "source": "EPO / Ministère Transports",
-        "note": "Année référence pré-COVID"
+        "note": "Année référence pré-COVID",
+        "nature": "estimation"
       },
       {
         "year": 2020,
@@ -807,7 +806,8 @@
         "cargo_tons": 14800000,
         "avg_wait_time": 52.0,
         "source": "EPO",
-        "note": "COVID-19 — baisse trafic (-18%)"
+        "note": "COVID-19 — baisse trafic (-18%)",
+        "nature": "estimation"
       },
       {
         "year": 2021,
@@ -816,7 +816,8 @@
         "cargo_tons": 16200000,
         "avg_wait_time": 55.0,
         "source": "EPO",
-        "note": "Reprise progressive"
+        "note": "Reprise progressive",
+        "nature": "estimation"
       },
       {
         "year": 2022,
@@ -825,7 +826,8 @@
         "cargo_tons": 17300000,
         "avg_wait_time": 65.0,
         "source": "EPO / APS",
-        "note": "Hausse marchandises diverses et céréales (importations)"
+        "note": "Hausse marchandises diverses et céréales (importations)",
+        "nature": "estimation"
       },
       {
         "year": 2023,
@@ -833,7 +835,8 @@
         "vessels": 1600,
         "cargo_tons": 17800000,
         "avg_wait_time": 68.0,
-        "source": "EPO / Ministère Transports 2023"
+        "source": "EPO / Ministère Transports 2023",
+        "nature": "estimation"
       },
       {
         "year": 2024,
@@ -842,7 +845,8 @@
         "cargo_tons": 18000000,
         "avg_wait_time": 72.0,
         "source": "EPO / APS — projection",
-        "note": "Projection H2 2024. Modernisation terminal conteneurs en cours."
+        "note": "Projection H2 2024. Modernisation terminal conteneurs en cours.",
+        "nature": "estimation"
       }
     ],
     "trs_analysis": {
@@ -861,7 +865,8 @@
         "Conteneurs: ~115K EVP — port secondaire en conteneurs"
       ],
       "warning": "⚠️ ESTIMATION: Aucune étude TRS officielle. Les volumes TEU sont estimés — Oran est principalement un port de vrac et hydrocarbures, pas un hub conteneurs.",
-      "source_reliability_label": "Estimation Régionale"
+      "source_reliability_label": "Estimation Régionale",
+      "nature": "estimation"
     },
     "lpi_2023": {
       "overall_score": 2.4,
@@ -910,12 +915,7 @@
     "geo_lon": 5.0689,
     "port_type": "Maritime Commercial",
     "latest_stats": {
-      "year": 2024,
-      "container_throughput_teu": 278000,
-      "cargo_throughput_tons": 12500000,
-      "vessel_calls": 900,
-      "source": "EPB — Rapports annuels 2023-2024",
-      "note": "EPB a publié 264 150 EVP en 2023 (+5.6% vs 2022: 253 991 EVP). 2024 projection: ~278 000 EVP. 3ème port conteneurs d'Algérie (après Oran). Port mixte: conteneurs + hydrocarbures (pipeline Hassi Messaoud)."
+      "note": "3ème port conteneurs d'Algérie (après Oran). Port mixte: conteneurs + hydrocarbures (pipeline Hassi Messaoud)."
     },
     "port_authority": {
       "name": "Entreprise Portuaire de Béjaïa (EPB)",
@@ -1173,68 +1173,10 @@
     "performance_metrics": {
       "avg_waiting_time_hours": 96,
       "avg_waiting_time_label": "4 jours (72-120h) — estimation régionale",
-      "avg_port_stay_hours": 312,
-      "avg_port_stay_label": "13 jours dwell time estimé",
-      "berth_productivity": 22.0,
-      "berth_productivity_unit": "mouvements/heure (TCB SERPORT)",
-      "efficiency_grade": "C",
-      "efficiency_note": "Port mixte hydrocarbures/conteneurs. Congestion documentée lors incidents 2024.",
-      "last_updated": "2024-12-01"
+      "last_updated": "2024-12-01",
+      "nature": "estimation",
+      "source": "Estimation régionale par analogie avec Alger et Oran (2024)"
     },
-    "traffic_evolution": [
-      {
-        "year": 2019,
-        "teu": 250000,
-        "vessels": 850,
-        "cargo_tons": 11800000,
-        "avg_wait_time": 60.0,
-        "source": "EPB Rapport Annuel 2019",
-        "note": "Référence pré-COVID"
-      },
-      {
-        "year": 2020,
-        "teu": 223978,
-        "vessels": 740,
-        "cargo_tons": 10200000,
-        "avg_wait_time": 65.0,
-        "source": "EPB Rapport Annuel 2020",
-        "note": "COVID-19 — baisse imports (-10.4%)"
-      },
-      {
-        "year": 2021,
-        "teu": 235177,
-        "vessels": 780,
-        "cargo_tons": 10800000,
-        "avg_wait_time": 70.0,
-        "source": "EPB Rapport Annuel 2021"
-      },
-      {
-        "year": 2022,
-        "teu": 253991,
-        "vessels": 820,
-        "cargo_tons": 11500000,
-        "avg_wait_time": 85.0,
-        "source": "EPB Rapport Annuel 2022"
-      },
-      {
-        "year": 2023,
-        "teu": 264150,
-        "vessels": 855,
-        "cargo_tons": 12000000,
-        "avg_wait_time": 90.0,
-        "source": "EPB Rapport Annuel 2023 (publié)",
-        "note": "+5.6% YoY — données EPB officielles publiées"
-      },
-      {
-        "year": 2024,
-        "teu": 278000,
-        "vessels": 900,
-        "cargo_tons": 12500000,
-        "avg_wait_time": 96.0,
-        "source": "EPB — projection H2 2024",
-        "note": "Projection basée sur tendance +5.3% YoY"
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": 13,
       "source": "Estimation par analogie Alger + données EPB partielles",
@@ -1246,14 +1188,11 @@
       "customs_clearance_hours": "72-120",
       "no_official_data_reason": "L'EPB publie les volumes EVP mais pas de TRS standardisé WCO.",
       "factual_data_points": [
-        "2023: 264 150 EVP (+5.6%) — EPB Rapport Annuel officiel",
-        "2022: 253 991 EVP — EPB Rapport Annuel officiel",
-        "2021: 235 177 EVP — EPB Rapport Annuel officiel",
-        "2020: 223 978 EVP — EPB Rapport Annuel officiel",
         "Pipeline Hassi Messaoud: 27M t/an hydrocarbures"
       ],
-      "warning": "⚠️ ESTIMATION: Dwell time de 13 jours estimé. Volumes TEU vérifiés sur rapports EPB.",
-      "source_reliability_label": "TEU: Données EPB officielles / Dwell: Estimation"
+      "warning": "⚠️ ESTIMATION: Dwell time de 13 jours estimé.",
+      "source_reliability_label": "Estimation Régionale",
+      "nature": "estimation"
     },
     "lpi_2023": {
       "overall_score": 2.4,
@@ -1416,45 +1355,6 @@
       "world_rank": 52,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 18.0,
-      "avg_port_stay_hours": 42.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "B+",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 1159887,
-        "vessels": 1449,
-        "avg_wait_time": 18.4
-      },
-      {
-        "year": 2021,
-        "teu": 1217881,
-        "vessels": 1522,
-        "avg_wait_time": 18.6
-      },
-      {
-        "year": 2022,
-        "teu": 1315312,
-        "vessels": 1644,
-        "avg_wait_time": 18.3
-      },
-      {
-        "year": 2023,
-        "teu": 1367924,
-        "vessels": 1709,
-        "avg_wait_time": 17.8
-      },
-      {
-        "year": 2024,
-        "teu": 1450000,
-        "vessels": 1812,
-        "avg_wait_time": 19.1
-      }
-    ],
     "port_authority": {
       "name": "Marsa Maroc - Port de Casablanca",
       "address": "175 Boulevard Mohamed Zerktouni, Casablanca, Maroc",
@@ -1477,7 +1377,8 @@
       "last_updated": "2025-12-29",
       "cppi_rank": "NA",
       "cppi_year": "NA",
-      "source_reliability_label": "Autorité Portuaire"
+      "source_reliability_label": "Autorité Portuaire",
+      "nature": "mesure"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -1508,11 +1409,7 @@
       "year": 2024,
       "container_throughput_teu": 8200000,
       "cargo_throughput_tons": 96000000,
-      "vessel_calls": 4200,
-      "median_time_in_port_hours": 14.5,
-      "average_waiting_time_hours": 3.2,
-      "berth_productivity_moves_per_hour": 35,
-      "performance_grade": "A"
+      "vessel_calls": 4200
     },
     "agents": [
       {
@@ -1691,87 +1588,6 @@
       "world_rank": 52,
       "year": 2023
     },
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 8200000,
-        "cargo_throughput_tons": 96000000,
-        "vessel_calls": 4200,
-        "median_time_in_port_hours": 14.5,
-        "performance_grade": "A"
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 7500000,
-        "cargo_throughput_tons": 89000000,
-        "vessel_calls": 3950,
-        "median_time_in_port_hours": 15.2,
-        "performance_grade": "A"
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 6800000,
-        "cargo_throughput_tons": 82000000,
-        "vessel_calls": 3720,
-        "median_time_in_port_hours": 16.1,
-        "performance_grade": "A-"
-      },
-      {
-        "year": 2021,
-        "container_throughput_teu": 6200000,
-        "cargo_throughput_tons": 75000000,
-        "vessel_calls": 3500,
-        "median_time_in_port_hours": 17.3,
-        "performance_grade": "B+"
-      },
-      {
-        "year": 2020,
-        "container_throughput_teu": 5400000,
-        "cargo_throughput_tons": 68000000,
-        "vessel_calls": 3200,
-        "median_time_in_port_hours": 18.5,
-        "performance_grade": "B+"
-      }
-    ],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 2.5,
-      "avg_port_stay_hours": 26.5,
-      "berth_productivity": 45.0,
-      "efficiency_grade": "A+",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 6559361,
-        "vessels": 8199,
-        "avg_wait_time": 2.7
-      },
-      {
-        "year": 2021,
-        "teu": 6887330,
-        "vessels": 8609,
-        "avg_wait_time": 2.6
-      },
-      {
-        "year": 2022,
-        "teu": 7438316,
-        "vessels": 9297,
-        "avg_wait_time": 2.7
-      },
-      {
-        "year": 2023,
-        "teu": 7735849,
-        "vessels": 9669,
-        "avg_wait_time": 2.5
-      },
-      {
-        "year": 2024,
-        "teu": 8200000,
-        "vessels": 10250,
-        "avg_wait_time": 2.6
-      }
-    ],
     "port_authority": {
       "name": "Tanger Med Port Authority (TMPA)",
       "address": "Zone Franche Ksar El Majaz, 90000 Tanger, Maroc",
@@ -1796,7 +1612,8 @@
       "cppi_year": 2023,
       "teu_throughput_2024": 10241392,
       "source_url": "https://www.beacon.com",
-      "source_reliability_label": "Rapport Industriel"
+      "source_reliability_label": "Rapport Industriel",
+      "nature": "mesure"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -1859,45 +1676,6 @@
       "world_rank": 52,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 62.9,
-      "avg_port_stay_hours": 108.7,
-      "berth_productivity": 76.1,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 75992,
-        "vessels": 94,
-        "avg_wait_time": 62.0
-      },
-      {
-        "year": 2021,
-        "teu": 79792,
-        "vessels": 99,
-        "avg_wait_time": 62.1
-      },
-      {
-        "year": 2022,
-        "teu": 86175,
-        "vessels": 107,
-        "avg_wait_time": 57.4
-      },
-      {
-        "year": 2023,
-        "teu": 89622,
-        "vessels": 112,
-        "avg_wait_time": 67.0
-      },
-      {
-        "year": 2024,
-        "teu": 95000,
-        "vessels": 118,
-        "avg_wait_time": 62.5
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": 9,
       "source": "Estimation basée sur performance Casablanca et spécialisation pêche/agrumes",
@@ -1915,7 +1693,8 @@
       "cppi_rank": "NA",
       "cppi_year": "NA",
       "no_official_data_reason": "Pas de données TRS publiées. Port secondaire pour conteneurs.",
-      "source_reliability_label": "Estimation Régionale"
+      "source_reliability_label": "Estimation Régionale",
+      "nature": "estimation"
     },
     "port_authority": {
       "name": "Agence Nationale des Ports - Agadir",
@@ -1984,45 +1763,6 @@
       "world_rank": 81,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 71.5,
-      "avg_port_stay_hours": 55.7,
-      "berth_productivity": 39.0,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 543947,
-        "vessels": 679,
-        "avg_wait_time": 73.8
-      },
-      {
-        "year": 2021,
-        "teu": 571144,
-        "vessels": 713,
-        "avg_wait_time": 71.5
-      },
-      {
-        "year": 2022,
-        "teu": 616835,
-        "vessels": 771,
-        "avg_wait_time": 65.8
-      },
-      {
-        "year": 2023,
-        "teu": 641509,
-        "vessels": 801,
-        "avg_wait_time": 74.8
-      },
-      {
-        "year": 2024,
-        "teu": 680000,
-        "vessels": 850,
-        "avg_wait_time": 64.8
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": 10,
       "source": "Estimation basée sur LPI Tunisie 2023 et benchmarks régionaux",
@@ -2042,7 +1782,8 @@
       "lpi_score": 2.4,
       "lpi_year": 2023,
       "no_official_data_reason": "Tunisie n'a pas publié d'étude TRS. OMMP ne publie pas de statistiques dwell time.",
-      "source_reliability_label": "Estimation Modélisée"
+      "source_reliability_label": "Estimation Modélisée",
+      "nature": "estimation"
     },
     "port_authority": {
       "name": "Office de la Marine Marchande et des Ports (OMMP)",
@@ -2110,45 +1851,6 @@
       "world_rank": 81,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 25.3,
-      "avg_port_stay_hours": 51.1,
-      "berth_productivity": 35.8,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 95990,
-        "vessels": 119,
-        "avg_wait_time": 23.4
-      },
-      {
-        "year": 2021,
-        "teu": 100790,
-        "vessels": 125,
-        "avg_wait_time": 26.7
-      },
-      {
-        "year": 2022,
-        "teu": 108853,
-        "vessels": 136,
-        "avg_wait_time": 26.6
-      },
-      {
-        "year": 2023,
-        "teu": 113207,
-        "vessels": 141,
-        "avg_wait_time": 27.7
-      },
-      {
-        "year": 2024,
-        "teu": 120000,
-        "vessels": 150,
-        "avg_wait_time": 24.2
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": 11,
       "source": "Estimation basée sur Radès + ajustement port secondaire",
@@ -2165,7 +1867,8 @@
       "cppi_rank": "NA",
       "cppi_year": "NA",
       "no_official_data_reason": "Aucune donnée publiée.",
-      "source_reliability_label": "Estimation Régionale"
+      "source_reliability_label": "Estimation Régionale",
+      "nature": "estimation"
     },
     "port_authority": {
       "name": "Office de la Marine Marchande - Port de Sfax",
@@ -2248,45 +1951,6 @@
       "world_rank": 32,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 36.0,
-      "avg_port_stay_hours": 60.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 1479856,
-        "vessels": 1849,
-        "avg_wait_time": 36.0
-      },
-      {
-        "year": 2021,
-        "teu": 1553848,
-        "vessels": 1942,
-        "avg_wait_time": 35.9
-      },
-      {
-        "year": 2022,
-        "teu": 1678156,
-        "vessels": 2097,
-        "avg_wait_time": 38.4
-      },
-      {
-        "year": 2023,
-        "teu": 1745283,
-        "vessels": 2181,
-        "avg_wait_time": 38.0
-      },
-      {
-        "year": 2024,
-        "teu": 1850000,
-        "vessels": 2312,
-        "avg_wait_time": 35.4
-      }
-    ],
     "port_authority": {
       "name": "Alexandria Port Authority (APA)",
       "address": "106 El-Horreya Road, Alexandria, Egypt",
@@ -2314,7 +1978,8 @@
       "cppi_rank": "NA",
       "cppi_year": "NA",
       "source_url": "https://assets.mof.gov.eg/files/d06136d0-b7aa-11ef-9d21-798cef5fccf4.pdf",
-      "source_reliability_label": "TRS National"
+      "source_reliability_label": "TRS National",
+      "nature": "mesure"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -2345,11 +2010,7 @@
       "year": 2024,
       "container_throughput_teu": 4200000,
       "cargo_throughput_tons": 48000000,
-      "vessel_calls": 3800,
-      "median_time_in_port_hours": 16.8,
-      "average_waiting_time_hours": 4.5,
-      "berth_productivity_moves_per_hour": 32,
-      "performance_grade": "A"
+      "vessel_calls": 3800
     },
     "agents": [
       {
@@ -2522,87 +2183,6 @@
       "world_rank": 32,
       "year": 2023
     },
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 4200000,
-        "cargo_throughput_tons": 48000000,
-        "vessel_calls": 3800,
-        "median_time_in_port_hours": 16.8,
-        "performance_grade": "A"
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 3900000,
-        "cargo_throughput_tons": 44000000,
-        "vessel_calls": 3600,
-        "median_time_in_port_hours": 17.5,
-        "performance_grade": "A-"
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 3650000,
-        "cargo_throughput_tons": 41000000,
-        "vessel_calls": 3400,
-        "median_time_in_port_hours": 18.2,
-        "performance_grade": "A-"
-      },
-      {
-        "year": 2021,
-        "container_throughput_teu": 3400000,
-        "cargo_throughput_tons": 38000000,
-        "vessel_calls": 3200,
-        "median_time_in_port_hours": 19.1,
-        "performance_grade": "B+"
-      },
-      {
-        "year": 2020,
-        "container_throughput_teu": 3100000,
-        "cargo_throughput_tons": 35000000,
-        "vessel_calls": 2950,
-        "median_time_in_port_hours": 20.5,
-        "performance_grade": "B+"
-      }
-    ],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 14.0,
-      "avg_port_stay_hours": 38.0,
-      "berth_productivity": 45.0,
-      "efficiency_grade": "A-",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 3359673,
-        "vessels": 4199,
-        "avg_wait_time": 14.7
-      },
-      {
-        "year": 2021,
-        "teu": 3527656,
-        "vessels": 4409,
-        "avg_wait_time": 13.2
-      },
-      {
-        "year": 2022,
-        "teu": 3809869,
-        "vessels": 4762,
-        "avg_wait_time": 13.4
-      },
-      {
-        "year": 2023,
-        "teu": 3962264,
-        "vessels": 4952,
-        "avg_wait_time": 13.8
-      },
-      {
-        "year": 2024,
-        "teu": 4200000,
-        "vessels": 5250,
-        "avg_wait_time": 13.1
-      }
-    ],
     "port_authority": {
       "name": "Port Said Port Authority",
       "address": "El-Gomhoria Street, Port Said, Egypt",
@@ -2685,45 +2265,6 @@
       "world_rank": 32,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 20.0,
-      "avg_port_stay_hours": 44.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "B+",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 655936,
-        "vessels": 819,
-        "avg_wait_time": 21.0
-      },
-      {
-        "year": 2021,
-        "teu": 688733,
-        "vessels": 860,
-        "avg_wait_time": 21.0
-      },
-      {
-        "year": 2022,
-        "teu": 743831,
-        "vessels": 929,
-        "avg_wait_time": 18.4
-      },
-      {
-        "year": 2023,
-        "teu": 773584,
-        "vessels": 966,
-        "avg_wait_time": 19.7
-      },
-      {
-        "year": 2024,
-        "teu": 820000,
-        "vessels": 1025,
-        "avg_wait_time": 21.8
-      }
-    ],
     "port_authority": {
       "name": "Damietta Port Authority",
       "address": "Industrial Zone, Damietta, Egypt",
@@ -2747,7 +2288,8 @@
       "cppi_rank": "NA",
       "cppi_year": "NA",
       "source_url": "https://assets.mof.gov.eg/files/d06136d0-b7aa-11ef-9d21-798cef5fccf4.pdf",
-      "source_reliability_label": "TRS National"
+      "source_reliability_label": "TRS National",
+      "nature": "mesure"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -2805,45 +2347,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 120.0,
-      "avg_port_stay_hours": 144.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "D",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 143985,
-        "vessels": 179,
-        "avg_wait_time": 130.3
-      },
-      {
-        "year": 2021,
-        "teu": 151185,
-        "vessels": 188,
-        "avg_wait_time": 108.6
-      },
-      {
-        "year": 2022,
-        "teu": 163280,
-        "vessels": 204,
-        "avg_wait_time": 111.5
-      },
-      {
-        "year": 2023,
-        "teu": 169811,
-        "vessels": 212,
-        "avg_wait_time": 130.4
-      },
-      {
-        "year": 2024,
-        "teu": 180000,
-        "vessels": 225,
-        "avg_wait_time": 123.8
-      }
-    ],
     "port_authority": {
       "name": "Libyan Ports Company - Tripoli",
       "address": "Port of Tripoli, Tripoli, Libya",
@@ -2913,45 +2416,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 49.2,
-      "avg_port_stay_hours": 51.7,
-      "berth_productivity": 36.2,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 75992,
-        "vessels": 94,
-        "avg_wait_time": 53.3
-      },
-      {
-        "year": 2021,
-        "teu": 79792,
-        "vessels": 99,
-        "avg_wait_time": 45.4
-      },
-      {
-        "year": 2022,
-        "teu": 86175,
-        "vessels": 107,
-        "avg_wait_time": 49.1
-      },
-      {
-        "year": 2023,
-        "teu": 89622,
-        "vessels": 112,
-        "avg_wait_time": 47.4
-      },
-      {
-        "year": 2024,
-        "teu": 95000,
-        "vessels": 118,
-        "avg_wait_time": 51.5
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -3041,45 +2505,6 @@
       "world_rank": 65,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 48.0,
-      "avg_port_stay_hours": 72.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 679933,
-        "vessels": 849,
-        "avg_wait_time": 51.3
-      },
-      {
-        "year": 2021,
-        "teu": 713930,
-        "vessels": 892,
-        "avg_wait_time": 45.2
-      },
-      {
-        "year": 2022,
-        "teu": 771044,
-        "vessels": 963,
-        "avg_wait_time": 50.3
-      },
-      {
-        "year": 2023,
-        "teu": 801886,
-        "vessels": 1002,
-        "avg_wait_time": 44.9
-      },
-      {
-        "year": 2024,
-        "teu": 850000,
-        "vessels": 1062,
-        "avg_wait_time": 46.7
-      }
-    ],
     "port_authority": {
       "name": "Port Autonome de Dakar (PAD)",
       "address": "21 Boulevard de la Libération, BP 3195, Dakar, Sénégal",
@@ -3130,11 +2555,7 @@
       "year": 2024,
       "container_throughput_teu": 1050000,
       "cargo_throughput_tons": 24500000,
-      "vessel_calls": 2600,
-      "median_time_in_port_hours": 22.3,
-      "average_waiting_time_hours": 8.7,
-      "berth_productivity_moves_per_hour": 25,
-      "performance_grade": "B"
+      "vessel_calls": 2600
     },
     "agents": [
       {
@@ -3269,45 +2690,6 @@
       "world_rank": 64,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 30.0,
-      "avg_port_stay_hours": 54.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "B+",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 839918,
-        "vessels": 1049,
-        "avg_wait_time": 32.9
-      },
-      {
-        "year": 2021,
-        "teu": 881914,
-        "vessels": 1102,
-        "avg_wait_time": 30.0
-      },
-      {
-        "year": 2022,
-        "teu": 952467,
-        "vessels": 1190,
-        "avg_wait_time": 29.5
-      },
-      {
-        "year": 2023,
-        "teu": 990566,
-        "vessels": 1238,
-        "avg_wait_time": 28.3
-      },
-      {
-        "year": 2024,
-        "teu": 1050000,
-        "vessels": 1312,
-        "avg_wait_time": 32.5
-      }
-    ],
     "port_authority": {
       "name": "Port Autonome d'Abidjan (PAA)",
       "address": "BP V 85, Abidjan, Côte d'Ivoire",
@@ -3335,7 +2717,8 @@
       "cppi_rank": "NA",
       "cppi_year": "NA",
       "source_url": "https://www.portabidjan.ci/sites/default/files/paa_infos_magazine_ndeg112_-_juillet_et_aout_2023.pdf",
-      "source_reliability_label": "Autorité Portuaire"
+      "source_reliability_label": "Autorité Portuaire",
+      "nature": "mesure"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -3396,45 +2779,6 @@
       "world_rank": 64,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 71.7,
-      "avg_port_stay_hours": 67.1,
-      "berth_productivity": 47.0,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 35996,
-        "vessels": 44,
-        "avg_wait_time": 75.1
-      },
-      {
-        "year": 2021,
-        "teu": 37796,
-        "vessels": 47,
-        "avg_wait_time": 77.2
-      },
-      {
-        "year": 2022,
-        "teu": 40820,
-        "vessels": 51,
-        "avg_wait_time": 76.7
-      },
-      {
-        "year": 2023,
-        "teu": 42452,
-        "vessels": 53,
-        "avg_wait_time": 70.5
-      },
-      {
-        "year": 2024,
-        "teu": 45000,
-        "vessels": 56,
-        "avg_wait_time": 75.4
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -3594,45 +2938,6 @@
       "world_rank": 73,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 28.0,
-      "avg_port_stay_hours": 52.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "B+",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 959906,
-        "vessels": 1199,
-        "avg_wait_time": 30.5
-      },
-      {
-        "year": 2021,
-        "teu": 1007901,
-        "vessels": 1259,
-        "avg_wait_time": 27.3
-      },
-      {
-        "year": 2022,
-        "teu": 1088534,
-        "vessels": 1360,
-        "avg_wait_time": 28.7
-      },
-      {
-        "year": 2023,
-        "teu": 1132075,
-        "vessels": 1415,
-        "avg_wait_time": 26.9
-      },
-      {
-        "year": 2024,
-        "teu": 1200000,
-        "vessels": 1500,
-        "avg_wait_time": 30.1
-      }
-    ],
     "port_authority": {
       "name": "Ghana Ports and Harbours Authority (GPHA)",
       "address": "P.O. Box 150, Tema, Ghana",
@@ -3657,7 +2962,8 @@
       "cppi_year": "NA",
       "teu_throughput_2024": 1668688,
       "percent_ghana_traffic": 95,
-      "source_reliability_label": "Rapport Industriel"
+      "source_reliability_label": "Rapport Industriel",
+      "nature": "estimation"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -3718,45 +3024,6 @@
       "world_rank": 73,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 66.4,
-      "avg_port_stay_hours": 71.2,
-      "berth_productivity": 49.9,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 143985,
-        "vessels": 179,
-        "avg_wait_time": 65.0
-      },
-      {
-        "year": 2021,
-        "teu": 151185,
-        "vessels": 188,
-        "avg_wait_time": 68.4
-      },
-      {
-        "year": 2022,
-        "teu": 163280,
-        "vessels": 204,
-        "avg_wait_time": 60.3
-      },
-      {
-        "year": 2023,
-        "teu": 169811,
-        "vessels": 212,
-        "avg_wait_time": 67.1
-      },
-      {
-        "year": 2024,
-        "teu": 180000,
-        "vessels": 225,
-        "avg_wait_time": 69.7
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -3807,11 +3074,7 @@
       "year": 2024,
       "container_throughput_teu": 1650000,
       "cargo_throughput_tons": 42000000,
-      "vessel_calls": 3200,
-      "median_time_in_port_hours": 45.2,
-      "average_waiting_time_hours": 28.5,
-      "berth_productivity_moves_per_hour": 18,
-      "performance_grade": "C"
+      "vessel_calls": 3200
     },
     "agents": [
       {
@@ -3972,87 +3235,6 @@
       "world_rank": 97,
       "year": 2023
     },
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 1650000,
-        "cargo_throughput_tons": 42000000,
-        "vessel_calls": 3200,
-        "median_time_in_port_hours": 45.2,
-        "performance_grade": "C"
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 1520000,
-        "cargo_throughput_tons": 38000000,
-        "vessel_calls": 3000,
-        "median_time_in_port_hours": 48.5,
-        "performance_grade": "C"
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 1420000,
-        "cargo_throughput_tons": 35000000,
-        "vessel_calls": 2850,
-        "median_time_in_port_hours": 52.3,
-        "performance_grade": "C-"
-      },
-      {
-        "year": 2021,
-        "container_throughput_teu": 1280000,
-        "cargo_throughput_tons": 32000000,
-        "vessel_calls": 2650,
-        "median_time_in_port_hours": 56.8,
-        "performance_grade": "C-"
-      },
-      {
-        "year": 2020,
-        "container_throughput_teu": 1100000,
-        "cargo_throughput_tons": 28000000,
-        "vessel_calls": 2400,
-        "median_time_in_port_hours": 62.5,
-        "performance_grade": "D+"
-      }
-    ],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 62.2,
-      "avg_port_stay_hours": 91.3,
-      "berth_productivity": 63.9,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 1319871,
-        "vessels": 1649,
-        "avg_wait_time": 56.0
-      },
-      {
-        "year": 2021,
-        "teu": 1385865,
-        "vessels": 1732,
-        "avg_wait_time": 58.3
-      },
-      {
-        "year": 2022,
-        "teu": 1496734,
-        "vessels": 1870,
-        "avg_wait_time": 67.8
-      },
-      {
-        "year": 2023,
-        "teu": 1556603,
-        "vessels": 1945,
-        "avg_wait_time": 64.2
-      },
-      {
-        "year": 2024,
-        "teu": 1650000,
-        "vessels": 2062,
-        "avg_wait_time": 61.8
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": 16.2,
       "source": "World Bank LPI 2023 - Supply Chain Tracking (Nigeria consolidated)",
@@ -4073,7 +3255,8 @@
       "lpi_p75_days": 20.2,
       "cppi_rank": "NA",
       "cppi_year": "NA",
-      "source_reliability_label": "World Bank LPI"
+      "source_reliability_label": "World Bank LPI",
+      "nature": "mesure"
     },
     "port_authority": {
       "name": "Nigerian Ports Authority - Apapa",
@@ -4133,45 +3316,6 @@
       "world_rank": 97,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 49.3,
-      "avg_port_stay_hours": 90.4,
-      "berth_productivity": 63.3,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 783923,
-        "vessels": 979,
-        "avg_wait_time": 46.7
-      },
-      {
-        "year": 2021,
-        "teu": 823119,
-        "vessels": 1028,
-        "avg_wait_time": 50.2
-      },
-      {
-        "year": 2022,
-        "teu": 888969,
-        "vessels": 1111,
-        "avg_wait_time": 49.6
-      },
-      {
-        "year": 2023,
-        "teu": 924528,
-        "vessels": 1155,
-        "avg_wait_time": 48.8
-      },
-      {
-        "year": 2024,
-        "teu": 980000,
-        "vessels": 1225,
-        "avg_wait_time": 48.5
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "WCO - Time Release Study Launched",
@@ -4258,45 +3402,6 @@
       "world_rank": 97,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 57.1,
-      "avg_port_stay_hours": 64.4,
-      "berth_productivity": 45.1,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 335967,
-        "vessels": 419,
-        "avg_wait_time": 52.8
-      },
-      {
-        "year": 2021,
-        "teu": 352765,
-        "vessels": 440,
-        "avg_wait_time": 53.5
-      },
-      {
-        "year": 2022,
-        "teu": 380986,
-        "vessels": 476,
-        "avg_wait_time": 54.6
-      },
-      {
-        "year": 2023,
-        "teu": 396226,
-        "vessels": 495,
-        "avg_wait_time": 60.4
-      },
-      {
-        "year": 2024,
-        "teu": 420000,
-        "vessels": 525,
-        "avg_wait_time": 60.6
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -4375,45 +3480,6 @@
         "rotation": "Antwerp-Cotonou-Lagos-Douala"
       }
     ],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 40.0,
-      "avg_port_stay_hours": 64.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 599941,
-        "vessels": 749,
-        "avg_wait_time": 39.4
-      },
-      {
-        "year": 2021,
-        "teu": 629938,
-        "vessels": 787,
-        "avg_wait_time": 39.8
-      },
-      {
-        "year": 2022,
-        "teu": 680333,
-        "vessels": 850,
-        "avg_wait_time": 37.5
-      },
-      {
-        "year": 2023,
-        "teu": 707547,
-        "vessels": 884,
-        "avg_wait_time": 39.0
-      },
-      {
-        "year": 2024,
-        "teu": 750000,
-        "vessels": 937,
-        "avg_wait_time": 36.7
-      }
-    ],
     "port_authority": {
       "name": "Port Autonome de Cotonou (PAC)",
       "address": "BP 927, Cotonou, Bénin",
@@ -4439,7 +3505,8 @@
       "cppi_improvement_points": 226.7,
       "cppi_year": 2024,
       "no_official_data_reason": "Aucune étude TRS publiée.",
-      "source_reliability_label": "Estimation Modélisée"
+      "source_reliability_label": "Estimation Modélisée",
+      "nature": "estimation"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -4462,11 +3529,7 @@
       "year": 2024,
       "container_throughput_teu": 1950000,
       "cargo_throughput_tons": 22000000,
-      "vessel_calls": 2800,
-      "median_time_in_port_hours": 18.9,
-      "average_waiting_time_hours": 5.2,
-      "berth_productivity_moves_per_hour": 30,
-      "performance_grade": "B+"
+      "vessel_calls": 2800
     },
     "agents": [
       {
@@ -4561,45 +3624,6 @@
       "world_rank": 58,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 12.0,
-      "avg_port_stay_hours": 36.0,
-      "berth_productivity": 45.0,
-      "efficiency_grade": "A",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 1559848,
-        "vessels": 1949,
-        "avg_wait_time": 11.9
-      },
-      {
-        "year": 2021,
-        "teu": 1637840,
-        "vessels": 2047,
-        "avg_wait_time": 11.1
-      },
-      {
-        "year": 2022,
-        "teu": 1768867,
-        "vessels": 2211,
-        "avg_wait_time": 11.4
-      },
-      {
-        "year": 2023,
-        "teu": 1839622,
-        "vessels": 2299,
-        "avg_wait_time": 11.6
-      },
-      {
-        "year": 2024,
-        "teu": 1950000,
-        "vessels": 2437,
-        "avg_wait_time": 13.2
-      }
-    ],
     "port_authority": {
       "name": "Port Autonome de Lomé (PAL)",
       "address": "BP 1225, Lomé, Togo",
@@ -4625,7 +3649,8 @@
       "cppi_year": "NA",
       "teu_throughput_annual": 2000000,
       "source_url": "https://www.ecofinagency.com/news/1509-48695-lome-port-helps-togo-overtaking-south-africa-as-nigeria-s-main-african-trade-gateway-on-q2",
-      "source_reliability_label": "Rapport Industriel"
+      "source_reliability_label": "Rapport Industriel",
+      "nature": "mesure"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -4699,45 +3724,6 @@
       "world_rank": 64,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 96.0,
-      "avg_port_stay_hours": 120.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "C",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 679933,
-        "vessels": 849,
-        "avg_wait_time": 103.5
-      },
-      {
-        "year": 2021,
-        "teu": 713930,
-        "vessels": 892,
-        "avg_wait_time": 88.0
-      },
-      {
-        "year": 2022,
-        "teu": 771044,
-        "vessels": 963,
-        "avg_wait_time": 92.7
-      },
-      {
-        "year": 2023,
-        "teu": 801886,
-        "vessels": 1002,
-        "avg_wait_time": 86.6
-      },
-      {
-        "year": 2024,
-        "teu": 850000,
-        "vessels": 1062,
-        "avg_wait_time": 101.3
-      }
-    ],
     "port_authority": {
       "name": "Port Autonome de Douala (PAD)",
       "address": "BP 4020, Douala, Cameroun",
@@ -4765,7 +3751,8 @@
       "cppi_year": "NA",
       "lsci_improvement_2024_percent": 54,
       "no_official_data_reason": "PAD ne publie pas de statistiques dwell time.",
-      "source_reliability_label": "Estimation Régionale"
+      "source_reliability_label": "Estimation Régionale",
+      "nature": "estimation"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -4826,45 +3813,6 @@
       "world_rank": 64,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 20.0,
-      "avg_port_stay_hours": 44.0,
-      "berth_productivity": 45.0,
-      "efficiency_grade": "A-",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 143985,
-        "vessels": 179,
-        "avg_wait_time": 21.5
-      },
-      {
-        "year": 2021,
-        "teu": 151185,
-        "vessels": 188,
-        "avg_wait_time": 18.3
-      },
-      {
-        "year": 2022,
-        "teu": 163280,
-        "vessels": 204,
-        "avg_wait_time": 19.0
-      },
-      {
-        "year": 2023,
-        "teu": 169811,
-        "vessels": 212,
-        "avg_wait_time": 20.1
-      },
-      {
-        "year": 2024,
-        "teu": 180000,
-        "vessels": 225,
-        "avg_wait_time": 21.8
-      }
-    ],
     "port_authority": {
       "name": "Port Autonome de Kribi (PAK)",
       "address": "BP 203, Kribi, Cameroun",
@@ -4888,7 +3836,8 @@
       "cppi_rank": "NA",
       "cppi_year": "NA",
       "no_official_data_reason": "Port récent, peu de données publiées.",
-      "source_reliability_label": "Estimation Régionale"
+      "source_reliability_label": "Estimation Régionale",
+      "nature": "estimation"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -4936,45 +3885,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 53.5,
-      "avg_port_stay_hours": 104.7,
-      "berth_productivity": 73.3,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 223978,
-        "vessels": 279,
-        "avg_wait_time": 49.9
-      },
-      {
-        "year": 2021,
-        "teu": 235177,
-        "vessels": 293,
-        "avg_wait_time": 48.6
-      },
-      {
-        "year": 2022,
-        "teu": 253991,
-        "vessels": 317,
-        "avg_wait_time": 55.1
-      },
-      {
-        "year": 2023,
-        "teu": 264150,
-        "vessels": 330,
-        "avg_wait_time": 56.8
-      },
-      {
-        "year": 2024,
-        "teu": 280000,
-        "vessels": 350,
-        "avg_wait_time": 55.0
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -5041,45 +3951,6 @@
         "rotation": "Antwerp-Douala-Pointe Noire-Luanda"
       }
     ],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 24.0,
-      "avg_port_stay_hours": 48.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "B+",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 519949,
-        "vessels": 649,
-        "avg_wait_time": 23.4
-      },
-      {
-        "year": 2021,
-        "teu": 545946,
-        "vessels": 682,
-        "avg_wait_time": 26.1
-      },
-      {
-        "year": 2022,
-        "teu": 589622,
-        "vessels": 737,
-        "avg_wait_time": 26.3
-      },
-      {
-        "year": 2023,
-        "teu": 613207,
-        "vessels": 766,
-        "avg_wait_time": 23.5
-      },
-      {
-        "year": 2024,
-        "teu": 650000,
-        "vessels": 812,
-        "avg_wait_time": 25.0
-      }
-    ],
     "port_authority": {
       "name": "Port Autonome de Pointe-Noire (PAPN)",
       "address": "BP 711, Pointe-Noire, Congo",
@@ -5104,7 +3975,8 @@
       "cppi_rank": "NA",
       "cppi_year": "NA",
       "no_official_data_reason": "PAPN ne publie pas de statistiques dwell.",
-      "source_reliability_label": "Estimation Régionale"
+      "source_reliability_label": "Estimation Régionale",
+      "nature": "estimation"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -5172,45 +4044,6 @@
       "world_rank": 105,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 72.0,
-      "avg_port_stay_hours": 96.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "C+",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 759926,
-        "vessels": 949,
-        "avg_wait_time": 70.7
-      },
-      {
-        "year": 2021,
-        "teu": 797922,
-        "vessels": 997,
-        "avg_wait_time": 78.1
-      },
-      {
-        "year": 2022,
-        "teu": 861756,
-        "vessels": 1077,
-        "avg_wait_time": 66.3
-      },
-      {
-        "year": 2023,
-        "teu": 896226,
-        "vessels": 1120,
-        "avg_wait_time": 68.4
-      },
-      {
-        "year": 2024,
-        "teu": 950000,
-        "vessels": 1187,
-        "avg_wait_time": 67.3
-      }
-    ],
     "port_authority": {
       "name": "Porto de Luanda",
       "address": "Rua Rainha Ginga, Luanda, Angola",
@@ -5234,7 +4067,8 @@
       "cppi_rank": "NA",
       "cppi_year": "NA",
       "no_official_data_reason": "Entreprise Portuária de Luanda ne publie pas de données.",
-      "source_reliability_label": "Estimation Régionale"
+      "source_reliability_label": "Estimation Régionale",
+      "nature": "estimation"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -5289,45 +4123,6 @@
       "world_rank": 105,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 50.0,
-      "avg_port_stay_hours": 74.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 95990,
-        "vessels": 119,
-        "avg_wait_time": 53.5
-      },
-      {
-        "year": 2021,
-        "teu": 100790,
-        "vessels": 125,
-        "avg_wait_time": 47.2
-      },
-      {
-        "year": 2022,
-        "teu": 108853,
-        "vessels": 136,
-        "avg_wait_time": 54.9
-      },
-      {
-        "year": 2023,
-        "teu": 113207,
-        "vessels": 141,
-        "avg_wait_time": 49.4
-      },
-      {
-        "year": 2024,
-        "teu": 120000,
-        "vessels": 150,
-        "avg_wait_time": 52.6
-      }
-    ],
     "port_authority": {
       "name": "Porto do Lobito",
       "address": "Avenida 4 de Fevereiro, Lobito, Angola",
@@ -5370,11 +4165,7 @@
       "year": 2024,
       "container_throughput_teu": 1550000,
       "cargo_throughput_tons": 34500000,
-      "vessel_calls": 2800,
-      "median_time_in_port_hours": 32.4,
-      "average_waiting_time_hours": 15.8,
-      "berth_productivity_moves_per_hour": 22,
-      "performance_grade": "B-"
+      "vessel_calls": 2800
     },
     "agents": [
       {
@@ -5525,45 +4316,6 @@
       "world_rank": 57,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 69.6,
-      "avg_port_stay_hours": 93.6,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 1239879,
-        "vessels": 1549,
-        "avg_wait_time": 65.5
-      },
-      {
-        "year": 2021,
-        "teu": 1301873,
-        "vessels": 1627,
-        "avg_wait_time": 70.6
-      },
-      {
-        "year": 2022,
-        "teu": 1406023,
-        "vessels": 1757,
-        "avg_wait_time": 76.5
-      },
-      {
-        "year": 2023,
-        "teu": 1462264,
-        "vessels": 1827,
-        "avg_wait_time": 71.2
-      },
-      {
-        "year": 2024,
-        "teu": 1550000,
-        "vessels": 1937,
-        "avg_wait_time": 65.4
-      }
-    ],
     "port_authority": {
       "name": "Kenya Ports Authority (KPA)",
       "address": "P.O. Box 95009, Mombasa, Kenya",
@@ -5589,7 +4341,8 @@
       "best_performance_date": "2024-04",
       "cppi_rank": 335,
       "cppi_year": 2023,
-      "source_reliability_label": "Autorité Portuaire"
+      "source_reliability_label": "Autorité Portuaire",
+      "nature": "mesure"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -5649,45 +4402,6 @@
       "world_rank": 54,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 75.0,
-      "avg_port_stay_hours": 99.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "C+",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 879914,
-        "vessels": 1099,
-        "avg_wait_time": 72.1
-      },
-      {
-        "year": 2021,
-        "teu": 923910,
-        "vessels": 1154,
-        "avg_wait_time": 73.1
-      },
-      {
-        "year": 2022,
-        "teu": 997822,
-        "vessels": 1247,
-        "avg_wait_time": 75.8
-      },
-      {
-        "year": 2023,
-        "teu": 1037735,
-        "vessels": 1297,
-        "avg_wait_time": 72.8
-      },
-      {
-        "year": 2024,
-        "teu": 1100000,
-        "vessels": 1375,
-        "avg_wait_time": 77.6
-      }
-    ],
     "port_authority": {
       "name": "Tanzania Ports Authority (TPA)",
       "address": "P.O. Box 9184, Dar es Salaam, Tanzania",
@@ -5716,7 +4430,8 @@
       "cppi_rank": "NA",
       "cppi_year": "NA",
       "source_url": "https://www.tasac.go.tz/uploads/documents/sw-1712132995-TASAC%20ANNUAL%20STATISTICAL%20BULLETIN%202023.pdf",
-      "source_reliability_label": "Observatoire Corridor"
+      "source_reliability_label": "Observatoire Corridor",
+      "nature": "mesure"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -5747,11 +4462,7 @@
       "year": 2024,
       "container_throughput_teu": 1250000,
       "cargo_throughput_tons": 22000000,
-      "vessel_calls": 2600,
-      "median_time_in_port_hours": 19.5,
-      "average_waiting_time_hours": 6.1,
-      "berth_productivity_moves_per_hour": 29,
-      "performance_grade": "B+"
+      "vessel_calls": 2600
     },
     "agents": [
       {
@@ -5858,45 +4569,6 @@
       "world_rank": 43,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 18.0,
-      "avg_port_stay_hours": 42.0,
-      "berth_productivity": 45.0,
-      "efficiency_grade": "A-",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 999902,
-        "vessels": 1249,
-        "avg_wait_time": 17.9
-      },
-      {
-        "year": 2021,
-        "teu": 1049897,
-        "vessels": 1312,
-        "avg_wait_time": 17.9
-      },
-      {
-        "year": 2022,
-        "teu": 1133889,
-        "vessels": 1417,
-        "avg_wait_time": 17.3
-      },
-      {
-        "year": 2023,
-        "teu": 1179245,
-        "vessels": 1474,
-        "avg_wait_time": 17.4
-      },
-      {
-        "year": 2024,
-        "teu": 1250000,
-        "vessels": 1562,
-        "avg_wait_time": 17.7
-      }
-    ],
     "port_authority": {
       "name": "Djibouti Ports & Free Zones Authority (DPFZA)",
       "address": "BP 2107, Djibouti",
@@ -5925,7 +4597,8 @@
       "cppi_2022_rank": 26,
       "cppi_year": 2023,
       "no_official_data_reason": "DPFZA ne publie pas de dwell time cargo. Controverse CPPI 2023.",
-      "source_reliability_label": "Estimation Modélisée"
+      "source_reliability_label": "Estimation Modélisée",
+      "nature": "estimation"
     },
     "global_benchmarks": {
       "africa_avg_dwell_days": 20,
@@ -5948,11 +4621,7 @@
       "year": 2024,
       "container_throughput_teu": 2850000,
       "cargo_throughput_tons": 68000000,
-      "vessel_calls": 4200,
-      "median_time_in_port_hours": 28.5,
-      "average_waiting_time_hours": 12.3,
-      "berth_productivity_moves_per_hour": 28,
-      "performance_grade": "B"
+      "vessel_calls": 4200
     },
     "agents": [
       {
@@ -6111,87 +4780,6 @@
       "world_rank": 24,
       "year": 2023
     },
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 2850000,
-        "cargo_throughput_tons": 68000000,
-        "vessel_calls": 4200,
-        "median_time_in_port_hours": 28.5,
-        "performance_grade": "B"
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 2700000,
-        "cargo_throughput_tons": 64000000,
-        "vessel_calls": 4050,
-        "median_time_in_port_hours": 30.2,
-        "performance_grade": "B"
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 2600000,
-        "cargo_throughput_tons": 62000000,
-        "vessel_calls": 3900,
-        "median_time_in_port_hours": 32.1,
-        "performance_grade": "B-"
-      },
-      {
-        "year": 2021,
-        "container_throughput_teu": 2450000,
-        "cargo_throughput_tons": 58000000,
-        "vessel_calls": 3750,
-        "median_time_in_port_hours": 33.5,
-        "performance_grade": "B-"
-      },
-      {
-        "year": 2020,
-        "container_throughput_teu": 2200000,
-        "cargo_throughput_tons": 52000000,
-        "vessel_calls": 3400,
-        "median_time_in_port_hours": 35.8,
-        "performance_grade": "C+"
-      }
-    ],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 80.0,
-      "avg_port_stay_hours": 104.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "C",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 2279778,
-        "vessels": 2849,
-        "avg_wait_time": 84.5
-      },
-      {
-        "year": 2021,
-        "teu": 2393767,
-        "vessels": 2992,
-        "avg_wait_time": 87.3
-      },
-      {
-        "year": 2022,
-        "teu": 2585268,
-        "vessels": 3231,
-        "avg_wait_time": 77.4
-      },
-      {
-        "year": 2023,
-        "teu": 2688679,
-        "vessels": 3360,
-        "avg_wait_time": 84.7
-      },
-      {
-        "year": 2024,
-        "teu": 2850000,
-        "vessels": 3562,
-        "avg_wait_time": 86.9
-      }
-    ],
     "port_authority": {
       "name": "Transnet Port Terminals - Durban",
       "address": "Maydon Wharf, Durban, South Africa",
@@ -6215,7 +4803,8 @@
       "vessel_turnaround_source": "SAAFF Analysis 2023 (Pier 2)",
       "cppi_rank": "NA",
       "cppi_year": 2023,
-      "source_reliability_label": "Autorité Portuaire"
+      "source_reliability_label": "Autorité Portuaire",
+      "nature": "mesure"
     },
     "lpi_2023": {
       "overall_score": 3.7,
@@ -6275,45 +4864,6 @@
       "world_rank": 24,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 60.0,
-      "avg_port_stay_hours": 84.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "C+",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 735928,
-        "vessels": 919,
-        "avg_wait_time": 60.0
-      },
-      {
-        "year": 2021,
-        "teu": 772724,
-        "vessels": 965,
-        "avg_wait_time": 63.0
-      },
-      {
-        "year": 2022,
-        "teu": 834542,
-        "vessels": 1043,
-        "avg_wait_time": 61.5
-      },
-      {
-        "year": 2023,
-        "teu": 867924,
-        "vessels": 1084,
-        "avg_wait_time": 57.0
-      },
-      {
-        "year": 2024,
-        "teu": 920000,
-        "vessels": 1150,
-        "avg_wait_time": 58.4
-      }
-    ],
     "port_authority": {
       "name": "Transnet Port Terminals - Cape Town",
       "address": "Ben Schoeman Dock, Cape Town, South Africa",
@@ -6342,7 +4892,8 @@
       "cppi_rank": 405,
       "cppi_improvement_points": 237.9,
       "cppi_year": 2024,
-      "source_reliability_label": "World Bank LPI"
+      "source_reliability_label": "World Bank LPI",
+      "nature": "mesure"
     },
     "lpi_2023": {
       "overall_score": 3.7,
@@ -6405,45 +4956,6 @@
       "world_rank": 24,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 36.0,
-      "avg_port_stay_hours": 60.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 335967,
-        "vessels": 419,
-        "avg_wait_time": 35.4
-      },
-      {
-        "year": 2021,
-        "teu": 352765,
-        "vessels": 440,
-        "avg_wait_time": 39.2
-      },
-      {
-        "year": 2022,
-        "teu": 380986,
-        "vessels": 476,
-        "avg_wait_time": 34.0
-      },
-      {
-        "year": 2023,
-        "teu": 396226,
-        "vessels": 495,
-        "avg_wait_time": 37.1
-      },
-      {
-        "year": 2024,
-        "teu": 420000,
-        "vessels": 525,
-        "avg_wait_time": 38.2
-      }
-    ],
     "port_authority": {
       "name": "Transnet National Ports Authority - Port Elizabeth",
       "address": "Port Elizabeth Harbour, South Africa",
@@ -6525,45 +5037,6 @@
       "world_rank": 50,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 41.0,
-      "avg_port_stay_hours": 94.9,
-      "berth_productivity": 66.4,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 415959,
-        "vessels": 519,
-        "avg_wait_time": 37.0
-      },
-      {
-        "year": 2021,
-        "teu": 436757,
-        "vessels": 545,
-        "avg_wait_time": 42.9
-      },
-      {
-        "year": 2022,
-        "teu": 471698,
-        "vessels": 589,
-        "avg_wait_time": 40.3
-      },
-      {
-        "year": 2023,
-        "teu": 490566,
-        "vessels": 613,
-        "avg_wait_time": 44.0
-      },
-      {
-        "year": 2024,
-        "teu": 520000,
-        "vessels": 650,
-        "avg_wait_time": 43.3
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "WCO / NAMRA Time Release Study Report",
@@ -6634,45 +5107,6 @@
       "world_rank": 112,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 30.0,
-      "avg_port_stay_hours": 54.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 223978,
-        "vessels": 279,
-        "avg_wait_time": 30.9
-      },
-      {
-        "year": 2021,
-        "teu": 235177,
-        "vessels": 293,
-        "avg_wait_time": 32.9
-      },
-      {
-        "year": 2022,
-        "teu": 253991,
-        "vessels": 317,
-        "avg_wait_time": 28.2
-      },
-      {
-        "year": 2023,
-        "teu": 264150,
-        "vessels": 330,
-        "avg_wait_time": 29.4
-      },
-      {
-        "year": 2024,
-        "teu": 280000,
-        "vessels": 350,
-        "avg_wait_time": 29.7
-      }
-    ],
     "port_authority": {
       "name": "Maputo Port Development Company (MPDC)",
       "address": "Rua Marques de Pombal, Maputo, Mozambique",
@@ -6747,45 +5181,6 @@
       "world_rank": 112,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 55.0,
-      "avg_port_stay_hours": 79.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "C+",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 75992,
-        "vessels": 94,
-        "avg_wait_time": 56.6
-      },
-      {
-        "year": 2021,
-        "teu": 79792,
-        "vessels": 99,
-        "avg_wait_time": 59.6
-      },
-      {
-        "year": 2022,
-        "teu": 86175,
-        "vessels": 107,
-        "avg_wait_time": 51.0
-      },
-      {
-        "year": 2023,
-        "teu": 89622,
-        "vessels": 112,
-        "avg_wait_time": 55.9
-      },
-      {
-        "year": 2024,
-        "teu": 95000,
-        "vessels": 118,
-        "avg_wait_time": 53.4
-      }
-    ],
     "port_authority": {
       "name": "Cornelder de Moçambique - Beira",
       "address": "Porto da Beira, Beira, Mozambique",
@@ -6850,45 +5245,6 @@
       "world_rank": 118,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 57.9,
-      "avg_port_stay_hours": 116.1,
-      "berth_productivity": 81.3,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 359964,
-        "vessels": 449,
-        "avg_wait_time": 56.1
-      },
-      {
-        "year": 2021,
-        "teu": 377963,
-        "vessels": 472,
-        "avg_wait_time": 56.9
-      },
-      {
-        "year": 2022,
-        "teu": 408200,
-        "vessels": 510,
-        "avg_wait_time": 63.5
-      },
-      {
-        "year": 2023,
-        "teu": 424528,
-        "vessels": 530,
-        "avg_wait_time": 60.1
-      },
-      {
-        "year": 2024,
-        "teu": 450000,
-        "vessels": 562,
-        "avg_wait_time": 57.6
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -6956,45 +5312,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 55.1,
-      "avg_port_stay_hours": 79.5,
-      "berth_productivity": 55.6,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 143985,
-        "vessels": 179,
-        "avg_wait_time": 51.8
-      },
-      {
-        "year": 2021,
-        "teu": 151185,
-        "vessels": 188,
-        "avg_wait_time": 52.4
-      },
-      {
-        "year": 2022,
-        "teu": 163280,
-        "vessels": 204,
-        "avg_wait_time": 59.0
-      },
-      {
-        "year": 2023,
-        "teu": 169811,
-        "vessels": 212,
-        "avg_wait_time": 51.6
-      },
-      {
-        "year": 2024,
-        "teu": 180000,
-        "vessels": 225,
-        "avg_wait_time": 57.4
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -7062,45 +5379,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 48.3,
-      "avg_port_stay_hours": 62.3,
-      "berth_productivity": 43.6,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 67993,
-        "vessels": 84,
-        "avg_wait_time": 44.4
-      },
-      {
-        "year": 2021,
-        "teu": 71393,
-        "vessels": 89,
-        "avg_wait_time": 48.5
-      },
-      {
-        "year": 2022,
-        "teu": 77104,
-        "vessels": 96,
-        "avg_wait_time": 51.4
-      },
-      {
-        "year": 2023,
-        "teu": 80188,
-        "vessels": 100,
-        "avg_wait_time": 46.5
-      },
-      {
-        "year": 2024,
-        "teu": 85000,
-        "vessels": 106,
-        "avg_wait_time": 53.0
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -7170,45 +5448,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 51.0,
-      "avg_port_stay_hours": 103.5,
-      "berth_productivity": 72.5,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 223978,
-        "vessels": 279,
-        "avg_wait_time": 53.4
-      },
-      {
-        "year": 2021,
-        "teu": 235177,
-        "vessels": 293,
-        "avg_wait_time": 47.8
-      },
-      {
-        "year": 2022,
-        "teu": 253991,
-        "vessels": 317,
-        "avg_wait_time": 55.7
-      },
-      {
-        "year": 2023,
-        "teu": 264150,
-        "vessels": 330,
-        "avg_wait_time": 50.3
-      },
-      {
-        "year": 2024,
-        "teu": 280000,
-        "vessels": 350,
-        "avg_wait_time": 51.7
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -7278,45 +5517,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 59.6,
-      "avg_port_stay_hours": 111.8,
-      "berth_productivity": 78.2,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 143985,
-        "vessels": 179,
-        "avg_wait_time": 57.2
-      },
-      {
-        "year": 2021,
-        "teu": 151185,
-        "vessels": 188,
-        "avg_wait_time": 56.3
-      },
-      {
-        "year": 2022,
-        "teu": 163280,
-        "vessels": 204,
-        "avg_wait_time": 54.6
-      },
-      {
-        "year": 2023,
-        "teu": 169811,
-        "vessels": 212,
-        "avg_wait_time": 55.8
-      },
-      {
-        "year": 2024,
-        "teu": 180000,
-        "vessels": 225,
-        "avg_wait_time": 63.6
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -7386,45 +5586,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 53.2,
-      "avg_port_stay_hours": 63.1,
-      "berth_productivity": 44.2,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 75992,
-        "vessels": 94,
-        "avg_wait_time": 57.3
-      },
-      {
-        "year": 2021,
-        "teu": 79792,
-        "vessels": 99,
-        "avg_wait_time": 53.1
-      },
-      {
-        "year": 2022,
-        "teu": 86175,
-        "vessels": 107,
-        "avg_wait_time": 53.4
-      },
-      {
-        "year": 2023,
-        "teu": 89622,
-        "vessels": 112,
-        "avg_wait_time": 48.3
-      },
-      {
-        "year": 2024,
-        "teu": 95000,
-        "vessels": 118,
-        "avg_wait_time": 56.3
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -7494,45 +5655,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 58.3,
-      "avg_port_stay_hours": 103.7,
-      "berth_productivity": 72.6,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 51994,
-        "vessels": 64,
-        "avg_wait_time": 56.9
-      },
-      {
-        "year": 2021,
-        "teu": 54594,
-        "vessels": 68,
-        "avg_wait_time": 55.4
-      },
-      {
-        "year": 2022,
-        "teu": 58962,
-        "vessels": 73,
-        "avg_wait_time": 61.5
-      },
-      {
-        "year": 2023,
-        "teu": 61320,
-        "vessels": 76,
-        "avg_wait_time": 59.1
-      },
-      {
-        "year": 2024,
-        "teu": 65000,
-        "vessels": 81,
-        "avg_wait_time": 60.6
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -7608,45 +5730,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 69.9,
-      "avg_port_stay_hours": 71.6,
-      "berth_productivity": 50.1,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 35996,
-        "vessels": 44,
-        "avg_wait_time": 75.0
-      },
-      {
-        "year": 2021,
-        "teu": 37796,
-        "vessels": 47,
-        "avg_wait_time": 63.9
-      },
-      {
-        "year": 2022,
-        "teu": 40820,
-        "vessels": 51,
-        "avg_wait_time": 69.9
-      },
-      {
-        "year": 2023,
-        "teu": 42452,
-        "vessels": 53,
-        "avg_wait_time": 70.0
-      },
-      {
-        "year": 2024,
-        "teu": 45000,
-        "vessels": 56,
-        "avg_wait_time": 70.3
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -7714,45 +5797,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 57.2,
-      "avg_port_stay_hours": 73.6,
-      "berth_productivity": 51.5,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 67993,
-        "vessels": 84,
-        "avg_wait_time": 59.1
-      },
-      {
-        "year": 2021,
-        "teu": 71393,
-        "vessels": 89,
-        "avg_wait_time": 56.4
-      },
-      {
-        "year": 2022,
-        "teu": 77104,
-        "vessels": 96,
-        "avg_wait_time": 55.6
-      },
-      {
-        "year": 2023,
-        "teu": 80188,
-        "vessels": 100,
-        "avg_wait_time": 56.3
-      },
-      {
-        "year": 2024,
-        "teu": 85000,
-        "vessels": 106,
-        "avg_wait_time": 56.0
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -7828,45 +5872,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 60.0,
-      "avg_port_stay_hours": 79.4,
-      "berth_productivity": 55.6,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 22397,
-        "vessels": 27,
-        "avg_wait_time": 55.3
-      },
-      {
-        "year": 2021,
-        "teu": 23517,
-        "vessels": 29,
-        "avg_wait_time": 56.1
-      },
-      {
-        "year": 2022,
-        "teu": 25399,
-        "vessels": 31,
-        "avg_wait_time": 58.1
-      },
-      {
-        "year": 2023,
-        "teu": 26415,
-        "vessels": 33,
-        "avg_wait_time": 58.6
-      },
-      {
-        "year": 2024,
-        "teu": 28000,
-        "vessels": 35,
-        "avg_wait_time": 56.6
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -7942,45 +5947,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 150.0,
-      "avg_port_stay_hours": 174.0,
-      "berth_productivity": 25.0,
-      "efficiency_grade": "D",
-      "last_updated": "2025-01-16 (Données consolidées)"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 223978,
-        "vessels": 279,
-        "avg_wait_time": 154.0
-      },
-      {
-        "year": 2021,
-        "teu": 235177,
-        "vessels": 293,
-        "avg_wait_time": 149.9
-      },
-      {
-        "year": 2022,
-        "teu": 253991,
-        "vessels": 317,
-        "avg_wait_time": 157.8
-      },
-      {
-        "year": 2023,
-        "teu": 264150,
-        "vessels": 330,
-        "avg_wait_time": 147.1
-      },
-      {
-        "year": 2024,
-        "teu": 280000,
-        "vessels": 350,
-        "avg_wait_time": 161.5
-      }
-    ],
     "port_authority": {
       "name": "Sea Ports Corporation - Port Sudan",
       "address": "Port Sudan, Red Sea State, Sudan",
@@ -8047,45 +6013,6 @@
       "world_rank": 37,
       "year": 2023
     },
-    "performance_metrics": {
-      "avg_waiting_time_hours": 26.1,
-      "avg_port_stay_hours": 109.2,
-      "berth_productivity": 76.4,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 359964,
-        "vessels": 449,
-        "avg_wait_time": 27.9
-      },
-      {
-        "year": 2021,
-        "teu": 377963,
-        "vessels": 472,
-        "avg_wait_time": 27.6
-      },
-      {
-        "year": 2022,
-        "teu": 408200,
-        "vessels": 510,
-        "avg_wait_time": 25.8
-      },
-      {
-        "year": 2023,
-        "teu": 424528,
-        "vessels": 530,
-        "avg_wait_time": 24.8
-      },
-      {
-        "year": 2024,
-        "teu": 450000,
-        "vessels": 562,
-        "avg_wait_time": 26.6
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": 5,
       "source": "Estimation basée sur efficacité documentée et hub freeport",
@@ -8102,7 +6029,8 @@
       "cppi_rank": "NA",
       "cppi_year": "NA",
       "no_official_data_reason": "MPA ne publie pas de statistiques dwell.",
-      "source_reliability_label": "Estimation Modélisée"
+      "source_reliability_label": "Estimation Modélisée",
+      "nature": "estimation"
     },
     "port_authority": {
       "name": "Mauritius Ports Authority (MPA)",
@@ -8161,45 +6089,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 42.3,
-      "avg_port_stay_hours": 69.4,
-      "berth_productivity": 48.6,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 33596,
-        "vessels": 41,
-        "avg_wait_time": 45.8
-      },
-      {
-        "year": 2021,
-        "teu": 35276,
-        "vessels": 44,
-        "avg_wait_time": 42.2
-      },
-      {
-        "year": 2022,
-        "teu": 38098,
-        "vessels": 47,
-        "avg_wait_time": 46.5
-      },
-      {
-        "year": 2023,
-        "teu": 39622,
-        "vessels": 49,
-        "avg_wait_time": 41.6
-      },
-      {
-        "year": 2024,
-        "teu": 42000,
-        "vessels": 52,
-        "avg_wait_time": 44.9
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -8269,45 +6158,6 @@
       }
     ],
     "services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 27.8,
-      "avg_port_stay_hours": 65.5,
-      "berth_productivity": 45.9,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 14398,
-        "vessels": 17,
-        "avg_wait_time": 27.2
-      },
-      {
-        "year": 2021,
-        "teu": 15118,
-        "vessels": 18,
-        "avg_wait_time": 30.3
-      },
-      {
-        "year": 2022,
-        "teu": 16328,
-        "vessels": 20,
-        "avg_wait_time": 29.6
-      },
-      {
-        "year": 2023,
-        "teu": 16981,
-        "vessels": 21,
-        "avg_wait_time": 26.3
-      },
-      {
-        "year": 2024,
-        "teu": 18000,
-        "vessels": 22,
-        "avg_wait_time": 27.7
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -8355,38 +6205,6 @@
     "has_roro": true,
     "has_bulk": true,
     "port_infra_notes": "Port de pêche et minerai de fer, zone franche",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 720000,
-        "ship_calls": 850,
-        "avg_time_in_port_hours": 28.0,
-        "avg_waiting_time_hours": 6.5
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 685000,
-        "ship_calls": 820,
-        "avg_time_in_port_hours": 29.0,
-        "avg_waiting_time_hours": 7.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 650000,
-        "ship_calls": 780,
-        "avg_time_in_port_hours": 30.0,
-        "avg_waiting_time_hours": 7.5
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 12.5,
-      "lsci_rank_global": 185,
-      "productivity_moves_per_hour": 15,
-      "performance_grade": "C"
-    },
     "agents": [
       {
         "agent_name": "SMCP Mauritanie",
@@ -8411,45 +6229,6 @@
         "service_name": "WAFMAX",
         "frequency": "Monthly",
         "route": "Europe-West Africa"
-      }
-    ],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 67.1,
-      "avg_port_stay_hours": 91.6,
-      "berth_productivity": 64.1,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 69.3
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 63.6
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 66.0
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 68.0
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 69.6
       }
     ],
     "trs_analysis": {
@@ -8499,38 +6278,6 @@
     "has_roro": true,
     "has_bulk": true,
     "port_infra_notes": "Port régional Casamance, cargo général",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 85000,
-        "ship_calls": 280,
-        "avg_time_in_port_hours": 36.0,
-        "avg_waiting_time_hours": 10.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 78000,
-        "ship_calls": 265,
-        "avg_time_in_port_hours": 38.0,
-        "avg_waiting_time_hours": 11.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 72000,
-        "ship_calls": 250,
-        "avg_time_in_port_hours": 40.0,
-        "avg_waiting_time_hours": 12.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 8.2,
-      "lsci_rank_global": 225,
-      "productivity_moves_per_hour": 12,
-      "performance_grade": "D"
-    },
     "agents": [
       {
         "agent_name": "Ocean Network Express (ONE) Sénégal",
@@ -8554,45 +6301,6 @@
       }
     ],
     "regular_services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 54.1,
-      "avg_port_stay_hours": 59.5,
-      "berth_productivity": 41.7,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 52.1
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 55.1
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 53.7
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 55.2
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 53.4
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -8648,38 +6356,6 @@
     "has_roro": true,
     "has_bulk": true,
     "port_infra_notes": "Principal port Gambie, estuaire Gambie River",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 6500,
-        "cargo_throughput_tons": 195000,
-        "ship_calls": 420,
-        "avg_time_in_port_hours": 32.0,
-        "avg_waiting_time_hours": 9.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 6100,
-        "cargo_throughput_tons": 182000,
-        "ship_calls": 400,
-        "avg_time_in_port_hours": 34.0,
-        "avg_waiting_time_hours": 10.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 5800,
-        "cargo_throughput_tons": 170000,
-        "ship_calls": 385,
-        "avg_time_in_port_hours": 36.0,
-        "avg_waiting_time_hours": 11.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 10.5,
-      "lsci_rank_global": 205,
-      "productivity_moves_per_hour": 14,
-      "performance_grade": "C"
-    },
     "agents": [
       {
         "agent_name": "GPA Gambia Ports Authority",
@@ -8704,45 +6380,6 @@
         "service_name": "WAFMAX",
         "frequency": "Weekly",
         "route": "Europe-West Africa"
-      }
-    ],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 31.1,
-      "avg_port_stay_hours": 114.1,
-      "berth_productivity": 79.8,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 30.8
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 29.4
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 31.5
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 33.2
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 31.2
       }
     ],
     "trs_analysis": {
@@ -8800,38 +6437,6 @@
     "has_roro": true,
     "has_bulk": true,
     "port_infra_notes": "Deep natural harbor, Queen Elizabeth II Quay",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 9500,
-        "cargo_throughput_tons": 295000,
-        "ship_calls": 520,
-        "avg_time_in_port_hours": 38.0,
-        "avg_waiting_time_hours": 12.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 8800,
-        "cargo_throughput_tons": 275000,
-        "ship_calls": 490,
-        "avg_time_in_port_hours": 40.0,
-        "avg_waiting_time_hours": 13.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 8200,
-        "cargo_throughput_tons": 260000,
-        "ship_calls": 465,
-        "avg_time_in_port_hours": 42.0,
-        "avg_waiting_time_hours": 14.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 11.8,
-      "lsci_rank_global": 195,
-      "productivity_moves_per_hour": 13,
-      "performance_grade": "C"
-    },
     "agents": [
       {
         "agent_name": "Sierra Leone Ports Authority",
@@ -8856,45 +6461,6 @@
         "service_name": "WAFMAX",
         "frequency": "Weekly",
         "route": "Europe-West Africa"
-      }
-    ],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 52.5,
-      "avg_port_stay_hours": 87.8,
-      "berth_productivity": 61.4,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 57.1
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 53.2
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 49.9
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 48.0
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 57.6
       }
     ],
     "trs_analysis": {
@@ -8944,38 +6510,6 @@
     "has_roro": true,
     "has_bulk": true,
     "port_infra_notes": "Port Freeport of Monrovia, modernisé APM Terminals",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 19500,
-        "cargo_throughput_tons": 520000,
-        "ship_calls": 680,
-        "avg_time_in_port_hours": 30.0,
-        "avg_waiting_time_hours": 8.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 18200,
-        "cargo_throughput_tons": 485000,
-        "ship_calls": 650,
-        "avg_time_in_port_hours": 32.0,
-        "avg_waiting_time_hours": 9.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 17000,
-        "cargo_throughput_tons": 455000,
-        "ship_calls": 620,
-        "avg_time_in_port_hours": 34.0,
-        "avg_waiting_time_hours": 10.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 15.2,
-      "lsci_rank_global": 165,
-      "productivity_moves_per_hour": 18,
-      "performance_grade": "C+"
-    },
     "agents": [
       {
         "agent_name": "APM Terminals Liberia",
@@ -9017,45 +6551,6 @@
         "service_name": "West Africa Express",
         "frequency": "Weekly",
         "route": "Europe-West Africa"
-      }
-    ],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 55.6,
-      "avg_port_stay_hours": 69.5,
-      "berth_productivity": 48.7,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 50.4
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 51.8
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 58.7
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 51.1
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 53.3
       }
     ],
     "trs_analysis": {
@@ -9105,38 +6600,6 @@
     "has_roro": false,
     "has_bulk": true,
     "port_infra_notes": "Port minier minerai de fer, ArcelorMittal",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 950000,
-        "ship_calls": 320,
-        "avg_time_in_port_hours": 24.0,
-        "avg_waiting_time_hours": 5.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 890000,
-        "ship_calls": 305,
-        "avg_time_in_port_hours": 25.0,
-        "avg_waiting_time_hours": 5.5
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 820000,
-        "ship_calls": 285,
-        "avg_time_in_port_hours": 26.0,
-        "avg_waiting_time_hours": 6.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 9.5,
-      "lsci_rank_global": 215,
-      "productivity_moves_per_hour": 22,
-      "performance_grade": "C"
-    },
     "agents": [
       {
         "agent_name": "CMA CGM Agency Libéria",
@@ -9160,45 +6623,6 @@
       }
     ],
     "regular_services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 28.7,
-      "avg_port_stay_hours": 52.9,
-      "berth_productivity": 37.1,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 29.1
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 26.5
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 27.4
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 27.8
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 31.0
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -9246,38 +6670,6 @@
     "has_roro": true,
     "has_bulk": true,
     "port_infra_notes": "Port sur île Bioko, cargo pétrolier et général",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 6200,
-        "cargo_throughput_tons": 215000,
-        "ship_calls": 380,
-        "avg_time_in_port_hours": 34.0,
-        "avg_waiting_time_hours": 10.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 5800,
-        "cargo_throughput_tons": 200000,
-        "ship_calls": 360,
-        "avg_time_in_port_hours": 36.0,
-        "avg_waiting_time_hours": 11.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 5400,
-        "cargo_throughput_tons": 185000,
-        "ship_calls": 340,
-        "avg_time_in_port_hours": 38.0,
-        "avg_waiting_time_hours": 12.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 10.8,
-      "lsci_rank_global": 200,
-      "productivity_moves_per_hour": 14,
-      "performance_grade": "C"
-    },
     "agents": [
       {
         "agent_name": "Gepetrol",
@@ -9297,45 +6689,6 @@
       }
     ],
     "regular_services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 24.5,
-      "avg_port_stay_hours": 74.0,
-      "berth_productivity": 51.8,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 25.7
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 25.4
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 24.7
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 22.7
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 25.4
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -9383,38 +6736,6 @@
     "has_roro": true,
     "has_bulk": false,
     "port_infra_notes": "Petit port insulaire, cargo cacao et café",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 2200,
-        "cargo_throughput_tons": 62000,
-        "ship_calls": 180,
-        "avg_time_in_port_hours": 42.0,
-        "avg_waiting_time_hours": 14.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 2000,
-        "cargo_throughput_tons": 58000,
-        "ship_calls": 170,
-        "avg_time_in_port_hours": 44.0,
-        "avg_waiting_time_hours": 15.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 1850,
-        "cargo_throughput_tons": 54000,
-        "ship_calls": 160,
-        "avg_time_in_port_hours": 46.0,
-        "avg_waiting_time_hours": 16.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 6.5,
-      "lsci_rank_global": 245,
-      "productivity_moves_per_hour": 10,
-      "performance_grade": "D"
-    },
     "agents": [
       {
         "agent_name": "MSC Agency São Tomé-et-Príncipe",
@@ -9438,45 +6759,6 @@
       }
     ],
     "regular_services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 33.1,
-      "avg_port_stay_hours": 70.3,
-      "berth_productivity": 49.2,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 35.1
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 34.7
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 33.3
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 34.9
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 32.4
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -9524,38 +6806,6 @@
     "has_roro": true,
     "has_bulk": true,
     "port_infra_notes": "Principal port Congo, hub pétrole et bois, terminal conteneurs moderne",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 52000,
-        "cargo_throughput_tons": 1520000,
-        "ship_calls": 920,
-        "avg_time_in_port_hours": 26.0,
-        "avg_waiting_time_hours": 7.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 48500,
-        "cargo_throughput_tons": 1425000,
-        "ship_calls": 880,
-        "avg_time_in_port_hours": 28.0,
-        "avg_waiting_time_hours": 8.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 45000,
-        "cargo_throughput_tons": 1350000,
-        "ship_calls": 840,
-        "avg_time_in_port_hours": 30.0,
-        "avg_waiting_time_hours": 9.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 18.5,
-      "lsci_rank_global": 145,
-      "productivity_moves_per_hour": 20,
-      "performance_grade": "B"
-    },
     "agents": [
       {
         "agent_name": "Bolloré Africa Logistics Congo",
@@ -9597,45 +6847,6 @@
         "service_name": "South Africa Express",
         "frequency": "Weekly",
         "route": "Europe-Southern Africa"
-      }
-    ],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 41.3,
-      "avg_port_stay_hours": 91.0,
-      "berth_productivity": 63.7,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 40.7
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 44.6
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 44.3
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 44.8
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 45.4
       }
     ],
     "trs_analysis": {
@@ -9685,38 +6896,6 @@
     "has_roro": true,
     "has_bulk": true,
     "port_infra_notes": "Hub Southern Africa, nouveau terminal conteneurs, gateway vers Botswana et Zambie",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 580000,
-        "cargo_throughput_tons": 1850000,
-        "ship_calls": 1250,
-        "avg_time_in_port_hours": 18.0,
-        "avg_waiting_time_hours": 4.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 540000,
-        "cargo_throughput_tons": 1720000,
-        "ship_calls": 1200,
-        "avg_time_in_port_hours": 19.0,
-        "avg_waiting_time_hours": 4.5
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 495000,
-        "cargo_throughput_tons": 1600000,
-        "ship_calls": 1150,
-        "avg_time_in_port_hours": 20.0,
-        "avg_waiting_time_hours": 5.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 28.5,
-      "lsci_rank_global": 85,
-      "productivity_moves_per_hour": 32,
-      "performance_grade": "A-"
-    },
     "agents": [
       {
         "agent_name": "Namport",
@@ -9767,45 +6946,6 @@
         "route": "Europe-Southern Africa"
       }
     ],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 58.0,
-      "avg_port_stay_hours": 63.8,
-      "berth_productivity": 44.7,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 56.5
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 63.6
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 59.8
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 61.0
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 62.0
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -9853,38 +6993,6 @@
     "has_roro": true,
     "has_bulk": true,
     "port_infra_notes": "Principal port Érythrée, Mer Rouge",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 11000,
-        "cargo_throughput_tons": 320000,
-        "ship_calls": 450,
-        "avg_time_in_port_hours": 40.0,
-        "avg_waiting_time_hours": 13.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 10200,
-        "cargo_throughput_tons": 295000,
-        "ship_calls": 420,
-        "avg_time_in_port_hours": 42.0,
-        "avg_waiting_time_hours": 14.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 9500,
-        "cargo_throughput_tons": 275000,
-        "ship_calls": 400,
-        "avg_time_in_port_hours": 44.0,
-        "avg_waiting_time_hours": 15.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 11.2,
-      "lsci_rank_global": 198,
-      "productivity_moves_per_hour": 13,
-      "performance_grade": "C"
-    },
     "agents": [
       {
         "agent_name": "Hull Blyth Érythrée",
@@ -9908,45 +7016,6 @@
       }
     ],
     "regular_services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 34.4,
-      "avg_port_stay_hours": 82.2,
-      "berth_productivity": 57.6,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 31.4
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 32.9
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 37.4
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 34.2
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 33.4
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -9994,38 +7063,6 @@
     "has_roro": true,
     "has_bulk": true,
     "port_infra_notes": "Port secondaire, raffinerie pétrole",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 185000,
-        "ship_calls": 320,
-        "avg_time_in_port_hours": 38.0,
-        "avg_waiting_time_hours": 12.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 172000,
-        "ship_calls": 300,
-        "avg_time_in_port_hours": 40.0,
-        "avg_waiting_time_hours": 13.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 160000,
-        "ship_calls": 285,
-        "avg_time_in_port_hours": 42.0,
-        "avg_waiting_time_hours": 14.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 8.8,
-      "lsci_rank_global": 218,
-      "productivity_moves_per_hour": 11,
-      "performance_grade": "D+"
-    },
     "agents": [
       {
         "agent_name": "OMA Group Érythrée",
@@ -10051,45 +7088,6 @@
       }
     ],
     "regular_services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 48.3,
-      "avg_port_stay_hours": 89.2,
-      "berth_productivity": 62.4,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 49.4
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 45.3
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 49.4
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 45.2
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 45.7
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -10137,38 +7135,6 @@
     "has_roro": true,
     "has_bulk": false,
     "port_infra_notes": "Hub océan Indien, transhipment thon",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 6800,
-        "cargo_throughput_tons": 175000,
-        "ship_calls": 520,
-        "avg_time_in_port_hours": 28.0,
-        "avg_waiting_time_hours": 7.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 6400,
-        "cargo_throughput_tons": 165000,
-        "ship_calls": 490,
-        "avg_time_in_port_hours": 30.0,
-        "avg_waiting_time_hours": 8.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 6000,
-        "cargo_throughput_tons": 155000,
-        "ship_calls": 465,
-        "avg_time_in_port_hours": 32.0,
-        "avg_waiting_time_hours": 9.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 14.2,
-      "lsci_rank_global": 175,
-      "productivity_moves_per_hour": 16,
-      "performance_grade": "C+"
-    },
     "agents": [
       {
         "agent_name": "Seychelles Ports Authority",
@@ -10188,45 +7154,6 @@
       }
     ],
     "regular_services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 28.6,
-      "avg_port_stay_hours": 91.0,
-      "berth_productivity": 63.7,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 31.4
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 28.6
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 29.4
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 27.9
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 29.2
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -10274,38 +7201,6 @@
     "has_roro": true,
     "has_bulk": false,
     "port_infra_notes": "Petit port insulaire île Anjouan, cargo vanille et ylang-ylang",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 32000,
-        "ship_calls": 150,
-        "avg_time_in_port_hours": 48.0,
-        "avg_waiting_time_hours": 16.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 29000,
-        "ship_calls": 140,
-        "avg_time_in_port_hours": 50.0,
-        "avg_waiting_time_hours": 17.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 27000,
-        "ship_calls": 130,
-        "avg_time_in_port_hours": 52.0,
-        "avg_waiting_time_hours": 18.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 5.2,
-      "lsci_rank_global": 255,
-      "productivity_moves_per_hour": 8,
-      "performance_grade": "D"
-    },
     "agents": [
       {
         "agent_name": "Grimaldi Agency Comores",
@@ -10329,45 +7224,6 @@
       }
     ],
     "regular_services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 37.1,
-      "avg_port_stay_hours": 63.2,
-      "berth_productivity": 44.2,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 38.2
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 38.1
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 38.2
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 40.1
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 38.1
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",
@@ -10415,38 +7271,6 @@
     "has_roro": true,
     "has_bulk": true,
     "port_infra_notes": "Principal port Soudan sur Mer Rouge, gateway commerce intérieur",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 32000,
-        "cargo_throughput_tons": 850000,
-        "ship_calls": 720,
-        "avg_time_in_port_hours": 35.0,
-        "avg_waiting_time_hours": 11.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 29500,
-        "cargo_throughput_tons": 780000,
-        "ship_calls": 680,
-        "avg_time_in_port_hours": 37.0,
-        "avg_waiting_time_hours": 12.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 27000,
-        "cargo_throughput_tons": 720000,
-        "ship_calls": 640,
-        "avg_time_in_port_hours": 39.0,
-        "avg_waiting_time_hours": 13.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 16.8,
-      "lsci_rank_global": 155,
-      "productivity_moves_per_hour": 15,
-      "performance_grade": "C+"
-    },
     "agents": [
       {
         "agent_name": "Sea Ports Corporation",
@@ -10471,45 +7295,6 @@
         "service_name": "Red Sea Service",
         "frequency": "Weekly",
         "route": "Asia-Red Sea"
-      }
-    ],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 68.8,
-      "avg_port_stay_hours": 61.3,
-      "berth_productivity": 42.9,
-      "efficiency_grade": "B-",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 69.2
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 71.1
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 66.9
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 67.2
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 63.7
       }
     ],
     "trs_analysis": {
@@ -10559,38 +7344,6 @@
     "has_roro": true,
     "has_bulk": true,
     "port_infra_notes": "Port historique en redéveloppement, projet turc",
-    "historical_stats": [
-      {
-        "year": 2024,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 95000,
-        "ship_calls": 220,
-        "avg_time_in_port_hours": 42.0,
-        "avg_waiting_time_hours": 14.0
-      },
-      {
-        "year": 2023,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 85000,
-        "ship_calls": 200,
-        "avg_time_in_port_hours": 44.0,
-        "avg_waiting_time_hours": 15.0
-      },
-      {
-        "year": 2022,
-        "container_throughput_teu": 0,
-        "cargo_throughput_tons": 78000,
-        "ship_calls": 185,
-        "avg_time_in_port_hours": 46.0,
-        "avg_waiting_time_hours": 16.0
-      }
-    ],
-    "performance_indicators": {
-      "lsci_score": 7.5,
-      "lsci_rank_global": 235,
-      "productivity_moves_per_hour": 10,
-      "performance_grade": "D+"
-    },
     "agents": [
       {
         "agent_name": "Bolloré Transport & Logistics (AGL) Soudan",
@@ -10614,45 +7367,6 @@
       }
     ],
     "regular_services": [],
-    "performance_metrics": {
-      "avg_waiting_time_hours": 28.2,
-      "avg_port_stay_hours": 62.5,
-      "berth_productivity": 43.8,
-      "efficiency_grade": "B",
-      "last_updated": "2025-01-15"
-    },
-    "traffic_evolution": [
-      {
-        "year": 2020,
-        "teu": 79992,
-        "vessels": 99,
-        "avg_wait_time": 27.4
-      },
-      {
-        "year": 2021,
-        "teu": 83991,
-        "vessels": 104,
-        "avg_wait_time": 27.6
-      },
-      {
-        "year": 2022,
-        "teu": 90711,
-        "vessels": 113,
-        "avg_wait_time": 28.5
-      },
-      {
-        "year": 2023,
-        "teu": 94339,
-        "vessels": 117,
-        "avg_wait_time": 28.2
-      },
-      {
-        "year": 2024,
-        "teu": 100000,
-        "vessels": 125,
-        "avg_wait_time": 30.5
-      }
-    ],
     "trs_analysis": {
       "container_dwell_time_days": "NA",
       "source": "NA",

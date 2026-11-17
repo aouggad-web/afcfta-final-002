@@ -48,7 +48,8 @@ const texts = {
       SP: "Ouvraison spécifique",
       YARN: "Fabrication à partir de fils",
       NONE: "Pas de règle d'origine",
-      YTB: "Règle en négociation"
+      YTB: "Règle en négociation",
+      SPECIFIC: "Règle propre à cette ligne de l'Appendice IV : voir l'exigence"
     },
     viewRules: "Voir les règles",
     section: "Section",
@@ -91,7 +92,8 @@ const texts = {
       SP: "Specific process",
       YARN: "Manufacture from yarn",
       NONE: "No rule of origin",
-      YTB: "Rule under negotiation"
+      YTB: "Rule under negotiation",
+      SPECIFIC: "Rule specific to this Appendix IV row: see the requirement"
     },
     viewRules: "View rules",
     section: "Section",
@@ -134,7 +136,8 @@ const texts = {
       SP: "عملية تصنيع محددة",
       YARN: "التصنيع انطلاقًا من الخيوط",
       NONE: "لا توجد قاعدة منشأ",
-      YTB: "قاعدة قيد التفاوض"
+      YTB: "قاعدة قيد التفاوض",
+      SPECIFIC: "قاعدة خاصة بهذا السطر من التذييل الرابع: انظر الشرط"
     },
     viewRules: "عرض القواعد",
     section: "القسم",
@@ -570,10 +573,15 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
 
   // Critère réel d'une règle sans seuil de valeur ajoutée (même logique que
   // l'onglet Règles d'origine). Une règle en négociation l'est quel que soit
-  // son code (le chapitre 60 est codé YARN) ; un code sans libellé (HYBRID)
-  // renvoie au texte source de la règle.
-  const getCriterion = (roo) =>
-    t.criteria[roo.status === 'YTB' ? 'YTB' : roo.rules?.primary_rule?.code] || roo.rules?.rule_text_fr;
+  // son code ; une ligne dont le texte n'énonce pas le critère de son code
+  // (chapitre 42 : changement de position à condition) renvoie à l'exigence ;
+  // un code sans libellé renvoie au texte source de la règle.
+  const getCriterion = (roo) => {
+    const code = roo.rules?.primary_rule?.code;
+    const key = roo.status === 'YTB' ? 'YTB'
+      : roo.rules?.primary_rule?.matches_text === false && code !== 'NONE' ? 'SPECIFIC' : code;
+    return t.criteria[key] || roo.rules?.rule_text_fr;
+  };
 
   return (
     <Card className="shadow-lg" data-testid="hs-code-browser">

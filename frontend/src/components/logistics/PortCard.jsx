@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
 import { intlLocale } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
 
@@ -21,6 +20,7 @@ export default function PortCard({ port, onOpenDetails, language = 'fr', apercu 
       waitTime: "Attente navires",
       hours: "h",
       lpiScore: "LPI",
+      estimated: "estimé",
     },
     en: {
       containersTeu: "Containers (TEU)",
@@ -36,6 +36,7 @@ export default function PortCard({ port, onOpenDetails, language = 'fr', apercu 
       waitTime: "Vessel waiting",
       hours: "h",
       lpiScore: "LPI",
+      estimated: "estimated",
     },
     ar: {
       containersTeu: "الحاويات (TEU)",
@@ -51,6 +52,7 @@ export default function PortCard({ port, onOpenDetails, language = 'fr', apercu 
       waitTime: "انتظار السفن",
       hours: "ساعة",
       lpiScore: "LPI",
+      estimated: "تقديري",
     }
   };
 
@@ -66,14 +68,8 @@ export default function PortCard({ port, onOpenDetails, language = 'fr', apercu 
   const lpi = port?.lpi_2023;
   const perfMetrics = port?.performance_metrics || {};
   const lsci = port?.lsci;
-
-  const gradeColor = (grade) => {
-    if (!grade) return 'bg-[var(--afcfta-card2)] text-[var(--text)]';
-    if (grade.startsWith('A')) return 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]';
-    if (grade.startsWith('B')) return 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]';
-    if (grade.startsWith('C')) return 'bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)]';
-    return 'bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] text-[var(--danger)]';
-  };
+  // Bloc que la source ne publie pas tel quel (champ `nature` du backend).
+  const estime = (bloc) => (bloc?.nature === 'estimation' ? ` · ${t.estimated}` : '');
 
   return (
     <Card className="shadow-lg hover:shadow-xl transition-shadow">
@@ -89,11 +85,6 @@ export default function PortCard({ port, onOpenDetails, language = 'fr', apercu 
           <span className="font-semibold">{trDonnee(port.country_name, language)}</span>
           <span className="text-[var(--afcfta-muted)]">•</span>
           <span className="text-[var(--info)]">{trDonnee(port.port_type, language)}</span>
-          {perfMetrics.efficiency_grade && (
-            <Badge className={`text-xs ${gradeColor(perfMetrics.efficiency_grade)}`}>
-              {perfMetrics.efficiency_grade}
-            </Badge>
-          )}
         </CardDescription>
       </CardHeader>
 
@@ -107,21 +98,21 @@ export default function PortCard({ port, onOpenDetails, language = 'fr', apercu 
             <p className="text-base font-bold text-[var(--info)] truncate">
               {formatNumber(stats?.container_throughput_teu)}
             </p>
-            <p className="text-xs text-[var(--afcfta-muted)]">{stats?.year || 2024}</p>
+            <p className="text-xs text-[var(--afcfta-muted)]">{stats?.year ?? '—'}{estime(stats)}</p>
           </div>
           <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] p-2 rounded-lg border-l-4 border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
             <p className="text-xs font-semibold text-[var(--success)] mb-0.5">⚖️ {t.tonsYear.split('/')[0]}</p>
             <p className="text-base font-bold text-[var(--success)] truncate">
               {formatNumber(stats?.cargo_throughput_tons)}
             </p>
-            <p className="text-xs text-[var(--afcfta-muted)]">{t.tonsYear}</p>
+            <p className="text-xs text-[var(--afcfta-muted)]">{t.tonsYear}{estime(stats)}</p>
           </div>
           <div className="bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] p-2 rounded-lg border-l-4 border-[color-mix(in_srgb,var(--violet)_30%,transparent)]">
             <p className="text-xs font-semibold text-[var(--violet)] mb-0.5">⚓ {t.calls}</p>
             <p className="text-base font-bold text-[var(--violet)]">
               {formatNumber(stats?.vessel_calls)}
             </p>
-            <p className="text-xs text-[var(--afcfta-muted)]">{t.shipsYear}</p>
+            <p className="text-xs text-[var(--afcfta-muted)]">{t.shipsYear}{estime(stats)}</p>
           </div>
         </div>
 
@@ -130,13 +121,13 @@ export default function PortCard({ port, onOpenDetails, language = 'fr', apercu 
           {trs?.container_dwell_time_days && trs.container_dwell_time_days !== 'NA' && (
             <div className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] p-2 rounded border-l-2 border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
               <p className="text-xs font-semibold text-[var(--gold)]">📦 {t.dwellTime}</p>
-              <p className="text-sm font-bold text-[var(--gold)]">{trs.container_dwell_time_days} {t.days}</p>
+              <p className="text-sm font-bold text-[var(--gold)]">{trs.container_dwell_time_days} {t.days}{estime(trs)}</p>
             </div>
           )}
           {(perfMetrics.avg_waiting_time_hours) && (
             <div className="bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] p-2 rounded border-l-2 border-[color-mix(in_srgb,var(--violet)_30%,transparent)]">
               <p className="text-xs font-semibold text-[var(--violet)]">⏳ {t.waitTime}</p>
-              <p className="text-sm font-bold text-[var(--violet)]">{perfMetrics.avg_waiting_time_hours} {t.hours}</p>
+              <p className="text-sm font-bold text-[var(--violet)]">{perfMetrics.avg_waiting_time_hours} {t.hours}{estime(perfMetrics)}</p>
             </div>
           )}
         </div>
@@ -157,7 +148,6 @@ export default function PortCard({ port, onOpenDetails, language = 'fr', apercu 
             <div className="bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] p-1.5 rounded text-center">
               <p className="text-xs font-semibold text-[var(--violet)]">LSCI</p>
               <p className="text-sm font-bold text-[var(--violet)]">{lsci.value}</p>
-              <p className="text-xs text-[var(--afcfta-muted)]">#{lsci.world_rank}</p>
             </div>
           )}
           {lpi && (

@@ -620,6 +620,8 @@ class ClaudeTradeService:
                     "regional_content_pct": rule.get("regional_content"),
                     "status": rule.get("status"),
                     "source": rule.get("source_detail"),
+                    "matches_text": primary.get("matches_text"),
+                    "rule_text_fr": primary.get("rule_text_fr") or "",
                 }
         except Exception as e:
             logger.debug(f"PSR lookup unavailable for {hs}: {e}")
@@ -635,15 +637,23 @@ class ClaudeTradeService:
                 "ZLECAf. La préférence tarifaire ne s'applique que si la "
                 "transformation locale satisfait la règle d'origine du produit"
                 + (
-                    f" ({rule_summary['name']}"
-                    + (
-                        f", contenu régional ≥ {rule_summary['regional_content_pct']} %"
-                        if rule_summary.get("regional_content_pct")
-                        else ""
+                    # Règle propre à sa ligne : son nom n'énonce aucun critère,
+                    # le texte de la ligne (en français) si.
+                    f" (Appendice IV : « {rule_summary['rule_text_fr']} »)"
+                    if rule_summary
+                    and rule_summary.get("matches_text") is False
+                    and rule_summary.get("rule_text_fr")
+                    else (
+                        f" ({rule_summary['name']}"
+                        + (
+                            f", contenu régional ≥ {rule_summary['regional_content_pct']} %"
+                            if rule_summary.get("regional_content_pct")
+                            else ""
+                        )
+                        + ")"
+                        if rule_summary and rule_summary.get("name")
+                        else " (Annexe 2 / Appendice IV ZLECAf)"
                     )
-                    + ")"
-                    if rule_summary and rule_summary.get("name")
-                    else " (Annexe 2 / Appendice IV ZLECAf)"
                 )
                 + ". Exiger un certificat d'origine ZLECAf avant de compter la préférence."
             ),
@@ -1088,6 +1098,9 @@ STRICT DATA RULES:
         # pv=4 : l'ancrage production relaie désormais le caveat méthodologique
         # par commodité (banane/plantain : production ≠ capacité d'export) —
         # invalide les analyses en cache générées sans ce garde-fou.
+        # Pas d'incrément pour la note des hubs de réexportation qui cite le
+        # texte d'une règle propre à sa ligne : choix de ne pas recalculer les
+        # analyses en cache ; elles prennent la nouvelle note à leur expiration.
         cache_params = {
             "country": country_name,
             "mode": mode,

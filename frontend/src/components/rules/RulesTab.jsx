@@ -6,6 +6,8 @@ import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { Progress } from '../ui/progress';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
+import OriginLegalReference from './OriginLegalReference';
+import AppendixIvNotes from './AppendixIvNotes';
 import { FileText, ChevronDown, ChevronUp, Globe, CheckCircle, AlertTriangle, Info } from 'lucide-react';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -29,7 +31,7 @@ export default function RulesTab({ language = 'fr' }) {
       ruleType: "Type de Règle",
       requirement: "Exigence",
       productDescription: "Désignation du produit",
-      thresholdToConfirm: "Seuil applicable à confirmer",
+      note25Threshold: "Seuil applicable : 55 % depuis le 1er janvier 2026 (note 2.5)",
       minRegionalContent: "Contenu Régional Minimum",
       regionalContentRequired: "de contenu africain requis",
       originCriterion: "Critère d'origine",
@@ -41,8 +43,10 @@ export default function RulesTab({ language = 'fr' }) {
         SP: "Ouvraison spécifique",
         YARN: "Fabrication à partir de fils",
         NONE: "Pas de règle d'origine",
-        YTB: "Règle en négociation"
+        YTB: "Règle en négociation",
+        SPECIFIC: "Règle propre à cette ligne de l'Appendice IV : voir l'exigence"
       },
+      ruleTextPrevails: "Seul le texte de la règle fait foi.",
       requiredDocumentation: "Documentation Requise",
       validityPeriod: "Période de validité",
       issuingAuthority: "Autorité émettrice",
@@ -53,8 +57,7 @@ export default function RulesTab({ language = 'fr' }) {
       loadingRules: "Chargement des règles...",
       explanation: "Ce que cela implique",
       alternativeRule: "Règle alternative",
-      ytbWarning: "Cette règle est encore en cours de négociation (statut À Déterminer) entre les États membres",
-      source: "Source"
+      ytbWarning: "Cette règle est encore en cours de négociation (statut À Déterminer) entre les États membres"
     },
     en: {
       title: "AfCFTA Rules of Origin",
@@ -66,7 +69,7 @@ export default function RulesTab({ language = 'fr' }) {
       ruleType: "Rule Type",
       requirement: "Requirement",
       productDescription: "Product description",
-      thresholdToConfirm: "Applicable threshold to be confirmed",
+      note25Threshold: "Applicable threshold: 55% since 1 January 2026 (note 2.5)",
       minRegionalContent: "Minimum Regional Content",
       regionalContentRequired: "African content required",
       originCriterion: "Origin criterion",
@@ -78,8 +81,10 @@ export default function RulesTab({ language = 'fr' }) {
         SP: "Specific process",
         YARN: "Manufacture from yarn",
         NONE: "No rule of origin",
-        YTB: "Rule under negotiation"
+        YTB: "Rule under negotiation",
+        SPECIFIC: "Rule specific to this Appendix IV row: see the requirement"
       },
+      ruleTextPrevails: "Only the rule text is authoritative.",
       requiredDocumentation: "Required Documentation",
       validityPeriod: "Validity period",
       issuingAuthority: "Issuing authority",
@@ -90,8 +95,7 @@ export default function RulesTab({ language = 'fr' }) {
       loadingRules: "Loading rules...",
       explanation: "What this means",
       alternativeRule: "Alternative rule",
-      ytbWarning: "This rule is still under negotiation (Yet To Be agreed) between member states",
-      source: "Source"
+      ytbWarning: "This rule is still under negotiation (Yet To Be agreed) between member states"
     },
     ar: {
       title: "قواعد المنشأ في منطقة التجارة الحرة القارية الأفريقية",
@@ -103,7 +107,7 @@ export default function RulesTab({ language = 'fr' }) {
       ruleType: "نوع القاعدة",
       requirement: "الشرط",
       productDescription: "وصف المنتج",
-      thresholdToConfirm: "الحد المطبق يحتاج إلى تأكيد",
+      note25Threshold: "الحد المطبق: 55% منذ 1 يناير 2026 (الملاحظة 2.5)",
       minRegionalContent: "الحد الأدنى للمحتوى الإقليمي",
       regionalContentRequired: "من المحتوى الأفريقي مطلوب",
       originCriterion: "معيار المنشأ",
@@ -115,8 +119,10 @@ export default function RulesTab({ language = 'fr' }) {
         SP: "عملية تصنيع محددة",
         YARN: "التصنيع انطلاقًا من الخيوط",
         NONE: "لا توجد قاعدة منشأ",
-        YTB: "قاعدة قيد التفاوض"
+        YTB: "قاعدة قيد التفاوض",
+        SPECIFIC: "قاعدة خاصة بهذا السطر من التذييل الرابع: انظر الشرط"
       },
+      ruleTextPrevails: "نص القاعدة وحده هو المرجع المعتمد.",
       requiredDocumentation: "الوثائق المطلوبة",
       validityPeriod: "فترة الصلاحية",
       issuingAuthority: "الجهة المُصدِرة",
@@ -127,8 +133,7 @@ export default function RulesTab({ language = 'fr' }) {
       loadingRules: "جارٍ تحميل القواعد…",
       explanation: "ما يعنيه ذلك",
       alternativeRule: "قاعدة بديلة",
-      ytbWarning: "لا تزال هذه القاعدة قيد التفاوض (لم يُتفق عليها بعد) بين الدول الأعضاء",
-      source: "المصدر"
+      ytbWarning: "لا تزال هذه القاعدة قيد التفاوض (لم يُتفق عليها بعد) بين الدول الأعضاء"
     }
   };
 
@@ -175,10 +180,16 @@ export default function RulesTab({ language = 'fr' }) {
   };
 
   // Real criterion of a rule without a value threshold. A rule still under
-  // negotiation shows as such whatever its code (chapter 60 is YARN/YTB);
-  // a code with no label here (HYBRID) falls back to the source rule text.
-  const getCriterion = (roo) =>
-    t.criteria[roo.status === 'YTB' ? 'YTB' : roo.rules?.primary_rule?.code] || roo.rules?.rule_text_fr;
+  // negotiation shows as such whatever its code (chapter 60 is YARN/YTB); a row
+  // whose text does not state its code's criterion (e.g. a "WO" row that only
+  // requires certain materials to be originating) gets the row-specific label;
+  // a code with no label here falls back to the source rule text.
+  const getCriterion = (roo) => {
+    const code = roo.rules?.primary_rule?.code;
+    const key = roo.status === 'YTB' ? 'YTB'
+      : roo.rules?.primary_rule?.matches_text === false && code !== 'NONE' ? 'SPECIFIC' : code;
+    return t.criteria[key] || roo.rules?.rule_text_fr;
+  };
 
   return (
     <div className="space-y-6">
@@ -297,13 +308,18 @@ export default function RulesTab({ language = 'fr' }) {
               </div>
             </div>
 
-            {rulesOfOrigin.status !== 'YTB' && !rulesOfOrigin.rules?.threshold_note_fr &&
-              rulesOfOrigin.rules?.primary_rule?.explanation && (
+            {rulesOfOrigin.rules?.primary_rule?.explanation && (
               <div className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] flex items-start gap-2">
                 <Info className="w-4 h-4 mt-0.5 text-[var(--gold)] shrink-0" />
                 <div>
                   <h4 className="font-semibold mb-1 text-[var(--gold)]">{t.explanation}</h4>
-                  <p className="text-sm text-[var(--gold)]">{rulesOfOrigin.rules.primary_rule.explanation}</p>
+                  <p className="text-sm text-[var(--gold)]">
+                    <bdi lang={language === 'en' ? 'en' : 'fr'} dir="ltr">{rulesOfOrigin.rules.primary_rule.explanation}</bdi>
+                  </p>
+                  {/* Règle non encore adoptée : aucun texte ne fait foi. */}
+                  {rulesOfOrigin.status !== 'YTB' && (
+                    <p className="text-xs italic text-[var(--afcfta-muted)] mt-1">{t.ruleTextPrevails}</p>
+                  )}
                 </div>
               </div>
             )}
@@ -315,17 +331,21 @@ export default function RulesTab({ language = 'fr' }) {
                   {rulesOfOrigin.rules.alternative_rule.name}
                 </Badge>
                 {rulesOfOrigin.rules.alternative_rule.explanation && (
-                  <p className="text-sm text-[var(--afcfta-muted)] mt-2">{rulesOfOrigin.rules.alternative_rule.explanation}</p>
+                  <p className="text-sm text-[var(--afcfta-muted)] mt-2">
+                    <bdi lang={language === 'en' ? 'en' : 'fr'} dir="ltr">{rulesOfOrigin.rules.alternative_rule.explanation}</bdi>
+                  </p>
                 )}
               </div>
             )}
 
-            {rulesOfOrigin.rules?.threshold_note_fr ? (
-              <div className="text-sm text-[var(--text)]">
-                <h4 className="font-semibold">{t.thresholdToConfirm}</h4>
+            {rulesOfOrigin.rules?.threshold_note_fr && (
+              <div className="text-sm text-[var(--text)]" data-testid="note-25-threshold">
+                <h4 className="font-semibold">{t.note25Threshold}</h4>
                 <p><bdi lang="fr" dir="ltr">{rulesOfOrigin.rules.threshold_note_fr}</bdi></p>
               </div>
-            ) : rulesOfOrigin.status !== 'YTB' && rulesOfOrigin.rule.value_added_threshold != null ? (
+            )}
+
+            {rulesOfOrigin.status !== 'YTB' && rulesOfOrigin.rule.value_added_threshold != null ? (
               <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
                 <h4 className="font-semibold mb-3 text-[var(--success)]">{t.minRegionalContent}</h4>
                 <div className="flex items-center gap-4">
@@ -347,9 +367,17 @@ export default function RulesTab({ language = 'fr' }) {
               </div>
             )}
 
-            {rulesOfOrigin.source && (
-              <p className="text-xs text-[var(--afcfta-muted)] text-right">{t.source}: {rulesOfOrigin.source}</p>
-            )}
+            <AppendixIvNotes
+              roo={rulesOfOrigin}
+              language={language}
+              className="bg-[var(--afcfta-card)] p-4 rounded-lg border border-[var(--afcfta-border)] text-sm text-[var(--text)]"
+            />
+
+            <OriginLegalReference
+              roo={rulesOfOrigin}
+              language={language}
+              className="bg-[var(--afcfta-card)] p-4 rounded-lg border border-[var(--afcfta-border)] text-sm text-[var(--afcfta-muted)]"
+            />
           </CardContent>
         </Card>
       )}

@@ -182,7 +182,7 @@ async def get_ports(request: Request, country_iso: Optional[str] = None):
 
 def _ports(country_iso: Optional[str]) -> dict:
     if CACHE_AVAILABLE:
-        cache_key = generate_cache_key("logistics:ports", country_iso or "all")
+        cache_key = generate_cache_key("logistics:ports:v2", country_iso or "all")
         cached = cache_get(cache_key)
         if cached:
             return cached
@@ -268,7 +268,7 @@ async def get_port_details(port_id: str):
 async def get_logistics_statistics():
     """Get global logistics statistics for African ports (cached 2 h)."""
     if CACHE_AVAILABLE:
-        cache_key = generate_cache_key("logistics:statistics")
+        cache_key = generate_cache_key("logistics:statistics:v2")
         cached = cache_get(cache_key)
         if cached:
             return cached

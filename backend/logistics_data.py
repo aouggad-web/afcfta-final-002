@@ -57,6 +57,14 @@ def load_ports_data():
                 # Merge logistics_network if present
                 if "logistics_network" in enh:
                     port["logistics_network"] = enh["logistics_network"]
+    for port in ports:
+        stats = port.get("latest_stats") or {}
+        source = str(stats.get("source") or "").strip()
+        if source.upper() in ("", "NA", "N/A", "UNKNOWN"):
+            stats.pop("container_throughput_teu", None)
+        # The published LSCI values and the supplied ranks do not share a
+        # verified ranking universe. Keep the index value and its provenance.
+        (port.get("lsci") or {}).pop("world_rank", None)
     _ports_cache = ports
     return _ports_cache
 

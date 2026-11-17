@@ -294,6 +294,177 @@ def test_calcul_abonne_payant_garde_son_quota_du_jour():
     assert _statuts(_client(_app_calcul(), abonne=ABONNES["starter"]), 3) == [200] * 3
 
 
+# ── Fiche réglementaire (onglet Réglementation du calculateur) ──────────────
+# Règle 2 de la décision d'accès du 09/11/2026 : un compte inscrit sans
+# abonnement a 5 recherches par module et par mois. La fiche d'une position est
+# le module « reglementation » ; un pays et un produit cherchés comptent chacun
+# une recherche, comme dans les autres modules.
+
+
+def _fiche(client, pays, code):
+    return client.get(f"/api/consultation/{pays}/position/{code}")
+
+
+def test_fiche_reglementation_demande_la_connexion(app_api, base):
+    reponse = _fiche(_client(app_api), "DZA", "0201101100")
+
+    assert reponse.status_code == 401
+    detail = reponse.json()["detail"]
+    assert (detail["error"], detail["module"]) == ("login_required", "reglementation")
+    assert base.recherches_modules.docs == {}
+
+
+def test_la_fiche_est_la_seule_route_de_consultation_comptee(app_api):
+    """Les routes que le calculateur partage restent hors quota : leur usage est
+    compté au calcul, et les compter ici ferait échouer le calcul d'un compte
+    gratuit avant son premier résultat."""
+    gardees = {
+        route.path
+        for route in routes_api(app_api)
+        if route.path.startswith("/api/consultation/") and _porte(route, "require_module_consultation.")
+    }
+    assert gardees == {"/api/consultation/{iso3}/position/{code}"}
+    toutes = {route.path for route in routes_api(app_api) if route.path.startswith("/api/consultation/")}
+    assert {
+        "/api/consultation/{iso3}/sous-positions/{hs6}",
+        "/api/consultation/{iso3}/recherche",
+        "/api/consultation/{iso3}/formalites/{code}",
+    } <= toutes
+
+
+# Les routes que le calculateur partage : connexion exigée, rien de décompté.
+ROUTES_PARTAGEES = [
+    "/api/consultation/DZA/sous-positions/020110",
+    "/api/consultation/DZA/recherche?q=veaux",
+    "/api/consultation/DZA/formalites/0201101100",
+    "/api/calcul/pays",
+]
+
+
+@pytest.mark.parametrize("chemin", ROUTES_PARTAGEES)
+def test_routes_partagees_demandent_la_connexion(app_api, chemin):
+    reponse = _client(app_api).get(chemin)
+
+    assert reponse.status_code == 401
+    detail = reponse.json()["detail"]
+    assert (detail["error"], detail["module"]) == ("login_required", "calculator")
+
+
+@pytest.mark.parametrize("chemin", ROUTES_PARTAGEES)
+def test_routes_partagees_ne_comptent_rien_pour_un_compte_gratuit(app_api, base, chemin):
+    """Les compter ferait échouer un calcul gratuit avant son premier résultat."""
+    client = _client(app_api, abonne=ABONNES["free"])
+
+    statuts = {client.get(chemin).status_code for _ in range(8)}
+
+    assert statuts.isdisjoint({401, 403, 429})
+    assert base.recherches_modules.docs == {}
+    assert base.usage_counters.docs == {}
+
+
+@pytest.mark.parametrize("chemin", ROUTES_PARTAGEES)
+def test_routes_partagees_cle_api_valide_et_absence_de_base(app_api, base, chemin):
+    assert _client(app_api, cle=CLE_VENDUE).get(chemin).status_code != 401
+    assert base.recherches_modules.docs == {}
+
+    entitlement_guard.set_database(None)
+    auth.set_database(None)
+    assert _client(app_api).get(chemin).status_code != 401
+
+
+def test_chaque_route_partagee_porte_la_garde_de_connexion_et_aucune_garde_comptee(app_api):
+    partagees = {
+        route.path: route
+        for route in routes_api(app_api)
+        if route.path in {
+            "/api/consultation/{iso3}/sous-positions/{hs6}",
+            "/api/consultation/{iso3}/recherche",
+            "/api/consultation/{iso3}/formalites/{code}",
+            "/api/calcul/pays",
+        }
+    }
+    assert len(partagees) == 4
+    for chemin, route in partagees.items():
+        assert _porte(route, "require_login."), chemin
+        assert not _porte(route, "require_module_consultation."), chemin
+        assert not _porte(route, "require_calculations_quota."), chemin
+
+
+def test_fiche_reglementation_cinq_recherches_par_mois_puis_invitation(app_api, base):
+    client = _client(app_api, abonne=ABONNES["free"])
+
+    assert _fiche(client, "DZA", "0201101100").status_code != 429  # DZA et le code : 2 sur 5
+    assert _fiche(client, "DZA", "0201101100").status_code != 429  # revoir ne compte pas
+    assert _fiche(client, "DZA", "0201101900").status_code != 429  # un produit nouveau : 3 sur 5
+    assert _fiche(client, "MAR", "0101210000").status_code != 429  # MAR et le code : 5 sur 5
+
+    reponse = _fiche(client, "DZA", "0201102000")  # un sixième terme
+    assert reponse.status_code == 429
+    detail = reponse.json()["detail"]
+    assert (detail["error"], detail["tier"], detail["module"], detail["quota"], detail["quota_period"]) == (
+        "quota_exceeded", "free", "reglementation", 5, "month")
+    (doc,) = base.recherches_modules.docs.values()
+    assert doc["module"] == "reglementation"
+    assert sorted(doc["termes"]) == sorted(["DZA", "0201101100", "0201101900", "MAR", "0101210000"])
+
+
+def test_fiche_reglementation_l_origine_est_une_option_de_la_meme_recherche(app_api, base):
+    """Le pays d'origine précise la recherche d'un produit, il n'en ouvre pas une
+    autre : les mêmes pays et produit, avec ou sans origine, comptent une fois."""
+    client = _client(app_api, abonne=ABONNES["free"])
+
+    for origine in (None, "TUN", "KEN", "MAR", "GHA", "ZAF"):
+        reponse = client.get("/api/consultation/DZA/position/0201101100", params={"origine": origine} if origine else None)
+        assert reponse.status_code != 429, origine
+    (doc,) = base.recherches_modules.docs.values()
+    assert sorted(doc["termes"]) == ["0201101100", "DZA"]
+
+
+@pytest.mark.parametrize("formule", ["starter", "pro", "business"])
+def test_fiche_reglementation_sans_limite_en_formule_payante(app_api, base, formule):
+    client = _client(app_api, abonne=ABONNES[formule])
+
+    statuts = [_fiche(client, "DZA", f"02011011{i:02d}").status_code for i in range(8)]
+    assert not {401, 403, 429} & set(statuts)
+    assert base.recherches_modules.docs == {}
+
+
+def test_fiche_reglementation_a_son_propre_compteur(app_api, base):
+    # Cinq recherches épuisées dans le module Production n'ôtent rien à la fiche.
+    production = _client(_app_consultation("production"), abonne=ABONNES["free"])
+    for pays in ("DZA", "MAR", "TUN", "EGY", "NGA"):
+        assert production.get(f"/api/sonde/{pays}").status_code == 200
+    assert production.get("/api/sonde/KEN").status_code == 429
+
+    assert _fiche(_client(app_api, abonne=ABONNES["free"]), "DZA", "0201101100").status_code != 429
+    assert {doc["module"] for doc in base.recherches_modules.docs.values()} == {"production", "reglementation"}
+
+
+def test_fiche_reglementation_cle_api_valide_passe_sans_compte(app_api, base):
+    reponse = _fiche(_client(app_api, cle=CLE_VENDUE), "DZA", "0201101100")
+
+    assert reponse.status_code != 401
+    assert base.recherches_modules.docs == {}
+    assert base.api_keys.docs[_hash(CLE_VENDUE)]["request_count"] == 1
+
+
+def test_fiche_reglementation_sans_base_reste_ouverte(app_api):
+    # Développement et CI : aucun Mongo, appels anonymes.
+    entitlement_guard.set_database(None)
+    auth.set_database(None)
+
+    assert _fiche(_client(app_api), "DZA", "0201101100").status_code not in (401, 403, 429)
+
+
+def test_fiche_reglementation_le_compte_admin_passe_sans_rien_decompter(app_api, base, monkeypatch):
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
+    admin = _client(app_api, abonne=ADMIN)
+
+    statuts = [_fiche(admin, "DZA", f"02011011{i:02d}").status_code for i in range(8)]
+    assert not {401, 403, 429} & set(statuts)
+    assert base.recherches_modules.docs == {}
+
+
 # ── Modules de consultation : connexion, puis 5 recherches par mois ─────────
 
 
@@ -393,61 +564,6 @@ def test_termes_de_recherche():
         "path_params": {"country_iso3": "dza"},
     })
     assert entitlement_guard.termes_de_recherche(requete) == ["0901", "CAFE", "DZA"]
-
-
-def test_termes_d_une_consultation_du_tarif():
-    """Décision du 16/11/2026 : une consultation du tarif compte comme une
-    recherche, par produit ; le pays ne compte pas."""
-    from starlette.requests import Request
-
-    def termes(chemin_params, requete=b""):
-        return entitlement_guard.termes_consultation_tarif(Request({
-            "type": "http", "method": "GET", "path": "/x", "headers": [],
-            "query_string": requete, "path_params": chemin_params,
-        }))
-
-    # Sous-positions puis formalités d'un même produit : une seule recherche.
-    assert termes({"iso3": "DZA", "hs6": "846262"}) == ["846262"]
-    assert termes({"iso3": "DZA", "code": "8462.62.10.00"}) == ["846262"]
-    # Recherche par mot-clé ou par code ; pays et options ignorés.
-    assert termes({"iso3": "DZA"}, b"q=acier%20lamine&limit=25&langue=fr") == ["ACIER LAMINE"]
-    assert termes({"iso3": "DZA"}, b"q=8462") == ["8462"]
-    assert termes({}, b"country=DZA&code=8462621000&search_type=code") == ["846262"]
-    assert termes({"iso3": "DZA"}) == []
-
-
-def _app_consultation_tarif():
-    """Sonde montée avec la garde réelle de la consultation du tarif."""
-    sonde = APIRouter()
-
-    @sonde.get("/consultation/{iso3}/sous-positions/{hs6}")
-    async def sous_positions(iso3: str, hs6: str):
-        return {"ok": True}
-
-    @sonde.get("/consultation/{iso3}/formalites/{code}")
-    async def formalites(iso3: str, code: str):
-        return {"ok": True}
-
-    api = APIRouter(prefix="/api")
-    api.include_router(sonde, dependencies=routes._auth + routes._tarif_entitlement)
-    app = FastAPI()
-    app.include_router(api)
-    return app
-
-
-def test_consultation_du_tarif_cinq_produits_par_mois(base):
-    client = _client(_app_consultation_tarif(), abonne=ABONNES["free"])
-
-    for hs6 in ("846262", "690721", "252310", "310210", "720839"):
-        assert client.get(f"/api/consultation/DZA/sous-positions/{hs6}").status_code == 200
-        # Les formalités du même produit, dans un autre pays : rien de plus.
-        assert client.get(f"/api/consultation/ZAF/formalites/{hs6}1000").status_code == 200
-
-    reponse = client.get("/api/consultation/DZA/sous-positions/854449")
-    assert reponse.status_code == 429
-    assert reponse.json()["detail"]["module"] == "tariffs"
-    (doc,) = base.recherches_modules.docs.values()
-    assert doc["module"] == "tariffs" and len(doc["termes"]) == 5
 
 
 def test_module_finance_compte_ses_recherches(app_api, base):

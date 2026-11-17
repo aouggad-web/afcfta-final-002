@@ -42,6 +42,19 @@ const WO = regle({
   texte: 'Tous les animaux de ce chapitre utilisés doivent être entièrement obtenus',
   contenu: 100,
 });
+// Chapitre 42 (Appendice IV p. 49) : changement de position « à condition que
+// les matières du chapitre 41 du SH soient originaires » après 5 ans. Le texte
+// n'énonce pas le seul critère de son code : l'API le dit (matches_text).
+const CH42 = {
+  ...regle({
+    hs: '420221',
+    code: 'CTH',
+    name: "Règle propre à cette ligne de l'Appendice IV",
+    texte:
+      'Fabrication à partir de toute autre position pendant une période de 5 ans, après quoi la fabrication à partir de toute autre position, à condition que les matières du chapitre 41 du SH soient originaires',
+  }),
+};
+CH42.rules.primary_rule.matches_text = false;
 const VA60 = regle({
   hs: '840100',
   code: 'VA60',
@@ -89,6 +102,15 @@ describe("HSCodeBrowser — panneau Règles d'origine", () => {
     expect(caseDe(panneau, "Critère d'origine")).toHaveTextContent(critere);
     expect(caseDe(panneau, 'Type de règle')).toHaveTextContent(regleOrigine.rules.primary_rule.name);
     expect(caseDe(panneau, 'Exigence')).toHaveTextContent(regleOrigine.rules.rule_text_fr);
+  });
+
+  it("ligne dont le texte n'énonce pas le critère de son code : renvoi à l'exigence, pas « changement de position »", async () => {
+    const panneau = await ouvrirPanneau(CH42);
+
+    const critere = caseDe(panneau, "Critère d'origine");
+    expect(critere).toHaveTextContent("Règle propre à cette ligne de l'Appendice IV : voir l'exigence");
+    expect(critere).not.toHaveTextContent('Changement de position tarifaire');
+    expect(caseDe(panneau, 'Exigence')).toHaveTextContent('à condition que les matières du chapitre 41');
   });
 
   it('VA60 : barre et 40 % de contenu régional', async () => {

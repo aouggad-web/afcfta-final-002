@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
@@ -63,6 +63,8 @@ import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
 import { pick } from '../../i18n/lang';
 import { freeCalculationNoticeText } from '../tools/entitlementNotice';
 import SubscriptionNotice from '../tools/SubscriptionNotice';
+import OriginLegalReference from '../rules/OriginLegalReference';
+import AppendixIvNotes from '../rules/AppendixIvNotes';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -98,6 +100,10 @@ const getFlag = (code) => {
 
 const countryFlags = countryFlagsISO2;
 
+// Valeur du sélecteur d'origine de l'onglet Réglementation quand aucune origine n'est choisie
+// (un Select ne porte pas de valeur vide).
+const AUCUNE_ORIGINE = '__aucune__';
+
 export default function CalculatorTab({ countries, language = 'fr' }) {
   const [originCountry, setOriginCountry] = useState('');
   const [destinationCountry, setDestinationCountry] = useState('');
@@ -111,19 +117,34 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [useSmartSearch, setUseSmartSearch] = useState(true);
   const [ruleOfOrigin, setRuleOfOrigin] = useState(null);
   const [browserRuleCode, setBrowserRuleCode] = useState(null);
+  // Each request bumps the counter, so asking again for the same code (after
+  // the HS browser cleared the box, or a new calculation) still fetches it.
+  const [ruleRequestSeq, setRuleRequestSeq] = useState(0);
+  const requestRule = (code) => {
+    setBrowserRuleCode(code);
+    setRuleRequestSeq((n) => n + 1);
+  };
+  // hsCode may carry dots or spaces (Réglementation tab); rules are keyed by digits.
+  const hsCodeDigits = hsCode.replace(/\D/g, '');
+  // Language the displayed rule was fetched in: a language switch reloads it,
+  // whichever path loaded it (HS browser, calculation or smart search).
+  const ruleLangRef = useRef(null);
   useEffect(() => {
-    if (!browserRuleCode || browserRuleCode !== hsCode) return;
+    if (!browserRuleCode || browserRuleCode !== hsCodeDigits) return;
+    if (ruleOfOrigin?.hs_code === browserRuleCode && ruleLangRef.current === language) return;
     const controller = new AbortController();
     axios.get(`${API}/rules-of-origin/${browserRuleCode}`, {
       params: { lang: language },
       signal: controller.signal,
     }).then(({ data }) => {
-      if (!controller.signal.aborted) setRuleOfOrigin(data);
+      if (controller.signal.aborted) return;
+      ruleLangRef.current = language;
+      setRuleOfOrigin(data);
     }).catch(() => {
       // A tariff code can still be used when origin data is unavailable.
     });
     return () => controller.abort();
-  }, [browserRuleCode, hsCode, language]);
+  }, [browserRuleCode, ruleRequestSeq, hsCodeDigits, language]);
   const [selectedSubPositionDesc, setSelectedSubPositionDesc] = useState(null);
   // Nombre de positions nationales servies sous le SH6 saisi, et pour quel pays.
   const [positionsSh6, setPositionsSh6] = useState(null);
@@ -134,6 +155,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const { label: hsCodeSimpleLabel } = useHsLabel(hsCode, language);
   const [regulatorySelectedPos, setRegulatorySelectedPos] = useState(null);
   const [regulatorySelectedPosDesc, setRegulatorySelectedPosDesc] = useState(null);
+  // Pays dont le socle — la source du calcul et de l'onglet Réglementation —
+  // sert au moins une position : seuls ils portent le badge « Disponible ».
+  // Sans réponse, aucun badge : jamais un badge affirmé sans preuve.
+  const [paysServis, setPaysServis] = useState([]);
+  useEffect(() => {
+    axios.get(`${API}/calcul/pays`).then(({ data }) => {
+      setPaysServis(Object.entries(data.pays || {}).filter(([, p]) => p.positions > 0).map(([iso3]) => iso3));
+    }).catch(() => {});
+  }, []);
+  // Une position choisie dans l'onglet Réglementation vaut pour un pays et un code
+  // SH. En changer — ici, ou dans l'onglet Calculateur, qui partage ces deux
+  // champs — la rend caduque : la garder servirait la fiche d'un autre tarif, ou
+  // d'un autre produit, sous la désignation de la première.
+  useEffect(() => {
+    setRegulatorySelectedPos(null);
+    setRegulatorySelectedPosDesc(null);
+  }, [hsCode, destinationCountry]);
   const [searchResetKey, setSearchResetKey] = useState(0);
   const [kenyaRemission, setKenyaRemission] = useState({
     answer: 'unknown',
@@ -469,7 +507,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
   // Code SH6 « pur » : on n'affiche les positions nationales avoisinantes que
   // lorsque l'utilisateur a saisi exactement un code à 6 chiffres (pas 8/10).
-  const hsCodeDigits = hsCode.replace(/\D/g, '');
   const isHs6Only = hsCodeDigits.length === 6;
   // Plusieurs positions nationales sous le SH6 saisi : le calcul attend que
   // l'opérateur choisisse la sienne. Le compte vaut pour le pays et le SH6
@@ -656,6 +693,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         usage: usageFor === `${destISO3}|${cleanHsCode}` ? usage : null,
         producteur: saisieAntidumping ? producteur : null,
       }))).data;
+      // Règle d'origine de la position calculée (saisie en mode simple) :
+      // chargée une fois par code calculé, jamais à chaque frappe, car chaque
+      // code consulté compte dans le quota de recherches du module.
+      if (ruleOfOrigin?.hs_code !== cleanHsCode) requestRule(cleanHsCode);
       const legacyResult = mapCalculToLegacyResult(calcul, {
         originCountry,
         destinationCountry,
@@ -1015,7 +1056,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   setSelectedSubPositionDesc(desc);
                   setSelectedSubPositionFormalities(formalities || null);
                 }}
-                onRuleOfOriginLoad={setRuleOfOrigin}
+                onRuleOfOriginLoad={(data) => {
+                  setRuleOfOrigin(data);
+                  if (data) {
+                    ruleLangRef.current = language;
+                    setBrowserRuleCode(data.hs_code);
+                  }
+                }}
               />
             ) : (
               <div className="space-y-2">
@@ -1049,7 +1096,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 hs_code is matched against the current input so a rule loaded
                 for a previous code (e.g. via Smart Search) never lingers
                 after the user switches to simple input or types a new code. */}
-            {ruleOfOrigin && ruleOfOrigin.rule && ruleOfOrigin.rules && ruleOfOrigin.hs_code === hsCode && (
+            {ruleOfOrigin && ruleOfOrigin.rule && ruleOfOrigin.rules && ruleOfOrigin.hs_code === hsCodeDigits && (
               <div className="bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-lg p-3 space-y-2">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <span className="text-[var(--gold)] text-xs font-semibold">
@@ -1072,42 +1119,56 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </Badge>
                   )}
                 </div>
-                {ruleOfOrigin.status !== 'YTB' && (ruleOfOrigin.rules.threshold_note_fr ? (
+                <div className="text-xs leading-relaxed" data-testid="origin-rule-text">
+                  <p className="font-semibold text-[var(--text)]">
+                    {pick(language, 'Texte de la règle (Appendice IV)', 'Rule text (Appendix IV)', 'نص القاعدة (التذييل الرابع)')}
+                  </p>
+                  <p className="text-[var(--text)]">
+                    {ruleOfOrigin.status === 'YTB'
+                      ? pick(language, 'Règle non encore adoptée', 'Rule not yet adopted', 'قاعدة لم تُعتمد بعد')
+                      : <bdi lang="fr" dir="ltr">{ruleOfOrigin.rule.psr}</bdi>}
+                  </p>
+                </div>
+                {ruleOfOrigin.rules.primary_rule?.explanation && (
+                  <div className="text-xs leading-relaxed" data-testid="origin-rule-explanation">
+                    <p className="font-semibold text-[var(--text)]">
+                      {pick(language, 'Explication', 'Explanation', 'شرح')}
+                    </p>
+                    <p className="text-[var(--text)]">
+                      <bdi lang={language === 'en' ? 'en' : 'fr'} dir="ltr">{ruleOfOrigin.rules.primary_rule.explanation}</bdi>
+                    </p>
+                    {/* Règle non encore adoptée : aucun texte ne fait foi. */}
+                    {ruleOfOrigin.status !== 'YTB' && (
+                      <p className="text-[var(--afcfta-muted)] italic">
+                        {pick(language, 'Seul le texte de la règle fait foi.', 'Only the rule text is authoritative.', 'نص القاعدة وحده هو المرجع المعتمد.')}
+                      </p>
+                    )}
+                  </div>
+                )}
+                {ruleOfOrigin.status !== 'YTB' && ruleOfOrigin.rules.threshold_note_fr && (
                   <div className="text-[var(--text)] text-xs leading-relaxed">
-                    <p className="font-semibold">{pick(language, 'Seuil applicable à confirmer', 'Applicable threshold to be confirmed', 'الحد المطبق يحتاج إلى تأكيد')}</p>
+                    <p className="font-semibold">{pick(language, 'Seuil applicable : 55 % depuis le 1er janvier 2026 (note 2.5)', 'Applicable threshold: 55% since 1 January 2026 (note 2.5)', 'الحد المطبق: 55% منذ 1 يناير 2026 (الملاحظة 2.5)')}</p>
                     <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.rules.threshold_note_fr}</bdi></p>
                   </div>
-                ) : (ruleOfOrigin.rule.psr || ruleOfOrigin.rules.primary_rule?.explanation) && (
-                  <p className="text-[var(--text)] text-xs leading-relaxed">
-                    {ruleOfOrigin.rule.psr ?
-                      <bdi lang="fr" dir="ltr">{ruleOfOrigin.rule.psr}</bdi> :
-                      ruleOfOrigin.rules.primary_rule.explanation}
-                  </p>
-                ))}
-                {ruleOfOrigin.status !== 'YTB' && ruleOfOrigin.rules.alternative_rule && (
-                  <p className="text-[var(--afcfta-muted)] text-xs">
-                    {pick(language, 'Règle alternative', 'Alternative rule', 'قاعدة بديلة')}: {ruleOfOrigin.rules.alternative_rule.name}
-                  </p>
                 )}
-                {ruleOfOrigin.legal_reference && (
-                  <div className="border-t border-[var(--afcfta-border)] pt-2 space-y-1 text-xs text-[var(--afcfta-muted)]" data-testid="origin-legal-reference">
+                {ruleOfOrigin.status !== 'YTB' && ruleOfOrigin.rules.alternative_rule && (
+                  <div className="text-xs leading-relaxed">
                     <p className="font-semibold text-[var(--text)]">
-                      {pick(language, 'Base légale et référence', 'Legal basis and reference', 'الأساس القانوني والمرجع')}
+                      {pick(language, 'Règle alternative', 'Alternative rule', 'قاعدة بديلة')} : {ruleOfOrigin.rules.alternative_rule.name}
                     </p>
-                    <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.instrument_fr}</bdi></p>
-                    {(ruleOfOrigin.legal_reference.articles_fr || []).map((article) => (
-                      <p key={article}><bdi lang="fr" dir="ltr">{article}</bdi></p>
-                    ))}
-                    <p><bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.location_fr}</bdi></p>
-                    {ruleOfOrigin.legal_reference.notes_fr.map((note) => (
-                      <p key={note}><bdi lang="fr" dir="ltr">{note}</bdi></p>
-                    ))}
-                    <p>
-                      {pick(language, 'Source consultée', 'Source consulted', 'المصدر المعتمد')} ·{' '}
-                      <bdi lang="fr" dir="ltr">{ruleOfOrigin.legal_reference.source_version}</bdi>
-                    </p>
+                    {ruleOfOrigin.rules.alternative_rule.explanation && (
+                      <p className="text-[var(--afcfta-muted)]">
+                        <bdi lang={language === 'en' ? 'en' : 'fr'} dir="ltr">{ruleOfOrigin.rules.alternative_rule.explanation}</bdi>
+                      </p>
+                    )}
                   </div>
                 )}
+                <AppendixIvNotes roo={ruleOfOrigin} language={language} className="text-xs leading-relaxed text-[var(--text)]" />
+                <OriginLegalReference
+                  roo={ruleOfOrigin}
+                  language={language}
+                  className="border-t border-[var(--afcfta-border)] pt-2 text-xs text-[var(--afcfta-muted)]"
+                />
 
               </div>
             )}
@@ -1143,7 +1204,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   setSelectedSubPositionDesc('');
                   setSelectedSubPositionFormalities(null);
                   setRuleOfOrigin(null);
-                  setBrowserRuleCode(code.code);
+                  requestRule(code.code);
                   setShowHSBrowser(false);
                 }}
                 language={language}
@@ -2330,7 +2391,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               
               <CardContent className="relative space-y-6">
                 {/* Champs de recherche */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-2">
                     <Label className="text-[var(--text)] font-medium">
                       {pick(language, 'Pays de destination', 'Destination Country', 'بلد المقصد')}
@@ -2344,16 +2405,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       </SelectTrigger>
                       <SelectContent>
                         {countries.map((country) => {
-                          // Tous les 54 pays AfCFTA avec données canoniques du Moteur Réglementaire v3
-                          const REGULATORY_ENGINE_COUNTRIES = [
-                            'AGO', 'BDI', 'BEN', 'BFA', 'BWA', 'CAF', 'CIV', 'CMR', 'COD', 'COG',
-                            'COM', 'CPV', 'DJI', 'DZA', 'EGY', 'ERI', 'ETH', 'GAB', 'GHA', 'GIN',
-                            'GMB', 'GNB', 'GNQ', 'KEN', 'LBR', 'LBY', 'LSO', 'MAR', 'MDG', 'MLI',
-                            'MOZ', 'MRT', 'MUS', 'MWI', 'NAM', 'NER', 'NGA', 'RWA', 'SDN', 'SEN',
-                            'SLE', 'SOM', 'SSD', 'STP', 'SWZ', 'SYC', 'TCD', 'TGO', 'TUN', 'TZA',
-                            'UGA', 'ZAF', 'ZMB', 'ZWE'
-                          ];
-                          const hasRegulatoryData = REGULATORY_ENGINE_COUNTRIES.includes(country.code);
+                          const hasRegulatoryData = paysServis.includes(country.code);
                           return (
                             <SelectItem key={country.code} value={country.code}>
                               <span className="flex items-center gap-2">
@@ -2368,6 +2420,36 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                             </SelectItem>
                           );
                         })}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-[var(--text)] font-medium">
+                      {pick(language, "Pays d'origine (facultatif)", 'Origin Country (optional)', 'بلد المنشأ (اختياري)')}
+                    </Label>
+                    <Select
+                      value={originCountry || AUCUNE_ORIGINE}
+                      onValueChange={(valeur) => setOriginCountry(valeur === AUCUNE_ORIGINE ? '' : valeur)}
+                    >
+                      <SelectTrigger
+                        data-testid="regulatory-origin-select"
+                        className="h-12 bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--gold)_30%,transparent)] transition-colors"
+                      >
+                        <SelectValue placeholder={pick(language, "Aucune : tarif seul", 'None: tariff only', 'بلا: التعريفة فقط')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value={AUCUNE_ORIGINE}>
+                          {pick(language, "Aucune : tarif seul", 'None: tariff only', 'بلا: التعريفة فقط')}
+                        </SelectItem>
+                        {countries.map((country) => (
+                          <SelectItem key={country.code} value={country.code}>
+                            <span className="flex items-center gap-2">
+                              <span className="text-lg">{getFlag(country.iso2 || country.code)}</span>
+                              <span>{country.name}</span>
+                            </span>
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -2470,6 +2552,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               <RegulatoryDetailsPanel
                 countryCode={destinationCountry}
                 hsCode={regulatorySelectedPos || hsCode}
+                originCode={originCountry}
                 language={language}
               />
             )}

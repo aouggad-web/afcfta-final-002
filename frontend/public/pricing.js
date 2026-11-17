@@ -73,7 +73,7 @@ const MODULE_LABELS = {
   roo: "Règles d'origine",
   profiles: 'Profils pays',
   finance: 'Finance (banques, change, assurance)',
-  tariffs: 'Consultation du tarif national',
+  reglementation: 'Fiche réglementaire des positions (droits, taxes, restrictions)',
   tools: 'Outils (positions tarifaires nationales, suivi de la collecte)',
   reports: 'Rapports d\'opportunités'
 };

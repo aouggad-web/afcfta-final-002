@@ -25,7 +25,6 @@ from __future__ import annotations
 
 import logging
 import os
-import re
 from typing import Optional
 
 from auth import require_auth
@@ -416,35 +415,6 @@ async def _valeurs_du_corps(request: Request) -> list:
     return valeurs
 
 
-_PARAMETRES_PRODUIT = frozenset({"hs", "hs_code", "hs6", "code", "product", "produit"})
-
-
-def _terme_produit(valeur) -> str:
-    """Un code de produit ramené à sa sous-position SH6 (les huit à douze
-    chiffres d'une ligne nationale désignent le même produit que ses six
-    premiers) ; un mot-clé, en majuscules."""
-    texte = str(valeur).strip()
-    chiffres = re.sub(r"\D", "", texte)
-    if chiffres and len(chiffres) >= len(texte.replace(".", "").replace(" ", "")):
-        return chiffres[:6]
-    return texte.upper()[:64]
-
-
-def termes_consultation_tarif(request: Request) -> list:
-    """Ce que cherche une consultation du tarif national (décision de
-    l'exploitant du 16/11/2026 : chaque consultation compte comme une
-    recherche). Le produit compte, pas le pays : les sous-positions puis les
-    formalités d'un même produit, qu'affiche le calculateur après un calcul,
-    ne font qu'une recherche ; un mot-clé nouveau en fait une."""
-    valeurs = [v for nom, v in request.path_params.items() if nom.lower() in _PARAMETRES_PRODUIT]
-    valeurs += [
-        v for nom, v in request.query_params.multi_items()
-        if nom.lower() in _PARAMETRES_PRODUIT or nom.lower() in {"q", "query", "search"}
-    ]
-    termes = {_terme_produit(v) for v in valeurs} - {""}
-    return sorted(termes)[:_MAX_TERMES]
-
-
 async def compter_recherches(user: dict, module_id: str, termes: list, access: ModuleAccess) -> bool:
     """Vrai si les `termes` tiennent dans le quota de recherches du module pour
     la période : un terme déjà cherché dans la période ne compte pas de
@@ -552,10 +522,10 @@ def exiger_un_filtre(request: Request, *filtres, message: str) -> None:
         )
 
 
-def require_module_consultation(module_id: str, *, chemins_publics: tuple = (), termes=None):
+def require_module_consultation(module_id: str, *, chemins_publics: tuple = ()):
     """Module de consultation (Statistiques, Production, Logistique, Règles
-    d'origine, Profils pays, Finance, tarif), décision de l'exploitant du
-    09/11/2026 :
+    d'origine, Profils pays, Finance, Réglementation), décision de l'exploitant
+    du 09/11/2026 :
 
     - sans compte : 401 « login_required », sauf les `chemins_publics` (données
       du tableau de bord d'accueil), une clé API valide, ou l'absence de base
@@ -568,11 +538,7 @@ def require_module_consultation(module_id: str, *, chemins_publics: tuple = (), 
       sans chiffres ni contacts (décision de l'exploitant du 17/11/2026, audit
       D6 : `recherches_limitees`, `apercu`, `exiger_un_filtre`). Une recherche
       venue d'un autre site est refusée (audit D11) ;
-    - formules payantes : sans limite.
-
-    `termes` remplace l'extraction par défaut (`termes_de_recherche`) quand un
-    module compte ses recherches autrement (consultation du tarif)."""
-    extraire_termes = termes or termes_de_recherche
+    - formules payantes : sans limite."""
 
     async def _dependency(
         request: Request,
@@ -591,14 +557,30 @@ def require_module_consultation(module_id: str, *, chemins_publics: tuple = (), 
             raise _forbidden(ent.tier, module_id)
         if access.quota is not None:
             request.state.recherches_limitees = True
-            termes_cherches = extraire_termes(request)
-            if termes is None:
-                termes_cherches = _termes(termes_cherches + await _valeurs_du_corps(request))
+            termes_cherches = _termes(termes_de_recherche(request) + await _valeurs_du_corps(request))
             if termes_cherches and _requete_d_un_site_tiers(request):
                 raise _requete_tierce_refusee()
             if termes_cherches and not await compter_recherches(user, module_id, termes_cherches, access):
                 raise _recherches_epuisees(ent.tier, module_id, access)
         return ent
+
+    return _dependency
+
+
+def require_login(module_id: str):
+    """Connexion exigée, rien de décompté : les routes que le calculateur
+    partage (positions, recherche, formalités, pays servis) servent l'écran
+    d'un module dont l'usage est compté ailleurs, au calcul ou à la fiche.
+
+    Sans compte : 401 « login_required » (décision de l'exploitant du
+    09/11/2026), sauf une clé API valide et l'absence de base (dev, CI)."""
+
+    async def _dependency(
+        user: Optional[dict] = Depends(get_optional_subscriber),
+        key_doc: dict = Depends(require_auth),
+    ) -> None:
+        if user is None and _db is not None and not _cle_api(key_doc):
+            raise _connexion_requise(module_id)
 
     return _dependency
 

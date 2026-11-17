@@ -652,6 +652,42 @@ def test_import_from_mauritius_gets_origin_warning(monkeypatch):
     assert "origin_qualification" not in ken
 
 
+def test_origin_warning_quotes_a_row_specific_rule(monkeypatch):
+    # « Règle propre à cette ligne de l'Appendice IV » n'énonce aucun critère :
+    # la note cite le texte de la ligne (thon en conserve, 16.04).
+    import routes.rules_of_origin as roo
+
+    texte = (
+        "Fabrication dans laquelle la valeur des matières non originaires utilisées "
+        "n'excède pas 60 % du prix départ usine du produit pendant 5 ans"
+    )
+
+    def fake_psr(hs_code, lang="fr"):
+        return {
+            "status": "AGREED",
+            "regional_content": None,
+            "primary_rule": {
+                "code": "VA60",
+                "name": "Règle propre à cette ligne de l'Appendice IV",
+                "matches_text": False,
+                "rule_text_fr": texte,
+            },
+            "source_detail": "AfCFTA Appendix IV (PSR) - test",
+        }
+
+    monkeypatch.setattr(roo, "get_rule_of_origin", fake_psr)
+    svc = _service()
+    (opp,) = svc._post_process_opportunities(
+        [{"product": {"name": "Thon", "hs6Code": "160414"}, "potentialSupplier": "Maurice"}],
+        "Sénégal",
+        "import",
+    )
+    oq = opp["origin_qualification"]
+    assert f"(Appendice IV : « {texte} »)" in oq["note"]
+    assert "Règle propre" not in oq["note"]
+    assert oq["product_specific_rule"]["rule_text_fr"] == texte
+
+
 def test_export_mode_hub_analyzed_country_gets_origin_warning(monkeypatch):
     import routes.rules_of_origin as roo
 

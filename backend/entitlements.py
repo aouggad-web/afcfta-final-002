@@ -22,7 +22,8 @@ TIERS = ("free", "starter", "pro", "business")
 # Feature modules gated per tier (mirrors the app's sidebar). Each tier grants
 # or denies each module and, when granted, may cap its usage over a period.
 MODULES = (
-    "stats", "production", "logistics", "roo", "profiles", "finance", "tariffs", "tools", "reports",
+    "stats", "production", "logistics", "roo", "profiles", "finance", "reglementation", "tools",
+    "reports",
 )
 
 # Reset window a module quota is counted over.
@@ -115,12 +116,14 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "logistics": _capped(5, "month"),
             "roo": _capped(5, "month"),
             "profiles": _capped(5, "month"),
-            # Décisions de l'exploitant du 16/11/2026 : le module Finance
-            # (banques, change, assurance) a lui aussi un quota de recherches,
-            # et chaque consultation du tarif national (positions, droits,
-            # formalités) compte comme une recherche (audit D1).
+            # Décision de l'exploitant du 16/11/2026 : le module Finance
+            # (banques, change, assurance) a lui aussi un quota de recherches
+            # (audit D1).
             "finance": _capped(5, "month"),
-            "tariffs": _capped(5, "month"),
+            # Fiche réglementaire d'une position (onglet Réglementation du
+            # calculateur) : un pays et un produit cherchés comptent chacun une
+            # recherche, comme ailleurs.
+            "reglementation": _capped(5, "month"),
             "tools": _DENIED,
             # Module Opportunités réservé aux abonnements payants (audit E1).
             "reports": _DENIED,
@@ -141,7 +144,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "roo": _UNLIMITED,
             "profiles": _UNLIMITED,
             "finance": _UNLIMITED,
-            "tariffs": _UNLIMITED,
+            "reglementation": _UNLIMITED,
             "tools": _capped(10, "day"),
             "reports": _capped(10, "day"),
         },
@@ -161,7 +164,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "roo": _UNLIMITED,
             "profiles": _UNLIMITED,
             "finance": _UNLIMITED,
-            "tariffs": _UNLIMITED,
+            "reglementation": _UNLIMITED,
             "tools": _UNLIMITED,
             "reports": _capped(30, "day"),
         },
@@ -181,7 +184,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "roo": _UNLIMITED,
             "profiles": _UNLIMITED,
             "finance": _UNLIMITED,
-            "tariffs": _UNLIMITED,
+            "reglementation": _UNLIMITED,
             "tools": _UNLIMITED,
             "reports": _capped(200, "day"),
         },

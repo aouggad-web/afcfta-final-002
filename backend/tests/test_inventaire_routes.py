@@ -7,8 +7,8 @@ rien n'empêchait une route d'y échapper.
 
 Ce test classe chaque route de l'application réelle :
 
-- gardée : elle porte une garde d'accès (module, formule payante, quota,
-  admin, rédacteur, export) ;
+- gardée : elle porte une garde d'accès (connexion, module, formule payante,
+  quota, admin, rédacteur, export) ;
 - publique : déclarée ici, avec sa raison ;
 - sans appelant : aucun écran ne l'appelle ; son sort (démontée, réservée à
   l'admin ou gardée) reste à trancher par l'exploitant (décision reportée le
@@ -29,6 +29,9 @@ from backend.tests.routes_effectives import routes_api  # noqa: E402
 # Noms (qualname) des dépendances qui contrôlent l'accès.
 GARDES = (
     "require_module_consultation.",
+    # Connexion exigée, rien de décompté : routes que le calculateur partage
+    # (PR #806).
+    "require_login.",
     "require_module_enabled.",
     "require_module.",
     "require_paid_module.",
@@ -74,7 +77,6 @@ PUBLIQUES = {
     "/api/admin/keys/verify": "vérification d'une clé API par son porteur",
     "/api/reports/health": "diagnostic public du module Opportunités",
     "/api/reports/oec-health": "diagnostic public du module Opportunités",
-    "/api/calcul/pays": "pays couverts par le calculateur (métadonnées)",
     "/api/calcul/export/pays": "pays couverts à l'export (métadonnées)",
     "/api/hs-codes/all": "nomenclature du Système harmonisé, publique",
     "/api/hs-codes/chapters": "nomenclature du Système harmonisé, publique",

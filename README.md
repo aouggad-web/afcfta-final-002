@@ -250,8 +250,8 @@ Covers **64 African airports** with:
 - **Integrators**: DHL Express, FedEx Express, UPS Airlines — gateway contacts and healthcare certifications
 - **Ground Handlers**: Swissport, Menzies Aviation — cargo terminal contacts and ISAGO certifications
 - **Service Providers**: Air cargo customs brokers, IATA-certified freight forwarders (Kuehne+Nagel, DB Schenker, Expeditors), aircraft support (Air BP, HAECO), cargo warehouse operators (WFS, dnata)
-- **Airport Authority Contacts**: Six standard departments (ATC, Customs, Cargo Operations, Security, Commercial, Veterinary)
-- **Logistics Network Index**: Which airlines, integrators and handlers are present at each airport
+
+The airport entries themselves are copied unchanged: no templated authority contacts, default actor attributes or per-country presence index are added (they were not published by the airports).
 
 **Regenerate the file:**
 ```bash
