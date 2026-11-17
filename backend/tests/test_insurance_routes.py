@@ -61,7 +61,8 @@ class TestInsuranceRoutes:
         payload = response.json()
         assert payload["total"] > 0
         for insurer in payload["insurers"]:
-            assert "DZ" in insurer["active_countries"]
+            # Liste de pays vide : toutes destinations.
+            assert not insurer["active_countries"] or "DZ" in insurer["active_countries"]
 
     def test_get_country_profile_success(self, client):
         response = client.get("/insurance/countries/DZ/profile")

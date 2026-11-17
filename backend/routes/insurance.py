@@ -93,15 +93,19 @@ async def list_insurers(
     country_code: Optional[str] = Query(None, description="Filter by ISO2 code")
 ):
     """
-    List major credit/political-risk insurers (COFACE, SMAEX, SARA, COTUNACE,
-    Atradius, Zurich, UK Export Finance) operating in African markets.
+    List the credit/political-risk insurers an African exporter or importer can
+    contact (CAGEX, SMAEX, COTUNACE, ATIDI, ICIEC, Coface, Atradius), with their
+    role, who can subscribe, official contacts and source page.
 
-    - **country_code**: optional ISO2 filter — only insurers active in that country
+    - **country_code**: optional ISO2 filter (buyer country); an insurer with no
+      country list covers all destinations
     """
     insurers = list(MAJOR_INSURERS.values())
     if country_code:
         code = country_code.upper()
-        insurers = [ins for ins in insurers if code in (ins.active_countries or [])]
+        insurers = [
+            ins for ins in insurers if not ins.active_countries or code in ins.active_countries
+        ]
 
     return {
         "success": True,

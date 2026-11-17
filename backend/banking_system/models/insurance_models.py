@@ -130,7 +130,7 @@ class Insurer(BaseModel):
     abbreviation: Optional[str] = None
     country_based: str = Field(..., description="ISO2 code of company's base country/headquarters")
     insurance_type: List[str] = Field(
-        default_factory=list, description="Types of insurance offered (e.g., 'COFACE', 'SARA')"
+        default_factory=list, description="Types of insurance offered (e.g., 'Assurance-crédit à l'export')"
     )
     products: List[InsuranceProductType] = Field(
         default_factory=list, description="Insurance products offered"
