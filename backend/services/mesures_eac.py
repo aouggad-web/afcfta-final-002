@@ -83,6 +83,17 @@ def _mesures():
     return load_legal_measures(MESURES)
 
 
+def _societe_nommee(nom, allocations):
+    """« Société (total MT) » : les allocations d'une même société pour la ligne sont additionnées
+    quand elles sont toutes chiffrées dans la même unité, sinon la société est nommée seule."""
+    unites = {m.allocated_quantity_unit for m in allocations}
+    if len(unites) != 1 or None in unites or any(m.allocated_quantity is None for m in allocations):
+        return nom
+    total = round(sum(m.allocated_quantity for m in allocations), 6)
+    detail = f", {len(allocations)} allocations" if len(allocations) > 1 else ""
+    return f"{nom} ({total:g} {unites.pop()}{detail})"
+
+
 def aujourdhui() -> date:
     return date.today()
 
@@ -181,13 +192,12 @@ def appliquer(
     # par avis, avec les sociétés nommées.
     notes = list(dict.fromkeys(notes))
     for reference, mesures_avis in nommees.items():
-        societes = list(dict.fromkeys(
-            m.named_beneficiary + (
-                f" ({m.allocated_quantity:g} {m.allocated_quantity_unit})"
-                if m.allocated_quantity is not None and m.allocated_quantity_unit else ""
-            )
-            for m in mesures_avis
-        ))
+        # Une société peut avoir plusieurs allocations pour la même ligne : on les regroupe
+        # avant de limiter la liste, sinon elle compterait pour plusieurs sociétés.
+        par_societe = {}
+        for m in mesures_avis:
+            par_societe.setdefault(m.named_beneficiary, []).append(m)
+        societes = [_societe_nommee(nom, allocations) for nom, allocations in par_societe.items()]
         visibles = ", ".join(societes[:SOCIETES_AFFICHEES])
         reste = len(societes) - SOCIETES_AFFICHEES
         notes.append(

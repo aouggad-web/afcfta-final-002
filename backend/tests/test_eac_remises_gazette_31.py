@@ -165,6 +165,28 @@ def test_une_remise_jusqu_au_30_juin_2027_s_arrete_a_cette_date():
                                    int(e["measure_id"].split("-")[1]) >= 388 for e in bloc["mesures"])
 
 
+def test_une_societe_a_plusieurs_allocations_sur_la_meme_ligne_n_est_nommee_qu_une_fois():
+    """EAC/401, 8536.20.00 : Nationwide a quatre allocations, SwitchGear et Yocean une chacune. Les
+    trois sont nommées, la première avec le total de ses allocations ; aucune n'est masquée par
+    les répétitions de la première."""
+    code = "85362000"
+    avis = [m for m in _mesures_gazette() if m["hs_code_from"] == code and m["legal_reference"].endswith("/401/2026")]
+    par_societe = {}
+    for m in avis:
+        par_societe.setdefault(m["named_beneficiary"], []).append(m["allocated_quantity"])
+    multiples = {nom: q for nom, q in par_societe.items() if len(q) > 1}
+    if not multiples or len(par_societe) > mesures_eac.SOCIETES_AFFICHEES:
+        pytest.skip("la ligne n'a plus de société à plusieurs allocations ni moins de sociétés que la limite")
+    position, _ = mesures_eac.appliquer(_position(code, taux=35.0), "KEN", code, le=LE)
+    note = _dd(position)["note"]
+
+    for nom, quantites in par_societe.items():
+        assert note.count(nom) == 1, nom
+    nom, quantites = next(iter(multiples.items()))
+    assert f"{nom} ({round(sum(quantites), 6):g} MT, {len(quantites)} allocations)" in note
+    assert " autre" not in note.split("quantité allouée")[1]
+
+
 def test_les_remises_du_kenya_ne_valent_pas_pour_un_autre_etat_partenaire():
     mesure = _mesure_de(388)
     code = mesure["hs_code_from"]
