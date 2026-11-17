@@ -310,10 +310,10 @@ RECORDS = {
         tariff_dataset=None,
         note=(
             "Vingt et une origines admises : neuf de la circulaire 482/2024 (preuve "
-            "primaire) et douze de la liste actualisée de la Douane algérienne "
-            "du 16/11/2026 (preuve secondaire, date de révision inconnue : voir "
-            "DZ_ACTIVE_ORIGINS ; le Soudan du Sud, nommé mais non ratifiant, n'est "
-            "pas servi). Taux calculés depuis "
+            "primaire) et douze de la liste des parties ayant lancé l'application "
+            "publiée par la Douane algérienne (article805, texte lu le 17/11/2026, "
+            "sans date de révision : voir DZ_ACTIVE_ORIGINS ; le Soudan du Sud, nommé "
+            "mais non ratifiant, n'est pas servi). Taux calculés depuis "
             "le NPF par le calendrier national (listes A, B, C ; positions "
             "gelées au droit commun) ; DAPS exonéré pour les listes A et B. "
             "Voir DZA_application_2026-09-14.json."

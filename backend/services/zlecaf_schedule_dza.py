@@ -86,14 +86,17 @@ ORIGINES_LISTE_DOUANE_2026_11 = (
 
 # Table versionnée des origines admises à l'import en Algérie.
 #
-# Décision de l'exploitant du 17/11/2026 : suivre la liste actualisée de la Douane
-# algérienne. NIVEAU DE PREUVE SECONDAIRE pour les 13 origines ajoutées : la page
-# (douane.gov.dz, article805) a été contrôlée le 16/11/2026 par une veille, mais elle
-# n'a pas pu être lue depuis l'environnement du dépôt (le portail le refuse, HTTP 503),
-# elle ne porte aucune date de révision, et la fiche DZA_application_2026-09-14.json
-# lit la même énumération de 23 parties comme une liste d'États « ayant mis en œuvre »
-# qui « n'emporte pas admission ». Les 9 origines de la circulaire restent de preuve
-# primaire. À remplacer par la lecture de la page archivée.
+# Décision de l'exploitant du 17/11/2026 : suivre la liste actualisée de la Douane algérienne.
+# SOURCE : la page officielle de la Douane (douane.gov.dz, article805), section III
+# « Parties contractantes ayant lancé l'application de l'Accord » : 23 parties, Algérie
+# comprise, « actualisée périodiquement sur la base d'une notification du Ministère chargé du
+# Commerce Extérieur ». Le texte de la page a été fourni par l'exploitant le 17/11/2026 et
+# archivé (sources/DZA_douane_article805_zlecaf.texte-fourni.txt) : le dépôt ne l'a pas
+# récupéré lui-même, le portail refuse son environnement (HTTP 503). La page ne porte AUCUNE
+# DATE DE RÉVISION, d'où `date_derniere_revision` à None.
+# C'est la liste opérante que la circulaire 482 renvoyait au ministère du Commerce extérieur,
+# et non une énumération d'États « ayant mis en œuvre » : voir DZA_application_2026-09-14.json.
+# Les 9 origines de la circulaire restent établies par la circulaire elle-même.
 DZ_ACTIVE_ORIGINS = {
     "version": "2026-11-16",
     "date_derniere_revision": None,  # inconnue : la page ne la porte pas
@@ -102,6 +105,7 @@ DZ_ACTIVE_ORIGINS = {
     "origines_liste_douane_2026_11": ORIGINES_LISTE_DOUANE_2026_11,
     "origines_nommees_non_servies": ORIGINES_ECARTEES_FAUTE_DE_RATIFICATION,
     "source_liste_douane": "https://www.douane.gov.dz/spip.php?article805",
+    "texte_archive": "sources/DZA_douane_article805_zlecaf.texte-fourni.txt",
 }
 ACTIVE_PARTNERS = DZ_ACTIVE_ORIGINS["origines"]
 
@@ -271,8 +275,8 @@ def compute_dza_zlecaf_rate(
     label = f"ZLECAf DZA — liste ({lst}){base_label}, calendrier {schedule_label}, {year}"
     if origin in ORIGINES_LISTE_DOUANE_2026_11:
         label += (
-            " ; origine admise d'après la liste actualisée de la Douane algérienne du "
-            "16/11/2026 (date de révision inconnue, preuve secondaire)"
+            " ; origine admise d'après la liste des parties ayant lancé l'application publiée "
+            "par la Douane algérienne (article805, lue le 17/11/2026, date de révision inconnue)"
         )
     return rate, label
 

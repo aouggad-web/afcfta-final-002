@@ -6,6 +6,8 @@ réduction des deux calendriers (standard vs réciprocité) à des dates clés.
 """
 
 import datetime
+import re
+from pathlib import Path
 
 import pytest
 
@@ -230,11 +232,11 @@ def test_les_facteurs_de_2026_sont_ceux_du_relevé_de_veille():
     assert compute_dza_zlecaf_rate(b, "NAM", 99.0, le)[0] == pytest.approx(base * 0.875)
 
 
-def test_le_taux_d_une_origine_ajoutee_dit_son_niveau_de_preuve():
+def test_le_taux_d_une_origine_ajoutee_dit_sa_source():
     _, ajoutee = compute_dza_zlecaf_rate("0204501100", "UGA", 30.0, datetime.date(2026, 11, 17))
     _, circulaire = compute_dza_zlecaf_rate("0204501100", "TUN", 30.0, datetime.date(2026, 11, 17))
-    assert "preuve secondaire" in ajoutee and "16/11/2026" in ajoutee
-    assert "preuve secondaire" not in circulaire
+    assert "article805" in ajoutee and "17/11/2026" in ajoutee and "date de révision inconnue" in ajoutee
+    assert "article805" not in circulaire
 
 
 def test_le_daps_est_exonere_pour_les_origines_ajoutees_sur_les_listes_a_et_b():
@@ -285,3 +287,60 @@ def test_list_a_full_elimination_after_2030_reciprocity():
 def test_list_a_full_rate_before_agreement_entry():
     rate, _ = compute_dza_zlecaf_rate("2901101000", "TUN", 0.30, as_of=datetime.date(2020, 1, 1))
     assert rate == 0.30
+
+
+# ── La page officielle de la Douane (article805), texte archivé ───────────────────────────────
+
+PAGE = (
+    Path(__file__).resolve().parents[1] / "data" / "legal_refs" / "zlecaf_application" / "sources"
+    / "DZA_douane_article805_zlecaf.texte-fourni.txt"
+)
+ISO3 = {
+    "Algérie": "DZA", "Afrique du Sud": "ZAF", "Burundi": "BDI", "Botswana": "BWA", "Égypte": "EGY",
+    "Cameroun": "CMR", "Éthiopie": "ETH", "Eswatini": "SWZ", "Gambie": "GMB", "Ghana": "GHA",
+    "Lesotho": "LSO", "Kenya": "KEN", "Malawi": "MWI", "Namibie": "NAM", "Maurice": "MUS", "Maroc": "MAR",
+    "Ouganda": "UGA", "Rwanda": "RWA", "Seychelles": "SYC", "Soudan du sud": "SSD", "Tanzanie": "TZA",
+    "Tunisie": "TUN", "Zambie": "ZMB", "Cap-Vert": "CPV", "République du Congo": "COG",
+    "Côte d’Ivoire": "CIV", "Gabon": "GAB", "Guinée équatoriale": "GNQ", "Nigeria": "NGA",
+}
+
+
+def _noms(texte):
+    return [ISO3[nom.strip()] for nom in re.split(r",| et ", texte.rstrip(". ")) if nom.strip()]
+
+
+def _page():
+    return PAGE.read_text(encoding="utf-8")
+
+
+def test_la_liste_de_la_page_est_celle_de_la_table_des_origines():
+    """Section III de la page : les parties « ayant lancé l'application », Algérie comprise. La table
+    du code porte les mêmes pays, à une exception nommée : le Soudan du Sud, non ratifiant."""
+    section = _page().split("III- Parties contractantes ayant lancées l’application de l’Accord :")[1]
+    liste = section.split("NB :")[0].strip()
+    parties = set(_noms(liste))
+
+    assert len(parties) == 23 and "DZA" in parties
+    assert "actualisée périodiquement" in section.split("IV-")[0]
+    servies = ACTIVE_PARTNERS | DZ_ACTIVE_ORIGINS["origines_nommees_non_servies"] | {"DZA"}
+    assert parties == servies
+    assert not {"NGA", "MOZ"} & parties
+
+
+def test_la_liste_de_reciprocite_de_la_page_est_celle_du_code():
+    page = _page()
+    texte = page.split("concernés par ce traitement sont les suivants :")[1].split("\n")[0]
+    assert set(_noms(texte)) == RECIPROCITY_PARTNERS and len(RECIPROCITY_PARTNERS) == 13
+
+
+def test_le_calendrier_de_la_page_est_celui_du_calendrier_du_code():
+    """Régime général : liste A éliminée au 01/01/2025, liste B de 2026 à 2030 ; réciprocité : liste A
+    jusqu'en 2030, liste B de 2026 à 2033."""
+    page = _page()
+    assert "exonération totale prévue au 1er janvier 2025" in page
+    assert "élimination totale des droits de douane prévue au 1er janvier 2030" in page
+    assert "élimination complète au 1er janvier 2033" in page
+    standard = CIRCULAR_482_SCHEDULE["standard_schedule"]
+    assert (standard["list_a_zero_from"], standard["list_b_reduction_from"], standard["list_b_zero_from"]) == (2025, 2026, 2030)
+    reciprocite = CIRCULAR_482_SCHEDULE["reciprocity_schedule"]
+    assert (reciprocite["list_a_zero_from"], reciprocite["list_b_reduction_from"], reciprocite["list_b_zero_from"]) == (2030, 2026, 2033)

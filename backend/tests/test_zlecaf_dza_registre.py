@@ -33,7 +33,7 @@ def test_le_registre_porte_les_origines_de_la_circulaire_et_de_la_liste_de_la_do
     assert record.accepted_origins == ACTIVE_PARTNERS
     assert len(record.accepted_origins) == 21
     assert ORIGINES_CIRCULAIRE_482 <= record.accepted_origins
-    assert "preuve secondaire" in record.note
+    assert "article805" in record.note
     assert record.effective_from == "2024-11-01"
 
 

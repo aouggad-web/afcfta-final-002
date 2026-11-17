@@ -49,7 +49,7 @@ accorderait une préférence que personne n'a constatée.
 
 | Destination | Origines admises | Instrument | Niveau de preuve |
 |---|---:|---|---|
-| **Algérie** (DZA) | 21 | Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus) | primaire pour les 9 origines de la circulaire (texte intégral archivé) ; secondaire pour les 12 ajoutées par la liste du 16/11/2026, sans date de révision et non lue au portail |
+| **Algérie** (DZA) | 21 | Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus) | primaire pour les 9 origines de la circulaire (texte intégral archivé) ; page officielle de la Douane pour les 12 ajoutées (texte fourni par l'exploitant le 17/11/2026 et archivé, sans date de révision, non récupéré au portail) |
 | **Égypte** (EGY) | 19 | منشور اتفاقيات رقم 38 لسنة 2024 | primaire — PDF officiels douane égyptienne, OCR arabe |
 | **Kenya** (KEN) | 28 | EAC/321/2022 | primaire (revue antérieure du dépôt) |
 | **Maroc** (MAR) | 40 | Circulaire ADII n° 6530/223 du 2024-01-22 | primaire — circulaire lue intégralement, SHA-256 consigné |

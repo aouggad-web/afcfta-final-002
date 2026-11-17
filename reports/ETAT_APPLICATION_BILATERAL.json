@@ -18,8 +18,8 @@
  "destinations_etablies": {
   "DZA": {
    "origines_admises": 21,
-   "instrument": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)",
-   "niveau_de_preuve": "primaire pour les 9 origines de la circulaire (texte intégral archivé) ; secondaire pour les 12 ajoutées par la liste du 16/11/2026, sans date de révision et non lue au portail",
+   "instrument": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)",
+   "niveau_de_preuve": "primaire pour les 9 origines de la circulaire (texte intégral archivé) ; page officielle de la Douane pour les 12 ajoutées (texte fourni par l'exploitant le 17/11/2026 et archivé, sans date de révision, non récupéré au portail)",
    "fiche": "DZA_application_2026-09-14.json"
   },
   "EGY": {
@@ -2777,11 +2777,11 @@
   "DZA": {
    "AGO": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "BDI": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "BEN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
@@ -2789,50 +2789,50 @@
    },
    "BFA": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "BWA": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "CAF": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "CIV": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "CMR": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "COD": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "COG": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "COM": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "CPV": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "DJI": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "DZA": {
     "etat": "MEME_PAYS"
    },
    "EGY": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "ERI": {
     "etat": "ORIGINE_NON_RATIFIANTE",
@@ -2840,39 +2840,39 @@
    },
    "ETH": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "GAB": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "GHA": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "GIN": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "GMB": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "GNB": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "GNQ": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "KEN": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "LBR": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "LBY": {
     "etat": "ORIGINE_NON_RATIFIANTE",
@@ -2880,51 +2880,51 @@
    },
    "LSO": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MAR": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MDG": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MLI": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MOZ": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MRT": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MUS": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MWI": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "NAM": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "NER": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "NGA": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "RWA": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "SDN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
@@ -2932,15 +2932,15 @@
    },
    "SEN": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "SLE": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "SOM": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "SSD": {
     "etat": "ORIGINE_NON_RATIFIANTE",
@@ -2948,47 +2948,47 @@
    },
    "STP": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "SWZ": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "SYC": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "TCD": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "TGO": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "TUN": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "TZA": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "UGA": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "ZAF": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "ZMB": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "ZWE": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus)"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    }
   },
   "EGY": {
