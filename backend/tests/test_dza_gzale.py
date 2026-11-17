@@ -85,7 +85,7 @@ def test_a_egalite_la_zlecaf_est_conservee():
 
 # ── Sur le socle ──────────────────────────────────────────────────────────────
 @besoin_socle
-@pytest.mark.parametrize("origine", sorted(GZALE_ORIGINES_DZA - {"EGY", "TUN"}))
+@pytest.mark.parametrize("origine", sorted(GZALE_ORIGINES_DZA - {"EGY", "TUN", "MAR"}))
 def test_socle_origine_hors_zlecaf_au_droit_de_douane_nul(origine):
     position, _ = socle.position("DZA", "0204501100")
     r = taux_preferentiels(position, "DZA", origine, "0204501100")
@@ -94,9 +94,12 @@ def test_socle_origine_hors_zlecaf_au_droit_de_douane_nul(origine):
 
 
 @besoin_socle
-def test_socle_tunisie_garde_la_zlecaf_qui_exonere_aussi_le_daps():
+@pytest.mark.parametrize("origine", ["TUN", "MAR"])
+def test_socle_tunisie_et_maroc_gardent_la_zlecaf_qui_exonere_aussi_le_daps(origine):
+    """Le Maroc est admis à la ZLECAf depuis la liste de la Douane du 16/11/2026 : sur la liste (A)
+    elle exonère le DAPS en plus du droit de douane, ce que la GZALE ne fait pas."""
     position, _ = socle.position("DZA", "0204501100")
-    r = taux_preferentiels(position, "DZA", "TUN", "0204501100")
+    r = taux_preferentiels(position, "DZA", origine, "0204501100")
     assert r["regime"] == "ZLECAF"
     assert r["taux"]["DAPS"] == {"taux": 0.0}
 
@@ -114,10 +117,10 @@ def client():
 
 
 @besoin_socle
-def test_route_maroc_vers_algerie_nomme_la_gzale_et_garde_le_daps(client):
+def test_route_libye_vers_algerie_nomme_la_gzale_et_garde_le_daps(client):
     reponse = client.post(
         "/calcul",
-        json={"destination": "DZA", "origine": "MAR", "code_sh": "0204501100", "valeur_cif": 100000},
+        json={"destination": "DZA", "origine": "LBY", "code_sh": "0204501100", "valeur_cif": 100000},
     )
     assert reponse.status_code == 200, reponse.text
     corps = reponse.json()

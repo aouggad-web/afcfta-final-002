@@ -7,11 +7,16 @@ réduction des deux calendriers (standard vs réciprocité) à des dates clés.
 
 import datetime
 
+import pytest
+
 from services.zlecaf_schedule_dza import (
     ACTIVE_PARTNERS,
     CIRCULAR_482_SCHEDULE,
+    DZ_ACTIVE_ORIGINS,
     LIST_B_BASE_RATES_2019,
     LIST_B_CODES,
+    ORIGINES_CIRCULAIRE_482,
+    ORIGINES_NOMMEES_LISTE_DOUANE_2026_11,
     RECIPROCITY_PARTNERS,
     compute_dza_zlecaf_rate,
     daps_exempt,
@@ -169,7 +174,73 @@ def test_daps_not_exempt_for_frozen_heading():
 
 
 def test_active_partners_count():
-    assert len(ACTIVE_PARTNERS) == 9
+    """Neuf origines de la circulaire 482/2024 et douze de la liste actualisée de la Douane (16/11/2026)."""
+    assert len(ACTIVE_PARTNERS) == 21
+    assert ORIGINES_CIRCULAIRE_482 <= ACTIVE_PARTNERS and len(ORIGINES_CIRCULAIRE_482) == 9
+    assert ACTIVE_PARTNERS == DZ_ACTIVE_ORIGINS["origines"]
+
+
+def test_la_liste_de_la_douane_ajoute_douze_origines_et_pas_le_nigeria_ni_le_mozambique():
+    ajoutees = ACTIVE_PARTNERS - ORIGINES_CIRCULAIRE_482
+    assert ajoutees == {"BDI", "BWA", "ETH", "SWZ", "GMB", "LSO", "MWI", "MAR", "NAM", "UGA", "SYC", "ZMB"}
+    assert not {"NGA", "MOZ"} & ACTIVE_PARTNERS
+    # La liste nomme 22 origines étrangères : les neuf de la circulaire et treize autres.
+    assert len(ORIGINES_CIRCULAIRE_482 | ORIGINES_NOMMEES_LISTE_DOUANE_2026_11) == 22
+
+
+def test_le_soudan_du_sud_est_nomme_mais_pas_servi_faute_de_ratification():
+    """Le statut continental du dépôt le tient pour non ratifiant : il entrera à sa ratification."""
+    from services.zlecaf_membership_status import SIGNED_NOT_RATIFIED
+
+    assert "SSD" in ORIGINES_NOMMEES_LISTE_DOUANE_2026_11 and "SSD" in SIGNED_NOT_RATIFIED
+    assert "SSD" not in ACTIVE_PARTNERS
+    assert DZ_ACTIVE_ORIGINS["origines_nommees_non_servies"] == frozenset({"SSD"})
+    taux, libelle = compute_dza_zlecaf_rate("0204501100", "SSD", 30.0, datetime.date(2026, 11, 17))
+    assert taux == 30.0 and "non encore activé" in libelle
+
+
+def test_la_table_dit_ce_qu_elle_ne_sait_pas():
+    assert DZ_ACTIVE_ORIGINS["date_derniere_revision"] is None
+    assert DZ_ACTIVE_ORIGINS["version"] == "2026-11-16"
+    assert DZ_ACTIVE_ORIGINS["origines_circulaire_482"].isdisjoint(DZ_ACTIVE_ORIGINS["origines_liste_douane_2026_11"])
+
+
+@pytest.mark.parametrize("origine,calendrier", [
+    ("BWA", "réciprocité"), ("SWZ", "réciprocité"), ("NAM", "réciprocité"),
+    ("BDI", "standard"), ("ETH", "standard"), ("MAR", "standard"), ("UGA", "standard"), ("ZMB", "standard"),
+])
+def test_les_origines_ajoutees_suivent_le_calendrier_de_leur_groupe(origine, calendrier):
+    """Les membres de la liste de réciprocité de l'article 5 (i) ont le calendrier long."""
+    taux, libelle = compute_dza_zlecaf_rate("0204501100", origine, 30.0, datetime.date(2026, 11, 17))
+    assert f"calendrier {calendrier}" in libelle
+    assert ("réciprocité" in libelle) == (origine in RECIPROCITY_PARTNERS)
+    assert taux is not None and taux < 30.0
+
+
+def test_les_facteurs_de_2026_sont_ceux_du_relevé_de_veille():
+    """Liste A standard 0 %, réciprocité A 40 % ; liste B standard 80 %, réciprocité B 87,5 % (2026)."""
+    le = datetime.date(2026, 11, 17)
+    a = "0204501100"
+    assert tariff_list(a) == "A" and not is_frozen(a)
+    assert compute_dza_zlecaf_rate(a, "UGA", 30.0, le)[0] == 0.0
+    assert compute_dza_zlecaf_rate(a, "NAM", 30.0, le)[0] == pytest.approx(12.0)
+    b = next(c for c in sorted(LIST_B_BASE_RATES_2019) if c in LIST_B_CODES and not is_frozen(c))
+    base = LIST_B_BASE_RATES_2019[b]
+    assert compute_dza_zlecaf_rate(b, "UGA", 99.0, le)[0] == pytest.approx(base * 0.8)
+    assert compute_dza_zlecaf_rate(b, "NAM", 99.0, le)[0] == pytest.approx(base * 0.875)
+
+
+def test_le_taux_d_une_origine_ajoutee_dit_son_niveau_de_preuve():
+    _, ajoutee = compute_dza_zlecaf_rate("0204501100", "UGA", 30.0, datetime.date(2026, 11, 17))
+    _, circulaire = compute_dza_zlecaf_rate("0204501100", "TUN", 30.0, datetime.date(2026, 11, 17))
+    assert "preuve secondaire" in ajoutee and "16/11/2026" in ajoutee
+    assert "preuve secondaire" not in circulaire
+
+
+def test_le_daps_est_exonere_pour_les_origines_ajoutees_sur_les_listes_a_et_b():
+    assert daps_exempt("2901101000", "UGA") is True
+    assert daps_exempt("2901101000", "SSD") is False
+    assert daps_exempt("2901101000", "MOZ") is False
 
 
 def test_reciprocity_partners_count():

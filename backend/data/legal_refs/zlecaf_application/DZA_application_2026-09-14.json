@@ -265,5 +265,65 @@
    "KEN",
    "ZAF"
   ]
+ },
+ "mise_a_jour_2026-11-17": {
+  "objet": "Origines admises à l'importation en Algérie : de 9 à 21, sur décision de l'exploitant du 17/11/2026, d'après une veille du 16/11/2026 sur la liste actualisée de la page article805 de la Douane algérienne",
+  "decision": "Activer la liste actualisée (22 origines étrangères nommées) plutôt que garder les 9 de la circulaire ; l'exploitant a été informé des réserves ci-dessous avant de décider.",
+  "evidence_level": "SECONDAIRE pour les 12 origines ajoutées : veille du 16/11/2026, page non lue depuis l'environnement du dépôt (le portail répond HTTP 503), sans date de révision. PRIMAIRE pour les 9 origines de la circulaire 482, inchangées.",
+  "origines_servies": {
+   "count": 21,
+   "iso3": [
+    "BDI",
+    "BWA",
+    "CMR",
+    "EGY",
+    "ETH",
+    "GHA",
+    "GMB",
+    "KEN",
+    "LSO",
+    "MAR",
+    "MUS",
+    "MWI",
+    "NAM",
+    "RWA",
+    "SWZ",
+    "SYC",
+    "TUN",
+    "TZA",
+    "UGA",
+    "ZAF",
+    "ZMB"
+   ],
+   "ajoutees_a_la_circulaire": [
+    "BDI",
+    "BWA",
+    "ETH",
+    "GMB",
+    "LSO",
+    "MAR",
+    "MWI",
+    "NAM",
+    "SWZ",
+    "SYC",
+    "UGA",
+    "ZMB"
+   ],
+   "table": "services/zlecaf_schedule_dza.py, DZ_ACTIVE_ORIGINS (version 2026-11-16, date de dernière révision : inconnue)"
+  },
+  "nommee_mais_non_servie": {
+   "SSD": "Le Soudan du Sud figure dans la liste de la Douane mais n'a pas ratifié l'Accord selon le statut continental du dépôt (note dtic/SARS de mars 2026) ; une partie qui a lancé l'application a ratifié, donc l'une des deux sources a tort, et le moteur écarte de toute façon une origine non ratifiante. Écarté comme le Bénin pour le Kenya ; entrera à sa ratification."
+  },
+  "non_activees": "Nigeria et Mozambique : absents de la liste actuelle de la Douane, ils restent au droit commun. Le Nigeria figure parmi les treize pays du calendrier de réciprocité, qui n'est pas une liste d'admission.",
+  "ce_que_dit_la_fiche_du_14_septembre": "La même énumération de 23 parties (dont l'Algérie) est déjà archivée plus haut sous liste_etats_parties_ayant_mis_en_oeuvre, avec la mention qu'elle « n'emporte pas admission à l'importation en Algérie » et l'avertissement de ne pas la confondre avec la liste de 9. Cette mise à jour retient l'autre lecture : la page décrit les parties qui ont lancé l'application, donc admises. Les deux lectures ne sont pas départagées par une source primaire.",
+  "recoupement_independant": "Le Maroc, la Namibie et les Seychelles admettent déjà l'Algérie dans leurs propres listes d'origines (fiches MAR, NAM, SYC) : pour ces trois couples, les deux sens sont désormais établis (reports/ETAT_APPLICATION_BILATERAL.json).",
+  "calendrier": "Inchangé : liste A standard 0 %, liste B standard 80 % du droit de base 2019 en 2026 ; réciprocité (Botswana, Eswatini, Namibie parmi les ajoutées) liste A 40 %, liste B 87,5 % ; DAPS exonéré sur les listes A et B ; listes C et positions gelées au droit commun.",
+  "ne_tranche_pas": [
+   "La date de la liste actualisée : la page ne porte aucune date de révision.",
+   "Ce que la liste des 23 parties signifie pour l'importation en Algérie (admission, ou simple mise en œuvre) : voir ce_que_dit_la_fiche_du_14_septembre.",
+   "Les lignes SH10 de la liste (B) officielle téléchargeable (liste_b-_10_ans_.pdf) : non lue, le portail refuse l'environnement ; le dépôt garde les codes et taux de base de la circulaire.",
+   "L'admission des exportations algériennes par chaque destination : la liste algérienne ne le démontre pas."
+  ],
+  "a_faire": "Archiver la page article805 et le PDF de la liste (B) depuis un autre réseau (urls_a_archiver), relire la liste et sa date, puis confirmer ou retirer les 12 origines ajoutées."
  }
 }

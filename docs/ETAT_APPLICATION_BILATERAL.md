@@ -1,7 +1,7 @@
 # État d'application de la ZLECAf entre pays
 
 > Généré par `scripts/build_bilateral_application_matrix.py` — ne pas éditer à la main.
-> Données : `reports/ETAT_APPLICATION_BILATERAL.json`, générées le 2026-11-04.
+> Données : `reports/ETAT_APPLICATION_BILATERAL.json`, générées le 2026-11-17.
 
 ## Ce que ce tableau répond
 
@@ -21,11 +21,11 @@ titre de la réciprocité. Le sens du flux change donc le droit.
 
 | État | Couples | Sens |
 |---|---:|---|
-| `ACCORDEE` | 246 | L'acte national de la destination nomme cette origine parmi celles qui bénéficient du tarif ZLECAf. |
+| `ACCORDEE` | 258 | L'acte national de la destination nomme cette origine parmi celles qui bénéficient du tarif ZLECAf. |
 | `ADMISSION_PAR_REGLE` | 96 | La destination admet les origines par un CRITÈRE et non par une liste nominative. La règle est citée ; elle n'est pas résolue ici, car ses termes sont ambigus et la résoudre par supposition accorderait une préférence que personne n'a constatée. |
 | `DESTINATION_NON_ETABLIE` | 1973 | Aucune liste d'origines admises n'a été vérifiée pour cette destination. Absence de recherche, PAS un refus de préférence. |
 | `MEME_PAYS` | 54 | Origine et destination confondues. |
-| `NON_ACCORDEE` | 282 | La destination publie une liste nominative vérifiée et cette origine n'y figure pas : la préférence ne lui est pas accordée à ce jour. |
+| `NON_ACCORDEE` | 270 | La destination publie une liste nominative vérifiée et cette origine n'y figure pas : la préférence ne lui est pas accordée à ce jour. |
 | `ORIGINE_NON_RATIFIANTE` | 265 | L'origine n'a pas déposé ses instruments de ratification : aucune préférence ZLECAf ne peut lui être accordée, quelle que soit la destination. |
 
 Les 1973 couples `DESTINATION_NON_ETABLIE` sont le déficit d'information que
@@ -49,7 +49,7 @@ accorderait une préférence que personne n'a constatée.
 
 | Destination | Origines admises | Instrument | Niveau de preuve |
 |---|---:|---|---|
-| **Algérie** (DZA) | 9 | Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 | primaire — texte intégral archivé |
+| **Algérie** (DZA) | 21 | Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste actualisée de la Douane algérienne du 16/11/2026 (12 origines de plus) | primaire pour les 9 origines de la circulaire (texte intégral archivé) ; secondaire pour les 12 ajoutées par la liste du 16/11/2026, sans date de révision et non lue au portail |
 | **Égypte** (EGY) | 19 | منشور اتفاقيات رقم 38 لسنة 2024 | primaire — PDF officiels douane égyptienne, OCR arabe |
 | **Kenya** (KEN) | 28 | EAC/321/2022 | primaire (revue antérieure du dépôt) |
 | **Maroc** (MAR) | 40 | Circulaire ADII n° 6530/223 du 2024-01-22 | primaire — circulaire lue intégralement, SHA-256 consigné |
@@ -81,7 +81,7 @@ Lecture : la **ligne** est le pays d'importation, la **colonne** le pays d'origi
 
 | Destination \ Origine | Algérie | Égypte | Kenya | Maroc | Namibie | Rwanda | Seychelles | Tunisie | Tanzanie | Ouganda | Afrique du Sud |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| **Algérie** | — | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ | ✅ | ✅ | ❌ | ✅ |
+| **Algérie** | — | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **Égypte** | ✅ 5 ans | — | ✅ 10 ans | ✅ 5 ans | ✅ 10 ans | ✅ 5 ans | ❌ | ✅ 5 ans | ✅ 5 ans | ✅ 5 ans | ✅ 10 ans |
 | **Kenya** | ❌ | ✅ | — | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
 | **Maroc** | ✅ 5 ans | ✅ 5 ans | ✅ 10 ans | — | ✅ 10 ans | ✅ 5 ans | ✅ 5 ans | ✅ 5 ans | ✅ 5 ans | ✅ 5 ans | ✅ 10 ans |
@@ -97,9 +97,12 @@ Lecture : la **ligne** est le pays d'importation, la **colonne** le pays d'origi
 
 ## Ce que le croisement révèle
 
-**14 réciprocités confirmées** — les deux sens sont établis :
+**17 réciprocités confirmées** — les deux sens sont établis :
 
 - Algérie ↔ Égypte
+- Algérie ↔ Maroc
+- Algérie ↔ Namibie
+- Algérie ↔ Seychelles
 - Algérie ↔ Afrique du Sud
 - Égypte ↔ Kenya
 - Égypte ↔ Maroc
@@ -114,15 +117,13 @@ Lecture : la **ligne** est le pays d'importation, la **colonne** le pays d'origi
 - Seychelles ↔ Ouganda
 - Tunisie ↔ Afrique du Sud
 
-**29 asymétries** — un sens accorde, l'autre non :
+**27 asymétries** — un sens accorde, l'autre non :
 
 - **Algérie → Kenya** : DZA admet KEN à son tarif ZLECAf, KEN n'admet pas DZA.
-- **Maroc → Algérie** : MAR admet DZA à son tarif ZLECAf, DZA n'admet pas MAR.
-- **Namibie → Algérie** : NAM admet DZA à son tarif ZLECAf, DZA n'admet pas NAM.
 - **Algérie → Rwanda** : DZA admet RWA à son tarif ZLECAf, RWA n'admet pas DZA.
-- **Seychelles → Algérie** : SYC admet DZA à son tarif ZLECAf, DZA n'admet pas SYC.
 - **Algérie → Tunisie** : DZA admet TUN à son tarif ZLECAf, TUN n'admet pas DZA.
 - **Algérie → Tanzanie** : DZA admet TZA à son tarif ZLECAf, TZA n'admet pas DZA.
+- **Algérie → Ouganda** : DZA admet UGA à son tarif ZLECAf, UGA n'admet pas DZA.
 - **Seychelles → Égypte** : SYC admet EGY à son tarif ZLECAf, EGY n'admet pas SYC.
 - **Égypte → Tunisie** : EGY admet TUN à son tarif ZLECAf, TUN n'admet pas EGY.
 - **Maroc → Kenya** : MAR admet KEN à son tarif ZLECAf, KEN n'admet pas MAR.
@@ -146,7 +147,7 @@ Lecture : la **ligne** est le pays d'importation, la **colonne** le pays d'origi
 - **Tunisie → Tanzanie** : TUN admet TZA à son tarif ZLECAf, TZA n'admet pas TUN.
 - **Afrique du Sud → Ouganda** : ZAF admet UGA à son tarif ZLECAf, UGA n'admet pas ZAF.
 
-Kenya est le receveur de 5 de ces 29 asymétries : ces pays l'admettent à leur tarif ZLECAf,
+Kenya est le receveur de 5 de ces 27 asymétries : ces pays l'admettent à leur tarif ZLECAf,
 sa propre liste ne les admet pas. Un exportateur dans ce sens peut invoquer
 la ZLECAf ; dans le sens inverse, en l'état des listes vérifiées, non.
 
