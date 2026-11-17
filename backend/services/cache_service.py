@@ -114,12 +114,40 @@ _DISK_CACHE_DIR = Path(
     os.environ.get("CACHE_DIR") or (Path(__file__).resolve().parent.parent / "data" / "_cache")
 )
 
+#: Plafond de fichiers du cache disque (audit DoS, 17/11/2026 : la clé est
+#: dérivée d'un paramètre client, ex. `hs_code` OEC ; sans plafond, des fichiers
+#: jamais réécrits s'accumulent et saturent lentement le disque). Au-delà, les
+#: plus anciens (par date de modification) sont évincés. Réglable (défaut 5000).
+try:
+    _DISK_CACHE_MAX_FILES = max(1, int(os.environ.get("DISK_CACHE_MAX_FILES", "5000")))
+except ValueError:
+    _DISK_CACHE_MAX_FILES = 5000
+
 
 def _disk_path(key: str) -> Path:
     # Filenames must be filesystem-safe and bounded in length regardless of
     # key content — hash the full key rather than sanitizing it.
     digest = hashlib.sha256(key.encode("utf-8")).hexdigest()
     return _DISK_CACHE_DIR / f"{digest}.json"
+
+
+def _eviction_disque() -> None:
+    """Borne le nombre de fichiers du cache disque : au-delà du plafond, évince
+    les plus anciens (par date de modification). Best-effort — toute erreur
+    d'E/S est ignorée, le cache ne doit jamais faire échouer une requête."""
+    try:
+        fichiers = [p for p in _DISK_CACHE_DIR.glob("*.json") if p.is_file()]
+        surplus = len(fichiers) - _DISK_CACHE_MAX_FILES
+        if surplus <= 0:
+            return
+        fichiers.sort(key=lambda p: p.stat().st_mtime)
+        for p in fichiers[:surplus]:
+            try:
+                p.unlink()
+            except OSError:
+                pass
+    except OSError:
+        pass
 
 
 def _disk_set(key: str, value: Any, ttl_seconds: int) -> bool:
@@ -133,6 +161,7 @@ def _disk_set(key: str, value: Any, ttl_seconds: int) -> bool:
         tmp_path = path.with_suffix(".tmp")
         tmp_path.write_text(payload, encoding="utf-8")
         tmp_path.replace(path)
+        _eviction_disque()
         return True
     except OSError:
         return False

@@ -158,7 +158,12 @@ _cors_origins = resolve_cors_origins(os.environ)
 # Middlewares de sécurité (CSP, CSRF, limitation de débit) : import obligatoire.
 # Un déploiement partiel doit échouer au démarrage plutôt que servir l'API sans
 # protection (constat M10 de l'audit de sécurité).
-from middlewares import CSRFMiddleware, RateLimitMiddleware, SecurityHeadersMiddleware
+from middlewares import (
+    BodySizeLimitMiddleware,
+    CSRFMiddleware,
+    RateLimitMiddleware,
+    SecurityHeadersMiddleware,
+)
 from middlewares.access_log import AccessLogMiddleware
 
 app.add_middleware(SecurityHeadersMiddleware)
@@ -189,6 +194,10 @@ app.add_middleware(
     allow_headers=["Content-Type", "Authorization", "X-CSRF-Token", "X-Requested-With"],
     expose_headers=["X-CSRF-Token"],
 )
+# Borne la taille du corps (audit DoS, 17/11/2026) : refus 413 avant lecture,
+# donc avant tout parse mémoire par la route. MAX_REQUEST_BODY_BYTES (défaut
+# 1 Mo) ; aucune route ne reçoit de corps volumineux (pas de téléversement).
+app.add_middleware(BodySizeLimitMiddleware)
 # Ajouté en dernier, donc le plus à l'extérieur : une ligne par requête, y
 # compris les réponses des middlewares ci-dessus (point 17 de l'audit).
 app.add_middleware(AccessLogMiddleware)

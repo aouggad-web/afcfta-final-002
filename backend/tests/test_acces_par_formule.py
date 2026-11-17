@@ -351,6 +351,19 @@ def test_routes_partagees_demandent_la_connexion(app_api, chemin):
     assert (detail["error"], detail["module"]) == ("login_required", "calculator")
 
 
+def test_couverture_export_pays_demande_la_connexion(app_api):
+    """Audit sécurité (17/11/2026) : GET /api/calcul/export/pays était montée
+    avec `_auth` seul — un anonyme lisait la liste des pays à l'export et le
+    canevas du formulaire, contournant la politique « calculateur = connexion »
+    (09/11) et le plafond du jour. Elle porte désormais la garde de sa sœur
+    /api/calcul/pays."""
+    reponse = _client(app_api).get("/api/calcul/export/pays")
+
+    assert reponse.status_code == 401
+    detail = reponse.json()["detail"]
+    assert (detail["error"], detail["module"]) == ("login_required", "calculator")
+
+
 @pytest.mark.parametrize("chemin", ROUTES_PARTAGEES)
 def test_routes_partagees_ne_comptent_rien_pour_un_compte_gratuit(app_api, base, chemin):
     """Les compter ferait échouer un calcul gratuit avant son premier résultat."""

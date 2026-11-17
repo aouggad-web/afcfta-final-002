@@ -392,7 +392,9 @@ def register_routes(api_router: APIRouter):
         dependencies=_auth + _calculator_entitlement,
     )
     api_router.include_router(
-        calcul_export_couverture_router, tags=["Calculateur export"], dependencies=_auth
+        calcul_export_couverture_router,
+        tags=["Calculateur export"],
+        dependencies=_auth + _calculator_login,
     )
     # Consultation du tarif, servie par le même socle que le calcul.
     api_router.include_router(
