@@ -53,6 +53,12 @@ const T = {
     'Discovery plan preview: figures, contacts and rates appear when you choose a country or open a record (one of your 5 searches this month).',
     'معاينة باقة الاكتشاف: تظهر الأرقام وجهات الاتصال والتعريفات عند اختيار بلد أو فتح بطاقة (عملية بحث واحدة من عملياتك الخمس هذا الشهر).',
   ],
+  titrePlafond: ["Limite d'usage du jour atteinte", 'Daily usage limit reached', 'بلغت حدّ الاستخدام اليومي'],
+  textePlafond: [
+    "Vous avez atteint la limite d'usage du jour de la formule Découverte. Elle se renouvelle demain ; les formules payantes n'en ont pas.",
+    'You have reached the Discovery plan daily usage limit. It renews tomorrow; paid plans have none.',
+    'بلغت حدّ الاستخدام اليومي لباقة الاكتشاف. يتجدد غدًا، ولا حدّ له في الاشتراكات المدفوعة.',
+  ],
   titreAbonnes: ['Réservé aux abonnés', 'Subscribers only', 'مخصص للمشتركين'],
   texteAbonnes: [
     'Ce module est inclus dans les formules payantes. Abonnez-vous pour y accéder.',
@@ -70,6 +76,7 @@ export function refusAcces(error) {
   if (!detail || typeof detail !== 'object') return null;
   if (statut === 401 && detail.error === 'login_required') return { genre: 'connexion', ...detail };
   if (statut === 429 && detail.error === 'quota_exceeded') return { genre: 'quota', ...detail };
+  if (statut === 429 && detail.error === 'daily_limit') return { genre: 'plafond', ...detail };
   if (statut === 403 && detail.error === 'upgrade_required') return { genre: 'abonnes', ...detail };
   return null;
 }
@@ -147,6 +154,7 @@ export function ApercuDecouverte({ language }) {
 function textes(refus, language) {
   const avecQuota = (modele) => tr(language, modele).replace('{quota}', String(refus.quota ?? ''));
   if (refus.genre === 'connexion') return [tr(language, T.titreConnexion), tr(language, T.texteConnexion)];
+  if (refus.genre === 'plafond') return [tr(language, T.titrePlafond), tr(language, T.textePlafond)];
   if (refus.genre === 'quota') {
     // Formule Découverte : quotas du mois. Formules payantes : leur propre
     // quota (rapports : par jour), qui se renouvelle.

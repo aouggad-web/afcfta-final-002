@@ -359,7 +359,39 @@ def test_routes_partagees_ne_comptent_rien_pour_un_compte_gratuit(app_api, base,
 
     assert statuts.isdisjoint({401, 403, 429})
     assert base.recherches_modules.docs == {}
-    assert base.usage_counters.docs == {}
+    # Seul le plafond d'usage du jour contre l'aspiration (17/11/2026) est
+    # tenu : ni calcul ni recherche du mois n'est consommé.
+    assert {cle[1] for cle in base.usage_counters.docs} <= {"calculator:partage"}
+
+
+def _plafond_presque_atteint(base, abonne):
+    jour = entitlement_guard._period_key("day", abonne)
+    base.usage_counters.docs[(str(abonne["_id"]), "calculator:partage", jour)] = {
+        "user_id": abonne["_id"], "counter_id": "calculator:partage", "period_key": jour,
+        "count": entitlement_guard.PLAFOND_JOUR_DECOUVERTE - 1,
+    }
+
+
+def test_routes_partagees_plafond_du_jour_contre_l_aspiration(app_api, base):
+    """Décision du 17/11/2026 : rien de décompté au détail, mais un compte
+    Découverte ne relève pas un tarif national entier."""
+    _plafond_presque_atteint(base, ABONNES["free"])
+    client = _client(app_api, abonne=ABONNES["free"])
+
+    assert client.get("/api/calcul/pays").status_code == 200
+    reponse = client.get("/api/consultation/DZA/sous-positions/020110")
+
+    assert reponse.status_code == 429
+    assert reponse.json()["detail"]["error"] == "daily_limit"
+    assert base.recherches_modules.docs == {}
+
+
+@pytest.mark.parametrize("formule", ["starter", "pro", "business"])
+def test_routes_partagees_sans_plafond_pour_les_formules_payantes(app_api, base, formule):
+    _plafond_presque_atteint(base, ABONNES[formule])
+    client = _client(app_api, abonne=ABONNES[formule])
+
+    assert {client.get("/api/calcul/pays").status_code for _ in range(3)} == {200}
 
 
 @pytest.mark.parametrize("chemin", ROUTES_PARTAGEES)

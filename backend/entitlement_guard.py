@@ -567,20 +567,48 @@ def require_module_consultation(module_id: str, *, chemins_publics: tuple = ()):
     return _dependency
 
 
+# Décision de l'exploitant du 17/11/2026 : la formule Découverte laisse
+# découvrir, sans décompte au détail, mais sans laisser aspirer le tarif. Les
+# routes que le calculateur partage ne comptent aucune recherche ; un compte
+# Découverte n'en lit pas plus de PLAFOND_JOUR_DECOUVERTE par jour. Relever un
+# tarif national demande des milliers de requêtes, découvrir quelques dizaines.
+PLAFOND_JOUR_DECOUVERTE = 300
+
+
+def _plafond_quotidien_atteint() -> HTTPException:
+    return HTTPException(
+        status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+        detail={
+            "error": "daily_limit",
+            "message": "Limite d'usage du jour atteinte pour ce compte. Réessayez demain.",
+        },
+    )
+
+
 def require_login(module_id: str):
-    """Connexion exigée, rien de décompté : les routes que le calculateur
-    partage (positions, recherche, formalités, pays servis) servent l'écran
-    d'un module dont l'usage est compté ailleurs, au calcul ou à la fiche.
+    """Connexion exigée, aucune recherche décomptée : les routes que le
+    calculateur partage (positions, recherche, formalités, pays servis)
+    servent l'écran d'un module dont l'usage est compté ailleurs, au calcul ou
+    à la fiche. En formule Découverte, un plafond d'usage du jour
+    (`PLAFOND_JOUR_DECOUVERTE`) arrête l'aspiration du tarif ; les formules
+    payantes et le compte admin n'en ont pas.
 
     Sans compte : 401 « login_required » (décision de l'exploitant du
     09/11/2026), sauf une clé API valide et l'absence de base (dev, CI)."""
+    plafond = ModuleAccess(enabled=True, quota=PLAFOND_JOUR_DECOUVERTE, quota_period="day")
 
     async def _dependency(
         user: Optional[dict] = Depends(get_optional_subscriber),
         key_doc: dict = Depends(require_auth),
     ) -> None:
-        if user is None and _db is not None and not _cle_api(key_doc):
-            raise _connexion_requise(module_id)
+        if user is None:
+            if _db is not None and not _cle_api(key_doc):
+                raise _connexion_requise(module_id)
+            return
+        if resolve_entitlements(user).tier != "free":
+            return
+        if not await check_and_increment_usage(user, f"{module_id}:partage", plafond):
+            raise _plafond_quotidien_atteint()
 
     return _dependency
 
