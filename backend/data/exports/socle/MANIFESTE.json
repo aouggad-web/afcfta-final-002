@@ -1929,10 +1929,10 @@
         }
       ],
       "devise": "ZAR",
-      "date_reference": "2026-10-31",
-      "sha256": "d1264e6646594f140b1005f91a9e050977a45e26071862016bb8a96c623c0fc2",
-      "notes_sha256": "f2812fb702ebf055fce553fc7e099492f8fdab956b6be72d08be3317fa16f782",
-      "socle_sha256": "35e2420eedf162df42b38a2b6342e193cb8882f41bbcf85dbe0809a07ba3528e",
+      "date_reference": "2026-11-17",
+      "sha256": "be08c6d61b018fc59b6600f3074df63d789dfe172ab272a75ca2d84b831a8b2f",
+      "notes_sha256": "46fbd6ecedc20a1d74f0073cf2f56f8c7c9dbc3074d78e05e3275c15e821b107",
+      "socle_sha256": "23904f0fbf90499f7ea07de7d85b41ffb13cb622fcee3d3e779bd3616ee15d43",
       "collecte": "2026-08-29T13:26:21.816037"
     },
     "ZMB": {

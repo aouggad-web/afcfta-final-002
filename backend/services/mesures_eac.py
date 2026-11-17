@@ -42,6 +42,9 @@ NON_APPLIQUEES = {
 }
 
 
+#: Sociétés nommées citées dans la note d'une remise ; les autres sont comptées.
+SOCIETES_AFFICHEES = 5
+
 #: Taux mixte d'un sursis, tel que la Legal Notice EAC/160/2026 l'écrit :
 #: « 35 % or USD 2/SQM, whichever is higher ».
 TAUX_MIXTE = re.compile(r"^% or USD ([\d.]+)/(metre|SQM), whichever is higher$")
@@ -131,6 +134,8 @@ def appliquer(
     par_id = {m.measure_id: m for m in mesures}
     # Sans mesure appliquée, la ligne garde son taux tel que le TEC l'écrit.
     notes, champs = [], {k: dd[k] for k in CHAMPS_DU_TAUX if k in dd}
+    # Sociétés nommées par la gazette, par avis, pour les remises non appliquées.
+    nommees = {}
     if resolution["calculation_status"] == "CONFLICT_REVIEW" or any(
         e["outcome"] == "RATE_UNRESOLVED" for e in etapes
     ):
@@ -169,6 +174,26 @@ def appliquer(
                     f"pour les importations qui remplissent ses conditions "
                     f"({NON_APPLIQUEES[e['outcome']]}). Taux du TEC appliqué."
                 )
+                if mesure.named_beneficiary:
+                    nommees.setdefault(mesure.legal_reference, []).append(mesure)
+
+    # Une ligne portée par plusieurs sociétés d'un même avis ne répète pas sa note : une mention
+    # par avis, avec les sociétés nommées.
+    notes = list(dict.fromkeys(notes))
+    for reference, mesures_avis in nommees.items():
+        societes = list(dict.fromkeys(
+            m.named_beneficiary + (
+                f" ({m.allocated_quantity:g} {m.allocated_quantity_unit})"
+                if m.allocated_quantity is not None and m.allocated_quantity_unit else ""
+            )
+            for m in mesures_avis
+        ))
+        visibles = ", ".join(societes[:SOCIETES_AFFICHEES])
+        reste = len(societes) - SOCIETES_AFFICHEES
+        notes.append(
+            f"{reference} : remise réservée aux sociétés nommées par la gazette, dans la limite de leur "
+            f"quantité allouée : {visibles}" + (f" et {reste} autre{'s' if reste > 1 else ''}." if reste > 0 else ".")
+        )
 
     nouveau_dd = {k: v for k, v in dd.items() if k not in CHAMPS_DU_TAUX}
     nouveau_dd.update(champs)

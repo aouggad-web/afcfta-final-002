@@ -4311,10 +4311,34 @@ SOURCE_R8025_ZAF = ("Government Gazette n° 55544, R.8025 du 16 octobre 2026 (am
                     "Part 1, ITAC Report 784)")
 
 
+#: Afrique du Sud : sucre (R.8180), paru après la collecte du tarif (fiche
+#: ZAF_amendement_sucre_2026-11-13.json). L'avis substitue le même droit spécifique dans
+#: toutes les colonnes (General, EU/UK, EFTA, SADC, MERCOSUR, AfCFTA).
+SOURCE_R8180_ZAF = ("Government Gazette n° 55738, R.8180 du 13 novembre 2026 (amendement de la Schedule "
+                    "No. 1 Part 1, section 48 du Customs and Excise Act)")
+SUCRES_ZAF = ("170112", "170113", "170114", "170191", "170199")
+DROIT_SUCRE_ZAF = {"montant": 5.1635, "unite_monetaire": "unite_principale", "sous_unite_source": "c",
+                   "unite_quantite": "kg", "brut": "516,35c/kg"}
+
+
 def _amendements_zaf(positions, compteurs):
-    """Afrique du Sud : papier journal (R.8025), paru après la collecte du
-    tarif. La sauvegarde et l'antidumping relèvent de la défense commerciale
-    (`_defense_commerciale`)."""
+    """Afrique du Sud : sucre (R.8180) et papier journal (R.8025), parus après la
+    collecte du tarif. La sauvegarde et l'antidumping relèvent de la défense
+    commerciale (`_defense_commerciale`)."""
+    for code in SUCRES_ZAF:
+        sucre = positions.get(code)
+        dd = next((d for d in (sucre or {}).get("droits") or [] if d.get("code") == "DD"), None)
+        if dd is None:
+            continue
+        # Le droit reste spécifique, en c/kg : seul le montant change (le type de ligne
+        # ne change pas, les compteurs non plus).
+        # Une seule note pour les cinq lignes : l'export la numérote une fois.
+        dd.update(specifique=dict(DROIT_SUCRE_ZAF), source=SOURCE_R8180_ZAF,
+                  note="1701.12, 1701.13, 1701.14, 1701.91 et 1701.99 : 516,35c/kg dans toutes les colonnes, "
+                       "General, EU/UK, EFTA, SADC, MERCOSUR et AfCFTA (en vigueur le 13 novembre 2026 ; "
+                       "auparavant 697,92c/kg selon le registre SARS).")
+        for colonne in (sucre.get("preferentiels") or {}):
+            sucre["preferentiels"][colonne] = {"taux": None, "specifique": dict(DROIT_SUCRE_ZAF)}
     journal = positions.get("480100")
     if journal:
         dd = next((d for d in journal.get("droits") or [] if d.get("code") == "DD"), None)

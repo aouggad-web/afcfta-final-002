@@ -1,0 +1,27 @@
+Afrique du Sud — avis de la SARS du 13 novembre 2026 : droit spécifique sur les sucres (R.8180)
+Transcrit le 2026-11-17 à partir du PDF publié par la SARS (page « Tariff amendments 2026 »,
+https://www.sars.gov.za/legal-counsel/secondary-legislation/tariff-amendments/tariff-amendments-2026/).
+Le PDF (une page, 81 Ko) est une image : il n'a pas de couche de texte. La transcription ci-dessous est la lecture
+de cette image ; le PDF est archivé à côté (ZAF_R8180_GG55738_sucre_2026-11-13.pdf) pour la relire.
+
+URL : https://www.sars.gov.za/legal-lsec-ce-ta-2026-88-r8180-gg-55738-sch1-p1-1-1-1981-sugar-reduction-itac-minute-m11-2026-13-november-2026/
+sha256 du PDF : e38b27c9f98af69ab5be3346ec5fc1df9ca8239f92093fb544dd3657fde781ef
+
+------------------------------------------------------------------------------------------------------
+Government Gazette No.55738                    CUSTOMS AND EXCISE ACT, 1964.                    Date: 2026-11-13
+No. R.8180                                AMENDMENT OF SCHEDULE NO. 1 (NO. 1/1/1981)
+
+In terms of section 48 of the Customs and Excise Act, 1964, Part 1 of Schedule No. 1 to the said Act is hereby
+amended to the extent set out in the Schedule hereto.
+                                                       ENOCH GODONGWANA, MINISTER OF FINANCE
+SCHEDULE
+By the substitution of the following:
+
+Heading /   CD  Article Description                                  Statistical   Rate of Duty
+Subheading                                                           Unit          General     EU / UK     EFTA        SADC        MERCOSUR    AfCFTA
+1701.12     2   - - Beet sugar                                       kg            516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg
+1701.13     9   - - Cane sugar specified in Subheading Note 2
+                    to this Chapter                                  kg            516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg
+1701.14     5   - - Other cane sugar                                 kg            516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg
+1701.91     2   - - Containing added flavouring or colouring matter  kg            516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg
+1701.99     3   - - Other                                            kg            516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg  516,35c/kg

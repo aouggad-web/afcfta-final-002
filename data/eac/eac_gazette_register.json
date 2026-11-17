@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "as_of": "2026-07-24",
+  "as_of": "2026-11-17",
   "coverage_complete": false,
   "gazettes": [
     {
@@ -62,6 +62,22 @@
       "extraction_status": "NOT_EXTRACTED",
       "validation_status": "GAP",
       "tariff_lines_extracted": 0,
+      "priority": "CURRENT_CRITICAL"
+    },
+    {
+      "reference": "EAC Gazette Vol. AT 1 No. 31",
+      "date": "2026-11-12",
+      "territory": "Kenya",
+      "measure_types": ["DUTY_REMISSION"],
+      "official_url": "https://www.eac.int/documents?Itemid=297&controller=download&file=00c004d5-31e4-4b6d-9dd0-01268535905f&name=EAC+Vol.+AT+1+NO.+31+NOVEMBER+2026.pdf.pdf&task=download.file",
+      "official_mirror_url": null,
+      "archive_path": "data/sources/eac/official/EAC_Vol_AT_1_No_31_2026-11-12.pdf",
+      "sha256": "794d16f3e5716c299ac9f99a5ccb257b3dab5eb915fc89990473aa1bf47d5850",
+      "access_status": "DOWNLOADED_OFFICIAL",
+      "extraction_status": "COMPLETE_KEN_REMISSIONS",
+      "extraction_note": "Legal Notices EAC/388 à EAC/413/2026 : 228 lignes de tableau lues (société, code SH, quantité allouée, produit fini), 219 mesures intégrées, 9 lignes écartées avec leur motif. Lecture par scripts/extraire_remises_eac_388_413_2026.py, recoupée avec deux extractions indépendantes : aucune divergence sur les codes, quantités, unités et produits finis.",
+      "validation_status": "OFFICIAL_HASHED",
+      "tariff_lines_extracted": 219,
       "priority": "CURRENT_CRITICAL"
     }
   ]

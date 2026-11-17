@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "objet": "Kenya / EAC : remises de droits de la Gazette EAC Vol. AT 1 No. 31 du 12 novembre 2026 (Legal Notices EAC/388 à EAC/413/2026), accordées à des fabricants, meuniers et assembleurs NOMMÉS pour des quantités et des produits finis fixés",
+  "destination_iso3": "KEN",
+  "verified_at": "2026-11-17",
+  "etabli": true,
+  "evidence_level": "primaire : Gazette de la Communauté d'Afrique de l'Est, PDF de 37 pages publié par l'EAC, texte lu en entier",
+  "documents_archives": [
+    {
+      "texte_archive": "sources/EAC_Vol_AT_1_No_31_2026-11-12.texte-extrait.txt",
+      "sha256": "0c44a48d87a6cfa1b33b2b539e0155c4d4048d3a200a5576383d6c221530ded7",
+      "pdf_officiel_non_archive_ici": "data/sources/eac/official/EAC_Vol_AT_1_No_31_2026-11-12.pdf (630 Ko, hors de ce répertoire)",
+      "pdf_sha256": "794d16f3e5716c299ac9f99a5ccb257b3dab5eb915fc89990473aa1bf47d5850",
+      "url": "https://www.eac.int/documents?Itemid=297&controller=download&file=00c004d5-31e4-4b6d-9dd0-01268535905f&name=EAC+Vol.+AT+1+NO.+31+NOVEMBER+2026.pdf.pdf&task=download.file",
+      "registre": "data/eac/eac_gazette_register.json"
+    }
+  ],
+  "lecture": {
+    "script": "scripts/extraire_remises_eac_388_413_2026.py",
+    "methode": "tableaux lus avec pymupdf.find_tables ; la suite des codes SH de chaque notice, la société et la quantité de chaque ligne sont contrôlées contre le texte des pages",
+    "lignes_lues": 228,
+    "notices": 26,
+    "recoupement": "deux extractions indépendantes (agents lisant le texte et les pages du PDF, sans voir la lecture du script) : aucune divergence sur les 228 lignes pour les codes, quantités, unités, produits finis et désignations ; deux écarts d'orthographe de société, tranchés sur le texte de la gazette (« Modern Lithrographic Kenya Limited » est écrit ainsi dans le PDF ; « Black Petals Limited » est coupé sur deux lignes du tableau)"
+  },
+  "regle": {
+    "valeur": "Remise de droits à 0 % ou 10 % selon la notice, pour douze mois ou jusqu'au 30 juin 2027, accordée au Kenya à des sociétés nommées, pour des quantités allouées et des produits finis fixés ; conditionnelle à une autorisation datée qui nomme la ligne exacte.",
+    "reference": "Legal Notices EAC/388 à EAC/413/2026, EAC Gazette Vol. AT 1 No. 31 du 12 novembre 2026, fondées sur la section 140 de l'EAC Customs Management Act 2004 et les Regulations 3 et 6 des Duty Remission Regulations 2008",
+    "verbatim": "A remission of import duty is approved for Kenya for the following manufacturer on specified quantities of raw materials and inputs for the manufacture of automobile leaf springs and U bolts at a duty rate of zero percent (0%) for twelve (12) months",
+    "nature": "Remise de droits sur des intrants, accordée à des sociétés nommées, pour une quantité allouée et un produit fini fixés. Ce n'est pas une préférence ZLECAf, ni une remise générale : elle ne vaut que pour les bénéficiaires, contingents et usages gazettés.",
+    "application": "Conditionnelle. Sans autorisation datée qui nomme la ligne exacte, le droit du TEC reste dû ; la préférence ZLECAf du couloir n'est pas touchée. Avec une telle autorisation (champ remise de POST /calcul), le taux de la remise remplace celui du TEC (engine/legal_override_engine.py)."
+  },
+  "notices": {
+    "EAC/388/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of automobile leaf springs and u bolts to be imported for twelve (12) months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 2,
+      "mesures": 2,
+      "societes": 2
+    },
+    "EAC/389/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of exercise books and unit boxes to be imported for twelve (12) months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 31,
+      "mesures": 31,
+      "societes": 8
+    },
+    "EAC/390/2026": {
+      "objet": "Manufacturers and quantities of sugar for industrial use to be imported for twelve (12) months",
+      "taux_pct": 10.0,
+      "duree": "12 mois",
+      "lignes_lues": 4,
+      "mesures": 4,
+      "societes": 4
+    },
+    "EAC/391/2026": {
+      "objet": "Manufacturers and quantities of liquid glucose to be imported for twelve (12) months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 3,
+      "mesures": 3,
+      "societes": 3
+    },
+    "EAC/392/2026": {
+      "objet": "Millers and quantities of wheat grain to be imported up to 30th june, 2027",
+      "taux_pct": 10.0,
+      "duree": "30 juin 2027",
+      "lignes_lues": 5,
+      "mesures": 5,
+      "societes": 3
+    },
+    "EAC/393/2026": {
+      "objet": "Manufacturers and quantities of inputs for the manufacture of goods for export to be imported for twelve (12) months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 42,
+      "mesures": 42,
+      "societes": 23
+    },
+    "EAC/394/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of garments and other textile made up products to be imported for twelve months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 3,
+      "mesures": 3,
+      "societes": 3
+    },
+    "EAC/395/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of garments and other textile made-up products to be imported up to 30th june, 2027",
+      "taux_pct": 10.0,
+      "duree": "30 juin 2027",
+      "lignes_lues": 1,
+      "mesures": 1,
+      "societes": 1
+    },
+    "EAC/396/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of footwear (shoes) to be imported for twelve months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 1,
+      "mesures": 1,
+      "societes": 1
+    },
+    "EAC/397/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of footwear (shoes) to be imported up to 30th june, 2027",
+      "taux_pct": 0.0,
+      "duree": "30 juin 2027",
+      "lignes_lues": 11,
+      "mesures": 11,
+      "societes": 1
+    },
+    "EAC/398/2026": {
+      "objet": "Assemblers and quantities of completely knocked down (ckd) motorcycle kits for the assembly of motorcycles to be imported up to 30th june, 2027",
+      "taux_pct": 10.0,
+      "duree": "30 juin 2027",
+      "lignes_lues": 8,
+      "mesures": 8,
+      "societes": 5
+    },
+    "EAC/399/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of diapers and sanitary towels / pads to be imported for twelve (12) months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 24,
+      "mesures": 22,
+      "societes": 2
+    },
+    "EAC/400/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of filters to be imported for twelve (12) months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 21,
+      "mesures": 21,
+      "societes": 2
+    },
+    "EAC/401/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of switch gears to be imported for twelve (12) months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 47,
+      "mesures": 43,
+      "societes": 3
+    },
+    "EAC/402/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of wire products to be imported for twelve (12) months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 2,
+      "mesures": 2,
+      "societes": 2
+    },
+    "EAC/403/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of animal feeds to be imported up to 30th june, 2027",
+      "taux_pct": 0.0,
+      "duree": "30 juin 2027",
+      "lignes_lues": 1,
+      "mesures": 1,
+      "societes": 1
+    },
+    "EAC/404/2026": {
+      "objet": "Manufacturer and quantities of raw materials and inputs for the manufacture of finished leather to be imported up to 30th june, 2027",
+      "taux_pct": 0.0,
+      "duree": "30 juin 2027",
+      "lignes_lues": 5,
+      "mesures": 4,
+      "societes": 1
+    },
+    "EAC/405/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of clean rooms to be imported up to 30th june, 2027",
+      "taux_pct": 0.0,
+      "duree": "30 juin 2027",
+      "lignes_lues": 3,
+      "mesures": 3,
+      "societes": 1
+    },
+    "EAC/406/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of food and beverage to be imported for twelve (12) months",
+      "taux_pct": 10.0,
+      "duree": "12 mois",
+      "lignes_lues": 1,
+      "mesures": 0,
+      "societes": 1
+    },
+    "EAC/407/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of pasta and spaghetti to be imported for twelve (12) months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 1,
+      "mesures": 1,
+      "societes": 1
+    },
+    "EAC/408/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of furniture to be imported up to 30th june, 2027",
+      "taux_pct": 10.0,
+      "duree": "30 juin 2027",
+      "lignes_lues": 2,
+      "mesures": 2,
+      "societes": 1
+    },
+    "EAC/409/2026": {
+      "objet": "Manufacturers and quantities of raw materials for the manufacture of cold rooms to be imported up to 30th june, 2027",
+      "taux_pct": 0.0,
+      "duree": "30 juin 2027",
+      "lignes_lues": 1,
+      "mesures": 1,
+      "societes": 1
+    },
+    "EAC/410/2026": {
+      "objet": "Assemblers and quantities of raw materials for the assembly of compressed air and fluid transfer systems to be imported up to 30th june, 2027",
+      "taux_pct": 0.0,
+      "duree": "30 juin 2027",
+      "lignes_lues": 3,
+      "mesures": 3,
+      "societes": 3
+    },
+    "EAC/411/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of mosquito repellent to be imported for twelve (12) months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 3,
+      "mesures": 3,
+      "societes": 1
+    },
+    "EAC/412/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of automotive / solar batteries to be imported for twelve (12) months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 1,
+      "mesures": 0,
+      "societes": 1
+    },
+    "EAC/413/2026": {
+      "objet": "Manufacturers and quantities of raw materials and inputs for the manufacture of aluminium milk and beverage cans to be imported for twelve (12) months",
+      "taux_pct": 0.0,
+      "duree": "12 mois",
+      "lignes_lues": 2,
+      "mesures": 2,
+      "societes": 2
+    }
+  },
+  "mesures_integrees": 219,
+  "lignes_ecartees": [
+    {
+      "notice": "EAC/399/2026",
+      "code": "5603.11.10",
+      "societe": "Galentine Care Ltd",
+      "motif": "code absent du TEC servi pour le Kenya : le rattachement à une ligne serait une supposition"
+    },
+    {
+      "notice": "EAC/399/2026",
+      "code": "5603.12.90",
+      "societe": "Galentine Care Ltd",
+      "motif": "code absent du TEC servi pour le Kenya : le rattachement à une ligne serait une supposition"
+    },
+    {
+      "notice": "EAC/401/2026",
+      "code": "7407.10.00",
+      "societe": "Nationwide Electrical Industries Limited",
+      "motif": "droit servi de 0 % : la remise à 0 % ne l'abaisserait pas"
+    },
+    {
+      "notice": "EAC/401/2026",
+      "code": "8504.50.00",
+      "societe": "Nationwide Electrical Industries Limited",
+      "motif": "droit servi de 0 % : la remise à 0 % ne l'abaisserait pas"
+    },
+    {
+      "notice": "EAC/401/2026",
+      "code": "9030.33.00",
+      "societe": "Nationwide Electrical Industries Limited",
+      "motif": "droit servi de 0 % : la remise à 0 % ne l'abaisserait pas"
+    },
+    {
+      "notice": "EAC/401/2026",
+      "code": "9030.33.00",
+      "societe": "Nationwide Electrical Industries Limited",
+      "motif": "droit servi de 0 % : la remise à 0 % ne l'abaisserait pas"
+    },
+    {
+      "notice": "EAC/404/2026",
+      "code": "3208.90.00",
+      "societe": "Alpharama Limited",
+      "motif": "code absent du TEC servi pour le Kenya : le rattachement à une ligne serait une supposition"
+    },
+    {
+      "notice": "EAC/406/2026",
+      "code": "2106.90.20",
+      "societe": "Bidcoro Africa Limited",
+      "motif": "droit servi de 0 % : la remise à 10 % ne l'abaisserait pas"
+    },
+    {
+      "notice": "EAC/412/2026",
+      "code": "8507.90.00",
+      "societe": "Associated Batteries Manufacturers E.A. Limited",
+      "motif": "droit servi de 0 % : la remise à 0 % ne l'abaisserait pas"
+    }
+  ],
+  "ne_tranche_pas": [
+    "Le début des remises « for twelve (12) months » : les notices ne le fixent pas. La date de la gazette (12/11/2026) est retenue comme début, le plus tardif des débuts possibles, donc la remise n'est jamais tenue pour effective avant sa publication ; elle s'achève le 11/11/2027. Les remises « up to 30th June, 2027 » s'achèvent à cette date.",
+    "Les quantités allouées (en tonnes, pièces ou unités selon la notice) : elles sont servies à titre d'information, le calcul ne les compare pas à une quantité importée (le moteur ne gère pas encore ce plafond par société).",
+    "Le rattachement des trois codes que la gazette publie plus finement que le TEC servi (5603.11.10, 5603.12.90, 3208.90.00) : écartés plutôt que rattachés par supposition.",
+    "La condition du paragraphe 2 de certaines notices (vente dans un autre État partenaire : droits du TEC dus) : citée dans le texte de la mesure, non appliquée par le calcul."
+  ],
+  "application_au_calcul": {
+    "route": "POST /calcul",
+    "donnees": "data/eac/legal_overrides.json (une mesure par société et par code, Kenya seul), services/mesures_eac.py (note : une mention par avis, avec les sociétés nommées)",
+    "champs_de_la_mesure": [
+      "named_beneficiary",
+      "allocated_quantity",
+      "allocated_quantity_unit",
+      "finished_product"
+    ],
+    "tests": "backend/tests/test_eac_remises_gazette_31.py"
+  }
+}
