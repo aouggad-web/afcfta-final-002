@@ -66,3 +66,26 @@ def test_le_profil_d_un_pays_acheteur_liste_les_assureurs_a_contacter():
 
     noms = {ins.abbreviation for ins in profil.available_insurers}
     assert {"CAGEX", "ATIDI", "ICIEC", "COFACE"} <= noms
+
+
+def test_les_recommandations_proposent_d_abord_les_assureurs_ouverts_a_tous():
+    """Revue Codex du 17/11/2026 : les recommandations prenaient les trois
+    premiers du registre, toujours CAGEX, SMAEX et COTUNACE, réservées aux
+    entreprises algériennes, marocaines et tunisiennes, sans le dire."""
+    from banking_system.banking_recommendations import get_trade_recommendations
+
+    for pays in ("SN", "KE", "DZ"):
+        assureurs = get_trade_recommendations(pays, 200_000)["recommended_insurance"][
+            "recommended_insurers"
+        ]
+
+        sigles = [a["abbreviation"] for a in assureurs]
+        assert sigles[:2] == ["COFACE", "ATRADIUS"], pays
+        assert sigles[2:4] == ["ATIDI", "ICIEC"], pays
+        assert set(sigles[4:]) == {"CAGEX", "SMAEX", "COTUNACE"}, pays
+        for a in assureurs:
+            assert a["souscription"] in {"ouvert", "etats_membres", "pays"}
+            assert a["website"].startswith("https://")
+            assert "rating" not in a and "capacity_usd_bn" not in a
+        cagex = next(a for a in assureurs if a["abbreviation"] == "CAGEX")
+        assert cagex["souscripteurs"] == ["DZ"]

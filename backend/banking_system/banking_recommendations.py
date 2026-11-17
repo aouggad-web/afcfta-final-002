@@ -90,8 +90,15 @@ class TradeFinanceRecommendation:
             else:
                 product = export_credit_products[0]
 
-        # Recommend insurer(s)
-        insurers = self.insurance_profile.available_insurers[:3]  # Top 3
+        # Assureurs ouverts à tous d'abord, puis multilatéraux (États membres),
+        # puis agences nationales réservées à leur pays (revue Codex du
+        # 17/11/2026 : les trois premiers du registre étaient toujours CAGEX,
+        # SMAEX et COTUNACE, quel que soit l'exportateur).
+        ordre = {"ouvert": 0, "etats_membres": 1, "pays": 2}
+        insurers = sorted(
+            self.insurance_profile.available_insurers,
+            key=lambda ins: ordre.get(ins.souscription, 3),
+        )
 
         return {
             "product_type": product.product_type.value,
@@ -103,8 +110,10 @@ class TradeFinanceRecommendation:
                 {
                     "name": ins.name,
                     "abbreviation": ins.abbreviation,
-                    "rating": ins.credit_rating,
-                    "capacity_usd_bn": ins.total_capacity_usd_bn,
+                    "role": ins.role,
+                    "souscription": ins.souscription,
+                    "souscripteurs": ins.souscripteurs,
+                    "website": ins.website,
                 }
                 for ins in insurers
             ],
