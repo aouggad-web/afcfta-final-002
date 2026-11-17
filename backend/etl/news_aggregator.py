@@ -16,6 +16,7 @@ from datetime import datetime, timedelta, timezone
 from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Optional
+from urllib.parse import urlparse
 
 import aiohttp
 import feedparser
@@ -1201,6 +1202,14 @@ def detect_content_tags(text: str) -> List[str]:
     return tags
 
 
+def lien_web(lien) -> bool:
+    """Audit D10 : seuls les liens http(s) d'un flux sont gardés. feedparser
+    conserve un lien javascript: ou data:, que l'écran mettrait dans un href
+    public ; même règle que pour les articles saisis à la main (routes/news.py)."""
+    morceaux = urlparse(str(lien or "").strip())
+    return morceaux.scheme in ("http", "https") and bool(morceaux.netloc)
+
+
 def generate_article_id(title: str, source: str) -> str:
     """Générer un ID unique pour l'article"""
     return hashlib.md5(f"{title}:{source}".encode()).hexdigest()[:12]
@@ -1314,6 +1323,9 @@ async def fetch_feed(
                     title = entry.get("title", "")
                     summary = entry.get("summary", entry.get("description", ""))
                     link = entry.get("link", "")
+                    if not lien_web(link):
+                        continue
+                    link = link.strip()
 
                     # Nettoyer le résumé (enlever HTML et décoder entités)
                     import html

@@ -84,8 +84,8 @@ La liste compte 30 constats ; le décompte du §1 en annonçait 29 (9 faibles ou
 | D6 | Quota Découverte vidé par les listes générales et des paramètres non comptés | Faible | ✅ corrigé (lot 4) |
 | D7 | `/api/marches/apercu` collecte les sources pendant la requête | Faible | ✅ corrigé (lot 2) |
 | D8 | 110 routes sans appelant exposées | Faible | ✅ corrigé (lot 5) |
-| D9 | `soupsieve` 2.10 vulnérable ; aucune veille des dépendances en CI | Faible | confirmé, non atteignable |
-| D10 | Liens d'actualités sans contrôle de schéma | Info | confirmé |
+| D9 | `soupsieve` 2.10 vulnérable ; aucune veille des dépendances en CI | Faible | ✅ corrigé (lot 6) |
+| D10 | Liens d'actualités sans contrôle de schéma | Info | ✅ corrigé (lot 6) |
 | D11 | Une recherche Découverte est comptée sur un simple GET | Info | ✅ corrigé (lot 4) |
 
 #### D1 — Politique d'accès non appliquée par le serveur 🟠 Élevé
@@ -148,9 +148,11 @@ Seuls les paramètres de la liste blanche sont comptés (`entitlement_guard.py:3
 
 #### D9 — Dépendances 🟢 Faible
 `pip-audit` : `soupsieve` 2.10 (`backend/requirements.txt`), CVE-2026-126190/-126191/-126193 (complexité polynomiale, récursion, retour arrière exponentiel). Non atteignable : aucun code n'utilise `select()` ni `select_one()`. `yarn audit` (production) : 0. Aucune tâche de la CI ne rejoue `pip-audit` ni `yarn audit` : cette alerte n'a été vue qu'à la main. **Correctif** : `soupsieve` ≥ 4.0.0 ; audit hebdomadaire des dépendances en CI.
+✅ **Corrigé (lot 6, PR #809)** : `soupsieve` 4.1.1 (dernière version ; exige Python 3.11.5 ou plus, comme la CI et l'image Docker en 3.11) ; `pip-audit` ne signale plus rien sur `backend/requirements.txt`, `requirements.txt` et `backend/requirements-crawl.txt`, `yarn audit` rien sur les dépendances de production. Nouveau workflow `audit_dependances.yml` : chaque lundi, à la demande et dans toute PR qui touche un fichier de dépendances, `pip-audit` sur les trois fichiers Python et `yarn audit` (gravité modérée et plus) sur l'interface ; un échec prévient par e-mail. Lecture seule, actions épinglées par empreinte, aucune installation côté interface. Tests utilisant BeautifulSoup rejoués avec `soupsieve` 4.1.1 : 524 réussis.
 
 #### D10 — Liens d'actualités 🔵 Info
 Le lien brut du flux est conservé (`etl/news_aggregator.py:1316`) et affiché tel quel (`TableauManager.jsx:287, 533, 561`) ; feedparser garde les liens `javascript:`. Neutralisé aujourd'hui par React (URL `javascript:` bloquées) et la CSP à nonce, alors que #794 ajoute 8 flux lus en direct. **Correctif** : n'accepter que http(s) dans `fetch_feed`, comme `routes/news.py:275-281` pour les articles manuels.
+✅ **Corrigé (lot 6, PR #809)** : `fetch_feed` écarte toute dépêche dont le lien n'est pas http(s) avec un hôte (`javascript:`, `data:`, lien absent), même règle que pour les articles saisis à la main (`etl/news_aggregator.lien_web`). 1 test, en échec sur l'ancien code.
 
 #### D11 — Recherche comptée sur un GET 🔵 Info (plausible)
 `entitlement_guard.py:471-474` compte une recherche sur un GET ; une image sur un site tiers pourrait consommer les recherches d'un compte Découverte. Les cookies partitionnés (`user_auth.py:161-176`) l'empêchent en pratique. Option : ne compter que si `Sec-Fetch-Site` vaut `same-origin` ou `same-site`.
@@ -171,7 +173,7 @@ Le lien brut du flux est conservé (`etl/news_aggregator.py:1316`) et affiché t
 | 3 | ✅ Bornes OEC (`hs_level`, années, limites, flux), disjoncteur sur 5xx et 429, lot d'assurance borné ; D3 rattaché aux routes sans appelant | D4, D5 | fait |
 | 4 | ✅ Listes en aperçu sans chiffres en Découverte (décision du 17/11), pays exigé sur les listes de chiffres sans écran, `countries`, `locode` et corps JSON comptés, recherches d'un site tiers refusées | D6, D11 | fait |
 | 5 | ✅ Routes sans appelant supprimées (85 + `/api/ai/*`) avec le code devenu orphelin ; sonde `trade-series/sources` réservée à l'admin ; `/api/reports/oec-health` en cache | D8, D3 | fait |
-| 6 | `soupsieve` ≥ 4.0.0, audit hebdomadaire des dépendances en CI, liens d'actualités en http(s) | D9, D10 | XS |
+| 6 | ✅ `soupsieve` 4.1.1, audit hebdomadaire des dépendances en CI (`audit_dependances.yml`), liens d'actualités en http(s) | D9, D10 | fait |
 | 7 | Réveil de la préproduction et contrôle passif après synchronisation ; vérifications §6.5 et §6.6 | — | XS |
 
 **Décisions de l'exploitant (16/11/2026)** : quota Découverte pour Finance ; consultation du tarif comptée comme une recherche (la fiche réglementaire, depuis la fusion de #806 le 17/11) ; routes sans appelant tranchées le 17/11 : supprimées (aucun client de l'API à ce jour). **Décision du 17/11/2026** : en Découverte, les listes d'ouverture sont servies en aperçu, sans chiffres ni contacts. Avant l'ouverture commerciale, un test d'intrusion externe, mené par un tiers sur la préproduction, compléterait cet audit.
