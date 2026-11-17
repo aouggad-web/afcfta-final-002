@@ -350,6 +350,10 @@ def vider_cache() -> None:
     """Oublier les pays chargés, le manifeste et les tables (utile aux tests)."""
     global _manifeste, _devises_cache, _tva_cache
     _cache.clear()
+    # Réinitialiser aussi les empreintes déjà vérifiées : un fichier modifié
+    # doit être re-haché et re-vérifié au prochain chargement (c'est ce que
+    # testent les cas d'altération du socle, de la source ou de la nomenclature).
+    _verifies.clear()
     _manifeste = None
     _devises_cache = None
     _tva_cache = None
