@@ -63,14 +63,6 @@ The health endpoints provide real-time monitoring of:
 | `/api/rules-of-origin/{hs_code}` | GET | Get rules of origin for HS code |
 | `/api/statistics` | GET | Get comprehensive ZLECAf statistics |
 
-### Trade Data Endpoints (NEW)
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/trade-data/latest` | GET | Get latest trade data using smart source selection |
-| `/api/trade-data/compare-sources` | GET | Compare all data sources for freshness |
-| `/api/trade-data/wto/{reporter}/{partner}` | GET | Get WTO tariff and trade data directly |
-
 ### Data Export Endpoints (NEW)
 
 | Endpoint | Method | Description |
@@ -81,23 +73,6 @@ The health endpoints provide real-time monitoring of:
 | `/api/export/comparison/csv` | GET | Compare tariffs between countries |
 
 Access: a session on a plan that includes the format (CSV: Starter and above; Excel: Pro and above) or a valid API key. The validation report requires an admin key.
-
-#### Examples:
-
-**Get Latest Trade Data with Smart Selection:**
-```bash
-GET /api/trade-data/latest?reporter=KEN&partner=GHA&hs_code=080300
-```
-
-**Compare Data Sources:**
-```bash
-GET /api/trade-data/compare-sources?countries=KEN&countries=GHA&countries=TZA
-```
-
-**Direct WTO Access:**
-```bash
-GET /api/trade-data/wto/KEN/GHA?product_code=080300
-```
 
 ### Data Export Examples
 

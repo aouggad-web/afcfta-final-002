@@ -10,13 +10,10 @@ MIGRATION STATUS:
 - production.py: COMPLETE
 - logistics.py: COMPLETE
 - countries.py: COMPLETE
-- tariffs.py: COMPLETE
 - statistics.py: COMPLETE
 - etl.py: COMPLETE
 - substitution.py: COMPLETE
-- gemini_analysis.py: COMPLETE (NOW WITH CACHE)
 - rules_of_origin.py: COMPLETE (Extracted from server.py)
-- trade_data.py: COMPLETE (WTO integration)
 """
 
 import logging
@@ -112,7 +109,6 @@ from .rules_of_origin import router as rules_router
 from .statistics import router as statistics_router
 from .strategic_intelligence import router as strategic_router
 from .substitution import router as substitution_router
-from .tariffs import router as tariffs_router
 from .zlecaf_network import router as zlecaf_network_router
 
 # Load Rules of Origin data from the authentic Appendix IV PSR JSON dataset
@@ -163,22 +159,6 @@ from .consultation import router as consultation_router
 from .consultation import router_reglementation as consultation_reglementation_router
 
 try:
-    from .gemini_analysis import router as gemini_router
-
-    GEMINI_AVAILABLE = True
-except ImportError:
-    gemini_router = None
-    GEMINI_AVAILABLE = False
-
-try:
-    from .trade_data import router as trade_data_router
-
-    TRADE_DATA_AVAILABLE = True
-except ImportError:
-    trade_data_router = None
-    TRADE_DATA_AVAILABLE = False
-
-try:
     from routers.export_router import router as export_router
 
     EXPORT_ROUTER_AVAILABLE = True
@@ -201,30 +181,6 @@ try:
 except ImportError:
     regulatory_engine_router = None
     REGULATORY_ENGINE_AVAILABLE = False
-
-try:
-    from .regulatory_compliance import router as regulatory_compliance_router
-
-    REGULATORY_COMPLIANCE_AVAILABLE = True
-except ImportError:
-    regulatory_compliance_router = None
-    REGULATORY_COMPLIANCE_AVAILABLE = False
-
-try:
-    from .regulatory_master_registry import router as regulatory_master_registry_router
-
-    REGULATORY_MASTER_REGISTRY_AVAILABLE = True
-except ImportError:
-    regulatory_master_registry_router = None
-    REGULATORY_MASTER_REGISTRY_AVAILABLE = False
-
-try:
-    from .regulatory_qa import router as regulatory_qa_router
-
-    REGULATORY_QA_AVAILABLE = True
-except ImportError:
-    regulatory_qa_router = None
-    REGULATORY_QA_AVAILABLE = False
 
 try:
     from .cache import router as cache_router
@@ -251,30 +207,6 @@ except ImportError:
     CEMAC_CRAWLERS_AVAILABLE = False
 
 try:
-    from .regional_data import router as regional_data_router
-
-    REGIONAL_DATA_AVAILABLE = True
-except ImportError:
-    regional_data_router = None
-    REGIONAL_DATA_AVAILABLE = False
-
-try:
-    from .investment_intelligence import router as investment_intelligence_router
-
-    INVESTMENT_INTELLIGENCE_AVAILABLE = True
-except ImportError:
-    investment_intelligence_router = None
-    INVESTMENT_INTELLIGENCE_AVAILABLE = False
-
-try:
-    from .uma_regions import router as uma_regions_router
-
-    UMA_REGIONS_AVAILABLE = True
-except ImportError:
-    uma_regions_router = None
-    UMA_REGIONS_AVAILABLE = False
-
-try:
     import importlib.util as _ilu
     import os as _os
 
@@ -289,36 +221,12 @@ except Exception:
     API_V2_AVAILABLE = False
 
 try:
-    from .sadc_intelligence import router as sadc_intelligence_router
-
-    SADC_INTELLIGENCE_AVAILABLE = True
-except ImportError:
-    sadc_intelligence_router = None
-    SADC_INTELLIGENCE_AVAILABLE = False
-
-try:
-    from .ai_intelligence import router as ai_intelligence_router
-
-    AI_INTELLIGENCE_AVAILABLE = True
-except ImportError:
-    ai_intelligence_router = None
-    AI_INTELLIGENCE_AVAILABLE = False
-
-try:
     from .regional_analytics import router as regional_analytics_router
 
     REGIONAL_ANALYTICS_AVAILABLE = True
 except ImportError:
     regional_analytics_router = None
     REGIONAL_ANALYTICS_AVAILABLE = False
-
-try:
-    from .enhanced_search import router as enhanced_search_router
-
-    ENHANCED_SEARCH_AVAILABLE = True
-except ImportError:
-    enhanced_search_router = None
-    ENHANCED_SEARCH_AVAILABLE = False
 
 try:
     from .performance import router as performance_router
@@ -351,22 +259,6 @@ try:
 except ImportError:
     insurance_router = None
     INSURANCE_AVAILABLE = False
-
-try:
-    from api.mobile.lightweight_endpoints import router as mobile_router
-
-    MOBILE_AVAILABLE = True
-except ImportError:
-    mobile_router = None
-    MOBILE_AVAILABLE = False
-
-try:
-    from .currencies import router as currencies_router
-
-    CURRENCIES_AVAILABLE = True
-except ImportError:
-    currencies_router = None
-    CURRENCIES_AVAILABLE = False
 
 try:
     from .exchange_rates import router as exchange_rates_router
@@ -449,7 +341,6 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(countries_router, tags=["Countries"], dependencies=_auth)
     # Tableau de bord de direction : cours des matières premières et bourses africaines.
     api_router.include_router(marches_router, tags=["Marchés africains"], dependencies=_auth)
-    api_router.include_router(tariffs_router, tags=["Tariffs"], dependencies=_auth)
     api_router.include_router(
         statistics_router,
         tags=["Statistics"],
@@ -476,8 +367,6 @@ def register_routes(api_router: APIRouter):
         tags=["Strategic Trade Intelligence"],
         dependencies=_auth + _opportunites_entitlement,
     )
-    if GEMINI_AVAILABLE:
-        api_router.include_router(gemini_router, tags=["AI Analysis"], dependencies=_auth)
     api_router.include_router(
         rules_router, tags=["Rules of Origin"], dependencies=_auth + _roo_entitlement
     )
@@ -517,10 +406,6 @@ def register_routes(api_router: APIRouter):
         tags=["Consultation"],
         dependencies=_auth + _reglementation_entitlement,
     )
-    if TRADE_DATA_AVAILABLE:
-        api_router.include_router(
-            trade_data_router, tags=["Trade Data Sources"], dependencies=_auth
-        )
     if EXPORT_ROUTER_AVAILABLE:
         api_router.include_router(export_router, tags=["Export"], dependencies=_auth)
     if TARIFF_DATA_AVAILABLE:
@@ -537,18 +422,6 @@ def register_routes(api_router: APIRouter):
             # ZLECAf) : même module, même décompte que la fiche (audit D1).
             dependencies=_auth + _reglementation_entitlement,
         )
-    if REGULATORY_COMPLIANCE_AVAILABLE:
-        api_router.include_router(
-            regulatory_compliance_router, tags=["Regulatory Compliance"], dependencies=_auth
-        )
-    if REGULATORY_MASTER_REGISTRY_AVAILABLE:
-        api_router.include_router(
-            regulatory_master_registry_router,
-            tags=["Regulatory Master Registry"],
-            dependencies=_auth,
-        )
-    if REGULATORY_QA_AVAILABLE:
-        api_router.include_router(regulatory_qa_router, tags=["Regulatory QA"], dependencies=_auth)
     if CACHE_ROUTER_AVAILABLE:
         api_router.include_router(cache_router, tags=["Cache Management"], dependencies=_admin)
     if NORTH_AFRICA_CRAWLERS_AVAILABLE:
@@ -559,33 +432,9 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(
             cemac_crawlers_router, tags=["CEMAC Crawlers"], dependencies=_admin
         )
-    if REGIONAL_DATA_AVAILABLE:
-        api_router.include_router(
-            regional_data_router, tags=["Regional Data Inventory"], dependencies=_auth
-        )
-    if INVESTMENT_INTELLIGENCE_AVAILABLE:
-        api_router.include_router(
-            investment_intelligence_router, tags=["Investment Intelligence"], dependencies=_auth
-        )
-    if UMA_REGIONS_AVAILABLE:
-        api_router.include_router(
-            uma_regions_router, tags=["UMA North Africa Regions"], dependencies=_auth
-        )
     if API_V2_AVAILABLE:
         api_router.include_router(
             api_v2_router, tags=["API v2"], dependencies=_auth + _api_entitlement
-        )
-    if AI_INTELLIGENCE_AVAILABLE:
-        api_router.include_router(
-            ai_intelligence_router, tags=["AI Intelligence"], dependencies=_auth
-        )
-    if ENHANCED_SEARCH_AVAILABLE:
-        api_router.include_router(
-            enhanced_search_router, tags=["Enhanced Search"], dependencies=_auth
-        )
-    if SADC_INTELLIGENCE_AVAILABLE:
-        api_router.include_router(
-            sadc_intelligence_router, tags=["SADC Intelligence"], dependencies=_auth
         )
     if REGIONAL_ANALYTICS_AVAILABLE:
         api_router.include_router(
@@ -621,10 +470,6 @@ def register_routes(api_router: APIRouter):
     # clé API dans l'adresse, s'ouvraient à tous sans base de données, ne
     # contrôlaient pas l'origine et laissaient choisir le user_id. Module
     # conservé dans api/websocket/handlers.py, non monté.
-    if MOBILE_AVAILABLE:
-        api_router.include_router(mobile_router, tags=["Mobile API"], dependencies=_auth)
-    if CURRENCIES_AVAILABLE:
-        api_router.include_router(currencies_router, tags=["Currencies"], dependencies=_auth)
     if EXCHANGE_RATES_AVAILABLE:
         api_router.include_router(
             exchange_rates_router, tags=["Exchange Rates"], dependencies=_auth

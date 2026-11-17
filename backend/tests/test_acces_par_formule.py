@@ -974,6 +974,27 @@ def test_sans_le_reglage_le_compte_admin_n_a_aucun_privilege(app_api, monkeypatc
 # ── API v2 : clé API valide ou session Business ─────────────────────────────
 
 
+def test_sonde_des_sources_commerciales_reservee_a_l_admin(app_api, base, monkeypatch):
+    """Audit D3 : la sonde interroge en direct chaque source, Comtrade à clé
+    comprise ; un abonné, même payant, ne la déclenche pas."""
+    from routes import oec
+
+    sondes = []
+
+    async def sonde(*args, **kwargs):
+        sondes.append(args)
+        return {"sources": []}
+
+    monkeypatch.setattr(oec, "probe_sources", sonde)
+    chemin = "/api/oec/trade-series/sources/NGA"
+
+    for formule in ("free", "business"):
+        assert _client(app_api, abonne=ABONNES[formule]).get(chemin).status_code == 403
+    assert sondes == []
+    assert _client(app_api, cle=CLE_ADMIN).get(chemin).status_code == 200
+    assert len(sondes) == 1
+
+
 def test_api_v2_refuse_un_anonyme(app_api):
     reponse = _client(app_api).get("/api/v2/analytics/dashboard")
 

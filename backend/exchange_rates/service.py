@@ -294,19 +294,6 @@ class ExchangeRateService:
             return {}
         return {code: rate for code, rate in bundle.rates.items() if code in AFRICAN_CURRENCY_CODES}
 
-    def get_historical(self, date_str: str, base: str = "USD") -> Optional[RateBundle]:
-        """Return historical rates for a date (YYYY-MM-DD) from in-memory buffer."""
-        for bundle in self._history:
-            if bundle.timestamp.strftime("%Y-%m-%d") == date_str and bundle.base == base.upper():
-                return bundle
-        # Fallback: Frankfurter provides free historical ECB data
-        ff = FrankfurterProvider()
-        rates = ff.fetch_historical(date_str, base)
-        if rates:
-            ts = datetime.fromisoformat(f"{date_str}T00:00:00+00:00")
-            return RateBundle(base=base.upper(), timestamp=ts, source="frankfurter", rates=rates)
-        return None
-
     def get_alerts(self) -> List[RateAlert]:
         """Return all pending rate alerts."""
         return list(self._alerts)

@@ -24,6 +24,12 @@ router = APIRouter(prefix="/reports")
 #: session. `routes/__init__.py` ne pose le contrôle d'abonnement que sur `router`.
 router_diagnostics = APIRouter(prefix="/reports")
 
+# Audit D3 : /reports/oec-health est public et appelait l'OEC à chaque requête.
+# Une réponse par année est gardée une minute, et l'année est bornée à celles du
+# cube : une rafale d'appels ne déclenche plus autant d'appels à l'OEC.
+_DIAGNOSTIC_OEC_TTL_S = 60
+_diagnostic_oec: dict = {}
+
 
 @router.get("/opportunity", summary="Rapport d'opportunité bilatéral (produit)")
 async def opportunity_report(
@@ -378,7 +384,9 @@ async def macro_profile(country_iso3: str):
 @router_diagnostics.get(
     "/oec-health", summary="Diagnostic de connexion OEC (canal gratuit + direct)"
 )
-async def oec_health(year: int = Query(default=2022, description="Année de test")):
+async def oec_health(
+    year: int = Query(default=2022, ge=2018, le=2024, description="Année de test"),
+):
     """
     Vérifie la connexion à l'OEC depuis l'environnement courant, en sondant
     d'abord le **canal gratuit du module Statistiques** (``api.oec.world``,
@@ -392,6 +400,10 @@ async def oec_health(year: int = Query(default=2022, description="Année de test
     import time
 
     from services.real_trade_data_service import real_trade_service
+
+    en_cache = _diagnostic_oec.get(year)
+    if en_cache and time.monotonic() - en_cache[0] < _DIAGNOSTIC_OEC_TTL_S:
+        return en_cache[1]
 
     # 1) Canal gratuit du module Statistiques (celui des Opportunités).
     free_channel = {"reachable": False, "endpoint": "api.oec.world (module Statistiques)"}
@@ -414,7 +426,7 @@ async def oec_health(year: int = Query(default=2022, description="Année de test
     # 2) API directe historique (diagnostic complémentaire).
     direct = await real_trade_service.ping_oec(year)
 
-    return {
+    reponse = {
         "reachable": bool(free_channel.get("reachable") or direct.get("reachable")),
         "primary_channel": "statistics_free",
         "channels": {"statistics_free": free_channel, "direct_api_v2": direct},
@@ -424,6 +436,8 @@ async def oec_health(year: int = Query(default=2022, description="Année de test
             "Statistiques (cache partagé, stale-on-error) ; aucun token requis."
         ),
     }
+    _diagnostic_oec[year] = (time.monotonic(), reponse)
+    return reponse
 
 
 @router.get("/sectoral-analysis", summary="Analyse ISIC4 et IDSB d'une opportunité")

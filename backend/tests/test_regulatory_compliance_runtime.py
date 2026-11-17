@@ -1,7 +1,6 @@
 """Runtime contracts for special formalities and government-mandated providers."""
 
 import pytest
-from routes.regulatory_compliance import router
 from services.regulatory_compliance_service import (
     get_country_regulatory_compliance,
     get_supported_regulatory_countries,
@@ -89,12 +88,6 @@ def test_runtime_returns_a_deep_copy_of_cached_source_data():
 
 def test_unknown_country_remains_unavailable():
     assert get_country_regulatory_compliance("AGO") is None
-
-
-def test_regulatory_router_declares_country_list_and_detail_paths():
-    paths = {route.path for route in router.routes}
-    assert "/regulatory-compliance/countries" in paths
-    assert "/regulatory-compliance/country/{country_iso3}" in paths
 
 
 def test_actor_with_bare_active_status_is_rejected(monkeypatch):

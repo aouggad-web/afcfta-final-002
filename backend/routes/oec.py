@@ -6,7 +6,8 @@ MISE À JOUR 2025: Données 2024 maintenant disponibles
 
 from typing import Literal
 
-from fastapi import APIRouter, HTTPException, Query
+from auth import require_admin
+from fastapi import APIRouter, Depends, HTTPException, Query
 from services.oec_trade_service import (
     AFRICAN_COUNTRIES_OEC,
     DEFAULT_YEAR,
@@ -171,7 +172,9 @@ async def get_oec_country_trade_series(
     )
 
 
-@router.get("/trade-series/sources/{country_iso3}")
+# Audit D3 : la sonde interroge en direct chaque source, Comtrade à clé
+# comprise ; outil d'exploitation sans écran, réservé à l'admin.
+@router.get("/trade-series/sources/{country_iso3}", dependencies=[Depends(require_admin)])
 async def get_trade_series_sources_health(
     country_iso3: str,
     start_year: int = Query(2018, ge=2018, le=DEFAULT_YEAR),

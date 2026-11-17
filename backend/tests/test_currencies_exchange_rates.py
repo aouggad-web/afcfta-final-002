@@ -317,22 +317,6 @@ class TestFrankfurterProvider:
 
         assert result is None
 
-    def test_fetch_historical_success(self):
-        """Historical fetch should pass the date in the URL."""
-        mock_response = MagicMock()
-        mock_response.json.return_value = {"rates": {"ZAR": 17.5}}
-        mock_response.raise_for_status = MagicMock()
-
-        with patch(
-            "exchange_rates.providers.frankfurter.requests.get", return_value=mock_response
-        ) as mock_get:
-            provider = FrankfurterProvider()
-            rates = provider.fetch_historical("2024-01-15", "USD")
-
-        assert rates == {"ZAR": 17.5}
-        call_url = mock_get.call_args[0][0]
-        assert "2024-01-15" in call_url
-
 
 # ── Audit D2 (16/11/2026) : aucune requête ne déclenche d'appel réseau ──────
 

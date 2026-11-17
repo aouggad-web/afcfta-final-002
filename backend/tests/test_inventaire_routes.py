@@ -9,17 +9,14 @@ Ce test classe chaque route de l'application réelle :
 
 - gardée : elle porte une garde d'accès (connexion, module, formule payante,
   quota, admin, rédacteur, export) ;
-- publique : déclarée ici, avec sa raison ;
-- sans appelant : aucun écran ne l'appelle ; son sort (démontée, réservée à
-  l'admin ou gardée) reste à trancher par l'exploitant (décision reportée le
-  16/11/2026). Le nombre de routes par préfixe est figé : une route ajoutée
-  sous l'un d'eux doit être classée.
+- publique : déclarée ici, avec sa raison.
 
-Une route nouvelle qui n'entre dans aucune catégorie fait échouer la CI.
+Les 85 routes sans appelant, longtemps tenues à part, ont été supprimées le
+17/11/2026 (décision de l'exploitant : une route qu'aucun écran n'appelle est
+inutilisée). Une route nouvelle ni gardée ni publique fait échouer la CI.
 """
 
 import sys
-from collections import Counter
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -89,32 +86,6 @@ PUBLIQUES = {
     "/{full_path:path}": "interface React (repli de l'application monopage)",
 }
 
-# Routes sans appelant dans l'interface, encore ouvertes : nombre par préfixe.
-SANS_APPELANT = {
-    "/api/ai/": 5,
-    "/api/ai-intelligence/": 6,
-    "/api/analysis/": 2,
-    "/api/countries/sadc/": 4,
-    "/api/currencies/": 4,
-    "/api/enhanced-search/": 4,
-    "/api/exchange-rates/": 6,
-    "/api/hs6-tariffs/": 1,
-    "/api/investment/": 6,
-    "/api/mining/": 6,
-    "/api/mobile/": 5,
-    "/api/news/algeria/": 1,
-    "/api/regional/": 2,
-    "/api/regional-analytics/": 6,
-    "/api/regions/": 12,
-    "/api/regulatory-compliance/": 2,
-    "/api/regulatory-master-registry/": 3,
-    "/api/regulatory-qa/": 3,
-    "/api/tariffs/": 2,
-    "/api/trade-corridors/": 2,
-    "/api/trade-data/": 3,
-}
-
-
 def _gardee(route):
     pile = list(route.dependant.dependencies)
     while pile:
@@ -125,37 +96,45 @@ def _gardee(route):
     return False
 
 
-def _classer(app):
-    non_classees, sans_appelant = [], Counter()
+def _non_classees(app):
+    non_classees = []
     for route in routes_api(app):
         if _gardee(route) or route.path in PUBLIQUES:
             continue
-        prefixe = next((p for p in SANS_APPELANT if route.path.startswith(p)), None)
-        if prefixe:
-            sans_appelant[prefixe] += 1
-            continue
         methodes = ",".join(sorted(route.original_route.methods - {"HEAD", "OPTIONS"}))
         non_classees.append(f"{methodes} {route.path}")
-    return non_classees, sans_appelant
+    return non_classees
 
 
-def test_chaque_route_est_gardee_publique_ou_declaree_sans_appelant():
+def test_chaque_route_est_gardee_ou_publique():
     from server import app
 
-    non_classees, _ = _classer(app)
-
-    assert non_classees == [], (
-        "Route ni gardée, ni publique, ni déclarée sans appelant : poser une garde "
-        "(routes/__init__.py) ou la déclarer ici avec sa raison."
+    assert _non_classees(app) == [], (
+        "Route ni gardée ni publique : poser une garde (routes/__init__.py) ou la "
+        "déclarer publique ici avec sa raison."
     )
 
 
-def test_aucune_route_ne_s_ajoute_aux_routes_sans_appelant():
+def test_les_routes_sans_appelant_ne_sont_plus_servies():
+    """Préfixes des routeurs supprimés le 17/11/2026 (audit D8, D3)."""
     from server import app
 
-    _, sans_appelant = _classer(app)
+    supprimes = (
+        "/api/ai/", "/api/ai-intelligence/", "/api/analysis/", "/api/countries/sadc/",
+        "/api/currencies/", "/api/enhanced-search/", "/api/hs6-tariffs/", "/api/investment/",
+        "/api/mining/", "/api/mobile/", "/api/news/algeria/", "/api/regional/",
+        "/api/regions/", "/api/regulatory-compliance/", "/api/regulatory-master-registry/",
+        "/api/regulatory-qa/", "/api/tariffs/", "/api/trade-corridors/", "/api/trade-data/",
+    )
+    restantes = [r.path for r in routes_api(app) if r.path.startswith(supprimes)]
+    # Gardées et conservées : export de l'analytique régionale, rafraîchissement
+    # admin des taux de change.
+    analytique = {r.path for r in routes_api(app) if r.path.startswith("/api/regional-analytics/")}
+    change = {r.path for r in routes_api(app) if r.path.startswith("/api/exchange-rates/")}
 
-    assert dict(sans_appelant) == SANS_APPELANT
+    assert restantes == []
+    assert analytique == {"/api/regional-analytics/export"}
+    assert change == {"/api/exchange-rates/refresh"}
 
 
 def test_les_routes_des_modules_reserves_portent_une_garde():

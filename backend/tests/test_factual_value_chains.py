@@ -1,5 +1,5 @@
 """
-Repli factuel des Chaînes de valeur — service ET route.
+Repli factuel des Chaînes de valeur (service).
 
 L'onglet servait, sans clé d'API, un jeu de chaînes ÉCRIT EN DUR : noms
 d'étapes, pays, et valeurs par maillon sans aucune source. Il sert désormais
@@ -16,9 +16,8 @@ CE QUE CES TESTS VERROUILLENT, ET POURQUOI CHACUN
 3. Les rôles distinguent la matière première de la transformation. Confondre
    les deux ferait passer un transformateur pour un producteur — l'erreur que
    tout le module s'attache à éviter.
-4. La ROUTE laisse passer le repli. Ce dernier point existe parce qu'il a déjà
-   échoué une fois ailleurs : un repli vérifié au niveau du service, converti
-   en HTTP 500 par la route, et annoncé livré sans atteindre aucun client.
+La route /api/ai/value-chains, sans appelant, a été retirée le 17/11/2026
+(audit D3, D8) ; seul le service reste vérifié ici.
 """
 
 import os
@@ -29,10 +28,6 @@ if _backend_dir not in sys.path:
     sys.path.insert(0, _backend_dir)
 
 import pytest  # noqa: E402
-from auth import check_ai_quota  # noqa: E402
-from fastapi import FastAPI  # noqa: E402
-from fastapi.testclient import TestClient  # noqa: E402
-from routes import gemini_analysis  # noqa: E402
 from services.claude_trade_service import claude_trade_service  # noqa: E402
 
 RAW_MATERIAL_DIMENSIONS = {"raw_material", "processor"}
@@ -101,26 +96,3 @@ def test_notice_is_localised():
     fr = claude_trade_service.factual_value_chains(lang="fr")["notice"]
     en = claude_trade_service.factual_value_chains(lang="en")["notice"]
     assert fr != en and "indisponible" in fr and "unavailable" in en
-
-
-def test_the_route_lets_the_degraded_payload_through(monkeypatch):
-    # Le point qui a déjà échoué ailleurs : vérifier le service ne vaut pas
-    # vérifier la fonctionnalité.
-    app = FastAPI()
-    app.include_router(gemini_analysis.router, prefix="/api")
-    app.dependency_overrides[check_ai_quota] = lambda: None
-    client = TestClient(app)
-
-    async def fake(**_kwargs):
-        out = claude_trade_service.factual_value_chains(lang="fr")
-        out["error"] = "ANTHROPIC_API_KEY not configured"
-        return out
-
-    monkeypatch.setattr(gemini_analysis.claude_trade_service, "get_value_chains_analysis", fake)
-    response = client.get("/api/ai/value-chains", params={"lang": "fr"})
-
-    assert response.status_code == 200, response.text
-    body = response.json()
-    assert body["degraded"] is True
-    assert body["value_chains"], "le repli n'atteint pas le client"
-    assert body["notice"]
