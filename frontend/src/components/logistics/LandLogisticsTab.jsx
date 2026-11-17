@@ -9,12 +9,15 @@ import CorridorMap from './CorridorMap';
 import CorridorCard from './CorridorCard';
 import CorridorDetailsModal from './CorridorDetailsModal';
 import LandFreightCalculator from './LandFreightCalculator';
+import { ApercuDecouverte } from '../acces/AccesModules';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 export default function LandLogisticsTab({ language = 'fr' }) {
   const [corridors, setCorridors] = useState([]);
+  // Formule Découverte : liste servie en aperçu par le serveur.
+  const [apercu, setApercu] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedCorridor, setSelectedCorridor] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -102,6 +105,7 @@ export default function LandLogisticsTab({ language = 'fr' }) {
       
       const response = await axios.get(url);
       setCorridors(response.data.corridors || []);
+      setApercu(Boolean(response.data.apercu));
     } catch (error) {
       console.error('Error fetching corridors:', error);
       toast({
@@ -114,9 +118,21 @@ export default function LandLogisticsTab({ language = 'fr' }) {
     }
   };
 
+  // La fiche est lue au serveur (comptée en formule Découverte) : la liste
+  // peut n'être qu'un aperçu, sans étapes, opérateurs ni statistiques.
   const handleCorridorClick = async (corridor) => {
-    setSelectedCorridor(corridor);
-    setIsModalOpen(true);
+    try {
+      const response = await axios.get(`${API}/logistics/land/corridors/${corridor.corridor_id}`);
+      setSelectedCorridor(response.data);
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error('Error fetching corridor details:', error);
+      toast({
+        title: t.error,
+        description: t.loadError,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -192,6 +208,8 @@ export default function LandLogisticsTab({ language = 'fr' }) {
         </CardContent>
       </Card>
 
+      {apercu && <ApercuDecouverte language={language} />}
+
       {/* Map or List View */}
       {loading ? (
         <Card>
@@ -218,6 +236,7 @@ export default function LandLogisticsTab({ language = 'fr' }) {
                 corridor={corridor}
                 onOpenDetails={handleCorridorClick}
                 language={language}
+                apercu={apercu}
               />
             ))}
           </div>

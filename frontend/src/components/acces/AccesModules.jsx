@@ -48,6 +48,11 @@ const T = {
     'You have reached the {quota} uses per month included in your plan for this module. The quota renews next month; a higher plan includes more.',
     'بلغت {quota} استخدامات الشهر المشمولة في اشتراكك لهذه الوحدة. تتجدد الحصة الشهر المقبل، وتتيح الباقات الأعلى المزيد.',
   ],
+  apercu: [
+    "Aperçu de la formule Découverte : les chiffres, contacts et tarifs s'affichent en choisissant un pays ou en ouvrant une fiche (une recherche parmi vos 5 du mois).",
+    'Discovery plan preview: figures, contacts and rates appear when you choose a country or open a record (one of your 5 searches this month).',
+    'معاينة باقة الاكتشاف: تظهر الأرقام وجهات الاتصال والتعريفات عند اختيار بلد أو فتح بطاقة (عملية بحث واحدة من عملياتك الخمس هذا الشهر).',
+  ],
   titreAbonnes: ['Réservé aux abonnés', 'Subscribers only', 'مخصص للمشتركين'],
   texteAbonnes: [
     'Ce module est inclus dans les formules payantes. Abonnez-vous pour y accéder.',
@@ -119,6 +124,22 @@ export function ConnexionRequise({ language, onOpenAuth }) {
           <a href={PRICING_URL} style={boutonSecondaire}>{tr(language, T.voirFormules)}</a>
         </div>
       </div>
+    </div>
+  );
+}
+
+/** Au-dessus d'une liste servie en aperçu (formule Découverte, décision de
+ *  l'exploitant du 17/11/2026) : le serveur a retiré chiffres et contacts. */
+export function ApercuDecouverte({ language }) {
+  return (
+    <div
+      role="note"
+      data-testid="apercu-decouverte"
+      className="flex flex-wrap items-center gap-3 rounded-lg border border-[var(--afcfta-border)] bg-[var(--afcfta-card2)] px-4 py-3 text-sm text-[var(--text)]"
+    >
+      <span aria-hidden="true">🔍</span>
+      <p className="flex-1 min-w-[200px]">{tr(language, T.apercu)}</p>
+      <a href={PRICING_URL} className="font-semibold text-[var(--terra)] hover:underline">{tr(language, T.voirFormules)}</a>
     </div>
   );
 }

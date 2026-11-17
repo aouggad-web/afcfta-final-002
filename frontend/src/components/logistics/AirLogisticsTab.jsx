@@ -9,6 +9,7 @@ import AirLogisticsMap from './AirLogisticsMap';
 import AirportCard from './AirportCard';
 import AirportDetailsModal from './AirportDetailsModal';
 import AirFreightCalculator from './AirFreightCalculator';
+import { ApercuDecouverte } from '../acces/AccesModules';
 import { trierPays } from '../../utils/triPays';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -16,6 +17,8 @@ const API = `${BACKEND_URL}/api`;
 
 export default function AirLogisticsTab({ language = 'fr' }) {
   const [airports, setAirports] = useState([]);
+  // Formule Découverte : liste sans pays servie en aperçu par le serveur.
+  const [apercu, setApercu] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedAirport, setSelectedAirport] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -100,6 +103,7 @@ export default function AirLogisticsTab({ language = 'fr' }) {
       
       const response = await axios.get(url);
       setAirports(response.data.airports || []);
+      setApercu(Boolean(response.data.apercu));
     } catch (error) {
       console.error('Error fetching airports:', error);
       toast({
@@ -409,6 +413,8 @@ export default function AirLogisticsTab({ language = 'fr' }) {
         </CardContent>
       </Card>
 
+      {apercu && <ApercuDecouverte language={language} />}
+
       {/* Map or List View */}
       {loading ? (
         <Card>
@@ -434,6 +440,7 @@ export default function AirLogisticsTab({ language = 'fr' }) {
                 airport={airport}
                 onOpenDetails={handleAirportClick}
                 language={language}
+                apercu={apercu}
               />
             ))}
           </div>

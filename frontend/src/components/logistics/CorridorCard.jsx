@@ -34,7 +34,7 @@ const getStatusColor = (status) => {
   return 'bg-[var(--afcfta-card2)] text-[var(--text)]';
 };
 
-export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' }) {
+export default function CorridorCard({ corridor, onOpenDetails, language = 'fr', apercu = false }) {
   const texts = {
     fr: {
       length: "Longueur",
@@ -143,7 +143,8 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
           </div>
         )}
 
-        {/* Nodes and Operators */}
+        {/* Nodes and Operators — absents de l'aperçu (formule Découverte) : dans la fiche. */}
+        {!apercu && (
         <div className="grid grid-cols-3 gap-2 mb-4">
           <div className="bg-[var(--afcfta-card2)] p-2 rounded text-center">
             <p className="text-xs font-semibold text-[var(--text)]">🚧 {t.nodes}</p>
@@ -158,6 +159,7 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
             <p className="text-lg font-bold text-[var(--terra)]">{operators.length}</p>
           </div>
         </div>
+        )}
 
         {/* Infrastructure details preview */}
         {corridor.infra_details && (

@@ -4,7 +4,7 @@ import { Button } from '../ui/button';
 import { pick, intlLocale } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
 
-export default function AirportCard({ airport, onOpenDetails, language = 'fr' }) {
+export default function AirportCard({ airport, onOpenDetails, language = 'fr', apercu = false }) {
   const texts = {
     fr: {
       freightCargo: "Fret (Cargo)",
@@ -70,6 +70,8 @@ export default function AirportCard({ airport, onOpenDetails, language = 'fr' })
       </CardHeader>
 
       <CardContent className="pt-4">
+        {/* Aperçu (formule Découverte) : chiffres dans la fiche, comptée comme une recherche. */}
+        {!apercu && (<>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           {/* Cargo Fret */}
           <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-3 rounded-lg border-l-4 border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
@@ -132,6 +134,7 @@ export default function AirportCard({ airport, onOpenDetails, language = 'fr' })
             </p>
           </div>
         </div>
+        </>)}
 
         <Button 
           onClick={() => onOpenDetails(airport)} 

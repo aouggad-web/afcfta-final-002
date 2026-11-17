@@ -5,7 +5,7 @@ import { Badge } from '../ui/badge';
 import { intlLocale } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
 
-export default function PortCard({ port, onOpenDetails, language = 'fr' }) {
+export default function PortCard({ port, onOpenDetails, language = 'fr', apercu = false }) {
   const texts = {
     fr: {
       containersTeu: "Conteneurs (TEU)",
@@ -98,6 +98,8 @@ export default function PortCard({ port, onOpenDetails, language = 'fr' }) {
       </CardHeader>
 
       <CardContent className="pt-4">
+        {/* Aperçu (formule Découverte) : chiffres dans la fiche, comptée comme une recherche. */}
+        {!apercu && (<>
         {/* Main traffic KPIs */}
         <div className="grid grid-cols-3 gap-2 mb-3">
           <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-2 rounded-lg border-l-4 border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
@@ -166,6 +168,7 @@ export default function PortCard({ port, onOpenDetails, language = 'fr' }) {
             </div>
           )}
         </div>
+        </>)}
 
         <Button 
           onClick={() => onOpenDetails(port)} 

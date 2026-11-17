@@ -485,6 +485,200 @@ def test_recherches_simultanees_ne_depassent_pas_le_quota(base):
     assert len(doc["termes"]) == 5
 
 
+# ── Listes générales en Découverte (audit D6, décision du 17/11/2026) ───────
+# Sans pays choisi, une liste qui portait chaque fiche complète n'est servie
+# qu'en aperçu (identité, position) ; choisir un pays ou ouvrir une fiche
+# compte une recherche. Les formules payantes gardent la liste complète.
+
+LISTES_EN_APERCU = [
+    # (chemin, clé de la liste, champ de détail absent de l'aperçu)
+    ("/api/logistics/ports", "ports", "port_authority"),
+    ("/api/logistics/ports/top/teu", "ports", "latest_stats"),
+    ("/api/logistics/ports/search?q=port", "results", "port_authority"),
+    ("/api/logistics/air/airports", "airports", "historical_stats"),
+    ("/api/logistics/air/airports/top/cargo", "airports", "historical_stats"),
+    ("/api/logistics/free-zones", "zones", "authority"),
+    ("/api/logistics/land/corridors", "corridors", "operators"),
+    ("/api/logistics/land/search?q=corridor", "results", "operators"),
+    ("/api/logistics/land/operators", "operators", "fleet_size"),
+    ("/api/logistics/land/fees/corridors", "corridors", "operators"),
+    ("/api/banking/register", "results", "phone"),
+]
+
+
+def _elements(corps, cle):
+    liste = corps[cle]
+    if isinstance(liste, dict):  # intervenants, rangés par catégorie
+        return [e for elements in liste.values() for e in elements]
+    return liste
+
+
+@pytest.mark.parametrize("chemin,cle,detail", LISTES_EN_APERCU)
+def test_listes_generales_en_apercu_en_decouverte(app_api, base, chemin, cle, detail):
+    corps = _client(app_api, abonne=ABONNES["free"]).get(chemin).json()
+
+    elements = _elements(corps, cle)
+    assert elements, chemin
+    assert not any(detail in e for e in elements), chemin
+    assert all("phone" not in e and "email" not in e and "contacts" not in e for e in elements)
+    if chemin != "/api/logistics/land/fees/corridors":
+        assert corps["apercu"] is True
+
+
+@pytest.mark.parametrize("chemin,cle,detail", LISTES_EN_APERCU)
+def test_listes_generales_completes_pour_les_formules_payantes(app_api, chemin, cle, detail):
+    corps = _client(app_api, abonne=ABONNES["starter"]).get(chemin).json()
+
+    assert "apercu" not in corps
+    assert any(detail in e for e in _elements(corps, cle)), chemin
+
+
+def test_intervenants_en_apercu_sans_coordonnees(app_api, base):
+    client = _client(app_api, abonne=ABONNES["free"])
+
+    corps = client.get("/api/logistics/operators").json()
+    elements = _elements(corps, "operators")
+    assert corps["apercu"] is True and elements
+    assert not any("contacts" in e or "fleet_teu" in e for e in elements)
+    # La fiche d'un intervenant reste complète, et compte une recherche.
+    fiche = client.get(f"/api/logistics/operators/{elements[0]['id']}").json()
+    assert "contacts" in fiche
+    (doc,) = base.recherches_modules.docs.values()
+    assert doc["termes"] == [elements[0]["id"].upper()]
+
+
+def test_ouvrir_les_listes_ne_compte_aucune_recherche(app_api, base):
+    client = _client(app_api, abonne=ABONNES["free"])
+
+    for chemin in ("/api/logistics/ports", "/api/logistics/air/airports", "/api/logistics/free-zones",
+                   "/api/logistics/land/corridors", "/api/logistics/operators", "/api/banking/register"):
+        assert client.get(chemin).status_code == 200, chemin
+    assert base.recherches_modules.docs == {}
+
+
+def test_choisir_un_pays_ou_ouvrir_une_fiche_donne_le_detail_et_compte(app_api, base):
+    client = _client(app_api, abonne=ABONNES["free"])
+
+    ports = client.get("/api/logistics/ports?country_iso=MAR").json()
+    assert "apercu" not in ports and all("port_authority" in p for p in ports["ports"])
+    port_id = client.get("/api/logistics/ports").json()["ports"][0]["port_id"]
+    assert "port_authority" in client.get(f"/api/logistics/ports/{port_id}").json()
+    zones = client.get("/api/logistics/free-zones?country_iso=MAR").json()
+    assert zones["zones"] and all("authority" in z for z in zones["zones"])
+    banques = client.get("/api/banking/register?country_code=MA").json()
+    assert "apercu" not in banques and any("phone" in b for b in banques["results"])
+
+    termes = {(d["module"], t) for d in base.recherches_modules.docs.values() for t in d["termes"]}
+    assert termes == {("logistics", "MAR"), ("logistics", port_id.upper()), ("finance", "MA")}
+
+
+def test_recherche_dans_le_registre_sans_pays_reste_un_apercu(app_api, base):
+    corps = _client(app_api, abonne=ABONNES["free"]).get("/api/banking/register?search=bank").json()
+
+    assert corps["apercu"] is True
+    assert corps["results"] and not any("swift_code" in b for b in corps["results"])
+
+
+@pytest.mark.parametrize(
+    "chemin",
+    ["/api/production/macro", "/api/production/agriculture", "/api/production/agriculture/projections",
+     "/api/production/manufacturing", "/api/production/manufacturing/measured", "/api/production/mining",
+     "/api/production/manufacturing?isic_code=10", "/api/production/macro?sector=A",
+     "/api/faostat/production", "/api/logistics/fees/thc"],
+)
+def test_listes_de_chiffres_sans_ecran_exigent_un_pays_en_decouverte(app_api, base, chemin):
+    reponse = _client(app_api, abonne=ABONNES["free"]).get(chemin)
+
+    assert reponse.status_code == 400, chemin
+    assert reponse.json()["detail"]["error"] == "filter_required"
+    assert base.recherches_modules.docs == {}
+
+
+def test_listes_de_chiffres_avec_un_pays_ou_pour_les_formules_payantes(app_api, base):
+    gratuit = _client(app_api, abonne=ABONNES["free"])
+
+    assert gratuit.get("/api/production/mining?country_iso3=GHA").status_code == 200
+    assert gratuit.get("/api/production/mining?commodity=Gold").status_code == 200
+    assert gratuit.get("/api/logistics/fees/thc?locode=MAPTM").status_code == 200
+    termes = {(d["module"], t) for d in base.recherches_modules.docs.values() for t in d["termes"]}
+    assert termes == {("production", "GHA"), ("production", "GOLD"), ("logistics", "MAPTM")}
+
+    payant = _client(app_api, abonne=ABONNES["starter"])
+    assert payant.get("/api/production/mining").status_code == 200
+    assert payant.get("/api/logistics/fees/thc").status_code == 200
+
+
+def test_une_liste_de_pays_compte_un_terme_par_pays():
+    from starlette.requests import Request
+
+    requete = Request({
+        "type": "http", "method": "GET", "path": "/x", "headers": [],
+        "query_string": b"countries=MAR,DZA,%20egy&commodity=15&locode=MAPTM&year=2023",
+        "path_params": {},
+    })
+    assert entitlement_guard.termes_de_recherche(requete) == ["15", "DZA", "EGY", "MAPTM", "MAR"]
+
+
+def test_comparer_six_pays_d_un_coup_depasse_le_quota(app_api, base):
+    reponse = _client(app_api, abonne=ABONNES["free"]).get(
+        "/api/faostat/compare?countries=MAR,DZA,EGY,TUN,NGA,KEN&commodity=15"
+    )
+
+    assert reponse.status_code == 429
+    assert base.recherches_modules.docs == {}
+
+
+def test_le_pays_du_corps_json_compte_une_recherche(app_api, base):
+    client = _client(app_api, abonne=ABONNES["free"])
+    corps = {"product_type": "export_credit", "contract_value_usd": 100000}
+
+    for pays in ("DZ", "MA", "TN", "EG", "NG"):
+        assert client.post("/api/insurance/quote", json={**corps, "country_code": pays}).status_code == 200
+    # Le même pays, par une autre route : déjà cherché.
+    assert client.get("/api/insurance/countries/DZ/profile").status_code == 200
+
+    reponse = client.post("/api/insurance/quote", json={**corps, "country_code": "KE"})
+    assert reponse.status_code == 429
+    (doc,) = base.recherches_modules.docs.values()
+    assert (doc["module"], sorted(doc["termes"])) == ("finance", ["DZ", "EG", "MA", "NG", "TN"])
+
+
+# ── Recherche déclenchée par une page tierce (audit D11) ───────────────────
+
+
+def test_recherche_venue_d_un_autre_site_refusee_sans_compter(base):
+    client = _client(_app_consultation(), abonne=ABONNES["free"])
+
+    reponse = client.get("/api/sonde/DZA", headers={"Sec-Fetch-Site": "cross-site"})
+
+    assert reponse.status_code == 403
+    assert reponse.json()["detail"]["error"] == "cross_site_request"
+    assert base.recherches_modules.docs == {}
+
+
+def test_recherche_de_l_interface_acceptee(base, monkeypatch):
+    monkeypatch.setenv("ALLOWED_ORIGINS", "https://app.exemple.invalid")
+    client = _client(_app_consultation(), abonne=ABONNES["free"])
+
+    assert client.get("/api/sonde/DZA", headers={"Sec-Fetch-Site": "same-origin"}).status_code == 200
+    assert client.get("/api/sonde/MAR", headers={"Sec-Fetch-Site": "same-site"}).status_code == 200
+    # Interface servie depuis une origine autorisée d'un autre site (CORS).
+    entete = {"Sec-Fetch-Site": "cross-site", "Origin": "https://app.exemple.invalid"}
+    assert client.get("/api/sonde/TUN", headers=entete).status_code == 200
+    # Origine non autorisée, ou ouverture du module sans terme : rien de compté.
+    entete = {"Sec-Fetch-Site": "cross-site", "Origin": "https://autre.exemple.invalid"}
+    assert client.get("/api/sonde/EGY", headers=entete).status_code == 403
+    assert client.get("/api/sonde", headers={"Sec-Fetch-Site": "cross-site"}).status_code == 200
+    (doc,) = base.recherches_modules.docs.values()
+    assert doc["termes"] == ["DZA", "MAR", "TUN"]
+
+
+def test_page_tierce_sans_effet_sur_une_formule_payante(base):
+    client = _client(_app_consultation(), abonne=ABONNES["starter"])
+
+    assert client.get("/api/sonde/DZA", headers={"Sec-Fetch-Site": "cross-site"}).status_code == 200
+
+
 # ── Module Opportunités : réservé aux abonnements payants ───────────────────
 
 

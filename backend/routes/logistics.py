@@ -6,7 +6,8 @@ Multimodal logistics platform for African trade infrastructure
 import logging
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException
+from entitlement_guard import apercu, exiger_un_filtre, recherches_limitees
+from fastapi import APIRouter, HTTPException, Request
 from free_zones_data import get_free_zones_by_country
 from logistics_air_data import (
     get_airport_by_id,
@@ -88,18 +89,98 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/logistics")
 
+# Formule Découverte (décision de l'exploitant du 17/11/2026, audit D6) : une
+# liste sans pays choisi n'est servie qu'en aperçu, identité et position ; les
+# chiffres, terminaux, contacts et tarifs s'obtiennent en choisissant un pays
+# ou en ouvrant une fiche, ce qui compte une recherche.
+_APERCU_PORT = (
+    "port_id",
+    "port_name",
+    "un_locode",
+    "port_type",
+    "country_iso",
+    "country_name",
+    "geo_lat",
+    "geo_lon",
+)
+_APERCU_AEROPORT = (
+    "airport_id",
+    "airport_name",
+    "iata_code",
+    "icao_code",
+    "country_iso",
+    "country_name",
+    "geo_lat",
+    "geo_lon",
+)
+_APERCU_ZONE_FRANCHE = ("id", "name", "country", "country_iso", "type", "status", "location")
+_APERCU_CORRIDOR = (
+    "corridor_id",
+    "corridor_name",
+    "corridor_type",
+    "countries_spanned",
+    "start_node",
+    "end_node",
+    "length_km",
+    "status",
+    "importance",
+    "coordinates",
+    "source_org",
+)
+_APERCU_CORRIDOR_CALCULATEUR = (
+    "corridor_id",
+    "name",
+    "type",
+    "countries",
+    "length_km",
+    "modes",
+    "importance",
+    "start_node",
+    "end_node",
+    "status",
+)
+_APERCU_OPERATEUR_TERRESTRE = (
+    "operator_name",
+    "operator_type",
+    "country_iso",
+    "corridor_id",
+    "corridor_name",
+)
+_APERCU_INTERVENANT = (
+    "id",
+    "name",
+    "type",
+    "type_label",
+    "hq",
+    "country_iso",
+    "countries",
+    "africa_presence",
+    "iata_code",
+)
+
 # ==========================================
 # MARITIME PORTS ENDPOINTS
 # ==========================================
 
 
 @router.get("/ports")
-async def get_ports(country_iso: Optional[str] = None):
+async def get_ports(request: Request, country_iso: Optional[str] = None):
     """
     Get all maritime ports or filter by country ISO code
     Query params:
     - country_iso: Filter ports by country (e.g., MAR, NGA, ZAF)
     """
+    result = _ports(country_iso)
+    if not country_iso and recherches_limitees(request):
+        return {
+            "count": result["count"],
+            "ports": apercu(result["ports"], _APERCU_PORT),
+            "apercu": True,
+        }
+    return result
+
+
+def _ports(country_iso: Optional[str]) -> dict:
     if CACHE_AVAILABLE:
         cache_key = generate_cache_key("logistics:ports", country_iso or "all")
         cached = cache_get(cache_key)
@@ -118,7 +199,7 @@ async def get_ports(country_iso: Optional[str] = None):
 
 
 @router.get("/ports/search")
-async def search_ports_endpoint(q: str):
+async def search_ports_endpoint(request: Request, q: str):
     """
     Search ports by name, UN LOCODE, or country name
     Query params:
@@ -127,11 +208,18 @@ async def search_ports_endpoint(q: str):
     if len(q) < 2:
         raise HTTPException(status_code=400, detail="Search query must be at least 2 characters")
     results = search_ports(q)
+    if recherches_limitees(request):
+        return {
+            "query": q,
+            "count": len(results),
+            "results": apercu(results, _APERCU_PORT),
+            "apercu": True,
+        }
     return {"query": q, "count": len(results), "results": results}
 
 
 @router.get("/ports/type/{port_type}")
-async def get_ports_filtered_by_type(port_type: str):
+async def get_ports_filtered_by_type(request: Request, port_type: str):
     """
     Get ports filtered by type
     Port types: Hub Transhipment, Hub Regional, Maritime Commercial
@@ -142,11 +230,18 @@ async def get_ports_filtered_by_type(port_type: str):
             status_code=400, detail=f"Invalid port type. Valid types: {', '.join(valid_types)}"
         )
     ports = get_ports_by_type(port_type)
+    if recherches_limitees(request):
+        return {
+            "port_type": port_type,
+            "count": len(ports),
+            "ports": apercu(ports, _APERCU_PORT),
+            "apercu": True,
+        }
     return {"port_type": port_type, "count": len(ports), "ports": ports}
 
 
 @router.get("/ports/top/teu")
-async def get_top_ports_teu(limit: int = 20):
+async def get_top_ports_teu(request: Request, limit: int = 20):
     """
     Get top ports by container throughput (TEU)
     Query params:
@@ -155,6 +250,8 @@ async def get_top_ports_teu(limit: int = 20):
     if limit > 50:
         limit = 50
     ports = get_top_ports_by_teu(limit=limit)
+    if recherches_limitees(request):
+        return {"count": len(ports), "ports": apercu(ports, _APERCU_PORT), "apercu": True}
     return {"count": len(ports), "ports": ports}
 
 
@@ -214,7 +311,7 @@ async def get_logistics_statistics():
 
 
 @router.get("/air/airports")
-async def get_airports(country_iso: Optional[str] = None):
+async def get_airports(request: Request, country_iso: Optional[str] = None):
     """
     Get all airports or filter by country ISO code
     Query params:
@@ -222,6 +319,12 @@ async def get_airports(country_iso: Optional[str] = None):
     """
     try:
         airports = get_all_airports(country_iso=country_iso)
+        if not country_iso and recherches_limitees(request):
+            return {
+                "count": len(airports),
+                "airports": apercu(airports, _APERCU_AEROPORT),
+                "apercu": True,
+            }
         return {"count": len(airports), "airports": airports}
     except Exception as e:
         logger.error(f"Error loading airports data: {e}", exc_info=True)
@@ -229,7 +332,7 @@ async def get_airports(country_iso: Optional[str] = None):
 
 
 @router.get("/air/airports/top/cargo")
-async def get_top_airports_cargo(limit: int = 20):
+async def get_top_airports_cargo(request: Request, limit: int = 20):
     """
     Get top airports by cargo throughput (tons)
     Query params:
@@ -238,11 +341,17 @@ async def get_top_airports_cargo(limit: int = 20):
     if limit > 50:
         limit = 50
     airports = get_top_airports_by_cargo(limit=limit)
+    if recherches_limitees(request):
+        return {
+            "count": len(airports),
+            "airports": apercu(airports, _APERCU_AEROPORT),
+            "apercu": True,
+        }
     return {"count": len(airports), "airports": airports}
 
 
 @router.get("/air/airports/search")
-async def search_airports_endpoint(q: str):
+async def search_airports_endpoint(request: Request, q: str):
     """
     Search airports by name, IATA code, or country name
     Query params:
@@ -251,6 +360,13 @@ async def search_airports_endpoint(q: str):
     if len(q) < 2:
         raise HTTPException(status_code=400, detail="Search query must be at least 2 characters")
     results = search_airports(q)
+    if recherches_limitees(request):
+        return {
+            "query": q,
+            "count": len(results),
+            "results": apercu(results, _APERCU_AEROPORT),
+            "apercu": True,
+        }
     return {"query": q, "count": len(results), "results": results}
 
 
@@ -360,7 +476,7 @@ async def get_air_freight_cost_endpoint(
 
 
 @router.get("/free-zones")
-async def get_free_zones(country_iso: Optional[str] = None):
+async def get_free_zones(request: Request, country_iso: Optional[str] = None):
     """
     Get African Free Trade Zones (Zones Franches)
     Query params:
@@ -368,6 +484,12 @@ async def get_free_zones(country_iso: Optional[str] = None):
     """
     try:
         zones = get_free_zones_by_country(country_iso)
+        if not country_iso and recherches_limitees(request):
+            return {
+                "count": len(zones),
+                "zones": apercu(zones, _APERCU_ZONE_FRANCHE),
+                "apercu": True,
+            }
         return {"count": len(zones), "zones": zones}
     except Exception as e:
         logger.error(f"Error loading free zones data: {e}", exc_info=True)
@@ -381,7 +503,7 @@ async def get_free_zones(country_iso: Optional[str] = None):
 
 @router.get("/land/corridors")
 async def get_land_corridors(
-    corridor_type: str = None, importance: str = None, country_iso: str = None
+    request: Request, corridor_type: str = None, importance: str = None, country_iso: str = None
 ):
     """
     Get all land corridors (road/rail) with optional filters
@@ -395,6 +517,12 @@ async def get_land_corridors(
         corridors = get_corridors_by_country(country_iso)
     else:
         corridors = get_all_corridors(corridor_type=corridor_type, importance=importance)
+        if recherches_limitees(request):
+            return {
+                "count": len(corridors),
+                "corridors": apercu(corridors, _APERCU_CORRIDOR),
+                "apercu": True,
+            }
 
     return {"count": len(corridors), "corridors": corridors}
 
@@ -428,7 +556,7 @@ async def get_land_nodes(node_type: str = None, osbp_only: bool = False):
 
 
 @router.get("/land/operators")
-async def get_land_operators(operator_type: str = None):
+async def get_land_operators(request: Request, operator_type: str = None):
     """
     Get all land transport operators
 
@@ -440,16 +568,29 @@ async def get_land_operators(operator_type: str = None):
     else:
         operators = get_all_operators()
 
+    if recherches_limitees(request):
+        return {
+            "count": len(operators),
+            "operators": apercu(operators, _APERCU_OPERATEUR_TERRESTRE),
+            "apercu": True,
+        }
     return {"count": len(operators), "operators": operators}
 
 
 @router.get("/land/search")
-async def search_land_corridors(q: str):
+async def search_land_corridors(request: Request, q: str):
     """Search corridors by name, country, or description"""
     if not q or len(q) < 2:
         raise HTTPException(status_code=400, detail="Query must be at least 2 characters")
 
     results = search_corridors(q)
+    if recherches_limitees(request):
+        return {
+            "query": q,
+            "count": len(results),
+            "results": apercu(results, _APERCU_CORRIDOR),
+            "apercu": True,
+        }
     return {"query": q, "count": len(results), "results": results}
 
 
@@ -465,9 +606,11 @@ async def get_land_logistics_statistics():
 
 
 @router.get("/land/fees/corridors")
-async def get_land_freight_corridors():
+async def get_land_freight_corridors(request: Request):
     """Liste des corridors terrestres sélectionnables dans le calculateur de fret."""
     corridors = get_land_corridors_list()
+    if recherches_limitees(request):
+        corridors = apercu(corridors, _APERCU_CORRIDOR_CALCULATEUR)
     return {
         "count": len(corridors),
         "corridors": corridors,
@@ -610,7 +753,7 @@ async def get_total_shipping_cost(origin: str, destination: str, container_type:
 
 
 @router.get("/fees/thc")
-async def get_terminal_handling_charges(locode: Optional[str] = None):
+async def get_terminal_handling_charges(request: Request, locode: Optional[str] = None):
     """
     Get Terminal Handling Charges (THC) for African ports.
 
@@ -620,6 +763,11 @@ async def get_terminal_handling_charges(locode: Optional[str] = None):
     Returns official THC rates in USD for TEU, FEU, and FEU HC containers.
     Source: Individual port authority tariff books (2024 editions).
     """
+    exiger_un_filtre(
+        request,
+        locode,
+        message="Formule Découverte : précisez le port (locode), compté comme une recherche.",
+    )
     if locode:
         thc = get_port_thc(locode.upper())
         if not thc:
@@ -641,7 +789,7 @@ async def get_terminal_handling_charges(locode: Optional[str] = None):
 
 
 @router.get("/operators")
-async def get_logistics_operators(category: Optional[str] = None):
+async def get_logistics_operators(request: Request, category: Optional[str] = None):
     """
     Retourne tous les intervenants logistiques africains avec leurs coordonnées réelles.
 
@@ -662,12 +810,16 @@ async def get_logistics_operators(category: Optional[str] = None):
             status_code=404,
             detail=f"Catégorie '{category}' inconnue. Catégories: {list(LOGISTICS_OPERATORS.keys())}",
         )
-    return {
+    reponse = {
         "operators": data,
         "summary": summary,
         "data_source": "Sites officiels des opérateurs (HQ vérifiés), Lloyd's List, IATA, BIMCO, UNCTAD 2025",
         "last_updated": "Juin 2026",
     }
+    if recherches_limitees(request):
+        reponse["operators"] = {cat: apercu(ops, _APERCU_INTERVENANT) for cat, ops in data.items()}
+        reponse["apercu"] = True
+    return reponse
 
 
 @router.get("/operators/summary")

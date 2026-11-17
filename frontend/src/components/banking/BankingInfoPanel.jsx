@@ -6,6 +6,7 @@ import { Button } from '../ui/button';
 import { montantUnite } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
 import { trierPays } from '../../utils/triPays';
+import { ApercuDecouverte } from '../acces/AccesModules';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -1519,28 +1520,37 @@ function RegisterTab({ t, countries, language }) {
   const [filterCountry, setFilterCountry] = useState('');
   const [tradeOnly, setTradeOnly] = useState(false);
   const [results, setResults] = useState([]);
-  const [total, setTotal] = useState(0);
+  // Formule Découverte : sans pays choisi, le registre est un aperçu (sans
+  // coordonnées) ; choisir un pays compte une recherche.
+  const [apercu, setApercu] = useState(false);
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState(null);
 
+  // La recherche par nom filtre la liste reçue, sans requête : envoyée au
+  // serveur, chaque frappe comptait une recherche en formule Découverte.
   const fetchRegister = useCallback(async () => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
-      if (search) params.set('search', search);
       if (filterType) params.set('bank_type', filterType);
       if (filterCountry) params.set('country_code', filterCountry);
       if (tradeOnly) params.set('trade_finance_only', 'true');
       const res = await axios.get(`${API}/banking/register?${params}`);
       setResults(res.data.results || []);
-      setTotal(res.data.total || 0);
+      setApercu(Boolean(res.data.apercu));
     } catch {
       setResults([]);
-      setTotal(0);
     } finally {
       setLoading(false);
     }
-  }, [search, filterType, filterCountry, tradeOnly]);
+  }, [filterType, filterCountry, tradeOnly]);
+
+  const recherche = search.trim().toLowerCase();
+  const affiches = recherche
+    ? results.filter((b) =>
+      [b.name, b.abbreviation, b.country_name, b.country_code]
+        .some((v) => v && String(v).toLowerCase().includes(recherche)))
+    : results;
 
   useEffect(() => {
     fetchRegister();
@@ -1595,13 +1605,15 @@ function RegisterTab({ t, countries, language }) {
         </label>
       </div>
 
-      <p className="text-xs text-[var(--afcfta-muted)]">{total} {t.resultCount}</p>
+      {apercu && <ApercuDecouverte language={language} />}
+
+      <p className="text-xs text-[var(--afcfta-muted)]">{affiches.length} {t.resultCount}</p>
 
       {loading && <div className="text-center py-6 text-[var(--afcfta-muted)]">{t.loading}</div>}
 
       {!loading && (
         <div className="space-y-2">
-          {results.map((bank, i) => {
+          {affiches.map((bank, i) => {
             const isOpen = expanded === i;
             return (
               <div
@@ -1632,6 +1644,16 @@ function RegisterTab({ t, countries, language }) {
 
                 {isOpen && (
                   <div className="px-4 pb-4 pt-1 bg-[var(--afcfta-card)] border-t text-sm space-y-3">
+                    {apercu && (
+                      <p className="text-xs text-[var(--afcfta-muted)]">
+                        {pick(
+                          language,
+                          'Choisissez le pays de la banque pour voir ses coordonnées (une recherche).',
+                          "Choose the bank's country to see its contact details (one search).",
+                          'اختر بلد البنك لعرض بيانات الاتصال الخاصة به (عملية بحث واحدة).',
+                        )}
+                      </p>
+                    )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 text-xs">
                       {bank.swift_code && (
                         <div><span className="text-[var(--afcfta-muted)]">{t.swiftCode}: </span><span className="font-mono">{bank.swift_code}</span></div>
