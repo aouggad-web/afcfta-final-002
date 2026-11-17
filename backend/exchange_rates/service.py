@@ -14,13 +14,20 @@ Complément automatique (stratégie « merge ») :
   officiels des banques centrales (Banque d'Algérie → DZD, BAM → MAD, …).
 
 Fonctionnalités :
-  - Mise en cache en mémoire (évite les appels réseau répétés)
+  - Un seul jeu de taux en cache, en USD, rafraîchi par la tâche planifiée
+    (tasks/scheduler.py) ; les autres devises de base en sont dérivées par
+    calcul. Aucune requête d'utilisateur n'appelle le réseau (audit D2,
+    16/11/2026) : le service était appelé depuis des routes asynchrones, et
+    chaque changement de devise de base (USD puis EUR sur l'écran des banques)
+    relançait toute la collecte dans la boucle d'événements, figeant le serveur.
   - Cross-rates via USD si la paire directe est absente
   - Historique glissant 30 jours (RateBundle)
   - Alertes de variation ≥ 5 %
 """
 
 import logging
+import re
+import threading
 from collections import deque
 from datetime import datetime, timezone
 from typing import Dict, List, Optional, Tuple
@@ -82,6 +89,10 @@ AFRICAN_CURRENCY_CODES = {
     "ZWG",
 }
 
+# Devise de référence du cache : les fournisseurs sont toujours interrogés en USD.
+_BASE_REFERENCE = "USD"
+_CODE_DEVISE = re.compile(r"^[A-Z]{3}$")
+
 # Rate change alert threshold (percent)
 _ALERT_THRESHOLD_PERCENT = 5.0
 
@@ -112,6 +123,9 @@ class ExchangeRateService:
         self._history: deque = deque(maxlen=_MAX_HISTORY)
         # Pending rate alerts
         self._alerts: List[RateAlert] = []
+        # Une seule collecte à la fois (tâche planifiée, rafraîchissement
+        # admin, premier remplissage en tâche de fond).
+        self._verrou = threading.Lock()
 
     # ------------------------------------------------------------------
     # Rate fetching
@@ -119,13 +133,37 @@ class ExchangeRateService:
 
     def update_rates(self, base: str = "USD") -> Optional[RateBundle]:
         """
-        Fetch fresh rates using the provider chain and cache them.
-        After the primary fetch, supplement with African central bank data
-        for any missing African currencies.
+        Fetch fresh rates (always in USD, the cache reference) using the
+        provider chain, supplement missing African currencies from the central
+        banks, cache them, and return the rates for ``base``.
 
-        Returns the new ``RateBundle`` or ``None`` if all providers fail.
+        Returns ``None`` if all providers fail. Blocking: called by the
+        scheduler thread and the admin refresh route, never by a user request.
         """
-        base = base.upper()
+        with self._verrou:
+            if self._collecter() is None:
+                return None
+        return self.get_latest(base)
+
+    def _rafraichir_en_tache_de_fond(self) -> None:
+        """Premier remplissage du cache, hors de la requête qui l'a constaté
+        vide ; rien si une collecte est déjà en cours."""
+
+        def _travail() -> None:
+            if not self._verrou.acquire(blocking=False):
+                return
+            try:
+                self._collecter()
+            except Exception as exc:  # pylint: disable=broad-except
+                logger.warning("Background exchange rate refresh failed: %s", exc)
+            finally:
+                self._verrou.release()
+
+        threading.Thread(target=_travail, name="exchange-rate-refresh", daemon=True).start()
+
+    def _collecter(self) -> Optional[RateBundle]:
+        """La collecte elle-même (appelant : verrou tenu)."""
+        base = _BASE_REFERENCE
         rates: Optional[Dict[str, float]] = None
         primary_source: str = "unknown"
 
@@ -184,10 +222,32 @@ class ExchangeRateService:
     # ------------------------------------------------------------------
 
     def get_latest(self, base: str = "USD") -> Optional[RateBundle]:
-        """Return cached rates, refreshing if no data is available."""
-        if self._latest is None or self._latest.base != base.upper():
-            return self.update_rates(base)
-        return self._latest
+        """Taux pour ``base``, tirés du cache sans appel réseau.
+
+        Les taux d'une autre base que la référence en sont dérivés
+        (1 base = r_usd[cible] / r_usd[base] cible). Base invalide ou inconnue
+        du cache : ``None``. Cache vide (démarrage) : premier remplissage lancé
+        en tâche de fond, ``None`` en attendant."""
+        base = (base or "").strip().upper()
+        if not _CODE_DEVISE.match(base):
+            return None
+        reference = self._latest
+        if reference is None:
+            self._rafraichir_en_tache_de_fond()
+            return None
+        if base == reference.base:
+            return reference
+        pivot = reference.rates.get(base)
+        if not pivot:
+            return None
+        rates = {code: taux / pivot for code, taux in reference.rates.items() if code != base}
+        rates[reference.base] = 1.0 / pivot
+        return RateBundle(
+            base=base,
+            timestamp=reference.timestamp,
+            source=reference.source,
+            rates=rates,
+        )
 
     def get_rate(self, base: str, target: str) -> Optional[ExchangeRate]:
         """Return the exchange rate for a specific pair."""
@@ -196,11 +256,9 @@ class ExchangeRateService:
             return None
         rate_value = bundle.rates.get(target.upper())
         if rate_value is None:
-            # Try cross-rate via USD
+            # Try cross-rate via USD (cache only: a pair unknown to the cache
+            # no longer triggers a network fetch per request, audit D2).
             rate_value = self._cross_rate(base, target)
-            if rate_value is None:
-                # Last resort: try supplement provider directly for this pair
-                rate_value = self._supplement_single(base, target)
             if rate_value is None:
                 return None
         return ExchangeRate(
@@ -235,19 +293,6 @@ class ExchangeRateService:
         if bundle is None:
             return {}
         return {code: rate for code, rate in bundle.rates.items() if code in AFRICAN_CURRENCY_CODES}
-
-    def get_historical(self, date_str: str, base: str = "USD") -> Optional[RateBundle]:
-        """Return historical rates for a date (YYYY-MM-DD) from in-memory buffer."""
-        for bundle in self._history:
-            if bundle.timestamp.strftime("%Y-%m-%d") == date_str and bundle.base == base.upper():
-                return bundle
-        # Fallback: Frankfurter provides free historical ECB data
-        ff = FrankfurterProvider()
-        rates = ff.fetch_historical(date_str, base)
-        if rates:
-            ts = datetime.fromisoformat(f"{date_str}T00:00:00+00:00")
-            return RateBundle(base=base.upper(), timestamp=ts, source="frankfurter", rates=rates)
-        return None
 
     def get_alerts(self) -> List[RateAlert]:
         """Return all pending rate alerts."""
@@ -288,27 +333,6 @@ class ExchangeRateService:
         target_to_usd = usd_bundle.rates.get(target.upper())
         if base_to_usd and target_to_usd and base_to_usd != 0:
             return target_to_usd / base_to_usd
-        return None
-
-    def _supplement_single(self, base: str, target: str) -> Optional[float]:
-        """
-        Try to fetch a specific currency rate directly from the supplement
-        provider (AfricanCentralBanks) when all other methods have failed.
-        """
-        try:
-            rates = self._supplement_provider.fetch_rates("USD")
-            if rates is None:
-                return None
-            # Store the newly fetched rates into the cached bundle
-            if self._latest and self._latest.base == "USD":
-                for code, rate in rates.items():
-                    self._latest.rates.setdefault(code, rate)
-            target_rate = rates.get(target.upper())
-            base_rate = rates.get(base.upper(), 1.0) if base.upper() != "USD" else 1.0
-            if target_rate and base_rate:
-                return target_rate / base_rate
-        except Exception as exc:
-            logger.debug("_supplement_single failed for %s/%s: %s", base, target, exc)
         return None
 
     def _detect_alerts(self, new_bundle: RateBundle) -> None:

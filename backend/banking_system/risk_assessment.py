@@ -62,7 +62,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
             "balance courante positive, jamais de défaut souverain. MAIS: "
             "Dinar non convertible + politique de change restrictive = risque transfert élevé. "
             "STRATÉGIE: LC irrévocable suffisante (convertibilité gérée par hedge). "
-            "Assurance-crédit (Coface/SARA) très efficace. FX hedging recommandé (forward/option)."
+            "Assurance-crédit (Coface ; CAGEX pour les exportateurs établis en Algérie) très efficace. "
+            "FX hedging recommandé (forward/option)."
         ),
     ),
     "TN": CountryRiskProfile(

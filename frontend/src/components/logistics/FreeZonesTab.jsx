@@ -8,6 +8,7 @@ import { toast } from '../../hooks/use-toast';
 import { Building2 } from 'lucide-react';
 import { pick } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
+import { ApercuDecouverte } from '../acces/AccesModules';
 import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -42,6 +43,9 @@ const freeZoneIcon = new L.Icon({
 
 export default function FreeZonesTab({ language = 'fr' }) {
   const [zones, setZones] = useState([]);
+  // Formule Découverte : sans pays choisi, zones servies en aperçu (sans
+  // activités, avantages ni contacts) ; choisir un pays compte une recherche.
+  const [apercu, setApercu] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState('ALL');
   const [viewMode, setViewMode] = useState('map');
@@ -118,6 +122,7 @@ export default function FreeZonesTab({ language = 'fr' }) {
       
       const response = await axios.get(url);
       setZones(response.data.zones || []);
+      setApercu(Boolean(response.data.apercu));
     } catch (error) {
       console.error('Error fetching free zones:', error);
       toast({
@@ -203,6 +208,8 @@ export default function FreeZonesTab({ language = 'fr' }) {
         </CardContent>
       </Card>
 
+      {apercu && <ApercuDecouverte language={language} />}
+
       {viewMode === 'map' ? (
         <Card className="h-[550px] overflow-hidden border-2 border-[color-mix(in_srgb,var(--terra)_30%,transparent)]">
           <MapContainer center={[5.0, 20.0]} zoom={3} style={{ height: '100%', width: '100%' }}>
@@ -221,11 +228,13 @@ export default function FreeZonesTab({ language = 'fr' }) {
                     <h3 className="font-bold text-lg text-[var(--terra)] mb-1">{zone.name}</h3>
                     <Badge className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)] mb-2">{trDonnee(zone.type, language)}</Badge>
                     <p className="text-sm text-[var(--afcfta-muted)] mb-2">{trDonnee(zone.country, language)}</p>
+                    {!apercu && (
                     <div className="text-xs space-y-1">
                       <p><strong>🏗️ {t.industries}:</strong> {zone.industries.map((ind) => trDonnee(ind, language)).join(pick(language, ', ', ', ', '، '))}</p>
                       <p><strong>📏 {t.surface}:</strong> {zone.surface_ha} {pick(language, 'ha', 'ha', 'هكتار')}</p>
                       <p><strong>🔗 {t.connection}:</strong> {trDonnee(zone.connection, language)}</p>
                     </div>
+                    )}
                     {zone.authority && (
                       <div className="mt-2 pt-2 border-t border-[var(--afcfta-border)]">
                         <p className="text-xs font-semibold text-[var(--info)]">🏛️ {zone.authority.name}</p>
@@ -259,6 +268,7 @@ export default function FreeZonesTab({ language = 'fr' }) {
                 <CardDescription>{trDonnee(zone.type, language)}</CardDescription>
               </CardHeader>
               <CardContent className="text-sm space-y-4">
+                {!apercu && (<>
                 <div>
                   <p className="font-semibold text-[var(--text)] mb-1">{t.keyIndustries}:</p>
                   <div className="flex flex-wrap gap-1">
@@ -280,6 +290,7 @@ export default function FreeZonesTab({ language = 'fr' }) {
                   <p><strong>🌍 {t.impact}:</strong> {trDonnee(zone.impact, language)}</p>
                   <p><strong>⚓ {t.connection}:</strong> {trDonnee(zone.connection, language)}</p>
                 </div>
+                </>)}
 
                 {zone.authority && (
                   <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-3 rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)] mt-3">

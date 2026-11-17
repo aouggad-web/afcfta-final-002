@@ -101,6 +101,7 @@ def test_entitlements_endpoint_lists_all_tiers_and_modules(client):
             "logistics",
             "roo",
             "profiles",
+            "finance",
             "reglementation",
             "tools",
             "reports",
@@ -110,6 +111,11 @@ def test_entitlements_endpoint_lists_all_tiers_and_modules(client):
     assert data["free"]["modules"]["tools"]["enabled"] is False
     assert data["business"]["modules"]["tools"]["enabled"] is True
     assert data["business"]["modules"]["tools"]["quota"] is None
+    # Finance (décision du 16/11/2026) et fiche réglementaire comptées en
+    # Découverte (5 recherches par mois), sans limite pour les abonnés.
+    for module in ("finance", "reglementation"):
+        assert data["free"]["modules"][module] == {"enabled": True, "quota": 5, "quota_period": "month"}
+        assert data["starter"]["modules"][module]["quota"] is None
 
 
 def test_checkout_algeria_disabled_returns_501(client, monkeypatch):

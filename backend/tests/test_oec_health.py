@@ -67,3 +67,39 @@ def test_ping_oec_connection_exception(monkeypatch):
     assert r["status_code"] is None
     # Le texte de l'exception reste au journal du serveur (constat M9).
     assert r["error"] == "Upstream service error"
+
+
+# ── Audit D3 (17/11/2026) : diagnostic public mis en cache ──────────────────
+
+
+def test_diagnostic_oec_public_ne_rappelle_pas_l_oec_dans_la_minute(monkeypatch):
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+    from routes import reports
+    from services import oec_trade_service
+
+    appels = []
+
+    async def ping(year):
+        appels.append(year)
+        return {"reachable": True, "token_configured": False}
+
+    async def importateurs(hs, year):
+        appels.append(hs)
+        return {"data": [{"x": 1}]}
+
+    monkeypatch.setattr(mod.real_trade_service, "ping_oec", ping)
+    monkeypatch.setattr(oec_trade_service.oec_service, "get_top_african_importers", importateurs)
+    monkeypatch.setattr(reports, "_diagnostic_oec", {})
+    app = FastAPI()
+    app.include_router(reports.router_diagnostics, prefix="/api")
+    client = TestClient(app)
+
+    premiere = client.get("/api/reports/oec-health").json()
+    assert [client.get("/api/reports/oec-health").json() for _ in range(5)] == [premiere] * 5
+    assert appels == ["180100", 2022]
+    # Une autre année est un autre diagnostic ; une année hors du cube est refusée.
+    client.get("/api/reports/oec-health", params={"year": 2023})
+    assert len(appels) == 4
+    assert client.get("/api/reports/oec-health", params={"year": 1900}).status_code == 422
+    assert len(appels) == 4

@@ -48,6 +48,17 @@ const T = {
     'You have reached the {quota} uses per month included in your plan for this module. The quota renews next month; a higher plan includes more.',
     'بلغت {quota} استخدامات الشهر المشمولة في اشتراكك لهذه الوحدة. تتجدد الحصة الشهر المقبل، وتتيح الباقات الأعلى المزيد.',
   ],
+  apercu: [
+    "Aperçu de la formule Découverte : les chiffres, contacts et tarifs s'affichent en choisissant un pays ou en ouvrant une fiche (une recherche parmi vos 5 du mois).",
+    'Discovery plan preview: figures, contacts and rates appear when you choose a country or open a record (one of your 5 searches this month).',
+    'معاينة باقة الاكتشاف: تظهر الأرقام وجهات الاتصال والتعريفات عند اختيار بلد أو فتح بطاقة (عملية بحث واحدة من عملياتك الخمس هذا الشهر).',
+  ],
+  titrePlafond: ["Limite d'usage du jour atteinte", 'Daily usage limit reached', 'بلغت حدّ الاستخدام اليومي'],
+  textePlafond: [
+    "Vous avez atteint la limite d'usage du jour de la formule Découverte. Elle se renouvelle demain ; les formules payantes n'en ont pas.",
+    'You have reached the Discovery plan daily usage limit. It renews tomorrow; paid plans have none.',
+    'بلغت حدّ الاستخدام اليومي لباقة الاكتشاف. يتجدد غدًا، ولا حدّ له في الاشتراكات المدفوعة.',
+  ],
   titreAbonnes: ['Réservé aux abonnés', 'Subscribers only', 'مخصص للمشتركين'],
   texteAbonnes: [
     'Ce module est inclus dans les formules payantes. Abonnez-vous pour y accéder.',
@@ -65,6 +76,7 @@ export function refusAcces(error) {
   if (!detail || typeof detail !== 'object') return null;
   if (statut === 401 && detail.error === 'login_required') return { genre: 'connexion', ...detail };
   if (statut === 429 && detail.error === 'quota_exceeded') return { genre: 'quota', ...detail };
+  if (statut === 429 && detail.error === 'daily_limit') return { genre: 'plafond', ...detail };
   if (statut === 403 && detail.error === 'upgrade_required') return { genre: 'abonnes', ...detail };
   return null;
 }
@@ -123,9 +135,26 @@ export function ConnexionRequise({ language, onOpenAuth }) {
   );
 }
 
+/** Au-dessus d'une liste servie en aperçu (formule Découverte, décision de
+ *  l'exploitant du 17/11/2026) : le serveur a retiré chiffres et contacts. */
+export function ApercuDecouverte({ language }) {
+  return (
+    <div
+      role="note"
+      data-testid="apercu-decouverte"
+      className="flex flex-wrap items-center gap-3 rounded-lg border border-[var(--afcfta-border)] bg-[var(--afcfta-card2)] px-4 py-3 text-sm text-[var(--text)]"
+    >
+      <span aria-hidden="true">🔍</span>
+      <p className="flex-1 min-w-[200px]">{tr(language, T.apercu)}</p>
+      <a href={PRICING_URL} className="font-semibold text-[var(--terra)] hover:underline">{tr(language, T.voirFormules)}</a>
+    </div>
+  );
+}
+
 function textes(refus, language) {
   const avecQuota = (modele) => tr(language, modele).replace('{quota}', String(refus.quota ?? ''));
   if (refus.genre === 'connexion') return [tr(language, T.titreConnexion), tr(language, T.texteConnexion)];
+  if (refus.genre === 'plafond') return [tr(language, T.titrePlafond), tr(language, T.textePlafond)];
   if (refus.genre === 'quota') {
     // Formule Découverte : quotas du mois. Formules payantes : leur propre
     // quota (rapports : par jour), qui se renouvelle.

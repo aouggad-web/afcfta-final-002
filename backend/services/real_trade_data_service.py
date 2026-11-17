@@ -906,7 +906,7 @@ class RealTradeDataService:
 
         Performs a minimal real request and reports whether OEC is reachable,
         the HTTP status, latency and how many records came back. Used by the
-        /ai/oec-health diagnostic so operators can confirm that outbound access
+        /reports/oec-health diagnostic so operators can confirm that outbound access
         to api-v2.oec.world is allowed by the deployment's network policy.
         """
         params = {

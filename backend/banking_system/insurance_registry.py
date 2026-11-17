@@ -23,156 +23,143 @@ from .models.insurance_models import (
 # MAJOR INSURANCE COMPANIES OPERATING IN AFRICA
 # ─────────────────────────────────────────────────────────────────────────────
 
+# Vérifié le 17/11/2026 sur les sites officiels (champ `source`) : seuls des
+# ASSUREURS, qu'un exportateur ou un importateur peut contacter (remarque de
+# l'exploitant du 16/11/2026 : jamais des réassureurs). Aucune valeur sans
+# source : pas de notation ni de capacité, et un contact non publié reste vide.
+# `active_countries` vide : toutes destinations, selon la politique de
+# l'assureur ; qui peut souscrire est dit par `souscription`/`souscripteurs`.
+# Retirés : « SARA » (aucune société de ce nom en Algérie ; l'assureur-crédit
+# à l'export y est la CAGEX, le réassureur national la CCR), UK Export Finance
+# (réservé aux exportateurs britanniques), Zurich (offre et présence en
+# Afrique non vérifiables sur ses pages officielles).
 MAJOR_INSURERS: Dict[str, Insurer] = {
-    "COFACE": Insurer(
-        name="Coface Group",
-        abbreviation="COFACE",
-        country_based="FR",
-        insurance_type=["Credit Insurance", "Political Risk"],
-        products=[
-            InsuranceProductType.EXPORT_CREDIT,
-            InsuranceProductType.POLITICAL_RISK,
+    "CAGEX": Insurer(
+        name="Compagnie Algérienne d'Assurance et de Garantie des Exportations",
+        abbreviation="CAGEX",
+        country_based="DZ",
+        role="eca",
+        insurance_type=[
+            "Assurance-crédit à l'export (globale, individuelle)",
+            "Assurance-crédit domestique",
+            "Assurance foires et salons",
         ],
-        active_countries=[
-            "MA",
-            "DZ",
-            "TN",
-            "EG",
-            "NG",
-            "GH",
-            "CI",
-            "SN",
-            "KE",
-            "TZ",
-            "ZA",
-            "ZM",
-            "MZ",
-            "UG",
-            "MW",
-            "RW",
-            "CM",
-            "GA",
-            "SZ",
-        ],
-        website="https://www.coface.com",
-        email="support@coface.com",
-        credit_rating="A",
-        total_capacity_usd_bn=15.5,
-        established_year=1946,
+        products=[InsuranceProductType.EXPORT_CREDIT],
+        souscription="pays",
+        souscripteurs=["DZ"],
+        website="https://www.cagex.dz",
+        email="marketingcom@cagex.dz",
+        phone="+213 23 31 21 00",
+        established_year=1996,
+        notes="10, route nationale n° 36, BP 116, Dely-Ibrahim, Alger. Ordonnance n° 96-06 du 10 janvier 1996.",
+        source="https://www.cagex.dz",
     ),
     "SMAEX": Insurer(
         name="Société Marocaine d'Assurance à l'Exportation",
         abbreviation="SMAEX",
         country_based="MA",
-        insurance_type=["Export Credit Insurance"],
-        products=[InsuranceProductType.EXPORT_CREDIT],
-        active_countries=["MA", "NG", "SN", "CI", "GH"],
-        website="https://www.smaex.ma",
-        credit_rating="BBB+",
-        established_year=1992,
-    ),
-    "SARA": Insurer(
-        name="SARA - Société Algérienne de Réassurance et d'Assurance",
-        abbreviation="SARA",
-        country_based="DZ",
-        insurance_type=["General Insurance", "Reinsurance"],
-        products=[
-            InsuranceProductType.EXPORT_CREDIT,
-            InsuranceProductType.TRANSPORT,
+        role="eca",
+        insurance_type=[
+            "Assurance-crédit à l'export (personnalisée, simplifiée, moyen terme)",
+            "Assurance prospection",
+            "Assurance foire",
         ],
-        active_countries=["DZ", "MA", "TN"],
-        website="https://www.sara.dz",
-        credit_rating="BBB",
+        products=[InsuranceProductType.EXPORT_CREDIT],
+        souscription="pays",
+        souscripteurs=["MA"],
+        website="https://www.smaex.com",
+        email="smaex@smaex.com",
+        phone="+212 5 22 98 20 00",
         established_year=1974,
+        notes="24, rue Ali Abderrazak, Casablanca 20 100. Dahir n° 1-73-366 du 23 avril 1974.",
+        source="https://www.smaex.com/contact_.php",
     ),
     "COTUNACE": Insurer(
-        name="COTUNACE - Compagnie Tunisienne d'Assurance-Crédit à l'Export",
+        name="Compagnie Tunisienne pour l'Assurance du Commerce Extérieur",
         abbreviation="COTUNACE",
         country_based="TN",
-        insurance_type=["Export Credit Insurance"],
+        role="eca",
+        insurance_type=["Assurance-crédit à l'export", "Assurance-crédit des ventes locales"],
         products=[InsuranceProductType.EXPORT_CREDIT],
-        active_countries=["TN", "MA", "DZ", "SN"],
+        souscription="pays",
+        souscripteurs=["TN"],
         website="https://www.cotunace.com.tn",
-        credit_rating="BBB",
-        established_year=1989,
+        notes=(
+            "14, rue Borjine, 1073 Montplaisir, Tunis (états financiers publiés à la Bourse "
+            "de Tunis). Site officiel indisponible lors de la vérification du 17/11/2026 : "
+            "téléphone et e-mail non confirmés."
+        ),
+        source=(
+            "https://bvmt.com.tn/sites/default/files/societes/cotunace/etats-financiers/"
+            "cotunace-etats-financiers-annuels-31-12-2023.pdf"
+        ),
+    ),
+    "ATIDI": Insurer(
+        name="African Trade & Investment Development Insurance",
+        abbreviation="ATIDI",
+        country_based="KE",
+        role="multilateral",
+        insurance_type=["Assurance-crédit", "Risque politique et investissement", "Cautions"],
+        products=[
+            InsuranceProductType.EXPORT_CREDIT,
+            InsuranceProductType.POLITICAL_RISK,
+            InsuranceProductType.PERFORMANCE_GUARANTEE,
+        ],
+        souscription="etats_membres",
+        website="https://www.atidi.africa",
+        email="info@atidi.africa",
+        phone="+254 719 014 000",
+        notes="Kenya Re Towers, 5e étage, Ragati Road, Upperhill, Nairobi.",
+        source="https://www.atidi.africa/contact-us/",
+    ),
+    "ICIEC": Insurer(
+        name="Islamic Corporation for the Insurance of Investment and Export Credit",
+        abbreviation="ICIEC",
+        country_based="SA",
+        role="multilateral",
+        insurance_type=[
+            "Assurance-crédit à l'export (crédit acheteur, fournisseur, lettre de crédit)",
+            "Assurance des investissements (risque politique)",
+        ],
+        products=[InsuranceProductType.EXPORT_CREDIT, InsuranceProductType.POLITICAL_RISK],
+        souscription="etats_membres",
+        website="https://iciec.isdb.org",
+        email="ICIEC-Communication@isdb.org",
+        phone="+966 12 644 5666",
+        established_year=1994,
+        notes="Groupe de la Banque islamique de développement, Djeddah.",
+        source="https://iciec.isdb.org/contact-us",
+    ),
+    "COFACE": Insurer(
+        name="Coface",
+        abbreviation="COFACE",
+        country_based="FR",
+        role="assureur_credit",
+        insurance_type=["Assurance-crédit", "Risque politique"],
+        products=[InsuranceProductType.EXPORT_CREDIT, InsuranceProductType.POLITICAL_RISK],
+        souscription="ouvert",
+        website="https://www.coface.com",
+        established_year=1946,
+        notes=(
+            "Implantations en Afrique : Maroc (www.coface.ma, qui couvre aussi l'Algérie et "
+            "la Tunisie), Égypte (www.coface.ae), Afrique du Sud (www.coface.co.za)."
+        ),
+        source="https://www.coface.com",
     ),
     "ATRADIUS": Insurer(
-        name="Atradius Credit Insurance",
+        name="Atradius",
         abbreviation="ATRADIUS",
         country_based="NL",
-        insurance_type=["Credit Insurance", "Bonding"],
+        role="assureur_credit",
+        insurance_type=["Assurance-crédit", "Cautions"],
         products=[
             InsuranceProductType.EXPORT_CREDIT,
             InsuranceProductType.PERFORMANCE_GUARANTEE,
         ],
-        active_countries=[
-            "ZA",
-            "KE",
-            "NG",
-            "GH",
-            "CI",
-            "EG",
-            "MA",
-            "TZ",
-            "UG",
-            "MW",
-        ],
-        website="https://www.atradius.com",
-        credit_rating="A+",
-        total_capacity_usd_bn=12.0,
-        established_year=2002,
-    ),
-    "ZURICH": Insurer(
-        name="Zurich Insurance Group",
-        abbreviation="ZURICH",
-        country_based="CH",
-        insurance_type=["General Insurance", "Trade Insurance"],
-        products=[
-            InsuranceProductType.EXPORT_CREDIT,
-            InsuranceProductType.POLITICAL_RISK,
-            InsuranceProductType.TRANSPORT,
-        ],
-        active_countries=[
-            "ZA",
-            "KE",
-            "NG",
-            "GH",
-            "TZ",
-            "UG",
-            "RW",
-            "MW",
-            "ZM",
-            "MA",
-        ],
-        website="https://www.zurich.co.za",
-        credit_rating="AA",
-        total_capacity_usd_bn=25.0,
-        established_year=1872,
-    ),
-    "EXPORT_CREDIT": Insurer(
-        name="UK Export Finance (UK ECA equivalent)",
-        abbreviation="UK-EXPORT",
-        country_based="GB",
-        insurance_type=["Export Credit Agency", "Political Risk"],
-        products=[
-            InsuranceProductType.EXPORT_CREDIT,
-            InsuranceProductType.POLITICAL_RISK,
-        ],
-        active_countries=[
-            "NG",
-            "GH",
-            "ZA",
-            "KE",
-            "EG",
-            "MA",
-            "TZ",
-            "UG",
-            "CM",
-            "GA",
-        ],
-        website="https://www.gov.uk/government/organisations/uk-export-finance",
-        credit_rating="AAA",
-        established_year=1919,
+        souscription="ouvert",
+        website="https://group.atradius.com",
+        notes="Implantation en Afrique : Afrique du Sud.",
+        source="https://group.atradius.com/contact-us/",
     ),
 }
 
@@ -316,13 +303,8 @@ def _build_country_profiles():
         available_insurers = [
             insurer
             for insurer in MAJOR_INSURERS.values()
-            if country_code in insurer.active_countries
+            if not insurer.active_countries or country_code in insurer.active_countries
         ]
-
-        if not available_insurers:
-            # Fallback: add generic insurers for countries without specific coverage
-            available_insurers = [MAJOR_INSURERS.get("ZURICH"), MAJOR_INSURERS.get("ATRADIUS")]
-            available_insurers = [i for i in available_insurers if i]
 
         products = _get_products_for_risk_level(insurance_risk)
 

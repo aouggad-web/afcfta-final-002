@@ -84,7 +84,11 @@ async def get_countries(lang: str = "fr"):
     return countries
 
 
-@router.get("/countries/economic-indicators")
+# Carte du module Statistiques (audit D1) : connexion requise, recherches comptées.
+@router.get(
+    "/countries/economic-indicators",
+    dependencies=[Depends(require_module_consultation("stats"))],
+)
 async def get_countries_economic_indicators(lang: str = "fr"):
     """Indicateurs économiques 2024 pour les 54 pays africains.
 
@@ -131,7 +135,11 @@ async def get_countries_economic_indicators(lang: str = "fr"):
     }
 
 
-@router.get("/countries/official-stats/{country_iso3}")
+# Statistiques officielles d'un pays : même règle que les Profils pays (audit D1).
+@router.get(
+    "/countries/official-stats/{country_iso3}",
+    dependencies=[Depends(require_module_consultation("profiles"))],
+)
 async def get_country_official_stats(country_iso3: str):
     """
     Statistiques officielles NATIONALES d'un pays (bulletins des agences

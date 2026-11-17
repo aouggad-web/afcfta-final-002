@@ -376,3 +376,86 @@ def test_brent_dernier_prix_quotidien_eia():
 def test_apercu_rend_le_dernier_brent():
     apercu = asyncio.run(m.Marches().apercu(session_http=_Session()))
     assert apercu["brent_jour"] == {"prix": 107.03, "date": "2026-11-03", "source": "EIA"}
+
+
+# ── Audit D7 (16/11/2026) : la collecte ne bloque plus les visiteurs ────────
+
+
+class _ReponseLente(_Reponse):
+    def __init__(self, corps, delai):
+        super().__init__(corps)
+        self._delai = delai
+
+    async def text(self):
+        await asyncio.sleep(self._delai)
+        return self._corps
+
+
+class _SessionLente(_Session):
+    """Une bourse qui met longtemps à répondre."""
+
+    def __init__(self, lente, delai):
+        super().__init__()
+        self.lente, self.delai = lente, delai
+
+    def get(self, url, headers=None, **kwargs):
+        if url == self.lente:
+            self.lues.append(url)
+            return _ReponseLente(self.corps[url], self.delai)
+        return super().get(url, headers=headers, **kwargs)
+
+
+def test_une_source_lente_ne_fait_pas_attendre_le_visiteur(monkeypatch):
+    monkeypatch.setattr(m, "_ATTENTE_COLLECTE_S", 0.05)
+    marches = m.Marches()
+    session = _SessionLente(m.SOURCES_INDICES["brvm_c"], delai=0.5)
+
+    async def scenario():
+        debut = asyncio.get_running_loop().time()
+        premier, second = await asyncio.gather(
+            marches.apercu(session_http=session), marches.apercu(session_http=session)
+        )
+        duree = asyncio.get_running_loop().time() - debut
+        await marches._collecte  # la collecte, elle, va au bout
+        return premier, second, duree
+
+    premier, second, duree = asyncio.run(scenario())
+
+    assert duree < 0.4
+    # Une seule collecte pour les deux visiteurs simultanés.
+    assert session.lues.count(m.SOURCES_INDICES["brvm_c"]) == 1
+    assert "brvm_c" in marches.indices and marches.lus_a["brvm_c"] > 0
+
+
+def test_le_classeur_est_lu_hors_de_la_boucle(monkeypatch):
+    dans_la_boucle = []
+    lire = m.lire_pink_sheet
+
+    def lire_observe(contenu):
+        try:
+            asyncio.get_running_loop()
+            dans_la_boucle.append(True)
+        except RuntimeError:
+            dans_la_boucle.append(False)
+        return lire(contenu)
+
+    monkeypatch.setattr(m, "lire_pink_sheet", lire_observe)
+
+    apercu = asyncio.run(m.Marches().apercu(session_http=_Session()))
+
+    assert dans_la_boucle == [False] and apercu["cours"]["mois"] == "2026-10"
+
+
+def test_reponse_annoncee_trop_volumineuse_non_lue():
+    class _SessionLourde(_Session):
+        def get(self, url, headers=None, **kwargs):
+            reponse = super().get(url, headers=headers, **kwargs)
+            if url == m.SOURCES_INDICES["dzair"]:
+                reponse.headers = {"Content-Length": "999999999999"}  # près de 1 To annoncé
+            return reponse
+
+    marches = m.Marches()
+    apercu = asyncio.run(marches.apercu(session_http=_SessionLourde()))
+
+    assert "dzair" not in [i["cle"] for i in apercu["indices"]]
+    assert "brvm_c" in [i["cle"] for i in apercu["indices"]]

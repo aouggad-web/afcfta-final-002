@@ -1,12 +1,11 @@
 """Constat E2 : des listes et des requêtes anonymes sans borne faisaient croître
 le calcul (et la réponse) avec la taille de l'entrée, sur la boucle du seul
-worker. Doublons retirés et listes bornées à 20 ; requêtes de recherche
-bornées à 100 caractères ; Redis injoignable n'est plus retenté à chaque appel.
+worker. Doublons retirés et listes bornées à 20 ; Redis injoignable n'est plus
+retenté à chaque appel. (La recherche enrichie, bornée à 100 caractères, n'est
+plus servie : routes sans appelant retirées le 17/11/2026.)
 """
 
 import pytest
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
 
 
 def _compter_scores(monkeypatch):
@@ -58,19 +57,6 @@ def test_radar_pays_dedoublonnes_et_bornes(monkeypatch):
     donnees = get_visualization_engine().radar_chart_data(pays)
     assert len(appels) == 20
     assert [d["label"] for d in donnees["data"]["datasets"]][:2] == ["MAR", "X00"]
-
-
-def test_recherche_enrichie_q_bornee_a_100_caracteres():
-    from routes.enhanced_search import router
-
-    app = FastAPI()
-    app.include_router(router)
-    client = TestClient(app)
-    params = {"q": "x" * 100, "type": "country"}
-    assert client.get("/enhanced-search/autocomplete", params=params).status_code == 200
-    params["q"] += "x"
-    assert client.get("/enhanced-search/autocomplete", params=params).status_code == 422
-    assert client.get("/enhanced-search/hs-codes", params={"q": "x" * 101}).status_code == 422
 
 
 def test_redis_injoignable_pas_de_nouvel_essai_avant_le_delai(monkeypatch):

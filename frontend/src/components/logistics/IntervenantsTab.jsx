@@ -11,6 +11,7 @@ import {
 import { pick } from '../../i18n/lang';
 import { trDonnee } from '../../i18n/donnees';
 import { trierPays } from '../../utils/triPays';
+import { ApercuDecouverte } from '../acces/AccesModules';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -257,9 +258,23 @@ function ContactsBlock({ contacts, language }) {
   );
 }
 
-function OperatorCard({ operator, catMeta, language }) {
+function OperatorCard({ operator: liste, catMeta, language, apercu = false }) {
   const [expanded, setExpanded] = useState(false);
+  // Formule Découverte : la liste n'est qu'un aperçu ; la fiche (contacts,
+  // flotte, services) est lue au serveur et compte une recherche.
+  const [fiche, setFiche] = useState(null);
+  const operator = fiche ? { ...liste, ...fiche } : liste;
   const Icon = catMeta.icon;
+
+  const ouvrirFiche = async () => {
+    try {
+      const res = await axios.get(`${API}/logistics/operators/${encodeURIComponent(liste.id)}`);
+      setFiche(res.data);
+      setExpanded(true);
+    } catch (err) {
+      console.error('Erreur chargement fiche intervenant:', err);
+    }
+  };
 
   const presenceList = operator.africa_presence
     || operator.countries
@@ -394,6 +409,17 @@ function OperatorCard({ operator, catMeta, language }) {
           </Button>
         )}
 
+        {apercu && !fiche && liste.id && (
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={ouvrirFiche}
+            className="w-full mt-3 h-7 text-xs text-[var(--afcfta-muted)] hover:text-[var(--text)] border border-[var(--overlay-border)] rounded-lg"
+          >
+            <ChevronDown className="w-3 h-3 mr-1" />{pick(language, 'Voir la fiche', 'View record', 'عرض البطاقة')}
+          </Button>
+        )}
+
         {/* Full contacts when expanded */}
         {expanded && hasContacts && (
           <ContactsBlock contacts={operator.contacts} language={language} />
@@ -462,6 +488,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
   const [selectedCountry, setSelectedCountry] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [summary, setSummary] = useState(null);
+  const [apercu, setApercu] = useState(false);
 
   useEffect(() => {
     fetchOperators();
@@ -473,6 +500,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
       const res = await axios.get(`${API}/logistics/operators`);
       setData(res.data.operators);
       setSummary(res.data.summary);
+      setApercu(Boolean(res.data.apercu));
     } catch (err) {
       console.error('Erreur chargement intervenants:', err);
       setError(pick(language, 'Impossible de charger les intervenants logistiques.', 'Impossible de charger les intervenants logistiques.', 'تعذّر تحميل الفاعلين اللوجستيين.'));
@@ -555,6 +583,8 @@ export default function IntervenantsTab({ language = 'fr' }) {
           </p>
         </div>
       </div>
+
+      {apercu && <ApercuDecouverte language={language} />}
 
       {/* Summary banner */}
       {summary && (
@@ -698,7 +728,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                 {ops.map(op => (
-                  <OperatorCard key={op.id || op.name} operator={op} catMeta={meta} language={language} />
+                  <OperatorCard key={op.id || op.name} operator={op} catMeta={meta} language={language} apercu={apercu} />
                 ))}
               </div>
             </div>

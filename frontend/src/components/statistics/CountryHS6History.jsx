@@ -231,7 +231,7 @@ export default function CountryHS6History({ language = 'fr' }) {
   };
 
   // Handoff vers le module Opportunités : pays + code SH courant, repris par
-  // OpportunitiesTab (ouvre directement le sous-module Substitution pré-rempli).
+  // OpportunityReportTab (ouvre directement le sous-module Substitution pré-rempli).
   // Les deux modules partagent désormais le même canal OEC (cache commun).
   const analyzeInOpportunities = () => {
     const need = LEVEL_LEN[searchLevel];

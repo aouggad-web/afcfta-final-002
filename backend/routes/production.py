@@ -18,7 +18,8 @@ from etl.isic4_idsb_data import (
     list_covered_countries_filtered,
 )
 from etl.unido_data import get_isic4_breakdown
-from fastapi import APIRouter, HTTPException, Path, Query
+from entitlement_guard import exiger_un_filtre
+from fastapi import APIRouter, HTTPException, Path, Query, Request
 
 # Production capacity service is optional (depends on production_data.py)
 try:
@@ -34,6 +35,14 @@ except (ImportError, ModuleNotFoundError):
     HAS_CAPACITY_SERVICE = False
 
 router = APIRouter(prefix="/production", tags=["production"])
+
+# Formule Découverte (audit D6) : ces listes de chiffres n'ont pas d'écran ;
+# sans pays (ou produit), elles rendaient tout le jeu de données sans compter
+# de recherche.
+_FILTRE_PAYS = "Formule Découverte : précisez un pays, compté comme une recherche."
+_FILTRE_PAYS_OU_PRODUIT = (
+    "Formule Découverte : précisez un pays ou un produit, compté comme une recherche."
+)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -453,7 +462,10 @@ async def get_production_stats():
 
 @router.get("/macro")
 async def get_macro_value_added(
-    country_iso3: Optional[str] = None, year: Optional[int] = None, sector: Optional[str] = None
+    request: Request,
+    country_iso3: Optional[str] = None,
+    year: Optional[int] = None,
+    sector: Optional[str] = None,
 ):
     """
     Get macro-level value added data (World Bank/IMF)
@@ -463,6 +475,7 @@ async def get_macro_value_added(
     - year: Year (2021-2024)
     - sector: ISIC section ('A', 'B-F', 'C')
     """
+    exiger_un_filtre(request, country_iso3, message=_FILTRE_PAYS)
     return get_value_added(country_iso3=country_iso3, year=year, sector=sector)
 
 
@@ -477,7 +490,10 @@ async def get_macro_by_country(country_iso3: str):
 
 @router.get("/agriculture")
 async def get_agri_production(
-    country_iso3: Optional[str] = None, year: Optional[int] = None, commodity: Optional[str] = None
+    request: Request,
+    country_iso3: Optional[str] = None,
+    year: Optional[int] = None,
+    commodity: Optional[str] = None,
 ):
     """
     Get agricultural production data (FAOSTAT)
@@ -487,12 +503,16 @@ async def get_agri_production(
     - year: Year (2021-2024)
     - commodity: Commodity name or code (e.g., 'Maize', '0015')
     """
+    exiger_un_filtre(request, country_iso3, commodity, message=_FILTRE_PAYS_OU_PRODUIT)
     return get_agriculture_production(country_iso3=country_iso3, year=year, commodity=commodity)
 
 
 @router.get("/agriculture/projections")
 async def get_agri_projections(
-    country_iso3: Optional[str] = None, year: Optional[int] = None, commodity: Optional[str] = None
+    request: Request,
+    country_iso3: Optional[str] = None,
+    year: Optional[int] = None,
+    commodity: Optional[str] = None,
 ):
     """
     Get agricultural production PROJECTIONS (OECD-FAO Agricultural Outlook).
@@ -502,6 +522,7 @@ async def get_agri_projections(
     - year: Projection horizon (2025, 2030)
     - commodity: Aggregate name (e.g., 'Cereals')
     """
+    exiger_un_filtre(request, country_iso3, commodity, message=_FILTRE_PAYS_OU_PRODUIT)
     return get_agriculture_projections(country_iso3=country_iso3, year=year, commodity=commodity)
 
 
@@ -516,7 +537,10 @@ async def get_agri_by_country(country_iso3: str):
 
 @router.get("/manufacturing")
 async def get_manuf_production(
-    country_iso3: Optional[str] = None, year: Optional[int] = None, isic_code: Optional[str] = None
+    request: Request,
+    country_iso3: Optional[str] = None,
+    year: Optional[int] = None,
+    isic_code: Optional[str] = None,
 ):
     """
     Get manufacturing production data (UNIDO)
@@ -526,6 +550,7 @@ async def get_manuf_production(
     - year: Year (2021-2024)
     - isic_code: ISIC Rev.4 code (e.g., '10', '11')
     """
+    exiger_un_filtre(request, country_iso3, message=_FILTRE_PAYS)
     return get_manufacturing_production(country_iso3=country_iso3, year=year, isic_code=isic_code)
 
 
@@ -534,6 +559,7 @@ async def get_manuf_production(
 # capturerait sinon "measured" comme un code pays.
 @router.get("/manufacturing/measured")
 async def get_manuf_measured(
+    request: Request,
     country_iso3: Optional[str] = None,
     year: Optional[int] = None,
     indicator_code: Optional[str] = None,
@@ -547,6 +573,7 @@ async def get_manuf_measured(
     - SL_TLF_MANF   : part de l'emploi manufacturier dans l'emploi total (%)
     - NV_IND_TECH   : part de la moyenne et haute technologie dans la VAM (%)
     """
+    exiger_un_filtre(request, country_iso3, message=_FILTRE_PAYS)
     return get_manufacturing_unsd(
         country_iso3=country_iso3, year=year, indicator_code=indicator_code
     )
@@ -569,7 +596,10 @@ async def get_manuf_by_country(country_iso3: str):
 
 @router.get("/mining")
 async def get_mining_prod(
-    country_iso3: Optional[str] = None, year: Optional[int] = None, commodity: Optional[str] = None
+    request: Request,
+    country_iso3: Optional[str] = None,
+    year: Optional[int] = None,
+    commodity: Optional[str] = None,
 ):
     """
     Get mining production data (USGS)
@@ -579,6 +609,7 @@ async def get_mining_prod(
     - year: Year (2021-2024)
     - commodity: Mineral name or code (e.g., 'Gold', 'AU')
     """
+    exiger_un_filtre(request, country_iso3, commodity, message=_FILTRE_PAYS_OU_PRODUIT)
     return get_mining_production(country_iso3=country_iso3, year=year, commodity=commodity)
 
 

@@ -130,13 +130,15 @@ class Insurer(BaseModel):
     abbreviation: Optional[str] = None
     country_based: str = Field(..., description="ISO2 code of company's base country/headquarters")
     insurance_type: List[str] = Field(
-        default_factory=list, description="Types of insurance offered (e.g., 'COFACE', 'SARA')"
+        default_factory=list, description="Types of insurance offered (e.g., 'Assurance-crédit à l'export')"
     )
     products: List[InsuranceProductType] = Field(
         default_factory=list, description="Insurance products offered"
     )
     active_countries: List[str] = Field(
-        default_factory=list, description="ISO2 codes where insurer is active"
+        default_factory=list,
+        description="ISO2 des pays acheteurs couverts ; vide : toutes destinations, selon la "
+        "politique de l'assureur",
     )
     website: Optional[str] = None
     email: Optional[str] = None
@@ -149,6 +151,25 @@ class Insurer(BaseModel):
         default=None, description="Estimated total capacity in billions USD"
     )
     notes: Optional[str] = None
+    # Rôle et souscription (remarque de l'exploitant du 16/11/2026 : présenter
+    # des assureurs, qu'un exportateur peut contacter, jamais des réassureurs).
+    role: Optional[str] = Field(
+        default=None,
+        description="eca (agence publique d'assurance-crédit à l'export) | assureur_credit "
+        "| multilateral | assureur_general",
+    )
+    souscription: Optional[str] = Field(
+        default=None,
+        description="pays (réservé aux entreprises des pays `souscripteurs`) | etats_membres "
+        "| ouvert",
+    )
+    souscripteurs: List[str] = Field(
+        default_factory=list,
+        description="ISO2 des pays dont les entreprises peuvent souscrire (souscription = pays)",
+    )
+    source: Optional[str] = Field(
+        default=None, description="Page officielle d'où viennent les coordonnées et la description"
+    )
 
 
 class CountryInsuranceProfile(BaseModel):

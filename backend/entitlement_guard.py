@@ -24,10 +24,12 @@ Wire the database before first request, same pattern as `auth.py`/`billing.py`:
 from __future__ import annotations
 
 import logging
+import os
 from typing import Optional
 
 from auth import require_auth
 from bson import ObjectId
+from cors_config import resolve_cors_origins
 from bson.errors import InvalidId
 from entitlements import (
     Entitlements,
@@ -354,13 +356,26 @@ def require_module_enabled(module_id: str):
 # un produit, un port…). Les autres (langue, page, tri, format, année…) ne
 # font pas une nouvelle recherche.
 _PARAMETRES_DE_RECHERCHE = frozenset({
-    "country", "country_code", "country_iso", "country_iso3", "iso3", "iso", "pays",
+    "country", "country_code", "country_iso", "country_iso3", "iso3", "iso", "pays", "countries",
     "hs", "hs_code", "hs6", "code", "product", "produit", "commodity",
-    "q", "query", "search", "port", "port_id", "airport_id", "corridor_id", "operator_id",
-    "origin", "destination", "partner", "reporter", "exporter", "importer",
+    "q", "query", "search", "port", "port_id", "airport_id", "corridor_id", "operator_id", "locode",
+    "origin", "destination", "origin_country", "destination_country",
+    "partner", "reporter", "exporter", "importer",
 })
 _MAX_TERMES = 20
 _ESSAIS_RECHERCHES = 5
+
+
+def _termes(valeurs) -> list:
+    """Valeurs en majuscules ; une liste (`countries=MAR,DZA`) compte un terme
+    par élément (audit D6 : sinon une seule recherche couvrait tous les pays)."""
+    termes = set()
+    for valeur in valeurs:
+        for morceau in str(valeur).split(","):
+            terme = morceau.strip().upper()[:64]
+            if terme:
+                termes.add(terme)
+    return sorted(termes)[:_MAX_TERMES]
 
 
 def termes_de_recherche(request: Request) -> list:
@@ -372,8 +387,32 @@ def termes_de_recherche(request: Request) -> list:
     valeurs = list(request.path_params.values()) + [
         v for nom, v in request.query_params.multi_items() if nom.lower() in _PARAMETRES_DE_RECHERCHE
     ]
-    termes = {str(v).strip().upper()[:64] for v in valeurs} - {""}
-    return sorted(termes)[:_MAX_TERMES]
+    return _termes(valeurs)
+
+
+async def _valeurs_du_corps(request: Request) -> list:
+    """Paramètres de recherche d'un corps JSON (audit D6 : l'estimation
+    d'assurance et les recommandations bancaires portent le pays dans le corps,
+    qui n'était pas compté). Le corps est lu quel que soit son type déclaré :
+    FastAPI lit aussi en JSON un `application/JSON` ou un corps sans type, et
+    s'en tenir au type exact laissait passer ces appels sans compter (revue
+    Codex). Un corps illisible n'apporte rien : la route le refusera elle-même."""
+    if request.method not in ("POST", "PUT", "PATCH"):
+        return []
+    try:
+        corps = await request.json()
+    except ValueError:
+        return []
+    if not isinstance(corps, dict):
+        return []
+    valeurs = []
+    for nom, valeur in corps.items():
+        if str(nom).lower() not in _PARAMETRES_DE_RECHERCHE:
+            continue
+        for v in valeur if isinstance(valeur, list) else [valeur]:
+            if isinstance(v, (str, int)) and not isinstance(v, bool):
+                valeurs.append(v)
+    return valeurs
 
 
 async def compter_recherches(user: dict, module_id: str, termes: list, access: ModuleAccess) -> bool:
@@ -440,17 +479,66 @@ def _recherches_epuisees(tier: str, module_id: str, access: ModuleAccess) -> HTT
     )
 
 
+def _requete_d_un_site_tiers(request: Request) -> bool:
+    """Audit D11 : le navigateur déclare la requête venue d'un autre site
+    (`Sec-Fetch-Site: cross-site`, en-tête qu'une page ne peut pas forger) et
+    elle ne vient pas d'une origine autorisée de l'interface. Une image ou un
+    lien posés sur une page tierce n'ont pas d'en-tête `Origin`."""
+    if request.headers.get("sec-fetch-site", "").lower() != "cross-site":
+        return False
+    origine = request.headers.get("origin", "")
+    return not origine or origine not in resolve_cors_origins(os.environ)
+
+
+def _requete_tierce_refusee() -> HTTPException:
+    return HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail={
+            "error": "cross_site_request",
+            "message": "Recherche refusée : la requête vient d'un autre site.",
+        },
+    )
+
+
+def recherches_limitees(request: Request) -> bool:
+    """Vrai quand la formule de l'appelant a un quota de recherches dans le
+    module (Découverte). Posé par `require_module_consultation`."""
+    return getattr(request.state, "recherches_limitees", False)
+
+
+def apercu(elements: list, champs: tuple) -> list:
+    """Aperçu d'une liste : seuls les `champs` d'identité et de position de
+    chaque élément (nouvelles copies, le cache n'est pas modifié)."""
+    return [{c: e[c] for c in champs if c in e} for e in elements]
+
+
+def exiger_un_filtre(request: Request, *filtres, message: str) -> None:
+    """Audit D6 : en Découverte, une liste de chiffres sans écran (API) n'est
+    servie que pour un pays ou un produit, compté comme une recherche."""
+    # Un filtre fait d'espaces ne filtre rien : les services le vident.
+    if recherches_limitees(request) and not any(str(f or "").strip() for f in filtres):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={"error": "filter_required", "message": message},
+        )
+
+
 def require_module_consultation(module_id: str, *, chemins_publics: tuple = ()):
     """Module de consultation (Statistiques, Production, Logistique, Règles
-    d'origine, Profils pays), décision de l'exploitant du 09/11/2026 :
+    d'origine, Profils pays, Finance, Réglementation), décision de l'exploitant
+    du 09/11/2026 :
 
     - sans compte : 401 « login_required », sauf les `chemins_publics` (données
       du tableau de bord d'accueil), une clé API valide, ou l'absence de base
       (développement, CI) ;
     - formule sans le module : 403 ;
     - formule avec un quota de recherches (découverte : 5 par mois) : chaque
-      terme nouveau (pays, produit, port…) est compté, l'ouverture du module
-      et les listes générales ne le sont pas ; au-delà, 429 ;
+      terme nouveau (pays, produit, port…, de la requête ou du corps JSON) est
+      compté, l'ouverture du module et les listes générales ne le sont pas ;
+      au-delà, 429. Les listes générales ne sont alors servies qu'en aperçu,
+      sans chiffres ni contacts (décision de l'exploitant du 17/11/2026, audit
+      D6 : `recherches_limitees`, `apercu`, `exiger_un_filtre`). Une recherche
+      venue d'un autre site est refusée (audit D11) ;
     - formules payantes : sans limite."""
 
     async def _dependency(
@@ -469,28 +557,64 @@ def require_module_consultation(module_id: str, *, chemins_publics: tuple = ()):
         if not access.enabled:
             raise _forbidden(ent.tier, module_id)
         if access.quota is not None:
-            termes = termes_de_recherche(request)
-            if termes and not await compter_recherches(user, module_id, termes, access):
+            request.state.recherches_limitees = True
+            termes_cherches = _termes(termes_de_recherche(request) + await _valeurs_du_corps(request))
+            if termes_cherches and _requete_d_un_site_tiers(request):
+                raise _requete_tierce_refusee()
+            if termes_cherches and not await compter_recherches(user, module_id, termes_cherches, access):
                 raise _recherches_epuisees(ent.tier, module_id, access)
         return ent
 
     return _dependency
 
 
+# Décision de l'exploitant du 17/11/2026 : la formule Découverte laisse
+# découvrir, sans décompte au détail, mais sans laisser aspirer le tarif. Les
+# routes que le calculateur partage ne comptent aucune recherche ; un compte
+# Découverte n'en lit pas plus de PLAFOND_JOUR_DECOUVERTE par jour. Relever un
+# tarif national demande des milliers de requêtes, découvrir quelques dizaines.
+PLAFOND_JOUR_DECOUVERTE = 300
+
+
+def _plafond_quotidien_atteint() -> HTTPException:
+    return HTTPException(
+        status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+        detail={
+            "error": "daily_limit",
+            "message": "Limite d'usage du jour atteinte pour ce compte. Réessayez demain.",
+        },
+    )
+
+
 def require_login(module_id: str):
-    """Connexion exigée, rien de décompté : les routes que le calculateur
-    partage (positions, recherche, formalités, pays servis) servent l'écran
-    d'un module dont l'usage est compté ailleurs, au calcul ou à la fiche.
+    """Connexion exigée, aucune recherche décomptée : les routes que le
+    calculateur partage (positions, recherche, formalités, pays servis)
+    servent l'écran d'un module dont l'usage est compté ailleurs, au calcul ou
+    à la fiche. En formule Découverte, un plafond d'usage du jour
+    (`PLAFOND_JOUR_DECOUVERTE`) arrête l'aspiration du tarif ; les formules
+    payantes et le compte admin n'en ont pas.
 
     Sans compte : 401 « login_required » (décision de l'exploitant du
     09/11/2026), sauf une clé API valide et l'absence de base (dev, CI)."""
+    plafond = ModuleAccess(enabled=True, quota=PLAFOND_JOUR_DECOUVERTE, quota_period="day")
 
     async def _dependency(
+        request: Request,
         user: Optional[dict] = Depends(get_optional_subscriber),
         key_doc: dict = Depends(require_auth),
     ) -> None:
-        if user is None and _db is not None and not _cle_api(key_doc):
-            raise _connexion_requise(module_id)
+        if user is None:
+            if _db is not None and not _cle_api(key_doc):
+                raise _connexion_requise(module_id)
+            return
+        if resolve_entitlements(user).tier != "free":
+            return
+        # Audit D11 (revue Codex) : une page tierce ne doit pas épuiser le
+        # plafond du compte ; refusée avant tout décompte.
+        if _requete_d_un_site_tiers(request):
+            raise _requete_tierce_refusee()
+        if not await check_and_increment_usage(user, f"{module_id}:partage", plafond):
+            raise _plafond_quotidien_atteint()
 
     return _dependency
 

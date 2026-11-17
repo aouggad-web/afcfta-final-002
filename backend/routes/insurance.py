@@ -50,8 +50,11 @@ class BatchQuoteRequest(BaseModel):
 
     country_code: str = Field(..., description="ISO2 code of buyer/counterparty country")
     contract_value_usd: float = Field(..., description="Transaction value in USD", gt=0)
+    # Audit D5 (16/11/2026) : liste bornée (doublons retirés à l'usage) ; une
+    # liste sans limite faisait autant de calculs, dans la boucle d'événements.
     product_types: Optional[List[str]] = Field(
         None,
+        max_length=10,
         description="Product types to compare; defaults to export_credit, political_risk, "
         "performance_guarantee",
     )
@@ -90,15 +93,19 @@ async def list_insurers(
     country_code: Optional[str] = Query(None, description="Filter by ISO2 code")
 ):
     """
-    List major credit/political-risk insurers (COFACE, SMAEX, SARA, COTUNACE,
-    Atradius, Zurich, UK Export Finance) operating in African markets.
+    List the credit/political-risk insurers an African exporter or importer can
+    contact (CAGEX, SMAEX, COTUNACE, ATIDI, ICIEC, Coface, Atradius), with their
+    role, who can subscribe, official contacts and source page.
 
-    - **country_code**: optional ISO2 filter — only insurers active in that country
+    - **country_code**: optional ISO2 filter (buyer country); an insurer with no
+      country list covers all destinations
     """
     insurers = list(MAJOR_INSURERS.values())
     if country_code:
         code = country_code.upper()
-        insurers = [ins for ins in insurers if code in (ins.active_countries or [])]
+        insurers = [
+            ins for ins in insurers if not ins.active_countries or code in ins.active_countries
+        ]
 
     return {
         "success": True,
@@ -222,7 +229,9 @@ async def get_batch_quotes(request: BatchQuoteRequest):
         product_types = None
         if request.product_types:
             try:
-                product_types = [InsuranceProductType(p) for p in request.product_types]
+                product_types = list(
+                    dict.fromkeys(InsuranceProductType(p) for p in request.product_types)
+                )
             except ValueError:
                 valid = [p.value for p in InsuranceProductType]
                 raise HTTPException(

@@ -9,6 +9,7 @@ import PortCard from './PortCard';
 import PortDetailsModal from './PortDetailsModal';
 import UNCTADDataPanel from './UNCTADDataPanel';
 import ShippingFeesCalculator from './ShippingFeesCalculator';
+import { ApercuDecouverte } from '../acces/AccesModules';
 import { 
   FilterBar, 
   SearchFilter, 
@@ -26,6 +27,8 @@ const API = `${BACKEND_URL}/api`;
 
 export default function MaritimeLogisticsTab({ language = 'fr' }) {
   const [ports, setPorts] = useState([]);
+  // Formule Découverte : liste sans pays servie en aperçu par le serveur.
+  const [apercu, setApercu] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedPort, setSelectedPort] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -123,6 +126,7 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
       
       const response = await axios.get(url);
       setPorts(response.data.ports || []);
+      setApercu(Boolean(response.data.apercu));
     } catch (error) {
       console.error('Error fetching ports:', error);
       toast({
@@ -230,6 +234,8 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
         />
       </FilterBar>
 
+      {apercu && <ApercuDecouverte language={language} />}
+
       {/* Main Content */}
       {loading ? (
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -295,6 +301,7 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
               port={port}
               onOpenDetails={handlePortClick}
               language={language}
+              apercu={apercu}
             />
           ))}
         </div>

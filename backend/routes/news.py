@@ -11,7 +11,6 @@ from bson import ObjectId
 from bson.errors import InvalidId
 from entitlement_guard import get_optional_subscriber
 from etl.news_aggregator import (
-    ALGERIA_STRUCTURAL_PROJECTS,
     balance_articles_by_country,
     detect_country_in_title,
     get_country_of_the_week,
@@ -110,47 +109,6 @@ async def get_economic_news(
     except Exception as e:
         logging.error(f"Erreur récupération actualités: {e}", exc_info=True)
         return {"success": False, "error": "Internal server error", "articles": []}
-
-
-@router.get("/algeria/projects")
-async def get_algeria_structural_projects(
-    status: Optional[str] = Query(
-        None, description="Filtrer par statut (OPÉRATIONNEL, EN CONSTRUCTION, EN ÉTUDE)"
-    )
-):
-    """
-    Récupérer les projets structurants algériens
-
-    Projets majeurs en cours ou opérationnels:
-    - Gara Djebilet (fer) - $6B
-    - Phosphates Tébessa - $7B
-    - Port El Hamdania - $3.3B
-    - Complexe sidérurgique Bellara - $2B
-    - Et plus...
-    """
-    projects = ALGERIA_STRUCTURAL_PROJECTS.copy()
-
-    if status:
-        projects = [p for p in projects if status.upper() in p["status"].upper()]
-
-    # Stats
-    total_investment = sum(p["investment_musd"] for p in projects)
-    operational = len([p for p in projects if "OPÉRATIONNEL" in p["status"]])
-    in_construction = len([p for p in projects if "CONSTRUCTION" in p["status"]])
-
-    return {
-        "success": True,
-        "country": "DZA",
-        "country_name": "Algérie",
-        "total_projects": len(projects),
-        "total_investment_musd": total_investment,
-        "stats": {
-            "operational": operational,
-            "in_construction": in_construction,
-            "in_study": len(projects) - operational - in_construction,
-        },
-        "projects": projects,
-    }
 
 
 @router.get("/country-of-the-week")

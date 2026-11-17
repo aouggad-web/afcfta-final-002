@@ -35,18 +35,3 @@ class FrankfurterProvider(BaseRateProvider):
         except (KeyError, ValueError) as exc:
             logger.warning("Frankfurter response parse error: %s", exc)
             return None
-
-    def fetch_historical(self, date: str, base: str = "USD") -> Optional[Dict[str, float]]:
-        """Return rates for a specific date (YYYY-MM-DD format)."""
-        try:
-            url = f"{_BASE_URL}/{date}"
-            resp = requests.get(url, params={"from": base.upper()}, timeout=_TIMEOUT)
-            resp.raise_for_status()
-            data = resp.json()
-            return data.get("rates", {})
-        except requests.RequestException as exc:
-            logger.warning("Frankfurter historical request failed for %s: %s", date, exc)
-            return None
-        except (KeyError, ValueError) as exc:
-            logger.warning("Frankfurter historical parse error for %s: %s", date, exc)
-            return None

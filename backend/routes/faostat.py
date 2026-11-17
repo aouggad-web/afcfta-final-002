@@ -9,7 +9,8 @@ import re
 import sys
 from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from entitlement_guard import exiger_un_filtre
+from fastapi import APIRouter, HTTPException, Query, Request
 
 # Add parent directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
@@ -167,6 +168,13 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/faostat")
 
+# Formule Découverte (audit D6) : ces listes de chiffres n'ont pas d'écran ;
+# sans pays (ou produit), elles rendaient tout le jeu de données sans compter
+# de recherche.
+_FILTRE_PAYS_OU_PRODUIT = (
+    "Formule Découverte : précisez un pays ou un produit, compté comme une recherche."
+)
+
 
 @router.get("/statistics")
 async def faostat_stats():
@@ -194,6 +202,7 @@ async def list_commodities(language: str = Query(default="fr")):
 
 @router.get("/production")
 async def get_production(
+    request: Request,
     country: Optional[str] = Query(default=None, description="ISO3 country code (e.g., MAR)"),
     commodity: Optional[str] = Query(
         default=None, description="FAO commodity code (e.g., 661 for Cocoa)"
@@ -215,6 +224,7 @@ async def get_production(
     Returns:
         List of production records with country, commodity, year, and value
     """
+    exiger_un_filtre(request, country, commodity, message=_FILTRE_PAYS_OU_PRODUIT)
     try:
         data = get_production_data(
             country_iso3=country, commodity_code=commodity, year=year, language=language

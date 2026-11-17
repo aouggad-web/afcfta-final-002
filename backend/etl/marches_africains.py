@@ -90,6 +90,12 @@ FERIES_FIXES_NGX = {(1, 1), (5, 1), (6, 12), (10, 1), (12, 25), (12, 26)}
 JOURS_GARDES_NGX = 15
 _ENTETES = {"User-Agent": "Mozilla/5.0 (compatible; AfCFTA-Trade-Intelligence/1.0)"}
 _DELAI = aiohttp.ClientTimeout(total=20)
+# Audit D7 (16/11/2026) : un visiteur du tableau de bord public n'attend pas
+# la collecte au-delà de ce délai ; elle se poursuit en tâche de fond et il
+# reçoit les dernières valeurs connues.
+_ATTENTE_COLLECTE_S = 3.0
+# Taille annoncée au-delà de laquelle une réponse n'est pas lue.
+_TAILLE_MAX_OCTETS = 20 * 1024 * 1024
 
 
 def _nombre(texte: str) -> float:
@@ -312,10 +318,18 @@ class Marches:
         self._etat_charge = False
         self._prochain_essai_base = 0.0
         self._verrou = asyncio.Lock()
+        self._collecte: Optional[asyncio.Task] = None
+
+    @staticmethod
+    def _verifier_taille(r) -> None:
+        taille = (r.headers or {}).get("Content-Length")
+        if taille and taille.isdigit() and int(taille) > _TAILLE_MAX_OCTETS:
+            raise ValueError(f"réponse trop volumineuse ({taille} octets)")
 
     async def _texte(self, session, url) -> str:
         async with session.get(url, headers=_ENTETES, timeout=_DELAI) as r:
             r.raise_for_status()
+            self._verifier_taille(r)
             return await r.text()
 
     async def _rafraichir_cours(self, session):
@@ -329,9 +343,12 @@ class Marches:
             if r.status == 304:
                 return  # classeur inchangé depuis la dernière lecture
             r.raise_for_status()
+            self._verifier_taille(r)
             contenu = await r.read()
             modifie_le = r.headers.get("Last-Modified")
-        self.cours = {**lire_pink_sheet(contenu), "lien": lien, "modifie_le": modifie_le}
+        # Lecture du classeur (openpyxl, synchrone) hors de la boucle d'événements.
+        lu = await asyncio.to_thread(lire_pink_sheet, contenu)
+        self.cours = {**lu, "lien": lien, "modifie_le": modifie_le}
 
     async def _rafraichir_brent(self, session):
         self.brent_jour = {**lire_brent_eia(await self._texte(session, PAGE_BRENT_EIA)), "source": "EIA"}
@@ -388,49 +405,63 @@ class Marches:
         except Exception as e:
             logger.warning("Marchés : enregistrement impossible (%s)", type(e).__name__)
 
+    async def _collecter(self, taches, db, session_http, maintenant) -> None:
+        """Lit les sources périmées et enregistre l'état ; ne lève jamais."""
+        try:
+            session = session_http or aiohttp.ClientSession()
+            try:
+                resultats = await asyncio.gather(
+                    *[
+                        self._rafraichir_cours(session) if c == "cours"
+                        else self._rafraichir_brent(session) if c == "brent_jour"
+                        else self._rafraichir_indice(session, c)
+                        for c in taches
+                    ],
+                    return_exceptions=True,
+                )
+            finally:
+                if session_http is None:
+                    await session.close()
+            for c, r in zip(taches, resultats):
+                if isinstance(r, Exception):
+                    logger.warning("Marchés : %s indisponible (%s)", c, r)
+                    if c in self.indices:
+                        self.indices[c]["a_jour"] = False
+                    # Redemandée dans NOUVEL_ESSAI_S, et non au bout du délai complet.
+                    self.lus_a[c] = maintenant - DELAIS[c] + NOUVEL_ESSAI_S
+                else:
+                    self.lus_a[c] = maintenant
+            await self._enregistrer(db)
+        except Exception as e:  # pylint: disable=broad-except
+            logger.warning("Marchés : collecte interrompue (%s)", type(e).__name__)
+
     async def apercu(self, db=None, session_http=None) -> Dict:
         async with self._verrou:
             await self._charger(db)
-            maintenant = time.time()
-            taches = [c for c in DELAIS if maintenant - self.lus_a.get(c, 0.0) > DELAIS[c]]
-            if taches:
-                session = session_http or aiohttp.ClientSession()
-                try:
-                    resultats = await asyncio.gather(
-                        *[
-                            self._rafraichir_cours(session) if c == "cours"
-                            else self._rafraichir_brent(session) if c == "brent_jour"
-                            else self._rafraichir_indice(session, c)
-                            for c in taches
-                        ],
-                        return_exceptions=True,
-                    )
-                finally:
-                    if session_http is None:
-                        await session.close()
-                for c, r in zip(taches, resultats):
-                    if isinstance(r, Exception):
-                        logger.warning("Marchés : %s indisponible (%s)", c, r)
-                        if c in self.indices:
-                            self.indices[c]["a_jour"] = False
-                        # Redemandée dans NOUVEL_ESSAI_S, et non au bout du délai complet.
-                        self.lus_a[c] = maintenant - DELAIS[c] + NOUVEL_ESSAI_S
-                    else:
-                        self.lus_a[c] = maintenant
-                await self._enregistrer(db)
+        maintenant = time.time()
+        taches = [c for c in DELAIS if maintenant - self.lus_a.get(c, 0.0) > DELAIS[c]]
+        # Une seule collecte à la fois, lancée en tâche de fond : le verrou
+        # n'est plus tenu pendant les téléchargements (audit D7).
+        if taches and (self._collecte is None or self._collecte.done()):
+            self._collecte = asyncio.create_task(self._collecter(taches, db, session_http, maintenant))
+        if self._collecte is not None and not self._collecte.done():
+            try:
+                await asyncio.wait_for(asyncio.shield(self._collecte), timeout=_ATTENTE_COLLECTE_S)
+            except asyncio.TimeoutError:
+                pass  # la collecte continue ; les dernières valeurs connues sont servies
 
-            internes = ("lien", "modifie_le")
-            cours = {k: v for k, v in (self.cours or {}).items() if k not in internes} or None
-            return {
-                "cours": cours,
-                "indices": [{"cle": c, **self.indices[c]} for c in INDICES if c in self.indices],
-                "brent_jour": self.brent_jour,
-                "sources": {
-                    "cours": "Banque mondiale, Pink Sheet (CC BY 4.0)",
-                    "brent_jour": "EIA (U.S. Energy Information Administration), Brent spot",
-                    "indices": "SGBV (Alger), BRVM (Abidjan), NGX (Lagos), NSE (Nairobi)",
-                },
-            }
+        internes = ("lien", "modifie_le")
+        cours = {k: v for k, v in (self.cours or {}).items() if k not in internes} or None
+        return {
+            "cours": cours,
+            "indices": [{"cle": c, **self.indices[c]} for c in INDICES if c in self.indices],
+            "brent_jour": self.brent_jour,
+            "sources": {
+                "cours": "Banque mondiale, Pink Sheet (CC BY 4.0)",
+                "brent_jour": "EIA (U.S. Energy Information Administration), Brent spot",
+                "indices": "SGBV (Alger), BRVM (Abidjan), NGX (Lagos), NSE (Nairobi)",
+            },
+        }
 
 
 MARCHES = Marches()

@@ -15,6 +15,8 @@ describe('refusAcces', () => {
     expect(refusAcces(reponse(401, { error: 'login_required', module: 'stats' })).genre).toBe('connexion');
     expect(refusAcces(reponse(429, { error: 'quota_exceeded', module: 'logistics', quota: 5 })).genre).toBe('quota');
     expect(refusAcces(reponse(403, { error: 'upgrade_required', module: 'reports' })).genre).toBe('abonnes');
+    // Plafond du jour des routes du calculateur (formule Découverte, 17/11/2026).
+    expect(refusAcces(reponse(429, { error: 'daily_limit' })).genre).toBe('plafond');
   });
 
   it("ignore les autres erreurs (jeton CSRF, panne, détail en texte)", () => {
@@ -62,6 +64,15 @@ describe('InvitationAbonnement', () => {
     expect(texte).toContain('Quota de votre formule atteint');
     expect(texte).toContain('les 10 utilisations du jour');
     expect(texte).not.toContain('gratuites');
+  });
+
+  it("annonce le plafond du jour sans parler de recherches du mois", () => {
+    render(<InvitationAbonnement language="fr" onOpenAuth={vi.fn()} />);
+    refuser({ genre: 'plafond' });
+    const texte = screen.getByRole('dialog').textContent;
+    expect(texte).toContain("Limite d'usage du jour atteinte");
+    expect(texte).toContain('se renouvelle demain');
+    expect(texte).not.toContain('recherches gratuites');
   });
 
   it('ouvre la connexion pour un visiteur sans compte', () => {

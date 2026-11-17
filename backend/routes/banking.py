@@ -48,7 +48,8 @@ from banking_system.models import ExchangeRateInfo
 from currencies.service import to_iso2
 from exchange_rates import AFRICAN_CURRENCY_CODES
 from exchange_rates import get_service as get_rate_service
-from fastapi import APIRouter, HTTPException, Query
+from entitlement_guard import apercu, recherches_limitees
+from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
@@ -585,12 +586,19 @@ async def get_compliance_requirements(country_code: str):
 # ---------------------------------------------------------------------------
 
 
+# Formule Découverte (décision de l'exploitant du 17/11/2026, audit D6) : sans
+# pays choisi, le registre n'est servi qu'en aperçu, sans coordonnées ; choisir
+# un pays compte une recherche.
+_APERCU_BANQUE = ("type", "country_code", "country_name", "name", "abbreviation", "trade_finance")
+
+
 @router.get(
     "/register",
     summary="Registre global et consultable de toutes les banques africaines",
     tags=["Banking"],
 )
 async def get_banks_register_endpoint(
+    request: Request,
     search: Optional[str] = Query(
         default=None, description="Recherche textuelle (nom, sigle, pays)"
     ),
@@ -614,6 +622,8 @@ async def get_banks_register_endpoint(
         bank_type=bank_type,
         trade_finance_only=trade_finance_only,
     )
+    if not country_code and recherches_limitees(request):
+        return {"total": len(results), "results": apercu(results, _APERCU_BANQUE), "apercu": True}
     return {"total": len(results), "results": results}
 
 

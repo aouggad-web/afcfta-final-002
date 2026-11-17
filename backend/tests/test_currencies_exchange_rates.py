@@ -317,18 +317,71 @@ class TestFrankfurterProvider:
 
         assert result is None
 
-    def test_fetch_historical_success(self):
-        """Historical fetch should pass the date in the URL."""
-        mock_response = MagicMock()
-        mock_response.json.return_value = {"rates": {"ZAR": 17.5}}
-        mock_response.raise_for_status = MagicMock()
 
-        with patch(
-            "exchange_rates.providers.frankfurter.requests.get", return_value=mock_response
-        ) as mock_get:
-            provider = FrankfurterProvider()
-            rates = provider.fetch_historical("2024-01-15", "USD")
+# ── Audit D2 (16/11/2026) : aucune requête ne déclenche d'appel réseau ──────
 
-        assert rates == {"ZAR": 17.5}
-        call_url = mock_get.call_args[0][0]
-        assert "2024-01-15" in call_url
+
+class TestAucunAppelReseauSurRequete:
+    """Le service était appelé depuis des routes asynchrones : un changement
+    de devise de base (USD puis EUR sur l'écran des banques) ou une devise
+    inconnue relançait la collecte (fournisseurs et banques centrales, délais
+    de 10 à 15 s) dans la boucle d'événements, figeant le serveur."""
+
+    @staticmethod
+    def _service_sans_reseau(rates):
+        from exchange_rates.models import RateBundle
+
+        svc = ExchangeRateService()
+        for provider in svc._primary_providers:
+            provider.fetch_rates = MagicMock(side_effect=AssertionError("appel réseau"))
+        svc._supplement_provider.fetch_rates = MagicMock(side_effect=AssertionError("appel réseau"))
+        svc._latest = RateBundle(
+            base="USD", timestamp=datetime.now(timezone.utc), source="test", rates=rates
+        )
+        return svc
+
+    def test_une_autre_base_est_derivee_du_cache_usd(self):
+        svc = self._service_sans_reseau({"EUR": 0.5, "DZD": 135.0, "NGN": 1500.0})
+
+        eur = svc.get_latest("EUR")
+
+        assert eur.base == "EUR"
+        assert eur.rates["DZD"] == pytest.approx(270.0)
+        assert eur.rates["USD"] == pytest.approx(2.0)
+        # Retour à USD : toujours le même cache, sans collecte.
+        assert svc.get_latest("USD").rates["DZD"] == 135.0
+        assert svc.convert("EUR", "NGN", 10).converted_amount == pytest.approx(30000.0)
+
+    @pytest.mark.parametrize("base", ["XXX", "usd;drop", "", "EURO", "12A"])
+    def test_base_inconnue_ou_invalide_sans_reseau(self, base):
+        svc = self._service_sans_reseau({"EUR": 0.5})
+
+        assert svc.get_latest(base) is None
+
+    def test_devise_cible_inconnue_sans_reseau(self):
+        svc = self._service_sans_reseau({"EUR": 0.5})
+
+        assert svc.get_rate("USD", "QQQ") is None
+        assert svc.convert("EUR", "QQQ", 1.0) is None
+
+    def test_cache_vide_lance_le_remplissage_en_tache_de_fond(self, monkeypatch):
+        svc = ExchangeRateService()
+        lances = []
+        monkeypatch.setattr(svc, "_rafraichir_en_tache_de_fond", lambda: lances.append(1))
+
+        assert svc.get_latest("USD") is None
+        assert lances == [1]
+
+    def test_la_collecte_interroge_toujours_les_fournisseurs_en_usd(self):
+        svc = ExchangeRateService()
+        appels = []
+
+        def fetch(base):
+            appels.append(base)
+            return {"EUR": 0.5, **{code: 1.0 for code in AFRICAN_CURRENCY_CODES}}
+
+        svc._primary_providers[0].fetch_rates = fetch
+        bundle = svc.update_rates("EUR")
+
+        assert appels == ["USD"]
+        assert bundle.base == "EUR" and svc._latest.base == "USD"

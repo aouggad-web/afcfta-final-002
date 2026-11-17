@@ -57,9 +57,6 @@ const API_CACHE_PATTERNS = [
   /\/api\/countries/,
   /\/api\/statistics/,
   /\/api\/health/,
-  /\/api\/regional-analytics\/blocs/,
-  /\/api\/ai-intelligence\/scoring-algorithm/,
-  /\/api\/mobile\//,
 ];
 
 /** Cache TTL for API responses (5 minutes) */

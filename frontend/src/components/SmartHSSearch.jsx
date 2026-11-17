@@ -121,7 +121,7 @@ export default function SmartHSSearch({
             setLoading(false);
           }
         }
-      }, 300);
+      }, 700); // fin de frappe : chaque recherche envoyée compte (quota Découverte, 16/11/2026)
       searchTimeoutRef.current = timer;
     },
     [destinationCountry, language]
