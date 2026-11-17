@@ -1206,7 +1206,12 @@ def lien_web(lien) -> bool:
     """Audit D10 : seuls les liens http(s) d'un flux sont gardés. feedparser
     conserve un lien javascript: ou data:, que l'écran mettrait dans un href
     public ; même règle que pour les articles saisis à la main (routes/news.py)."""
-    morceaux = urlparse(str(lien or "").strip())
+    try:
+        morceaux = urlparse(str(lien or "").strip())
+    except ValueError:
+        # Lien malformé (« https://[invalid ») : seule cette dépêche est
+        # écartée, pas le reste du flux (revue Codex).
+        return False
     return morceaux.scheme in ("http", "https") and bool(morceaux.netloc)
 
 

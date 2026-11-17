@@ -393,11 +393,11 @@ def termes_de_recherche(request: Request) -> list:
 async def _valeurs_du_corps(request: Request) -> list:
     """Paramètres de recherche d'un corps JSON (audit D6 : l'estimation
     d'assurance et les recommandations bancaires portent le pays dans le corps,
-    qui n'était pas compté). Un corps illisible n'apporte rien : la route le
-    refusera elle-même."""
+    qui n'était pas compté). Le corps est lu quel que soit son type déclaré :
+    FastAPI lit aussi en JSON un `application/JSON` ou un corps sans type, et
+    s'en tenir au type exact laissait passer ces appels sans compter (revue
+    Codex). Un corps illisible n'apporte rien : la route le refusera elle-même."""
     if request.method not in ("POST", "PUT", "PATCH"):
-        return []
-    if "json" not in request.headers.get("content-type", ""):
         return []
     try:
         corps = await request.json()
@@ -515,7 +515,8 @@ def apercu(elements: list, champs: tuple) -> list:
 def exiger_un_filtre(request: Request, *filtres, message: str) -> None:
     """Audit D6 : en Découverte, une liste de chiffres sans écran (API) n'est
     servie que pour un pays ou un produit, compté comme une recherche."""
-    if recherches_limitees(request) and not any(filtres):
+    # Un filtre fait d'espaces ne filtre rien : les services le vident.
+    if recherches_limitees(request) and not any(str(f or "").strip() for f in filtres):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail={"error": "filter_required", "message": message},
@@ -598,6 +599,7 @@ def require_login(module_id: str):
     plafond = ModuleAccess(enabled=True, quota=PLAFOND_JOUR_DECOUVERTE, quota_period="day")
 
     async def _dependency(
+        request: Request,
         user: Optional[dict] = Depends(get_optional_subscriber),
         key_doc: dict = Depends(require_auth),
     ) -> None:
@@ -607,6 +609,10 @@ def require_login(module_id: str):
             return
         if resolve_entitlements(user).tier != "free":
             return
+        # Audit D11 (revue Codex) : une page tierce ne doit pas épuiser le
+        # plafond du compte ; refusée avant tout décompte.
+        if _requete_d_un_site_tiers(request):
+            raise _requete_tierce_refusee()
         if not await check_and_increment_usage(user, f"{module_id}:partage", plafond):
             raise _plafond_quotidien_atteint()
 

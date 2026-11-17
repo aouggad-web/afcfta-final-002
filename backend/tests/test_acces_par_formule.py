@@ -23,6 +23,7 @@ ou sonde montée avec les mêmes dépendances que la production.
 import asyncio
 import hashlib
 import io
+import json
 import sys
 from types import SimpleNamespace
 from pathlib import Path
@@ -386,6 +387,19 @@ def test_routes_partagees_plafond_du_jour_contre_l_aspiration(app_api, base):
     assert base.recherches_modules.docs == {}
 
 
+def test_page_tierce_n_epuise_pas_le_plafond_du_jour(app_api, base):
+    """Audit D11 (revue Codex) : une requête qu'un autre site fait porter par
+    le navigateur est refusée avant de consommer le plafond."""
+    client = _client(app_api, abonne=ABONNES["free"])
+
+    reponse = client.get("/api/calcul/pays", headers={"Sec-Fetch-Site": "cross-site"})
+
+    assert reponse.status_code == 403
+    assert reponse.json()["detail"]["error"] == "cross_site_request"
+    assert base.usage_counters.docs == {}
+    assert client.get("/api/calcul/pays", headers={"Sec-Fetch-Site": "same-origin"}).status_code == 200
+
+
 @pytest.mark.parametrize("formule", ["starter", "pro", "business"])
 def test_routes_partagees_sans_plafond_pour_les_formules_payantes(app_api, base, formule):
     _plafond_presque_atteint(base, ABONNES[formule])
@@ -732,7 +746,10 @@ def test_recherche_dans_le_registre_sans_pays_reste_un_apercu(app_api, base):
     ["/api/production/macro", "/api/production/agriculture", "/api/production/agriculture/projections",
      "/api/production/manufacturing", "/api/production/manufacturing/measured", "/api/production/mining",
      "/api/production/manufacturing?isic_code=10", "/api/production/macro?sector=A",
-     "/api/faostat/production", "/api/logistics/fees/thc"],
+     "/api/faostat/production", "/api/logistics/fees/thc",
+     # Un filtre fait d'espaces ne filtre rien (revue Codex).
+     "/api/production/macro?country_iso3=%20", "/api/production/mining?commodity=%20",
+     "/api/faostat/production?country=%20%20"],
 )
 def test_listes_de_chiffres_sans_ecran_exigent_un_pays_en_decouverte(app_api, base, chemin):
     reponse = _client(app_api, abonne=ABONNES["free"]).get(chemin)
@@ -787,6 +804,12 @@ def test_le_pays_du_corps_json_compte_une_recherche(app_api, base):
 
     reponse = client.post("/api/insurance/quote", json={**corps, "country_code": "KE"})
     assert reponse.status_code == 429
+    # FastAPI lit aussi un corps « application/JSON » ou sans type : il est
+    # compté de même (revue Codex).
+    for entetes in ({"Content-Type": "application/JSON"}, {}):
+        brut = json.dumps({**corps, "country_code": "SN"})
+        reponse = client.post("/api/insurance/quote", content=brut, headers=entetes)
+        assert reponse.status_code == 429, entetes
     (doc,) = base.recherches_modules.docs.values()
     assert (doc["module"], sorted(doc["termes"])) == ("finance", ["DZ", "EG", "MA", "NG", "TN"])
 

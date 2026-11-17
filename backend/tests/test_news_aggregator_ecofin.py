@@ -138,10 +138,13 @@ FLUX_LIENS = """<?xml version="1.0"?><rss version="2.0"><channel><title>t</title
 <item><title>Dépêche data sur la banque</title><link>data:text/html,x</link><pubDate>Sun, 08 Nov 2026 09:10:00 GMT</pubDate></item>
 <item><title>Dépêche sans lien sur la banque</title><pubDate>Sun, 08 Nov 2026 09:20:00 GMT</pubDate></item>
 <item><title>Dépêche web sur la banque</title><link> https://exemple.invalid/a </link><pubDate>Sun, 08 Nov 2026 09:30:00 GMT</pubDate></item>
+<item><title>Dépêche au lien malformé sur la banque</title><link>https://[invalide</link><pubDate>Sun, 08 Nov 2026 09:40:00 GMT</pubDate></item>
 </channel></rss>"""
 
 
 def test_un_lien_de_flux_qui_n_est_pas_http_est_ecarte():
+    # Le lien malformé, le plus récent, est lu en premier : il ne doit écarter
+    # que sa propre dépêche, pas le reste du flux (revue Codex).
     session = _Session()
     session.get = lambda url, *a, **k: _Reponse(FLUX_LIENS)
 
