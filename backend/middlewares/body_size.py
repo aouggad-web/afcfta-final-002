@@ -4,7 +4,7 @@ import os
 
 class BodySizeLimitMiddleware:
     """Rejette toute requête dont le corps dépasse une borne, avant que la route
-    ne le lise.
+    ne le traite.
 
     Audit DoS (17/11/2026) : aucune limite n'existait. FastAPI bufferise le
     corps entier avant Pydantic, donc un corps de dizaines de Mo (ou une rafale
@@ -12,12 +12,18 @@ class BodySizeLimitMiddleware:
     20 Mo passait en 1,4 s. Les plafonds par champ ne protègent pas, le corps
     étant déjà lu.
 
-    Deux contrôles : le `Content-Length` déclaré (cas de tous les navigateurs et
-    clients HTTP usuels), refusé sans lire le corps ; et le volume réellement
-    reçu, pour qu'un envoi « chunked » sans `Content-Length` ne contourne pas la
-    borne. Middleware ASGI pur, pour refermer le flux et répondre 413 avant la
-    route. Défense en profondeur : le relais en frontal (Cloudflare) doit aussi
-    plafonner la taille du corps.
+    Deux chemins :
+    - **`Content-Length` déclaré** : refus 413 immédiat au-delà de la borne,
+      sans lire le corps (cas de tous les navigateurs et clients HTTP usuels).
+    - **sans `Content-Length` (corps « chunked »)** : le corps est mis en
+      tampon, borné, AVANT d'appeler la route ; au dépassement, 413 et la route
+      n'est **jamais** invoquée. Revue Codex (18/11/2026) : synthétiser un
+      « fin de corps » tronqué faisait exécuter la route sur un préfixe valide
+      (effet de bord, p. ex. insertion d'un message), le 413 ne remplaçant que
+      la réponse après coup.
+
+    Middleware ASGI pur. Défense en profondeur : le relais en frontal
+    (Cloudflare) doit aussi plafonner la taille du corps.
     """
 
     def __init__(self, app, max_bytes: "int | None" = None):
@@ -34,6 +40,7 @@ class BodySizeLimitMiddleware:
             await self.app(scope, receive, send)
             return
 
+        declaree = None
         for nom, valeur in scope.get("headers") or []:
             if nom == b"content-length":
                 try:
@@ -41,43 +48,48 @@ class BodySizeLimitMiddleware:
                 except ValueError:
                     await self._refus(send)
                     return
-                if declaree > self.max_bytes:
-                    await self._refus(send)
-                    return
                 break
 
-        recu = 0
-        depasse = False
+        if declaree is not None:
+            if declaree > self.max_bytes:
+                await self._refus(send)
+                return
+            # Longueur déclarée et dans la borne : le serveur ASGI borne le corps
+            # à cette longueur, on laisse passer en flux sans tamponner.
+            await self.app(scope, receive, send)
+            return
 
-        async def receive_borne():
-            nonlocal recu, depasse
-            if depasse:
-                # Le corps a déjà dépassé : ne plus rien livrer à la route.
-                return {"type": "http.request", "body": b"", "more_body": False}
+        # Sans Content-Length : tamponner le corps, borné, AVANT d'appeler la
+        # route. Au dépassement, la route n'est pas invoquée — aucun effet de
+        # bord.
+        messages = []
+        total = 0
+        while True:
             message = await receive()
             if message.get("type") == "http.request":
-                recu += len(message.get("body", b""))
-                if recu > self.max_bytes:
-                    depasse = True
-                    return {"type": "http.request", "body": b"", "more_body": False}
-            return message
-
-        debut_envoye = False
-
-        async def send_borne(message):
-            nonlocal debut_envoye
-            # Dépassement détecté en cours de lecture : on remplace la réponse de
-            # la route par un 413, tant que rien n'est encore parti.
-            if depasse and not debut_envoye:
-                if message.get("type") == "http.response.start":
+                total += len(message.get("body", b""))
+                if total > self.max_bytes:
                     await self._refus(send)
-                    debut_envoye = True
-                return
-            if depasse and debut_envoye and message.get("type") == "http.response.body":
-                return
-            await send(message)
+                    return
+                messages.append(message)
+                if not message.get("more_body", False):
+                    break
+            else:
+                # http.disconnect ou autre : on arrête de lire et on transmet.
+                messages.append(message)
+                break
 
-        await self.app(scope, receive_borne, send_borne)
+        index = 0
+
+        async def receive_tampon():
+            nonlocal index
+            if index < len(messages):
+                message = messages[index]
+                index += 1
+                return message
+            return {"type": "http.disconnect"}
+
+        await self.app(scope, receive_tampon, send)
 
     async def _refus(self, send):
         corps = json.dumps({"detail": "Request body too large."}).encode("utf-8")
