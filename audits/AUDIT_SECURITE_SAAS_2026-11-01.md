@@ -66,7 +66,7 @@ La liste compte 30 constats ; le décompte du §1 en annonçait 29 (9 faibles ou
 | INFO-4 | Jeton CSRF non lié à la session ; session en `SameSite=None` | CORS en liste blanche exacte ; l'iframe d'aperçu impose `SameSite=None` |
 | INFO-10 | Pas d'empreintes (`--require-hashes`) ; dépendances indirectes non figées à la racine et dans les workflows | une seule ligne sans empreinte bloquerait l'installation tant que l'agent Emergent édite `backend/requirements.txt` |
 
-**Vérifications encore à faire par l'exploitant** (§6) : « Redirect URLs » de Supabase sans joker sur un domaine partagé (§6.5) ; utilisateur des programmes supervisord (§6.6) ; « Save to GitHub » d'Emergent vers une branche dédiée (C3).
+**Vérifications encore à faire par l'exploitant** (§6) : « Save to GitHub » d'Emergent vers une branche dédiée (C3). Faites : « Redirect URLs » de Supabase sans joker (§6.5, le 16/11) ; utilisateur des programmes supervisord (§6.6, le 17/11 : `root`, voir §6).
 
 ### 0.3 Audit différentiel des PR #790 à #807 (7 au 16 novembre)
 
@@ -180,7 +180,7 @@ Le lien brut du flux est conservé (`etl/news_aggregator.py:1316`) et affiché t
 | 4 | ✅ Listes en aperçu sans chiffres en Découverte (décision du 17/11), pays exigé sur les listes de chiffres sans écran, `countries`, `locode` et corps JSON comptés, recherches d'un site tiers refusées | D6, D11 | fait |
 | 5 | ✅ Routes sans appelant supprimées (85 + `/api/ai/*`) avec le code devenu orphelin ; sonde `trade-series/sources` réservée à l'admin ; `/api/reports/oec-health` en cache | D8, D3 | fait |
 | 6 | ✅ `soupsieve` 4.1.1, audit hebdomadaire des dépendances en CI (`audit_dependances.yml`), liens d'actualités en http(s) | D9, D10 | fait |
-| 7 | Réveil de la préproduction et contrôle passif après synchronisation ; vérifications §6.5 et §6.6 | — | XS |
+| 7 | ✅ Contrôle passif du 17/11 après synchronisation de `42e950b0` (GET seulement, sans session, 32 requêtes) : 21 chemins des routeurs retirés en 404 ; export régional, sonde `trade-series/sources`, logistique, production et banques refusés sans session (401 ou 403) ; `/api/reports/health` et `/api/reports/oec-health` en 200 ; chemin `/api` inconnu en 404 ; HSTS, CSP à nonce, `frame-ancestors` et `nosniff` sur les pages ; l'interface servie connaît le plafond du jour (`daily_limit`) et n'appelle plus aucune route retirée. Tâche « Surveillance sécurité » : échecs du 10 au 17/11 (HTTP 404, « injoignable ») pendant la mise en veille du pod, qui ne sert alors qu'une copie statique ; verte à 18 h 42 après la synchronisation, verdict des crons « ok ». §6.5 fait le 16/11 (§0.5) ; §6.6 relevé le 17/11 : programmes du pod en `root` (réglage d'Emergent ; l'image Docker de production tourne sans privilège) | — | fait |
 
 **Décisions de l'exploitant (16/11/2026)** : quota Découverte pour Finance ; consultation du tarif comptée comme une recherche (la fiche réglementaire, depuis la fusion de #806 le 17/11) ; routes sans appelant tranchées le 17/11 : supprimées (aucun client de l'API à ce jour). **Décision du 17/11/2026** : en Découverte, les listes d'ouverture sont servies en aperçu, sans chiffres ni contacts. Avant l'ouverture commerciale, un test d'intrusion externe, mené par un tiers sur la préproduction, compléterait cet audit.
 
@@ -473,6 +473,14 @@ Ces points ne peuvent être tranchés que par vous, sur l'instance de production
    5. après le déploiement, vérifier que `proxy_peer_trusted` vaut `true`.
 5. **Supabase (M6)** : dans le tableau de bord, vérifier que les « Redirect URLs » ne contiennent **aucun** wildcard sur un domaine partagé (`*.emergentagent.com`).
 6. **Déploiement (C3)** : confirmer sous quel utilisateur tournent les programmes supervisord et si `main` est protégée (y compris contre les Actions).
+   - ✅ **Relevé de l'exploitant du 17/11/2026** (`ps` sur le pod) : tout tourne en `root`.
+     - Programmes concernés : supervisord, le backend (`uvicorn server:app`, port 8001, `--reload`), l'interface (`vite preview`, port 3000).
+     - Outils d'Emergent aussi en `root` : code-server sur `/app`, serveur MCP MongoDB (port 8020), agent.
+   - Conséquence : une exécution de code dans le backend, ou un script d'installation d'une dépendance lors de la synchronisation, obtient les droits `root` sur le pod. Elle atteint alors ses secrets et ses crons, ainsi que le contrôle des crons lui-même (limite déjà notée au point 17).
+   - Ce réglage appartient à Emergent : il réécrit la configuration des programmes, et le dépôt ne peut pas le changer.
+   - L'image Docker de production tourne, elle, sous un utilisateur sans privilège (`USER appuser`, `Dockerfile`).
+   - Risque à accepter tant que la préproduction reste sur Emergent ; à lever en production par l'image Docker.
+   - `main` est protégée depuis le 02/11/2026 (C3).
 
 ---
 

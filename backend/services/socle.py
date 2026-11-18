@@ -30,6 +30,7 @@ import hashlib
 import json
 import os
 import re
+import threading
 from collections import OrderedDict
 from typing import Any, Dict, Optional, Tuple
 
@@ -49,6 +50,23 @@ _tva_cache: Optional[Dict[str, Dict[str, Any]]] = None
 _MAX_PAYS_EN_CACHE = 4
 _cache: "OrderedDict[str, dict]" = OrderedDict()
 _manifeste: Optional[dict] = None
+
+#: Pays dont l'empreinte a déjà été vérifiée dans ce processus. Les fichiers du
+#: socle ne changent pas en cours d'exécution (une synchronisation Emergent
+#: redémarre le backend), donc re-hacher à chaque défaut de cache est inutile —
+#: et coûteux : un fichier pèse jusqu'à des dizaines de Mo (audit DoS,
+#: 17/11/2026).
+_verifies: "set[str]" = set()
+
+#: Borne le nombre de chargements lourds (hachage + parse JSON) simultanés : un
+#: visiteur anonyme qui fait tourner le pays sur plus de `_MAX_PAYS_EN_CACHE`
+#: défait le cache à chaque requête ; sans borne, une rafale de gros fichiers
+#: cumule des centaines de Mo et tue le worker unique. Réglable (défaut 2).
+try:
+    _MAX_CHARGEMENTS = max(1, int(os.environ.get("SOCLE_MAX_CHARGEMENTS", "2")))
+except ValueError:
+    _MAX_CHARGEMENTS = 2
+_CHARGEMENT = threading.BoundedSemaphore(_MAX_CHARGEMENTS)
 
 
 class SocleIndisponible(RuntimeError):
@@ -96,56 +114,74 @@ def charger(iso3: str) -> dict:
         raise SocleIndisponible(
             f"{iso3} : fichier de socle absent. Le régénérer : " "python3 scripts/build_socle.py"
         )
-    empreinte = _sha256(chemin)
-    if empreinte != entree["socle_sha256"]:
-        raise SocleIndisponible(
-            f"{iso3} : le socle ne correspond plus à son manifeste "
-            f"(attendu {entree['socle_sha256'][:12]}, trouvé {empreinte[:12]}). "
-            "Il n'est pas servi — le régénérer : python3 scripts/build_socle.py"
-        )
 
-    # Le socle peut correspondre à son propre manifeste tout en datant d'un
-    # crawl que la collecte a depuis remplacé sans reconstruction : deux
-    # empreintes identiques, une source différente. Le fichier source est
-    # versionné (backend/data/crawled/), donc toujours présent au chargement,
-    # pas seulement en développement — revérifier son empreinte ici coûte le
-    # même ordre de grandeur que celle du socle déjà payée à chaque défaut de
-    # cache, pas un rehachage à chaque requête.
-    source_chemin = os.path.join(RACINE, entree["source_fichier"])
-    if os.path.exists(source_chemin):
-        empreinte_source = _sha256(source_chemin)
-        if empreinte_source != entree["source_sha256"]:
-            raise SocleIndisponible(
-                f"{iso3} : le crawl source a changé depuis la construction du socle "
-                f"(attendu {entree['source_sha256'][:12]}, trouvé {empreinte_source[:12]}). "
-                "Il n'est pas servi — le régénérer : python3 scripts/build_socle.py"
-            )
+    # Audit DoS (17/11/2026) : un défaut de cache rechargeait, re-hachait (socle
+    # + source + nomenclature, jusqu'à des dizaines de Mo) et re-parsait le
+    # fichier À CHAQUE requête. Un anonyme qui fait tourner le pays sur plus de
+    # `_MAX_PAYS_EN_CACHE` défait le cache à chaque appel → CPU et mémoire
+    # saturés, worker unique tué. Deux garde-fous : l'empreinte n'est vérifiée
+    # qu'une fois par processus (les fichiers ne changent pas en cours
+    # d'exécution), et le sémaphore borne les chargements lourds simultanés.
+    with _CHARGEMENT:
+        if iso3 in _cache:  # chargé par un autre fil pendant l'attente
+            _cache.move_to_end(iso3)
+            return _cache[iso3]
 
-    with open(chemin, encoding="utf-8") as f:
-        donnees = json.load(f)
-    # Une nomenclature publiée est une seconde source du socle : un crawl
-    # inchangé ne garantit pas que ses codes et désignations soient à jour.
-    publiee = donnees.get("nomenclature_publiee")
-    if publiee:
-        fichier = publiee.get("fichier")
-        attendue = publiee.get("sha256")
-        source_nomenclature = os.path.join(RACINE, fichier) if fichier else None
-        if (
-            not source_nomenclature
-            or not attendue
-            or not os.path.isfile(source_nomenclature)
-            or _sha256(source_nomenclature) != attendue
-        ):
-            raise SocleIndisponible(
-                f"{iso3} : la nomenclature source est absente ou a changé depuis "
-                "la construction du socle. Il n'est pas servi — le régénérer : "
-                "python3 scripts/build_socle.py"
-            )
-    _cache[iso3] = donnees
-    _cache.move_to_end(iso3)
-    while len(_cache) > _MAX_PAYS_EN_CACHE:
-        _cache.popitem(last=False)
-    return donnees
+        deja_verifie = iso3 in _verifies
+        if not deja_verifie:
+            empreinte = _sha256(chemin)
+            if empreinte != entree["socle_sha256"]:
+                raise SocleIndisponible(
+                    f"{iso3} : le socle ne correspond plus à son manifeste "
+                    f"(attendu {entree['socle_sha256'][:12]}, trouvé {empreinte[:12]}). "
+                    "Il n'est pas servi — le régénérer : python3 scripts/build_socle.py"
+                )
+            # Le socle peut correspondre à son propre manifeste tout en datant
+            # d'un crawl que la collecte a depuis remplacé sans reconstruction :
+            # deux empreintes identiques, une source différente. Le fichier
+            # source est versionné (backend/data/crawled/), donc présent au
+            # chargement.
+            source_chemin = os.path.join(RACINE, entree["source_fichier"])
+            if os.path.exists(source_chemin):
+                empreinte_source = _sha256(source_chemin)
+                if empreinte_source != entree["source_sha256"]:
+                    raise SocleIndisponible(
+                        f"{iso3} : le crawl source a changé depuis la construction du socle "
+                        f"(attendu {entree['source_sha256'][:12]}, trouvé {empreinte_source[:12]}). "
+                        "Il n'est pas servi — le régénérer : python3 scripts/build_socle.py"
+                    )
+
+        with open(chemin, encoding="utf-8") as f:
+            donnees = json.load(f)
+
+        if not deja_verifie:
+            # Une nomenclature publiée est une seconde source du socle : un
+            # crawl inchangé ne garantit pas que ses codes et désignations
+            # soient à jour.
+            publiee = donnees.get("nomenclature_publiee")
+            if publiee:
+                fichier = publiee.get("fichier")
+                attendue = publiee.get("sha256")
+                source_nomenclature = os.path.join(RACINE, fichier) if fichier else None
+                if (
+                    not source_nomenclature
+                    or not attendue
+                    or not os.path.isfile(source_nomenclature)
+                    or _sha256(source_nomenclature) != attendue
+                ):
+                    raise SocleIndisponible(
+                        f"{iso3} : la nomenclature source est absente ou a changé depuis "
+                        "la construction du socle. Il n'est pas servi — le régénérer : "
+                        "python3 scripts/build_socle.py"
+                    )
+            # Toutes les empreintes vérifiées : ne plus re-hacher ce pays.
+            _verifies.add(iso3)
+
+        _cache[iso3] = donnees
+        _cache.move_to_end(iso3)
+        while len(_cache) > _MAX_PAYS_EN_CACHE:
+            _cache.popitem(last=False)
+        return donnees
 
 
 def pays_servis() -> Dict[str, dict]:
@@ -314,6 +350,10 @@ def vider_cache() -> None:
     """Oublier les pays chargés, le manifeste et les tables (utile aux tests)."""
     global _manifeste, _devises_cache, _tva_cache
     _cache.clear()
+    # Réinitialiser aussi les empreintes déjà vérifiées : un fichier modifié
+    # doit être re-haché et re-vérifié au prochain chargement (c'est ce que
+    # testent les cas d'altération du socle, de la source ou de la nomenclature).
+    _verifies.clear()
     _manifeste = None
     _devises_cache = None
     _tva_cache = None
