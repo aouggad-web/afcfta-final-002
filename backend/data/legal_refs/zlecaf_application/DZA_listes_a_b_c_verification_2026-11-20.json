@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "objet": "Algérie, importation ZLECAf : vérification des listes officielles A, B et C et du calendrier de démantèlement contre le dépôt, et correction de deux écarts (une ligne gelée non repérée, taux de base 2019 de la liste A)",
+  "destination_iso3": "DZA",
+  "verified_at": "2026-11-20",
+  "etabli": true,
+  "evidence_level": "primaire : documents officiels de la Douane algérienne (annexes de la circulaire 482/DGD/SP/D.042/24) du dossier « PDF algerie-zlecaf » du Drive de l'exploitant, déposés le 14/09/2026, lus le 20/11/2026. Les quatre listes (8,6 Mo pour la liste A) ne sont pas archivées dans le dépôt : leurs empreintes sont portées ici.",
+  "documents_archives": [
+    {
+      "texte_archive": "sources/DZA_schema_general_demantelement.texte-extrait.txt",
+      "sha256": "d01e4684b6d46a977fc93351cc713ec04ea977ab3870f5e37f5f59ac3bb22602",
+      "note": "Schéma général : effectifs officiels des listes et tableaux de taux année par année."
+    },
+    {
+      "liste_a_pdf_non_archive": "liste_a_5_ans_-01.pdf (Drive 1UOog02BG1gnRoCGgA8aZ-WINxBMCGFpn, 660 pages, 15 703 lignes)",
+      "pdf_sha256": "7944d8bf17ac9fae0d845ca03c909d5681949d5061b205101112313059191eaa"
+    },
+    {
+      "liste_b_13_ans_pdf_non_archive": "liste_b_13ans_-_reciprocite-01.pdf (Drive 1rzgrszyJyKNlbyDqI6HIyvvk5iFCSU-M, 1 163 lignes)",
+      "pdf_sha256": "a9d3f3407cbc7d77123104f9436725b3e30d29b6bf13141507ba6d2bb63fd4d8"
+    },
+    {
+      "liste_b_10_ans_pdf_non_archive": "liste_b-_10_ans_.pdf (Drive 1X0mlRB0iP2z2hk1yqb6mEjXDAB9-O7Q-, 1 163 lignes)",
+      "pdf_sha256": "1a38fc24418a086515180645b07bf162eaa0b2f9a1c02598f7e76cbcc0181978"
+    },
+    {
+      "liste_c_pdf_non_archive": "liste_c_produits_exclus_de_la_zlecaf_.pdf (Drive 1OO6_uUHgfMHKxWNEBg3u7Zg5Z91-ZMlH, 456 lignes)",
+      "pdf_sha256": "b44ffebc49fa757af4bed1f7f46ffc4b6967f34bddc73da5385db721e2640dd3"
+    }
+  ],
+  "lecture": {
+    "script": "scripts/extraire_listes_zlecaf_dza.py",
+    "methode": "tableaux lus avec pymupdf.find_tables, ligne par ligne (le texte brut des PDF décale parfois la série de taux d'une ligne sur sa voisine) ; le script contrôle ses résultats avant d'écrire et s'arrête sur la moindre divergence",
+    "donnees_ecrites": [
+      "backend/data/zlecaf_dza/frozen_codes.json",
+      "backend/data/zlecaf_dza/list_a_base_rates.json"
+    ]
+  },
+  "regle": {
+    "valeur": "Liste (A) : 15 703 lignes dont 1 136 gelées ; liste (B) : 1 163 lignes dont 322 gelées ; liste (C) : 456 lignes ; total 17 322. Le calendrier se calcule sur le taux de base DD de 2019 de chaque ligne.",
+    "reference": "Schéma général du traitement tarifaire à l'importation (annexe de la circulaire 482/DGD/SP/D.042/24, page 24) ; listes (A), (B) et (C) de la Douane algérienne",
+    "verbatim": "15703 dont 1136 concernées par le gel du démantèlement pour absence des règles d’origine"
+  },
+  "verifie_identique_au_depot": {
+    "calendrier": "Les 28 combinaisons année × régime du schéma général (standard A et B, réciprocité A et B ; taux de base 5, 15, 30 et 60 %) sont reproduites par le calendrier du code, sans écart.",
+    "liste_C": "456 lignes, identiques à list_c_codes.json.",
+    "liste_B": "1 163 lignes dans chacun des deux PDF (10 et 13 ans) : codes, taux de base 2019 et séries annuelles identiques à list_b_codes.json, list_b_base_rates.json et au calendrier du code ; les mêmes 322 lignes gelées dans les deux PDF.",
+    "totaux": "A + B + C = 17 322 lignes, sans recouvrement entre les trois listes.",
+    "liste_A": "15 703 lignes, séries conformes au calendrier standard de la liste A (taux de base, 80, 60, 40, 20, 0 %)."
+  },
+  "ecarts_corriges": {
+    "ligne_gelee_non_reperee": "5104.00.21.00 (liste B, gelée au PDF) n'était pas dans les plages de positions du code, qui en repéraient 1 457 sur 1 458 sans aucune ligne en trop : elle recevait une préférence à tort. Le gel est désormais exact (frozen_codes.json) ; les plages restent, car elles couvrent aussi les lignes que le tarif a subdivisées depuis la circulaire.",
+    "taux_de_base_2019_de_la_liste_A": "Le calendrier de la liste (A) se calculait sur le taux courant, non sur le taux de base 2019 que les listes officielles donnent ligne par ligne. Les deux diffèrent pour 69 lignes sur 15 702 (30 où le taux de base est supérieur au taux courant, 39 où il est inférieur). Le calendrier standard étant à 0 depuis 2025, l'écart ne touche plus que la réciprocité (Afrique du Sud, Botswana, Cameroun, Ghana, Kenya, Namibie, Eswatini), de 2026 à 2029. Exemples en 2026 : 0102.29.91.10 (base 30 %, courant 5 %) : 2 % servis avant, 5 % après (la préférence de 12 % dépasse le droit courant) ; 0306.39.21.00 (base 0 %, courant 30 %) : 12 % servis avant, 0 % après."
+  },
+  "ne_tranche_pas": [
+    "La liste (A) de réciprocité (« liste_a_10_ans_-01-_reciprocite- », 12 Mo) : Drive refuse de la télécharger au-delà de 10 Mo et sa conversion en texte s'arrête vers la ligne 1 700 sur 15 703. Le taux de base 2019 d'un produit est supposé le même dans les listes A à 5 et à 10 ans, comme il l'est dans les deux listes B.",
+    "Les 15 lignes officielles absentes du tarif servi (subdivisées depuis la circulaire) et les 6 lignes du tarif qu'aucune liste ne nomme (8470.50.21.10, 8470.50.21.90, 8470.50.29.00, 9800.00.00.00, 9810.10.00.00, 9810.20.00.00) : elles gardent leur traitement actuel (liste A par défaut, taux courant)."
+  ],
+  "application_au_calcul": {
+    "route": "POST /calcul",
+    "code": "backend/services/zlecaf_schedule_dza.py : LIST_A_BASE_RATES_2019, FROZEN_CODES, is_frozen, compute_dza_zlecaf_rate",
+    "tests": "backend/tests/test_zlecaf_schedule_dza.py, backend/tests/test_zlecaf_dza_registre.py"
+  }
+}

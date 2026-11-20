@@ -6,6 +6,7 @@ réduction des deux calendriers (standard vs réciprocité) à des dates clés.
 """
 
 import datetime
+import json
 import re
 from pathlib import Path
 
@@ -15,8 +16,12 @@ from services.zlecaf_schedule_dza import (
     ACTIVE_PARTNERS,
     CIRCULAR_482_SCHEDULE,
     DZ_ACTIVE_ORIGINS,
+    FROZEN_CODES,
+    FROZEN_HEADINGS,
+    LIST_A_BASE_RATES_2019,
     LIST_B_BASE_RATES_2019,
     LIST_B_CODES,
+    LIST_C_CODES,
     ORIGINES_CIRCULAIRE_482,
     ORIGINES_NOMMEES_LISTE_DOUANE_2026_11,
     RECIPROCITY_PARTNERS,
@@ -55,11 +60,13 @@ def test_active_non_reciprocity_partner_list_a_fully_eliminated_2026():
 
 def test_reciprocity_partner_list_a_partial_reduction_2026():
     # CMR est dans RECIPROCITY_PARTNERS -> calendrier plus long.
-    # 2026 -> facteur 0.4 (60% de réduction cumulée depuis 2021).
+    # 2026 -> facteur 0.4 (60% de réduction cumulée depuis 2021), appliqué au taux de base 2019 officiel
+    # de la ligne et non au taux normal transmis.
+    base = LIST_A_BASE_RATES_2019["2901101000"]
     rate, source = compute_dza_zlecaf_rate(
-        "2901101000", "CMR", 0.30, as_of=datetime.date(2026, 6, 18)
+        "2901101000", "CMR", base, as_of=datetime.date(2026, 6, 18)
     )
-    assert abs(rate - 0.12) < 1e-9
+    assert abs(rate - 0.4 * base) < 1e-9
     assert "réciprocité" in source
 
 
@@ -285,8 +292,9 @@ def test_list_a_full_elimination_after_2030_reciprocity():
 
 
 def test_list_a_full_rate_before_agreement_entry():
-    rate, _ = compute_dza_zlecaf_rate("2901101000", "TUN", 0.30, as_of=datetime.date(2020, 1, 1))
-    assert rate == 0.30
+    base = LIST_A_BASE_RATES_2019["2901101000"]
+    rate, _ = compute_dza_zlecaf_rate("2901101000", "TUN", base, as_of=datetime.date(2020, 1, 1))
+    assert rate == base
 
 
 # ── La page officielle de la Douane (article805), texte archivé ───────────────────────────────
@@ -344,3 +352,69 @@ def test_le_calendrier_de_la_page_est_celui_du_calendrier_du_code():
     assert (standard["list_a_zero_from"], standard["list_b_reduction_from"], standard["list_b_zero_from"]) == (2025, 2026, 2030)
     reciprocite = CIRCULAR_482_SCHEDULE["reciprocity_schedule"]
     assert (reciprocite["list_a_zero_from"], reciprocite["list_b_reduction_from"], reciprocite["list_b_zero_from"]) == (2030, 2026, 2033)
+
+
+# ── Les listes officielles A, B et C (PDF « algerie-zlecaf » de la Douane) ────────────────────
+
+def test_les_listes_officielles_forment_les_17322_lignes_de_la_circulaire():
+    """Liste A 15 703 lignes, B 1 163, C 456 : le total du schéma général (page 24 de la circulaire)."""
+    a = set(LIST_A_BASE_RATES_2019)
+    assert (len(a), len(LIST_B_CODES), len(LIST_C_CODES)) == (15703, 1163, 456)
+    assert not (a & LIST_B_CODES) and not (a & LIST_C_CODES) and not (LIST_B_CODES & LIST_C_CODES)
+    assert len(a | LIST_B_CODES | LIST_C_CODES) == 17322
+
+
+def test_les_taux_de_base_2019_sont_ceux_de_l_echelle_du_schema_general():
+    """Le schéma général ne connaît que les taux de base 5, 15, 30 et 60 % ; la liste A porte aussi des lignes à 0 %."""
+    assert set(LIST_A_BASE_RATES_2019.values()) <= {0.0, 5.0, 15.0, 30.0, 60.0}
+    assert set(LIST_B_BASE_RATES_2019.values()) <= {5.0, 15.0, 30.0, 60.0}
+
+
+def test_les_lignes_gelees_sont_les_1458_du_pdf_et_toutes_reperees():
+    """1 136 lignes gelées en liste A, 322 en liste B ; chacune est gelée pour le calcul, y compris
+    5104.00.21.00, que les plages de positions ne repéraient pas."""
+    with open(Path(__file__).resolve().parents[1] / "data" / "zlecaf_dza" / "frozen_codes.json", encoding="utf-8") as f:
+        gel = json.load(f)
+    assert (len(gel["liste_a"]), len(gel["liste_b"])) == (1136, 322)
+    assert FROZEN_CODES == set(gel["liste_a"]) | set(gel["liste_b"]) and len(FROZEN_CODES) == 1458
+    assert set(gel["liste_a"]) <= set(LIST_A_BASE_RATES_2019) and set(gel["liste_b"]) <= LIST_B_CODES
+    assert all(is_frozen(code) for code in FROZEN_CODES)
+    assert is_frozen("5104002100") and tariff_list("5104002100") == "B"
+
+
+def test_une_ligne_gelee_hors_des_plages_reste_au_droit_commun():
+    taux, libelle = compute_dza_zlecaf_rate("5104002100", "TUN", 15.0, datetime.date(2026, 11, 20))
+    assert taux == 15.0 and "gelée" in libelle
+
+
+def test_les_plages_de_positions_ne_gelent_aucune_ligne_de_trop_dans_les_listes_a_et_b():
+    """Sur les lignes des listes A et B, la plage de positions ne gèle que des lignes du PDF : ce test garde les
+    plages d'un élargissement qui gèlerait à tort une ligne qui a droit à la préférence."""
+    gelees_par_plage = {
+        code
+        for code in set(LIST_A_BASE_RATES_2019) | LIST_B_CODES
+        if any(lo <= code[:4] <= hi for lo, hi in FROZEN_HEADINGS)
+    }
+    assert gelees_par_plage <= FROZEN_CODES
+
+
+@pytest.mark.parametrize("code,base,courant", [("0102299110", 30.0, 5.0), ("0306392100", 0.0, 30.0), ("2523291000", 15.0, 30.0)])
+def test_la_reciprocite_de_la_liste_a_se_calcule_sur_le_taux_de_base_2019(code, base, courant):
+    """Liste A de réciprocité en 2026 : 40 % du taux de base 2019, quel que soit le taux courant. Le calcul
+    applique ensuite le plancher NPF (jamais plus que le droit courant)."""
+    assert tariff_list(code) == "A" and LIST_A_BASE_RATES_2019[code] == base
+    taux, libelle = compute_dza_zlecaf_rate(code, "KEN", courant, datetime.date(2026, 11, 20))
+    assert taux == pytest.approx(0.4 * base) and "taux de base 2019" in libelle
+
+
+def test_le_calendrier_standard_de_la_liste_a_ne_depend_plus_du_taux_courant():
+    """Standard : liste A à 0 depuis 2025, 80 % du taux de base en 2021 ; le taux courant n'y change rien."""
+    assert compute_dza_zlecaf_rate("0102299110", "TUN", 5.0, datetime.date(2026, 11, 20))[0] == 0.0
+    assert compute_dza_zlecaf_rate("0102299110", "TUN", 5.0, datetime.date(2021, 6, 1))[0] == pytest.approx(24.0)
+    assert compute_dza_zlecaf_rate("0102299110", "TUN", 90.0, datetime.date(2021, 6, 1))[0] == pytest.approx(24.0)
+
+
+def test_un_taux_de_base_identique_au_taux_courant_ne_change_pas_le_libelle():
+    code = next(c for c, b in sorted(LIST_A_BASE_RATES_2019.items()) if b == 15.0 and not is_frozen(c))
+    taux, libelle = compute_dza_zlecaf_rate(code, "KEN", 15.0, datetime.date(2026, 11, 20))
+    assert taux == pytest.approx(6.0) and "taux de base 2019" not in libelle
