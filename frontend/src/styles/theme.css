@@ -1709,12 +1709,6 @@ html:not(.theme-light) .afcfta-shell .recharts-wrapper  { overflow: hidden; }
   background: rgba(0, 0, 0, 0.2);
 }
 
-.afcfta-topHeader__timestamp {
-  font-size: 12px;
-  color: var(--afcfta-muted);
-  font-weight: 500;
-}
-
 .afcfta-topHeader__brand {
   display: flex;
   align-items: center;
