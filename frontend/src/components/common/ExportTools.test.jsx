@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useAuth } from '../../context/AuthContext';
-import { CSVExportButton, JSONExportButton, PDFExportButton } from './ExportTools';
+import { CSVExportButton, PDFExportButton } from './ExportTools';
 
 vi.mock('../../context/AuthContext', () => ({ useAuth: vi.fn() }));
 
@@ -194,45 +194,6 @@ describe('CSVExportButton', () => {
   it('est proposé à l’administrateur', () => {
     render(<CSVExportButton rows={[{ country: 'X' }]} columns={columns} />);
     expect(screen.getByRole('button')).toHaveTextContent('Exporter CSV');
-  });
-});
-
-describe('JSONExportButton', () => {
-  it('est désactivé sans données', () => {
-    render(<JSONExportButton data={null} />);
-    expect(screen.getByRole('button')).toBeDisabled();
-  });
-
-  it('est désactivé pour un tableau vide', () => {
-    render(<JSONExportButton data={[]} />);
-    expect(screen.getByRole('button')).toBeDisabled();
-  });
-
-  it('affiche le libellé localisé', () => {
-    const { rerender } = render(<JSONExportButton data={{ a: 1 }} language="fr" />);
-    expect(screen.getByRole('button')).toHaveTextContent('Exporter JSON');
-    rerender(<JSONExportButton data={{ a: 1 }} language="en" />);
-    expect(screen.getByRole('button')).toHaveTextContent('Export JSON');
-  });
-
-  it('sérialise les données en JSON indenté', async () => {
-    const data = { country: 'CIV', measures: [{ record_id: 'CIV-GUCE-SINGLE-WINDOW' }] };
-    render(<JSONExportButton data={data} />);
-    await userEvent.click(screen.getByRole('button'));
-
-    expect(JSON.parse(csvContent)).toEqual(data);
-  });
-
-  // Téléchargement de données : même règle que le CSV.
-  it.each(SANS_DROIT)('n’est pas proposé à %s', (_, session) => {
-    useAuth.mockReturnValue(session);
-    render(<JSONExportButton data={{ a: 1 }} />);
-    expect(screen.queryByRole('button')).toBeNull();
-  });
-
-  it('est proposé à l’administrateur', () => {
-    render(<JSONExportButton data={{ a: 1 }} />);
-    expect(screen.getByRole('button')).toHaveTextContent('Exporter JSON');
   });
 });
 

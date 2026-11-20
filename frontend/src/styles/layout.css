@@ -80,24 +80,6 @@
   }
 }
 
-/* Dashboard-style widgets */
-.dashboard-grid {
-  @apply grid gap-4;
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 768px) {
-  .dashboard-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1280px) {
-  .dashboard-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 /* Split layout - filters on left, content on right */
 .split-layout {
   @apply flex flex-col lg:flex-row gap-4;
