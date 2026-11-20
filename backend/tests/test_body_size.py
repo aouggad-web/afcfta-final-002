@@ -120,3 +120,78 @@ def test_corps_chunked_sous_la_borne_invoque_la_route_avec_le_corps_complet():
 
     assert recu["body"] == b'{"a":1}'  # la route reçoit le corps complet
     assert envois[0]["status"] == 200
+
+
+# Revue Codex (20/11/2026) — deux P1 sur le middleware :
+
+
+def test_apres_le_tampon_delegue_au_vrai_receive():
+    """Un http.disconnect synthétique après le tampon annulerait à tort une
+    réponse en flux (téléchargement tronqué). Le middleware doit déléguer au
+    vrai receive, qui porte les vraies déconnexions."""
+    file = [
+        {"type": "http.request", "body": b"hi", "more_body": False},
+        {"type": "http.disconnect"},
+    ]
+    i = {"n": 0}
+    apres_corps = {"n": 0}
+
+    async def receive():
+        if i["n"] >= 1:  # au-delà du corps déjà tamponné
+            apres_corps["n"] += 1
+        m = file[i["n"]]
+        i["n"] += 1
+        return m
+
+    vu = {"msg": None}
+
+    async def app(scope, receive_, send):
+        await receive_()  # corps (tamponné)
+        vu["msg"] = await receive_()  # doit venir du vrai receive
+        await send({"type": "http.response.start", "status": 200, "headers": []})
+        await send({"type": "http.response.body", "body": b""})
+
+    mw = BodySizeLimitMiddleware(app, max_bytes=1000)
+
+    async def send(message):
+        pass
+
+    asyncio.run(mw({"type": "http", "headers": []}, receive, send))
+
+    assert apres_corps["n"] == 1  # le vrai receive a bien été consulté
+    assert vu["msg"]["type"] == "http.disconnect"
+
+
+def test_content_length_avec_transfer_encoding_chunked_est_borne():
+    """Content-Length + Transfer-Encoding: chunked : le serveur décode en
+    chunked, donc on ne fait pas confiance au Content-Length — on compte le
+    corps réel et on borne (sinon la faille mémoire est rouverte)."""
+    appelee = {"v": False}
+
+    async def app(scope, receive, send):
+        appelee["v"] = True
+        await send({"type": "http.response.start", "status": 200, "headers": []})
+        await send({"type": "http.response.body", "body": b""})
+
+    mw = BodySizeLimitMiddleware(app, max_bytes=1000)
+    scope = {
+        "type": "http",
+        "headers": [(b"content-length", b"1"), (b"transfer-encoding", b"chunked")],
+    }
+    chunks = [{"type": "http.request", "body": b"A" * 2000, "more_body": False}]
+    i = {"n": 0}
+
+    async def receive():
+        m = chunks[i["n"]]
+        i["n"] += 1
+        return m
+
+    envois = []
+
+    async def send(message):
+        envois.append(message)
+
+    asyncio.run(mw(scope, receive, send))
+
+    assert appelee["v"] is False  # route non invoquée
+    assert envois[0]["status"] == 413

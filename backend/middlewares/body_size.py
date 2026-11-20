@@ -13,14 +13,23 @@ class BodySizeLimitMiddleware:
     étant déjà lu.
 
     Deux chemins :
-    - **`Content-Length` déclaré** : refus 413 immédiat au-delà de la borne,
-      sans lire le corps (cas de tous les navigateurs et clients HTTP usuels).
-    - **sans `Content-Length` (corps « chunked »)** : le corps est mis en
-      tampon, borné, AVANT d'appeler la route ; au dépassement, 413 et la route
-      n'est **jamais** invoquée. Revue Codex (18/11/2026) : synthétiser un
-      « fin de corps » tronqué faisait exécuter la route sur un préfixe valide
-      (effet de bord, p. ex. insertion d'un message), le 413 ne remplaçant que
-      la réponse après coup.
+    - **`Content-Length` déclaré, sans `Transfer-Encoding: chunked`** : refus 413
+      immédiat au-delà de la borne, sans lire le corps (cas de tous les
+      navigateurs et clients HTTP usuels). On ne fait confiance au cadrage par
+      longueur que si aucun cadrage « chunked » ne le contredit : avec les deux
+      en-têtes, le serveur HTTP décode en chunked (h11 donne priorité au
+      Transfer-Encoding), et faire confiance au Content-Length laisserait passer
+      un corps réel non borné (revue Codex 20/11/2026).
+    - **sinon (chunked, ou sans `Content-Length`)** : le corps est compté et mis
+      en tampon, borné, AVANT d'appeler la route ; au dépassement, 413 et la
+      route n'est **jamais** invoquée (synthétiser un « fin de corps » tronqué
+      ferait exécuter la route sur un préfixe valide — effet de bord ; revue
+      Codex 18/11/2026).
+
+    Après avoir rejoué le corps tamponné, on délègue au **vrai** `receive()` :
+    les notifications de déconnexion doivent refléter l'état réel de la
+    connexion, sinon un `http.disconnect` synthétique annulerait à tort une
+    réponse en flux (téléchargement ZIP tronqué ; revue Codex 20/11/2026).
 
     Middleware ASGI pur. Défense en profondeur : le relais en frontal
     (Cloudflare) doit aussi plafonner la taille du corps.
@@ -41,25 +50,30 @@ class BodySizeLimitMiddleware:
             return
 
         declaree = None
+        chunked = False
         for nom, valeur in scope.get("headers") or []:
-            if nom == b"content-length":
+            cle = nom.lower()
+            if cle == b"content-length":
                 try:
                     declaree = int(valeur)
                 except ValueError:
                     await self._refus(send)
                     return
-                break
+            elif cle == b"transfer-encoding" and b"chunked" in valeur.lower():
+                chunked = True
 
-        if declaree is not None:
+        if declaree is not None and not chunked:
             if declaree > self.max_bytes:
                 await self._refus(send)
                 return
-            # Longueur déclarée et dans la borne : le serveur ASGI borne le corps
-            # à cette longueur, on laisse passer en flux sans tamponner.
+            # Longueur déclarée, dans la borne, sans cadrage « chunked » qui la
+            # contredise : le serveur ASGI borne le corps, on laisse passer en
+            # flux sans tamponner.
             await self.app(scope, receive, send)
             return
 
-        # Sans Content-Length : tamponner le corps, borné, AVANT d'appeler la
+        # Corps au cadrage non fiable (chunked, ou sans Content-Length) : on
+        # compte les octets réels et on tamponne, borné, AVANT d'appeler la
         # route. Au dépassement, la route n'est pas invoquée — aucun effet de
         # bord.
         messages = []
@@ -87,7 +101,10 @@ class BodySizeLimitMiddleware:
                 message = messages[index]
                 index += 1
                 return message
-            return {"type": "http.disconnect"}
+            # Corps tamponné épuisé : déléguer au vrai receive, pour que les
+            # vraies déconnexions parviennent à la route (une réponse en flux
+            # écoute http.disconnect ; un disconnect synthétique l'annulerait).
+            return await receive()
 
         await self.app(scope, receive_tampon, send)
 
