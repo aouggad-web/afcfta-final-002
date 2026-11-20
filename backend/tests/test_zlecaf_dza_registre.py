@@ -59,3 +59,26 @@ def test_la_reponse_publique_sert_le_droit_du_registre():
     )
     dd = next(l for l in reponse["preference"]["lignes"] if l["code"] == "DD")
     assert dd["taux_pct"] == registre
+
+
+def _dd_servi(origine, code):
+    reponse = calcul(DemandeCalcul(destination="DZA", origine=origine, code_sh=code, valeur_cif=1000.0))
+    return next(l for l in reponse["preference"]["lignes"] if l["code"] == "DD")["taux_pct"], reponse
+
+
+def test_la_reciprocite_de_la_liste_a_part_du_taux_de_base_2019_de_bout_en_bout():
+    """Liste A de réciprocité : le droit est 40 % (en 2026) du taux de base 2019, borné par le taux courant.
+
+    0102.29.91.10 : base 30 %, courant 5 % : la préférence (12 %) dépasse le droit courant, c'est lui qui est
+    dû. Avant la correction le calcul partait du taux courant et servait 2 %.
+    0306.39.21.00 : base 0 %, courant 30 % : la préférence est nulle. Avant la correction : 12 %."""
+    from datetime import date
+
+    import services.zlecaf_schedule_dza as dza
+
+    facteur = dza._factor_reciprocity("A", date.today().year)
+    taux, reponse = _dd_servi("KEN", "0102299110")
+    assert taux == min(facteur * 30.0, 5.0)
+    taux, _ = _dd_servi("KEN", "0306392100")
+    assert taux == 0.0
+    assert reponse["regime_commercial"]["regime"] == "ZLECAF"

@@ -61,6 +61,25 @@ with open(DATA_DIR / "list_b_base_rates.json", encoding="utf-8") as f:
 with open(DATA_DIR / "circular_482_schedule.json", encoding="utf-8") as f:
     CIRCULAR_482_SCHEDULE = json.load(f)
 
+# Taux DD de base 2019 des 15 703 lignes de la liste (A), lus dans la liste officielle (annexe de la
+# circulaire) par scripts/extraire_listes_zlecaf_dza.py. Même règle que pour la liste (B) : le calendrier
+# se calcule sur ce taux et non sur le taux courant, qui diffère pour 69 lignes (0,4 %) — le calendrier
+# standard de la liste (A) étant à 0 depuis 2025, l'écart ne touche plus que la réciprocité (2026-2029).
+with open(DATA_DIR / "list_a_base_rates.json", encoding="utf-8") as f:
+    LIST_A_BASE_RATES_2019 = {
+        code: float(taux)
+        for taux, codes in json.load(f)["par_taux_de_base_2019_pct"].items()
+        for code in codes
+    }
+
+# Les 1 458 lignes gelées faute de règle d'origine (1 136 en liste A, 322 en liste B), exactes, lues dans la
+# colonne « Observations » des listes officielles. Les plages de positions ci-dessous les retrouvent presque
+# toutes (1 457 sur 1 458, aucune ligne en trop) et couvrent en plus les lignes que le tarif a subdivisées
+# depuis la circulaire : les deux se cumulent.
+with open(DATA_DIR / "frozen_codes.json", encoding="utf-8") as f:
+    _gel = json.load(f)
+    FROZEN_CODES = frozenset(_gel["liste_a"]) | frozenset(_gel["liste_b"])
+
 # Pays ayant déclenché l'application effective et réciproque de la ZLECAf
 # avec l'Algérie (circulaire 482/2024, partie I) : la liste d'origine.
 ORIGINES_CIRCULAIRE_482 = frozenset({"ZAF", "CMR", "EGY", "GHA", "KEN", "MUS", "RWA", "TZA", "TUN"})
@@ -166,6 +185,8 @@ def _heading(hs_code_clean: str) -> str:
 
 
 def is_frozen(hs_code_clean: str) -> bool:
+    if hs_code_clean.ljust(10, "0")[:10] in FROZEN_CODES:
+        return True
     h = _heading(hs_code_clean)
     return any(lo <= h <= hi for lo, hi in FROZEN_HEADINGS)
 
@@ -263,10 +284,15 @@ def compute_dza_zlecaf_rate(
         )
 
     code10 = hs_clean.ljust(10, "0")[:10]
-    base_rate = (
-        LIST_B_BASE_RATES_2019.get(code10, normal_rate_pct) if lst == "B" else normal_rate_pct
+    bases = {"A": LIST_A_BASE_RATES_2019, "B": LIST_B_BASE_RATES_2019}.get(lst, {})
+    base_rate = bases.get(code10, normal_rate_pct)
+    # Le libellé dit « taux de base 2019 » pour la liste (B), dont il fonde toujours le calcul, et pour une
+    # ligne de la liste (A) dont le taux de base diffère du taux courant (c'est alors lui qui change le résultat).
+    base_label = (
+        " (taux de base 2019)"
+        if code10 in bases and (lst == "B" or abs(base_rate - normal_rate_pct) > 1e-9)
+        else ""
     )
-    base_label = " (taux de base 2019)" if lst == "B" and code10 in LIST_B_BASE_RATES_2019 else ""
 
     reciprocity = origin in RECIPROCITY_PARTNERS
     factor = _factor_reciprocity(lst, year) if reciprocity else _factor_standard(lst, year)
