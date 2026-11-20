@@ -154,6 +154,24 @@ fi
 echo "── 3/6 · Dépendances backend (Python) ──"
 pip install -r backend/requirements.txt --quiet --no-input
 
+# Garde-fou motor/pymongo : si l'image de base du pod préinstalle un motor plus
+# ancien que la version épinglée, il importe `_QUERY_OPTIONS` depuis
+# `pymongo.cursor` (emplacement d'avant pymongo 4.9, retiré depuis) et le
+# backend ne démarre pas (ImportError). On ne force une réinstallation propre
+# QUE si l'import échoue — no-op sur un déploiement sain. Les versions viennent
+# de requirements.txt (contraintes), rien à maintenir en double ici.
+if ! python -c "import motor.motor_asyncio" >/dev/null 2>&1; then
+  echo "    ⚠ motor incompatible détecté — réinstallation propre de motor/pymongo"
+  pip install --no-cache-dir --force-reinstall --no-input --quiet \
+    -c backend/requirements.txt motor pymongo
+  if python -c "import motor.motor_asyncio" >/dev/null 2>&1; then
+    echo "    ✓ motor/pymongo réparés"
+  else
+    echo "    ❌ réparation motor/pymongo échouée — le backend ne démarrerait pas"
+    exit 1
+  fi
+fi
+
 echo "── 3bis/6 · Base GeoIP (facultatif — verrou pays de facturation) ──"
 # Détection : GEOIP_DB_PATH est le chemin cible ; s'il pointe déjà vers un
 # fichier présent, rien à faire — la base précédente a survécu au `git clean`
