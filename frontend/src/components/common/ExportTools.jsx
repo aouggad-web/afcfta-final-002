@@ -12,9 +12,8 @@ import { useAuth } from '../../context/AuthContext';
 /**
  * Formats d'export de la session (`export_formats` de GET /api/auth/me,
  * backend/entitlements.py). Décision de l'exploitant du 06/11/2026 : CSV et
- * Excel réservés à l'administrateur, aucune formule ne les a (les boutons
- * JSON suivent le CSV) ; le PDF reste à toutes les formules, ses boutons ne
- * sont pas contrôlés ici.
+ * Excel réservés à l'administrateur, aucune formule ne les a ; le PDF reste
+ * à toutes les formules, ses boutons ne sont pas contrôlés ici.
  */
 export function useExportAutorise(format) {
   return Boolean(useAuth()?.user?.export_formats?.includes(format));
@@ -192,65 +191,6 @@ export function CSVExportButton({
 }
 
 /**
- * JSONExportButton - Export client-side d'un objet/tableau de données en JSON.
- *
- * Props:
- *   - data: objet ou tableau sérialisable en JSON
- *   - filename: nom de base du fichier (sans extension)
- *   - language: 'fr' | 'en'
- */
-export function JSONExportButton({
-  data,
-  filename = 'export',
-  language = 'fr',
-  className = '',
-  ...buttonProps
-}) {
-  // Téléchargement de données, comme le CSV : réservé à l'administrateur.
-  const autorise = useExportAutorise('csv');
-  const texts = {
-    fr: { export: 'Exporter JSON' },
-    en: { export: 'Export JSON' },
-    ar: { export: 'تصدير JSON' },
-  };
-  const t = texts[language] || texts.fr;
-
-  const isEmpty = data == null || (Array.isArray(data) && data.length === 0);
-
-  const handleExport = () => {
-    if (isEmpty) return;
-    const json = JSON.stringify(data, null, 2);
-    const blob = new Blob([json], { type: 'application/json;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${filename}_${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    // Différé au tick suivant : révoquer immédiatement peut interrompre le
-    // téléchargement sur certains navigateurs avant qu'il n'ait démarré.
-    setTimeout(() => URL.revokeObjectURL(url), 0);
-  };
-
-  if (!autorise) return null;
-
-  return (
-    <Button
-      onClick={handleExport}
-      disabled={isEmpty}
-      variant="outline"
-      size="sm"
-      className={`gap-2 ${className}`}
-      {...buttonProps}
-    >
-      <Download className="w-4 h-4" />
-      {t.export}
-    </Button>
-  );
-}
-
-/**
  * ChartExportButton - Bouton pour exporter un graphique en image
  */
 export function ChartExportButton({ 
@@ -405,7 +345,6 @@ export function ExportToolbar({
 export default {
   PDFExportButton,
   CSVExportButton,
-  JSONExportButton,
   ChartExportButton,
   ZoomableChart,
   ExportToolbar,

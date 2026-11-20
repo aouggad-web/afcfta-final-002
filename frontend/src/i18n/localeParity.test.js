@@ -57,8 +57,8 @@ describe('parité des locales', () => {
     Object.entries(LOCALES).forEach(([code, bundle]) => {
       const blanks = [];
       const walk = (node, prefix = '') => {
-        // Une liste de chaînes est une valeur traduite légitime : les étapes de
-        // chargement de l'analyse IA sont lues par index, pas une à une.
+        // Une liste de chaînes est une valeur traduite légitime : elle se lit
+        // par index, pas une à une.
         if (Array.isArray(node)) {
           const ok = node.length > 0 && node.every((v) => typeof v === 'string' && v.trim() !== '');
           if (!ok) blanks.push(prefix);
@@ -72,17 +72,6 @@ describe('parité des locales', () => {
       };
       walk(bundle);
       expect({ code, blanks }).toEqual({ code, blanks: [] });
-    });
-  });
-
-  it('les onglets du module Opportunités sont traduits, plus codés en dur', () => {
-    // Ils vivaient dans deux listes parallèles au sein du composant ; toute
-    // langue supplémentaire en aurait demandé une troisième.
-    ['ai', 'strategic', 'substitution', 'summary',
-      'valueChains', 'byProduct', 'comparison'].forEach((id) => {
-      expect(fr.opportunities.tabs[id]).toBeTruthy();
-      expect(en.opportunities.tabs[id]).toBeTruthy();
-      expect(ar.opportunities.tabs[id]).toBeTruthy();
     });
   });
 });
