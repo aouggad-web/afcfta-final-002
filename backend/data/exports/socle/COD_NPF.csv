@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (CET Import Duty (Droit de Douane));TVA (Value Added Tax (VAT));Total droits et taxes pour 100 CAF (CDF);État;Manques;Restrictions;Notes (voir COD_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de douane);TVA (Value Added Tax (VAT));Total droits et taxes pour 100 CAF (CDF);État;Manques;Restrictions;Notes (voir COD_NPF_notes.csv)
 01012100;-- Pure-bred breeding animals;01;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 01012900;-- Other;01;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 01013010;--- Pure-bred breeding animals;01;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
