@@ -52,7 +52,7 @@ def test_reverse_route_uses_symmetric_pricing():
     assert reverse_route["route_id"] == "MACAS-SNDKR_REV"
     assert reverse_route["origin_port"] == "Dakar"
     assert reverse_route["destination_port"] == "Casablanca"
-    assert reverse_route["teu_usd"] == 510
+    assert reverse_route["teu_usd"] == get_route_between("MACAS", "SNDKR")["teu_usd"]
 
 
 def test_total_cost_breakdown_for_new_route():
@@ -61,10 +61,66 @@ def test_total_cost_breakdown_for_new_route():
 
     assert result is not None
     assert result["route_id"] == "TZDAR-ZADUR"
-    assert result["ocean_freight_usd"] == 907
+    freight = get_route_between("TZDAR", "ZADUR")["feu_hc_usd"]
+    assert result["ocean_freight_usd"] == freight
     assert result["origin_thc_usd"] == PORT_THC["TZDAR"]["feu_hc_usd"]
     assert result["destination_thc_usd"] == PORT_THC["ZADUR"]["feu_hc_usd"]
     assert (
         result["total_cost_usd"]
-        == 907 + PORT_THC["TZDAR"]["feu_hc_usd"] + PORT_THC["ZADUR"]["feu_hc_usd"]
+        == freight + PORT_THC["TZDAR"]["feu_hc_usd"] + PORT_THC["ZADUR"]["feu_hc_usd"]
     )
+
+
+# ------------------------------------------------------------------
+# Calibrage 2026 sur des devis réels
+# ------------------------------------------------------------------
+def test_short_sea_to_algiers_matches_marseille_quote():
+    """Tanger Med→Alger (447 milles) ≈ Marseille→Alger (434 milles) : 1 200 USD/20'
+    fret + surcharges selon les professionnels (2026)."""
+    teu = get_route_between("MAPTM", "DZALG")["teu_usd"]
+    assert 1100 <= teu <= 1300
+
+
+def test_douala_algiers_is_transshipped_and_dearer_than_short_sea():
+    """Douala→Alger n'a pas de service direct : transbordement, donc nettement
+    plus cher que Marseille→Alger (1 200 USD)."""
+    route = get_route_between("CMDLA", "DZALG")
+    assert route["transshipment"] is not None
+    assert route["transshipment"]["hub_locode"] == "MAPTM"
+    assert route["teu_usd"] >= 1200 * 1.5
+    direct = get_route_between("MAPTM", "DZALG")
+    assert route["transit_days_min"] > direct["transit_days_max"]
+
+
+def test_algeria_import_premium_is_directional():
+    """La prime marché Algérie s'applique à l'import, pas à l'export."""
+    imp = get_route_between("CMDLA", "DZALG")
+    exp = get_route_between("DZALG", "CMDLA")
+    assert imp["market_factor"] == 1.18 and exp["market_factor"] == 1.0
+    assert imp["teu_usd"] > exp["teu_usd"]
+
+
+def test_benchmarks_keep_2024_published_rates_for_traceability():
+    route = get_route_between("MACAS", "SNDKR")
+    assert route["rate_basis"] == "benchmark_actualise"
+    assert route["published_2024"]["teu_usd"] == 510
+    assert route["teu_usd"] > 510
+
+
+def test_new_algerian_ports_are_covered():
+    for locode in ("DZDJE", "DZMOS", "DZAAE", "DZSKI"):
+        assert locode in PORT_THC
+        assert get_total_cost("CMDLA", locode, "teu") is not None
+
+
+def test_reefer_and_dangerous_goods_cost_more():
+    dry = get_total_cost("CMDLA", "DZALG", "teu")
+    reefer = get_total_cost("CMDLA", "DZALG", "teu_rf")
+    dg = get_total_cost("CMDLA", "DZALG", "teu", dangerous=True)
+    assert reefer["ocean_freight_usd"] > dry["ocean_freight_usd"]
+    assert reefer["origin_thc_usd"] > dry["origin_thc_usd"]
+    assert dg["dg_surcharge_usd"] > 0
+    assert dg["total_cost_usd"] > dry["total_cost_usd"]
+    assert get_total_cost("CMDLA", "DZALG", "feu_rf")["ocean_freight_usd"] > reefer[
+        "ocean_freight_usd"
+    ]

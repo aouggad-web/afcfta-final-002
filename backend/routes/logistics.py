@@ -34,6 +34,7 @@ from logistics_data import (
     get_top_ports_by_teu,
     search_ports,
 )
+from logistics_fees_data import CONTAINER_TYPES as SEA_CONTAINER_TYPES
 from logistics_fees_data import (
     PORTS,
     get_all_port_thc,
@@ -664,7 +665,7 @@ async def get_fee_calculator_ports():
     return {
         "count": len(ports),
         "ports": ports,
-        "data_year": 2024,
+        "data_year": 2026,
         "source": "Drewry Maritime Research 2024, UNCTAD MRTS 2024, barèmes portuaires officiels",
     }
 
@@ -695,8 +696,8 @@ async def get_shipping_routes(origin: Optional[str] = None):
         return {
             "count": len(routes),
             "routes": routes,
-            "data_year": 2024,
-            "source": "Drewry Maritime Research, UNCTAD MRTS 2024, Maersk/CMA CGM/MSC published tariffs",
+            "data_year": 2026,
+            "source": "Modèle recalibré 2026 (devis Marseille→Alger, Maersk Douala→Algésiras) ; benchmarks Drewry / UNCTAD MRTS 2024 actualisés",
         }
     except Exception as e:
         logger.error(f"Error loading shipping fees data: {e}", exc_info=True)
@@ -725,25 +726,29 @@ async def get_single_route_fees(origin: str, destination: str):
 
 
 @router.get("/fees/cost")
-async def get_total_shipping_cost(origin: str, destination: str, container_type: str = "teu"):
+async def get_total_shipping_cost(
+    origin: str, destination: str, container_type: str = "teu", dangerous: bool = False
+):
     """
     Compute the all-in shipping cost (ocean freight + THC at origin + THC at destination).
 
     Query params:
     - origin: UN LOCODE of origin port (e.g. MAPTM)
     - destination: UN LOCODE of destination port (e.g. NGAPP)
-    - container_type: 'teu' (20ft), 'feu' (40ft standard), or 'feu_hc' (40ft high-cube). Default: teu
+    - container_type: 'teu' (20ft), 'feu' (40ft standard), 'feu_hc' (40ft high-cube),
+      'teu_rf' (20ft reefer) or 'feu_rf' (40ft reefer high-cube). Default: teu
+    - dangerous: true for IMDG dangerous goods (carrier DG surcharge + DG handling)
 
     Returns itemised cost breakdown in USD.
     """
-    valid_types = ["teu", "feu", "feu_hc"]
+    valid_types = list(SEA_CONTAINER_TYPES)
     ctype = container_type.lower()
     if ctype not in valid_types:
         raise HTTPException(
             status_code=400,
             detail=f"Invalid container_type '{container_type}'. Valid values: {', '.join(valid_types)}",
         )
-    result = get_total_cost(origin.upper(), destination.upper(), ctype)
+    result = get_total_cost(origin.upper(), destination.upper(), ctype, dangerous)
     if not result:
         raise HTTPException(
             status_code=404,

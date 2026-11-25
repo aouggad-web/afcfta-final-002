@@ -49,12 +49,18 @@ const CONTAINER_TYPES = [
   { value: 'teu', label: '20\' Standard (TEU)', labelEn: "20' Standard (TEU)", labelAr: "20 قدمًا قياسية (TEU)" },
   { value: 'feu', label: '40\' Standard (FEU)', labelEn: "40' Standard (FEU)", labelAr: "40 قدمًا قياسية (FEU)" },
   { value: 'feu_hc', label: '40\' High Cube (FEU HC)', labelEn: "40' High Cube (FEU HC)", labelAr: "40 قدمًا مرتفعة (FEU HC)" },
+  { value: 'teu_rf', label: '20\' Frigorifique (Reefer)', labelEn: "20' Reefer", labelAr: "20 قدمًا مبرّدة (Reefer)" },
+  { value: 'feu_rf', label: '40\' Frigorifique High Cube (Reefer)', labelEn: "40' Reefer High Cube", labelAr: "40 قدمًا مبرّدة مرتفعة (Reefer)" },
 ];
 
 const texts = {
   fr: {
     title: 'Calculateur de frais portuaires',
-    subtitle: 'Données réelles 2024 — Tarifs publiés par les armateurs et autorités portuaires',
+    subtitle: 'Estimations 2026 — fret + surcharges, calées sur des devis réels (transbordement inclus)',
+    dangerous: 'Marchandises dangereuses (IMDG)',
+    dgSurcharge: 'Surcharge dangereux (IMDG)',
+    transshipment: 'Transbordement à',
+    direct: 'Service direct',
     origin: 'Port d\'origine',
     destination: 'Port de destination',
     containerType: 'Type de conteneur',
@@ -89,7 +95,11 @@ const texts = {
   },
   en: {
     title: 'Port Shipping Fees Calculator',
-    subtitle: 'Real 2024 Data — Rates from published carrier tariffs & port authorities',
+    subtitle: '2026 estimates — freight + surcharges, calibrated on real quotes (transshipment included)',
+    dangerous: 'Dangerous goods (IMDG)',
+    dgSurcharge: 'Dangerous goods surcharge (IMDG)',
+    transshipment: 'Transshipment at',
+    direct: 'Direct service',
     origin: 'Origin Port',
     destination: 'Destination Port',
     containerType: 'Container Type',
@@ -124,7 +134,11 @@ const texts = {
   },
   ar: {
     title: 'حاسبة الرسوم المينائية',
-    subtitle: 'بيانات فعلية 2024 — تعريفات منشورة من شركات الملاحة والسلطات المينائية',
+    subtitle: 'تقديرات 2026 — الشحن مع الرسوم الإضافية، معايرة على عروض أسعار فعلية (مع المسافنة)',
+    dangerous: 'بضائع خطرة (IMDG)',
+    dgSurcharge: 'رسم إضافي للبضائع الخطرة (IMDG)',
+    transshipment: 'مسافنة في',
+    direct: 'خدمة مباشرة',
     origin: 'ميناء المنشأ',
     destination: 'ميناء المقصد',
     containerType: 'نوع الحاوية',
@@ -183,6 +197,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
   const [containerType, setContainerType] = useState('teu');
+  const [dangerous, setDangerous] = useState(false);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -238,7 +253,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
     setResult(null);
     try {
       const res = await axios.get(`${API}/logistics/fees/cost`, {
-        params: { origin, destination, container_type: containerType },
+        params: { origin, destination, container_type: containerType, dangerous },
       });
       setResult(res.data);
     } catch (err) {
@@ -339,6 +354,18 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
             </div>
           </div>
 
+          <label className="flex items-center justify-start gap-2 mb-4 text-xs font-medium text-[var(--text)] cursor-pointer w-fit">
+            <input
+              type="checkbox"
+              className="w-4 h-4 flex-shrink-0"
+              style={{ width: 16 }}
+              checked={dangerous}
+              onChange={e => setDangerous(e.target.checked)}
+              data-testid="fees-dangerous-checkbox"
+            />
+            {t.dangerous}
+          </label>
+
           <Button
             onClick={handleCalculate}
             disabled={loading || !origin || !destination}
@@ -384,6 +411,11 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                 <Clock className="w-3 h-3 mr-1" />
                 {result.transit_days_min}–{result.transit_days_max} {t.days}
               </Badge>
+              <Badge variant="outline" className="text-xs" data-testid="fees-routing-badge">
+                {result.transshipment
+                  ? `${t.transshipment} ${trDonnee(result.transshipment.hub_port, language)}`
+                  : t.direct}
+              </Badge>
             </div>
           </CardHeader>
           <CardContent className="pt-4 space-y-5">
@@ -405,6 +437,15 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                 color="bg-blue-500"
                 language={language}
               />
+              {result.dg_surcharge_usd > 0 && (
+                <CostBar
+                  label={t.dgSurcharge}
+                  value={result.dg_surcharge_usd}
+                  total={result.total_cost_usd}
+                  color="bg-red-500"
+                  language={language}
+                />
+              )}
               {result.origin_thc_usd > 0 && (
                 <CostBar
                   label={`${t.originTHC} (${trDonnee(result.origin_port, language)})`}
@@ -530,9 +571,12 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                       <td className="p-2">
                         <Badge
                           variant="outline"
-                          className={`text-[11px] py-0 ${r.is_modeled ? 'text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]' : 'text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]'}`}
+                          className={`text-[11px] py-0 ${r.rate_basis === 'benchmark_actualise' ? 'text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]' : 'text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]'}`}
                         >
-                          {r.is_modeled ? pick(language, 'Estimé', 'Modeled', 'تقديري') : pick(language, 'Publié', 'Published', 'منشور')}
+                          {r.rate_basis === 'benchmark_actualise'
+                            ? pick(language, 'Benchmark actualisé', 'Updated benchmark', 'مرجع محدَّث')
+                            : pick(language, 'Estimé', 'Modeled', 'تقديري')}
+                          {r.transshipment ? ` · ${pick(language, 'TS', 'TS', 'مسافنة')}` : ''}
                         </Badge>
                       </td>
                       <td className="p-2">
@@ -563,9 +607,9 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
               )}
               {pick(
                 language,
-                'Sources : Drewry Maritime Research 2024, UNCTAD MRTS 2024, tarifs publiés CMA CGM / Maersk / MSC / Hapag-Lloyd. « Publié » = tarif armateur publié ; « Estimé » = modèle distance-coût calibré.',
-                'Sources: Drewry Maritime Research 2024, UNCTAD MRTS 2024, published CMA CGM / Maersk / MSC / Hapag-Lloyd tariffs. "Published" = carrier-published rate; "Modeled" = calibrated distance-cost model.',
-                'المصادر: Drewry Maritime Research 2024، والأونكتاد MRTS 2024، والتعريفات المنشورة لـ CMA CGM / Maersk / MSC / Hapag-Lloyd. «منشور» = تعريفة منشورة من شركة الملاحة؛ «تقديري» = نموذج معاير للتكلفة حسب المسافة.'
+                'Tarifs 2026, fret + surcharges, hors THC. Calage : devis Marseille→Alger 1 200 USD/20\' (professionnels), Maersk Douala→Algésiras ; benchmarks Drewry / UNCTAD MRTS 2024 actualisés. « Benchmark actualisé » = tarif 2024 publié remis au niveau 2026 ; « Estimé » = modèle distance-coût ; « TS » = transbordement.',
+                'Rates 2026, freight + surcharges, excluding THC. Calibration: Marseille→Algiers quote 1,200 USD/20\' (professionals), Maersk Douala→Algeciras; Drewry / UNCTAD MRTS 2024 benchmarks updated. "Updated benchmark" = published 2024 rate brought to 2026 level; "Modeled" = distance-cost model; "TS" = transshipment.',
+                'تعريفات 2026، الشحن مع الرسوم الإضافية، دون THC. المعايرة: عرض مرسيليا→الجزائر 1200 دولار/20 قدمًا (مهنيون)، Maersk دوالا→الجزيرة الخضراء؛ مراجع Drewry / الأونكتاد MRTS 2024 محدَّثة. «مرجع محدَّث» = تعريفة 2024 منشورة مرفوعة إلى مستوى 2026؛ «تقديري» = نموذج التكلفة حسب المسافة؛ «مسافنة» = إعادة الشحن.'
               )}
             </p>
           </CardContent>
