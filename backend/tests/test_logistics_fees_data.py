@@ -92,6 +92,13 @@ def test_douala_algiers_is_transshipped_and_dearer_than_short_sea():
     assert route["transit_days_min"] > direct["transit_days_max"]
 
 
+def test_benchmarks_routed_via_a_hub_carry_transshipment_metadata():
+    """Les benchmarks publiés « via hub » gardent le hub dans la réponse."""
+    assert get_route_between("TNRAD", "KEMBA")["transshipment"]["hub_locode"] == "EGPSD"
+    assert get_route_between("NGAPP", "DZALG")["transshipment"]["hub_locode"] == "MAPTM"
+    assert get_route_between("MAPTM", "SNDKR")["transshipment"] is None
+
+
 def test_algeria_import_premium_is_directional():
     """La prime marché Algérie s'applique à l'import, pas à l'export."""
     imp = get_route_between("CMDLA", "DZALG")

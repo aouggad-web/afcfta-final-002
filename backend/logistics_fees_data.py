@@ -1051,29 +1051,36 @@ def _best_hub(a: str, b: str):
     )
 
 
+def _transshipment_meta(a: str, b: str) -> Optional[Dict[str, Any]]:
+    """Hub et tronçons d'une paire sans service direct (None si service direct)."""
+    if _has_direct_service(a, b):
+        return None
+    hub, d1, d2 = _best_hub(a, b)
+    return {
+        "hub_locode": hub,
+        "hub_port": PORTS[hub]["name"],
+        "leg1_nm": d1,
+        "leg2_nm": d2,
+        "hub_fee_teu_usd": _TS_FEE_TEU_USD,
+        "dwell_days": list(_TS_DWELL_DAYS),
+    }
+
+
 def _model_route(a: str, b: str) -> Dict[str, Any]:
     """Génère une route modélisée (modèle distance-coût recalibré 2026) entre deux ports."""
-    transshipment = None
-    if _has_direct_service(a, b):
+    transshipment = _transshipment_meta(a, b)
+    if transshipment is None:
         dist = _sea_distance_nm(a, b)
         teu = _teu_rate(dist)
         transit_min, transit_max = _transit(dist)
         notes = "Tarif estimé par modèle recalibré 2026 (±15 %)."
     else:
-        hub, d1, d2 = _best_hub(a, b)
-        dist = d1 + d2
+        hub = transshipment["hub_locode"]
+        dist = transshipment["leg1_nm"] + transshipment["leg2_nm"]
         teu = _teu_rate(dist) + _TS_FEE_TEU_USD
         transit_min, transit_max = _transit(dist)
         transit_min += _TS_DWELL_DAYS[0]
         transit_max += _TS_DWELL_DAYS[1]
-        transshipment = {
-            "hub_locode": hub,
-            "hub_port": PORTS[hub]["name"],
-            "leg1_nm": d1,
-            "leg2_nm": d2,
-            "hub_fee_teu_usd": _TS_FEE_TEU_USD,
-            "dwell_days": list(_TS_DWELL_DAYS),
-        }
         notes = (
             f"Pas de service direct : transbordement à {PORTS[hub]['name']} "
             f"(+{_TS_FEE_TEU_USD} USD/EVP de manutention au hub, "
@@ -1812,7 +1819,9 @@ def _enrich_benchmark(r: Dict[str, Any]) -> Dict[str, Any]:
             "teu_usd": _round5(r["teu_usd"] * ratio),
             "feu_usd": _round5(r["feu_usd"] * ratio),
             "feu_hc_usd": _round5(r["feu_hc_usd"] * ratio),
-            "transshipment": None,
+            # Le tarif benchmark couvre déjà le passage au hub : seules les
+            # métadonnées (hub, tronçons) sont ajoutées, sans frais en plus.
+            "transshipment": _transshipment_meta(a, b),
             "source": r["source"] + " — actualisé au niveau de marché 2026",
             "rate_basis": "benchmark_actualise",
             "is_modeled": True,
