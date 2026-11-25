@@ -1,26 +1,32 @@
 """
 Port-to-port maritime shipping fees for African trade routes.
 
-Couverture : tous les principaux ports à conteneurs africains (55 ports, 5 façades
-maritimes) avec une matrice de routes complète (~1 400+ paires).
+Couverture : tous les principaux ports à conteneurs africains (59 ports, 5 façades
+maritimes, dont 7 ports algériens) avec une matrice de routes complète (~1 700 paires).
 
 Sources :
+- Devis professionnels 2026 : Marseille→Alger 1 200 USD/20' (fret + surcharges)
+- Grille Maersk départ Douala : fret de base 1 295 USD/20' vers Algésiras
+- Grilles FAK MSC Asie→Afrique du Nord 2026 (prime Algérie ≈ +18 % / Maghreb)
 - Drewry Maritime Research — Container Freight Rate Insight / World Container Index 2024
 - UNCTAD Review of Maritime Transport (MRTS) 2024
-- World Bank "Connecting to Compete" LPI 2023
 - Tarifs publiés CMA CGM / Maersk / MSC / Hapag-Lloyd (rate cards Afrique 2024)
 - Barèmes THC des autorités portuaires (Tanger Med, Mombasa KPA, Durban Transnet, etc.)
-- African Development Bank : Intra-African Trade & Transport Cost Report 2023
-- Seaexplorer / Alphaliner — données de lignes maritimes
 
-Méthodologie des tarifs :
-- Les routes "benchmark" (≈30 paires majeures) reprennent les tarifs PUBLIÉS des
-  armateurs et les distances réelles → champ ``is_modeled = False``.
-- Les autres paires sont calculées par un MODÈLE distance-coût calibré sur ces
-  benchmarks et sur les barèmes UNCTAD MRTS 2024 / Drewry 2024. La distance maritime
-  est calculée par segments great-circle via les points de passage obligés
-  (Gibraltar, canal de Suez, Bab-el-Mandeb, Cap de Bonne-Espérance) → ``is_modeled = True``.
-- Les tarifs réels varient ±15-20 % selon l'armateur, la saison et le délai de réservation.
+Méthodologie des tarifs (niveau de marché 2026, fret + surcharges, hors THC) :
+- Modèle distance-coût recalibré : 900 USD/EVP de coût fixe + 0,265 USD/mille,
+  calé sur les deux devis ci-dessus. La distance maritime est calculée par
+  segments great-circle via les points de passage obligés (Gibraltar, Suez,
+  Bab-el-Mandeb, Cap de Bonne-Espérance).
+- Transbordement : sans service direct (ex. Afrique centrale → Algérie), la route
+  passe par le hub qui minimise la distance (Tanger Med, Port-Saïd, Lomé, Durban,
+  Port-Louis, Djibouti) : +150 USD/EVP de manutention au hub, +3 à 7 jours.
+- Prime de marché à l'import par pays de destination (Algérie ×1,18).
+- Les routes "benchmark" (tarifs 2024 publiés) sont actualisées au niveau 2026
+  en conservant leur écart propre à la ligne (``rate_basis = benchmark_actualise``).
+- Reefer (20' RF, 40' RH) et marchandises dangereuses (IMDG) : coefficients de
+  pratique de marché, signalés comme hypothèses dans le résultat.
+- Les tarifs réels varient ±15 % selon l'armateur, la saison et le délai de réservation.
 """
 
 from functools import lru_cache
@@ -117,6 +123,64 @@ PORTS: Dict[str, Dict[str, Any]] = {
         "feu_usd": 210,
         "feu_hc_usd": 226,
         "thc_source": "EPB Entreprise Portuaire de Bejaia — Tarif 2024",
+    },
+    # Ports algériens ajoutés en 2026 : THC non publiés ici, alignés sur le
+    # barème des ports d'Alger / Oran / Bejaia (estimation à confirmer).
+    "DZDJE": {
+        "name": "Djen Djen (Jijel)",
+        "country": "Algérie",
+        "iso": "DZA",
+        "flag": "🇩🇿",
+        "region": "Afrique du Nord",
+        "coast": "MED",
+        "lat": 36.82,
+        "lon": 5.89,
+        "teu_usd": 145,
+        "feu_usd": 210,
+        "feu_hc_usd": 226,
+        "thc_source": "Estimation — alignée sur le barème EPAL/EPO/EPB 2024 (EP Djen Djen)",
+    },
+    "DZMOS": {
+        "name": "Mostaganem",
+        "country": "Algérie",
+        "iso": "DZA",
+        "flag": "🇩🇿",
+        "region": "Afrique du Nord",
+        "coast": "MED",
+        "lat": 35.94,
+        "lon": 0.07,
+        "teu_usd": 145,
+        "feu_usd": 210,
+        "feu_hc_usd": 226,
+        "thc_source": "Estimation — alignée sur le barème EPAL/EPO/EPB 2024 (EP Mostaganem)",
+    },
+    "DZAAE": {
+        "name": "Annaba",
+        "country": "Algérie",
+        "iso": "DZA",
+        "flag": "🇩🇿",
+        "region": "Afrique du Nord",
+        "coast": "MED",
+        "lat": 36.90,
+        "lon": 7.77,
+        "teu_usd": 145,
+        "feu_usd": 210,
+        "feu_hc_usd": 226,
+        "thc_source": "Estimation — alignée sur le barème EPAL/EPO/EPB 2024 (EP Annaba)",
+    },
+    "DZSKI": {
+        "name": "Skikda",
+        "country": "Algérie",
+        "iso": "DZA",
+        "flag": "🇩🇿",
+        "region": "Afrique du Nord",
+        "coast": "MED",
+        "lat": 36.88,
+        "lon": 6.90,
+        "teu_usd": 145,
+        "feu_usd": 210,
+        "feu_hc_usd": 226,
+        "thc_source": "Estimation — alignée sur le barème EPAL/EPO/EPB 2024 (EP Skikda)",
     },
     "TNRAD": {
         "name": "Radès",
@@ -878,14 +942,151 @@ def _carriers_for(a: str, b: str) -> List[str]:
     return ["MSC", "Maersk", "CMA CGM"]
 
 
+# ------------------------------------------------------------------
+# Calibrage 2026 du fret maritime (USD par EVP / 20', fret + surcharges
+# courantes, hors THC).
+#
+# Le modèle 2024 (175 USD + 0,255 USD/mille) sous-estimait fortement le coût
+# FIXE par boîte (escales, repositionnement des vides, équipement, surcharges) :
+# Tanger Med→Alger ressortait à 290 USD/20' quand Marseille→Alger (distance
+# comparable) se traite à 1 200 USD. Deux points de calage 2026 :
+#   - Marseille→Alger, 434 milles : 1 200 USD/20' fret + surcharges (devis
+#     transmis par des professionnels, novembre 2026), import Algérie ;
+#   - Douala→Algésiras/Tanger Med, 2 247 milles : fret de base Maersk
+#     1 295 USD/20' + ≈ 200 USD de surcharges (carburant, PSS) ≈ 1 500 USD.
+# Résolution : coût fixe ≈ 900 USD/EVP, coût variable ≈ 0,265 USD/mille (la
+# pente 2024 était juste, seul le coût fixe était faux).
+# ------------------------------------------------------------------
+_FIXED_TEU_USD = 900
+_PER_NM_TEU_USD = 0.265
+_LEGACY_FIXED_TEU_USD = 175  # modèle 2024, sert à actualiser les benchmarks
+_LEGACY_PER_NM_TEU_USD = 0.255
+_FEU_RATIO = 1.5
+_FEU_HC_RATIO = 1.62
+
+# Prime de marché à l'IMPORT par pays de destination (multiplicateur du fret).
+# Algérie : +18 % par rapport aux voisins maghrébins sur les grilles FAK MSC
+# Asie→Afrique du Nord 2026 (5 300 USD/20' Algérie contre 4 500 Casablanca),
+# cohérent avec le devis Marseille→Alger. Causes citées : attente portuaire,
+# retour des conteneurs vides à la charge des armateurs, concurrence réduite.
+_DEST_MARKET_FACTOR = {"DZA": 1.18}
+
+# Conteneur frigorifique (reefer) — hypothèses de pratique de marché, non
+# calibrées sur un devis : le fret reefer vaut ≈ 1,4 à 2 fois le fret sec
+# (surcharges d'urgence 2026 : ×1,3 à ×1,4 ; équipement, énergie, slots
+# branchés). On retient ×1,6. 20' RF dérivé du 20' sec, 40' RH du 40' HC.
+_REEFER_FREIGHT_RATIO = 1.6
+_REEFER_THC_RATIO = 1.5  # branchement + surveillance au terminal
+
+# Marchandises dangereuses (IMDG) — surcharge armateur par conteneur
+# (Hapag-Lloyd 2026 : 200 USD classe 9, 250 USD classe 4.2 ; d'autres lignes
+# vont bien au-delà) et majoration des THC pour la manutention DG.
+_DG_SURCHARGE_USD = {"teu": 250, "feu": 400, "feu_hc": 400, "teu_rf": 250, "feu_rf": 400}
+_DG_THC_RATIO = 1.5
+
+CONTAINER_TYPES = ("teu", "feu", "feu_hc", "teu_rf", "feu_rf")
+
+# Transbordement : hubs africains et coût du passage au hub.
+_HUBS = ["MAPTM", "EGPSD", "TGLFW", "ZADUR", "MUPLU", "DJJIB"]
+_TS_FEE_TEU_USD = 150  # manutention au hub (déchargement + rechargement), hypothèse
+_TS_DWELL_DAYS = (3, 7)  # attente de la correspondance au hub, hypothèse
+
+# Paires de régions reliées par des services directs (lignes côtières).
+_DIRECT_REGION_PAIRS = {
+    frozenset(p)
+    for p in [
+        ("Afrique de l'Ouest", "Afrique Centrale"),
+        ("Afrique de l'Ouest", "Afrique Australe"),
+        ("Afrique Centrale", "Afrique Australe"),
+        ("Afrique de l'Est", "Afrique Australe"),
+        ("Afrique de l'Est", "Océan Indien"),
+        ("Afrique Australe", "Océan Indien"),
+        ("Afrique de l'Est", "Mer Rouge"),
+    ]
+}
+# Pays du Nord dotés de lignes directes au-delà de la Méditerranée.
+_DIRECT_COUNTRY_REGIONS = {
+    "MAR": {"Afrique de l'Ouest", "Afrique Centrale"},
+    "EGY": {"Mer Rouge", "Afrique de l'Est"},
+}
+
+
+def _teu_rate(dist_nm: float) -> float:
+    return _FIXED_TEU_USD + _PER_NM_TEU_USD * dist_nm
+
+
+def _rates_from_teu(teu: float) -> Dict[str, int]:
+    return {
+        "teu_usd": _round5(teu),
+        "feu_usd": _round5(teu * _FEU_RATIO),
+        "feu_hc_usd": _round5(teu * _FEU_HC_RATIO),
+    }
+
+
+def _transit(dist_nm: float):
+    tmin = max(2, int(round(dist_nm / 470.0)) + 1)
+    tmax = max(tmin + 2, int(round(dist_nm / 320.0)) + 2)
+    return tmin, tmax
+
+
+def _has_direct_service(a: str, b: str) -> bool:
+    """Vrai si un service direct (sans transbordement) relie couramment les deux ports."""
+    if a in _HUBS or b in _HUBS:
+        return True
+    pa, pb = PORTS[a], PORTS[b]
+    if pa["region"] == pb["region"]:
+        return True
+    if frozenset([pa["region"], pb["region"]]) in _DIRECT_REGION_PAIRS:
+        return True
+    return pb["region"] in _DIRECT_COUNTRY_REGIONS.get(pa["iso"], set()) or pa[
+        "region"
+    ] in _DIRECT_COUNTRY_REGIONS.get(pb["iso"], set())
+
+
+def _best_hub(a: str, b: str):
+    """Hub minimisant la distance totale origine→hub→destination."""
+    return min(
+        ((h, _sea_distance_nm(a, h), _sea_distance_nm(h, b)) for h in _HUBS if h not in (a, b)),
+        key=lambda t: t[1] + t[2],
+    )
+
+
+def _transshipment_meta(a: str, b: str) -> Optional[Dict[str, Any]]:
+    """Hub et tronçons d'une paire sans service direct (None si service direct)."""
+    if _has_direct_service(a, b):
+        return None
+    hub, d1, d2 = _best_hub(a, b)
+    return {
+        "hub_locode": hub,
+        "hub_port": PORTS[hub]["name"],
+        "leg1_nm": d1,
+        "leg2_nm": d2,
+        "hub_fee_teu_usd": _TS_FEE_TEU_USD,
+        "dwell_days": list(_TS_DWELL_DAYS),
+    }
+
+
 def _model_route(a: str, b: str) -> Dict[str, Any]:
-    """Génère une route modélisée (distance-coût calibrée) entre deux ports."""
-    dist = _sea_distance_nm(a, b)
-    teu = _round5(175 + 0.255 * dist)
-    feu = _round5(teu * 1.5)
-    feu_hc = _round5(teu * 1.62)
-    transit_min = max(2, int(round(dist / 470.0)) + 1)
-    transit_max = max(transit_min + 2, int(round(dist / 320.0)) + 2)
+    """Génère une route modélisée (modèle distance-coût recalibré 2026) entre deux ports."""
+    transshipment = _transshipment_meta(a, b)
+    if transshipment is None:
+        dist = _sea_distance_nm(a, b)
+        teu = _teu_rate(dist)
+        transit_min, transit_max = _transit(dist)
+        notes = "Tarif estimé par modèle recalibré 2026 (±15 %)."
+    else:
+        hub = transshipment["hub_locode"]
+        dist = transshipment["leg1_nm"] + transshipment["leg2_nm"]
+        teu = _teu_rate(dist) + _TS_FEE_TEU_USD
+        transit_min, transit_max = _transit(dist)
+        transit_min += _TS_DWELL_DAYS[0]
+        transit_max += _TS_DWELL_DAYS[1]
+        notes = (
+            f"Pas de service direct : transbordement à {PORTS[hub]['name']} "
+            f"(+{_TS_FEE_TEU_USD} USD/EVP de manutention au hub, "
+            f"+{_TS_DWELL_DAYS[0]} à {_TS_DWELL_DAYS[1]} jours de correspondance). "
+            "Tarif estimé par modèle recalibré 2026 (±15 %)."
+        )
     if dist < 800:
         freq = "Hebdomadaire (feeder)"
     elif dist < 2500:
@@ -906,13 +1107,17 @@ def _model_route(a: str, b: str) -> Dict[str, Any]:
         "distance_nm": dist,
         "transit_days_min": transit_min,
         "transit_days_max": transit_max,
-        "teu_usd": teu,
-        "feu_usd": feu,
-        "feu_hc_usd": feu_hc,
+        **_rates_from_teu(teu),
         "carriers": _carriers_for(a, b),
         "frequency": freq,
-        "source": "Modèle distance-coût calibré — UNCTAD MRTS 2024 / Drewry Maritime Research 2024",
-        "notes": "Tarif estimé par modèle calibré sur les benchmarks publiés (±15-20%).",
+        "transshipment": transshipment,
+        "source": (
+            "Modèle distance-coût recalibré 2026 (900 USD/EVP + 0,265 USD/mille) — calage : "
+            "Marseille→Alger 1 200 USD/20' (professionnels, 2026), Maersk Douala→Algésiras "
+            "1 295 USD/20' ; pente UNCTAD MRTS 2024 / Drewry 2024"
+        ),
+        "notes": notes,
+        "rate_basis": "modele",
         "is_modeled": True,
     }
 
@@ -1591,9 +1796,16 @@ BENCHMARK_ROUTES.extend(
 
 
 def _enrich_benchmark(r: Dict[str, Any]) -> Dict[str, Any]:
-    """Complète une route benchmark avec les libellés/pays/régions du registre."""
+    """Complète une route benchmark et l'actualise au niveau de marché 2026.
+
+    Les benchmarks sont des tarifs 2024 : on conserve leur écart propre à la
+    ligne (congestion, concurrence) en les multipliant par le rapport entre le
+    modèle recalibré 2026 et le modèle 2024 à la même distance.
+    """
     a, b = r["origin_locode"], r["destination_locode"]
     pa, pb = PORTS[a], PORTS[b]
+    d = r["distance_nm"]
+    ratio = _teu_rate(d) / (_LEGACY_FIXED_TEU_USD + _LEGACY_PER_NM_TEU_USD * d)
     out = dict(r)
     out.update(
         {
@@ -1603,7 +1815,16 @@ def _enrich_benchmark(r: Dict[str, Any]) -> Dict[str, Any]:
             "destination_country": pb["iso"],
             "origin_region": pa["region"],
             "destination_region": pb["region"],
-            "is_modeled": False,
+            "published_2024": {k: r[k] for k in ("teu_usd", "feu_usd", "feu_hc_usd")},
+            "teu_usd": _round5(r["teu_usd"] * ratio),
+            "feu_usd": _round5(r["feu_usd"] * ratio),
+            "feu_hc_usd": _round5(r["feu_hc_usd"] * ratio),
+            # Le tarif benchmark couvre déjà le passage au hub : seules les
+            # métadonnées (hub, tronçons) sont ajoutées, sans frais en plus.
+            "transshipment": _transshipment_meta(a, b),
+            "source": r["source"] + " — actualisé au niveau de marché 2026",
+            "rate_basis": "benchmark_actualise",
+            "is_modeled": True,
         }
     )
     return out
@@ -1618,27 +1839,19 @@ def _build_route_matrix():
         for r in BENCHMARK_ROUTES
     }
     locodes = list(PORTS.keys())
-    routes: List[Dict[str, Any]] = []
     index: Dict[frozenset, Dict[str, Any]] = {}
     for i in range(len(locodes)):
         for j in range(i + 1, len(locodes)):
             a, b = locodes[i], locodes[j]
             key = frozenset([a, b])
-            route = benchmark_index.get(key) or _model_route(a, b)
-            routes.append(route)
-            index[key] = route
-    routes.sort(key=lambda r: (r["origin_region"], r["origin_port"], r["destination_port"]))
-    return routes, index
-
-
-_ALL_ROUTES, _ROUTE_INDEX = _build_route_matrix()
-SHIPPING_ROUTES = BENCHMARK_ROUTES
+            index[key] = benchmark_index.get(key) or _model_route(a, b)
+    return index
 
 
 def _orient(route: Dict[str, Any], origin: str) -> Dict[str, Any]:
     """Retourne la route orientée avec ``origin`` comme port de départ."""
     if route["origin_locode"] == origin:
-        return route
+        return dict(route)
     rev = dict(route)
     rev["origin_locode"], rev["destination_locode"] = (
         route["destination_locode"],
@@ -1654,7 +1867,41 @@ def _orient(route: Dict[str, Any], origin: str) -> Dict[str, Any]:
         route["origin_region"],
     )
     rev["route_id"] = f'{route["origin_locode"]}-{route["destination_locode"]}_REV'
+    if route.get("transshipment"):
+        ts = dict(route["transshipment"])
+        ts["leg1_nm"], ts["leg2_nm"] = ts["leg2_nm"], ts["leg1_nm"]
+        rev["transshipment"] = ts
     return rev
+
+
+def _priced(route: Dict[str, Any], origin: str) -> Dict[str, Any]:
+    """Route orientée + prime de marché du pays de destination + tarifs reefer."""
+    out = _orient(route, origin)
+    factor = _DEST_MARKET_FACTOR.get(out["destination_country"], 1.0)
+    out["market_factor"] = factor
+    if factor != 1.0:
+        for k in ("teu_usd", "feu_usd", "feu_hc_usd"):
+            out[k] = _round5(out[k] * factor)
+        out["notes"] = (
+            f"{out.get('notes', '')} Prime marché import {out['destination_country']} "
+            f"×{factor:.2f} (attente portuaire, retour des vides).".strip()
+        )
+    out["teu_rf_usd"] = _round5(out["teu_usd"] * _REEFER_FREIGHT_RATIO)
+    out["feu_rf_usd"] = _round5(out["feu_hc_usd"] * _REEFER_FREIGHT_RATIO)
+    return out
+
+
+_ROUTE_INDEX = _build_route_matrix()
+_ORIENTED: Dict[tuple, Dict[str, Any]] = {}
+for _key, _route in _ROUTE_INDEX.items():
+    _a, _b = _route["origin_locode"], _route["destination_locode"]
+    _ORIENTED[(_a, _b)] = _priced(_route, _a)
+    _ORIENTED[(_b, _a)] = _priced(_route, _b)
+_ALL_ROUTES = sorted(
+    (_ORIENTED[(r["origin_locode"], r["destination_locode"])] for r in _ROUTE_INDEX.values()),
+    key=lambda r: (r["origin_region"], r["origin_port"], r["destination_port"]),
+)
+SHIPPING_ROUTES = BENCHMARK_ROUTES
 
 
 # ------------------------------------------------------------------
@@ -1670,22 +1917,14 @@ def get_routes_from_port(origin_locode: str) -> List[Dict[str, Any]]:
     origin_locode = origin_locode.upper()
     if origin_locode not in PORTS:
         return []
-    out = []
-    for key, route in _ROUTE_INDEX.items():
-        if origin_locode in key:
-            out.append(_orient(route, origin_locode))
+    out = [r for (o, _d), r in _ORIENTED.items() if o == origin_locode]
     out.sort(key=lambda r: r["distance_nm"])
     return out
 
 
 def get_route_between(origin_locode: str, destination_locode: str) -> Optional[Dict[str, Any]]:
     """Retourne la route entre deux ports (orientée origine→destination)."""
-    origin_locode = origin_locode.upper()
-    destination_locode = destination_locode.upper()
-    route = _ROUTE_INDEX.get(frozenset([origin_locode, destination_locode]))
-    if not route:
-        return None
-    return _orient(route, origin_locode)
+    return _ORIENTED.get((origin_locode.upper(), destination_locode.upper()))
 
 
 @lru_cache(maxsize=1)
@@ -1699,7 +1938,10 @@ def _port_thc_map() -> Dict[str, Dict[str, Any]]:
             "teu_usd": p["teu_usd"],
             "feu_usd": p["feu_usd"],
             "feu_hc_usd": p["feu_hc_usd"],
+            "teu_rf_usd": _round5(p["teu_usd"] * _REEFER_THC_RATIO),
+            "feu_rf_usd": _round5(p["feu_hc_usd"] * _REEFER_THC_RATIO),
             "source": p["thc_source"],
+            "reefer_source": f"Estimation : THC sec ×{_REEFER_THC_RATIO} (branchement, surveillance)",
         }
     return out
 
@@ -1736,10 +1978,12 @@ def get_total_cost(
     origin_locode: str,
     destination_locode: str,
     container_type: str = "teu",
+    dangerous: bool = False,
 ) -> Optional[Dict[str, Any]]:
     """
     Calcule le coût tout compris (fret maritime + THC origine + THC destination)
-    pour une paire de ports et un type de conteneur.
+    pour une paire de ports et un type de conteneur (sec, high cube ou reefer),
+    avec en option la surcharge marchandises dangereuses (IMDG).
     """
     route = get_route_between(origin_locode, destination_locode)
     if not route:
@@ -1747,7 +1991,7 @@ def get_total_cost(
 
     ctype = container_type.lower()
     rate_key = f"{ctype}_usd"
-    if rate_key not in route:
+    if ctype not in CONTAINER_TYPES or rate_key not in route:
         return None
 
     ocean_freight = route[rate_key]
@@ -1755,17 +1999,31 @@ def get_total_cost(
     destination_thc_data = get_port_thc(destination_locode)
     origin_thc = origin_thc_data.get(rate_key, 0) if origin_thc_data else 0
     destination_thc = destination_thc_data.get(rate_key, 0) if destination_thc_data else 0
-    total = ocean_freight + origin_thc + destination_thc
+
+    dg_surcharge = 0
+    if dangerous:
+        dg_surcharge = _DG_SURCHARGE_USD[ctype]
+        origin_thc = _round5(origin_thc * _DG_THC_RATIO)
+        destination_thc = _round5(destination_thc * _DG_THC_RATIO)
+    total = ocean_freight + dg_surcharge + origin_thc + destination_thc
 
     disclaimer = (
-        "Les tarifs reflètent les barèmes armateurs publiés 2024 et benchmarks de marché. "
-        "Les tarifs réels varient ±15-20 % selon l'armateur, la fenêtre de réservation, la saison et le type de cargaison. "
-        "Hors : pré/post-acheminement terrestre, droits de douane, assurance et frais documentaires."
+        "Estimation au niveau de marché 2026 : fret + surcharges courantes, calée sur des devis "
+        "réels (Marseille→Alger, Douala→Algésiras). Les tarifs réels varient ±15 % selon "
+        "l'armateur, la saison (surcharges de haute saison) et le délai de réservation. "
+        "Hors : pré/post-acheminement terrestre, droits de douane, assurance, frais "
+        "documentaires, surestaries."
     )
-    if route.get("is_modeled"):
-        disclaimer = (
-            "Tarif ESTIMÉ par modèle distance-coût calibré sur les benchmarks publiés "
-            "(UNCTAD MRTS 2024 / Drewry 2024). " + disclaimer
+    if ctype in ("teu_rf", "feu_rf"):
+        disclaimer += (
+            f" Reefer : fret sec ×{_REEFER_FREIGHT_RATIO} et THC ×{_REEFER_THC_RATIO} "
+            "(hypothèses de marché, hors branchement prolongé)."
+        )
+    if dangerous:
+        disclaimer += (
+            f" Marchandises dangereuses : surcharge IMDG de {dg_surcharge} USD et THC "
+            f"×{_DG_THC_RATIO} (hypothèses) ; acceptation soumise à l'armateur selon la "
+            "classe (classes 1 et 7 souvent refusées), déclaration DGD obligatoire."
         )
 
     return {
@@ -1777,19 +2035,24 @@ def get_total_cost(
         "origin_country": route["origin_country"],
         "destination_country": route["destination_country"],
         "container_type": ctype.upper(),
+        "dangerous": dangerous,
         "distance_nm": route["distance_nm"],
         "transit_days_min": route["transit_days_min"],
         "transit_days_max": route["transit_days_max"],
         "ocean_freight_usd": ocean_freight,
+        "dg_surcharge_usd": dg_surcharge,
         "origin_thc_usd": origin_thc,
         "destination_thc_usd": destination_thc,
         "total_cost_usd": total,
+        "transshipment": route.get("transshipment"),
+        "market_factor": route.get("market_factor", 1.0),
         "carriers": route["carriers"],
         "frequency": route["frequency"],
         "source": route["source"],
         "notes": route.get("notes", ""),
+        "rate_basis": route.get("rate_basis"),
         "is_modeled": route.get("is_modeled", False),
-        "data_year": 2024,
+        "data_year": 2026,
         "currency": "USD",
         "disclaimer": disclaimer,
     }
