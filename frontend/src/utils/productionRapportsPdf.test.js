@@ -129,7 +129,8 @@ describe('PDF mines', () => {
     const table = section(spec, 'Production par minéral et par année').table;
     expect(table.rows).toHaveLength(Object.keys(minesZAF.data_by_commodity).length);
     expect(table.columns.map((c) => c.key)).toEqual(['mineral', 'code', 'unit', '2022', '2023', '2024', 'source']);
-    const or = table.rows.find((r) => r.mineral === 'Gold');
+    // Le nom du minéral est traduit de l'anglais de l'USGS.
+    const or = table.rows.find((r) => r.mineral === 'Or');
     expect(or).toMatchObject({ unit: 'tonnes', 2022: '120', 2024: '100' });
     expect(or.source).toBe('Mineral Commodity Summaries 2024, 2025');
     // Minéral publié seulement depuis 2023 : 2022 « non publié », pas 0.
@@ -142,7 +143,7 @@ describe('PDF mines', () => {
     expect(titres(spec).slice(0, 2)).toEqual(['Profil minier', expect.stringMatching(/^Synthèse : dernière valeur publiée/)]);
     const synthese = spec.sections.find((x) => x.title?.startsWith('Synthèse')).table.rows;
     // Or : dernière valeur 2024, comparée à l'année publiée juste avant, même unité.
-    const or = synthese.find((r) => r.mineral === 'Gold');
+    const or = synthese.find((r) => r.mineral === 'Or');
     expect(or).toMatchObject({ latest: '100 tonnes', year: '2024' });
     expect(or.previous).toMatch(/tonnes \(\d{4}\)$/);
     expect(or.change).toMatch(/%$/);

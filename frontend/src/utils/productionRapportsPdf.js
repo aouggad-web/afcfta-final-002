@@ -133,8 +133,8 @@ const T = {
       tableTitle: 'Production par minéral et par année',
       cols: { mineral: 'Minéral', code: 'Code', source: 'Mesure et source' },
       tableText: [
-        "Volumes produits dans l'année, dans l'unité publiée par la source : tonnes (tonnes, metric tons), milliers de tonnes (thousand metric tons), carats pour les diamants et les pierres. Noms et unités sont ceux de la source.",
-        "« estimated » : estimation de la source. « Mine production » : extraction à la mine ; « Refinery production » : métal raffiné ; « Plant production » : production d'usine. « non publié » : pas de chiffre pour cette année.",
+        "Volumes produits dans l'année, dans l'unité publiée par la source : tonnes, milliers de tonnes métriques, carats pour les diamants et les pierres. Noms et unités sont traduits de l'anglais de la source.",
+        "« estimée » : estimation de la source. « Production minière » : extraction à la mine ; « Production de raffinerie » : métal raffiné ; « Production d'usine » : production d'usine. « non publié » : pas de chiffre pour cette année.",
         "Source principale : USGS (Service géologique des États-Unis), Mineral Commodity Summaries, publication annuelle qui révise les années précédentes ; le charbon vient de l'AIE (IEA Coal), l'uranium de la World Nuclear Association. Cette vue ne publie ni rang ni part africaine ou mondiale.",
       ],
       coverageTitle: 'Couverture des sources',

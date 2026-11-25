@@ -13,7 +13,7 @@
  * la plus chère de ce chantier.
  */
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import axios from 'axios';
 
@@ -22,7 +22,12 @@ import ProductionMining from './ProductionMining';
 vi.mock('axios');
 
 vi.mock('./EnhancedCountrySelector', () => ({
-  default: ({ value }) => <div data-testid="country-selector">{value}</div>,
+  default: ({ value, onChange }) => (
+    <div data-testid="country-selector">
+      {value}
+      <button type="button" onClick={() => onChange('DZA')}>DZA</button>
+    </div>
+  ),
 }));
 
 const WITH_PRODUCTION = {
@@ -55,6 +60,30 @@ const NOT_INGESTED = {
     sources_consulted: ['USGS Mineral Commodity Summaries 2025'],
     usgs_source_url: 'https://pubs.usgs.gov/periodicals/mcs2025/',
     usgs_edition: 'MCS 2025',
+  },
+};
+
+const rec = (commodity, year, value, unit, table) => ({
+  commodity_label: commodity, year, value, unit, commodity_code: 'XX',
+  usgs_table_name: table, source_dataset: 'Mineral Commodity Summaries 2025',
+});
+
+const ALGERIE = {
+  country_iso3: 'DZA',
+  total_records: 2,
+  years_covered: [2024],
+  data_by_commodity: {
+    'Crude oil': [rec('Crude oil', 2024, 990, '1000 b/d', 'Crude oil production 2024')],
+    Helium: [rec('Helium', 2024, 11, 'million cubic meters', 'Helium — Production, helium gas content 2024')],
+  },
+};
+
+const AFRIQUE_DU_SUD = {
+  country_iso3: 'ZAF',
+  total_records: 1,
+  years_covered: [2024],
+  data_by_commodity: {
+    Diamonds: [rec('Diamonds', 2024, 5700000, 'carats', 'Diamonds production 2024')],
   },
 };
 
@@ -93,5 +122,45 @@ describe('ProductionMining', () => {
     render(<ProductionMining language="fr" />);
     await screen.findByTestId('mining-coverage');
     expect(screen.queryByText(/📈/)).not.toBeInTheDocument();
+  });
+
+  it('traduit minerais, unités et intitulés USGS en français', async () => {
+    axios.get.mockResolvedValue({ data: ALGERIE });
+    render(<ProductionMining language="fr" />);
+    expect(await screen.findByText(/Pétrole brut/, { selector: 'h4' })).toBeInTheDocument();
+    expect(screen.getByText('Pétrole brut — production 2024', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('milliers de barils/jour')).toBeInTheDocument();
+    expect(screen.getByText(/Hélium — Production, teneur en hélium gazeux 2024/)).toBeInTheDocument();
+    expect(screen.getByText('millions de mètres cubes')).toBeInTheDocument();
+  });
+
+  it('traduit minerais et intitulés en arabe', async () => {
+    axios.get.mockResolvedValue({ data: ALGERIE });
+    render(<ProductionMining language="ar" />);
+    expect(await screen.findByText(/النفط الخام/, { selector: 'h4' })).toBeInTheDocument();
+    expect(screen.getByText(/إنتاج النفط الخام 2024/)).toBeInTheDocument();
+    expect(screen.getByText(/الهيليوم — الإنتاج، محتوى غاز الهيليوم 2024/)).toBeInTheDocument();
+  });
+
+  it('réserve le 💎 aux diamants', async () => {
+    // Le 💎 coiffait chaque minerai : l'Algérie semblait produire des diamants.
+    axios.get.mockResolvedValue({ data: ALGERIE });
+    render(<ProductionMining language="fr" />);
+    const titre = await screen.findByText(/Pétrole brut/, { selector: 'h4' });
+    expect(titre).not.toHaveTextContent('💎');
+    expect(screen.getByText(/Hélium/, { selector: 'h4' })).not.toHaveTextContent('💎');
+  });
+
+  it("n'affiche pas les chiffres d'un pays sous le nom d'un autre", async () => {
+    // Afrique du Sud (diamants) chargée, puis l'Algérie échoue : l'écran
+    // gardait les diamants sud-africains sous « Algérie ».
+    axios.get.mockResolvedValueOnce({ data: AFRIQUE_DU_SUD });
+    render(<ProductionMining language="fr" />);
+    await screen.findByText(/Diamants/, { selector: 'h4' });
+
+    axios.get.mockRejectedValueOnce(new Error('429'));
+    fireEvent.click(screen.getByRole('button', { name: 'DZA' }));
+    await waitFor(() => expect(axios.get).toHaveBeenLastCalledWith(expect.stringMatching(/mining\/DZA$/)));
+    await waitFor(() => expect(screen.queryByText(/Diamants/)).not.toBeInTheDocument());
   });
 });

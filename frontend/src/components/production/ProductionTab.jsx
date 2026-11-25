@@ -163,7 +163,7 @@ function ProductionTab({ language = 'fr' }) {
               </span>
               <span className="text-[var(--text)]">|</span>
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--terra)_30%,transparent)] text-[var(--terra)]">{pick(language, 'Mining', 'Mining', 'تعدين')}</Badge>
+                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--terra)_30%,transparent)] text-[var(--terra)]">{pick(language, 'Mines', 'Mining', 'تعدين')}</Badge>
                 USGS • AfDB {miningYear}
               </span>
             </div>
