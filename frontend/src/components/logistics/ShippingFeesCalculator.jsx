@@ -61,6 +61,10 @@ const texts = {
     dgSurcharge: 'Surcharge dangereux (IMDG)',
     transshipment: 'Transbordement à',
     direct: 'Service direct',
+    tsOptions: 'Options de transbordement',
+    tsOptionsDesc: 'Hubs possibles et compagnies qui y transbordent (fret pour ce conteneur, hors THC).',
+    hub: 'Hub',
+    transit: 'Transit',
     origin: 'Port d\'origine',
     destination: 'Port de destination',
     containerType: 'Type de conteneur',
@@ -100,6 +104,10 @@ const texts = {
     dgSurcharge: 'Dangerous goods surcharge (IMDG)',
     transshipment: 'Transshipment at',
     direct: 'Direct service',
+    tsOptions: 'Transshipment options',
+    tsOptionsDesc: 'Possible hubs and the carriers that tranship there (freight for this container, excluding THC).',
+    hub: 'Hub',
+    transit: 'Transit',
     origin: 'Origin Port',
     destination: 'Destination Port',
     containerType: 'Container Type',
@@ -139,6 +147,10 @@ const texts = {
     dgSurcharge: 'رسم إضافي للبضائع الخطرة (IMDG)',
     transshipment: 'مسافنة في',
     direct: 'خدمة مباشرة',
+    tsOptions: 'خيارات المسافنة',
+    tsOptionsDesc: 'موانئ المسافنة الممكنة وشركات الملاحة التي تسافن فيها (الشحن لهذه الحاوية، دون THC).',
+    hub: 'ميناء المسافنة',
+    transit: 'العبور',
     origin: 'ميناء المنشأ',
     destination: 'ميناء المقصد',
     containerType: 'نوع الحاوية',
@@ -497,6 +509,48 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                 <p className="text-sm font-medium text-[var(--text)]">{trDonnee(result.frequency, language)}</p>
               </div>
             </div>
+
+            {/* Transshipment options */}
+            {result.transshipment_options?.length > 0 && (
+              <div className="p-3 bg-[var(--afcfta-card)] rounded-lg border border-[var(--afcfta-border)]" data-testid="fees-ts-options">
+                <p className="text-xs font-semibold text-[var(--text)]">{t.tsOptions}</p>
+                <p className="text-xs text-[var(--afcfta-muted)] mb-2">{t.tsOptionsDesc}</p>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr className="border-b text-[var(--afcfta-muted)]">
+                        <th className="text-left p-2 font-semibold">{t.hub}</th>
+                        <th className="text-left p-2 font-semibold">{t.carriers}</th>
+                        <th className="text-right p-2 font-semibold">{t.transit}</th>
+                        <th className="text-right p-2 font-semibold">{t.oceanFreight}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {result.transshipment_options.map((o, i) => (
+                        <tr key={o.hub_locode} className={`border-b ${i === 0 ? 'font-semibold' : ''}`}>
+                          <td className="p-2 text-[var(--text)]">
+                            {o.hub_flag} {trDonnee(o.hub_port, language)}
+                          </td>
+                          <td className="p-2">
+                            <div className="flex flex-wrap gap-1">
+                              {o.carriers.map(c => (
+                                <Badge key={c} variant="outline" className="text-xs py-0">{c}</Badge>
+                              ))}
+                            </div>
+                          </td>
+                          <td className="p-2 text-right text-[var(--afcfta-muted)] whitespace-nowrap">
+                            {o.transit_days_min}–{o.transit_days_max} {t.days}
+                          </td>
+                          <td className="p-2 text-right text-[var(--info)] whitespace-nowrap">
+                            {montant(o.ocean_freight_usd, language, 3)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
 
             {/* Source & Notes */}
             <div className="space-y-2">

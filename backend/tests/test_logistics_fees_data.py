@@ -94,9 +94,41 @@ def test_douala_algiers_is_transshipped_and_dearer_than_short_sea():
 
 def test_benchmarks_routed_via_a_hub_carry_transshipment_metadata():
     """Les benchmarks publiés « via hub » gardent le hub dans la réponse."""
-    assert get_route_between("TNRAD", "KEMBA")["transshipment"]["hub_locode"] == "EGPSD"
+    hubs = [o["hub_locode"] for o in get_route_between("TNRAD", "KEMBA")["transshipment"]["options"]]
+    assert "EGPSD" in hubs
     assert get_route_between("NGAPP", "DZALG")["transshipment"]["hub_locode"] == "MAPTM"
     assert get_route_between("MAPTM", "SNDKR")["transshipment"] is None
+
+
+def test_transshipment_offers_mediterranean_hubs_and_their_carriers():
+    """Douala→Alger : plusieurs hubs possibles (Tanger Med, Valence, Gênes, Malte…),
+    chacun avec ses compagnies, du moins cher au plus cher."""
+    result = get_total_cost("CMDLA", "DZALG", "teu")
+    options = result["transshipment_options"]
+    hubs = [o["hub_locode"] for o in options]
+    assert {"MAPTM", "ESALG", "ESVLC", "ITGOA", "MTMAR"} <= set(hubs)
+    prices = [o["ocean_freight_usd"] for o in options]
+    assert prices == sorted(prices) and prices[0] == result["ocean_freight_usd"]
+    assert next(o for o in options if o["hub_locode"] == "MTMAR")["carriers"] == ["CMA CGM"]
+    assert {"Hapag-Lloyd", "COSCO"} <= set(result["carriers"])
+
+
+def test_option_freight_excludes_the_separately_reported_imdg_surcharge():
+    dg = get_total_cost("CMDLA", "DZALG", "teu", dangerous=True)
+    assert dg["transshipment_options"][0]["ocean_freight_usd"] == dg["ocean_freight_usd"]
+
+
+def test_benchmark_options_are_anchored_on_the_benchmark_rate():
+    route = get_route_between("NGAPP", "DZALG")
+    options = route["transshipment"]["options"]
+    assert options[0]["teu_usd"] == route["teu_usd"]
+    assert all(o["teu_usd"] >= route["teu_usd"] for o in options)
+
+
+def test_reverse_route_swaps_option_legs():
+    out = get_route_between("CMDLA", "DZALG")["transshipment"]["options"][0]
+    back = get_route_between("DZALG", "CMDLA")["transshipment"]["options"][0]
+    assert (out["leg1_nm"], out["leg2_nm"]) == (back["leg2_nm"], back["leg1_nm"])
 
 
 def test_algeria_import_premium_is_directional():
