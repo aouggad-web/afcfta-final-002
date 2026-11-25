@@ -19,8 +19,12 @@ Méthodologie des tarifs (niveau de marché 2026, fret + surcharges, hors THC) :
   segments great-circle via les points de passage obligés (Gibraltar, Suez,
   Bab-el-Mandeb, Cap de Bonne-Espérance).
 - Transbordement : sans service direct (ex. Afrique centrale → Algérie), la route
-  passe par le hub qui minimise la distance (Tanger Med, Port-Saïd, Lomé, Durban,
-  Port-Louis, Djibouti) : +150 USD/EVP de manutention au hub, +3 à 7 jours.
+  passe par un hub : +150 USD/EVP de manutention au hub, +3 à 7 jours. Les hubs
+  africains (Tanger Med, Port-Saïd, Lomé, Durban, Port-Louis, Djibouti) et
+  méditerranéens (Algésiras, Valence, Barcelone, Marseille-Fos, Gênes, Gioia
+  Tauro, Malte, Le Pirée) dont le détour reste ≤ +50 % sont proposés comme
+  options, chacune avec les compagnies qui y transbordent ; la moins chère
+  donne le tarif de référence.
 - Prime de marché à l'import par pays de destination (Algérie ×1,18).
 - Les routes "benchmark" (tarifs 2024 publiés) sont actualisées au niveau 2026
   en conservant leur écart propre à la ligne (``rate_basis = benchmark_actualise``).
@@ -908,7 +912,8 @@ def _haversine_nm(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
 
 def _sea_distance_nm(a: str, b: str) -> int:
     """Distance maritime réaliste entre deux ports via les points de passage obligés."""
-    pa, pb = PORTS[a], PORTS[b]
+    pa = PORTS.get(a) or TRANSSHIPMENT_HUBS[a]
+    pb = PORTS.get(b) or TRANSSHIPMENT_HUBS[b]
     coast_a, coast_b = pa["coast"], pb["coast"]
 
     def chain_distance(chain: List[str]) -> float:
@@ -962,6 +967,7 @@ _PER_NM_TEU_USD = 0.265
 _LEGACY_FIXED_TEU_USD = 175  # modèle 2024, sert à actualiser les benchmarks
 _LEGACY_PER_NM_TEU_USD = 0.255
 _FEU_RATIO = 1.5
+_RATE_KEYS = ("teu_usd", "feu_usd", "feu_hc_usd")
 _FEU_HC_RATIO = 1.62
 
 # Prime de marché à l'IMPORT par pays de destination (multiplicateur du fret).
@@ -986,10 +992,49 @@ _DG_THC_RATIO = 1.5
 
 CONTAINER_TYPES = ("teu", "feu", "feu_hc", "teu_rf", "feu_rf")
 
-# Transbordement : hubs africains et coût du passage au hub.
+# Transbordement : hubs africains (ports du registre) et coût du passage au hub.
 _HUBS = ["MAPTM", "EGPSD", "TGLFW", "ZADUR", "MUPLU", "DJJIB"]
 _TS_FEE_TEU_USD = 150  # manutention au hub (déchargement + rechargement), hypothèse
 _TS_DWELL_DAYS = (3, 7)  # attente de la correspondance au hub, hypothèse
+_TS_MAX_DETOUR = 1.5  # une option reste plausible jusqu'à +50 % de distance
+_TS_MAX_OPTIONS = 8
+
+# Hubs méditerranéens hors Afrique : servent de points de transbordement
+# (Afrique de l'Ouest/centrale ↔ Maghreb, Maghreb ↔ mer Rouge…), pas de ports
+# d'origine ou de destination sélectionnables.
+TRANSSHIPMENT_HUBS: Dict[str, Dict[str, Any]] = {
+    "ESALG": {"name": "Algésiras", "country": "Espagne", "flag": "🇪🇸", "lat": 36.13, "lon": -5.44},
+    "ESVLC": {"name": "Valence", "country": "Espagne", "flag": "🇪🇸", "lat": 39.44, "lon": -0.32},
+    "ESBCN": {"name": "Barcelone", "country": "Espagne", "flag": "🇪🇸", "lat": 41.34, "lon": 2.16},
+    "FRFOS": {"name": "Marseille-Fos", "country": "France", "flag": "🇫🇷", "lat": 43.40, "lon": 4.87},
+    "ITGOA": {"name": "Gênes", "country": "Italie", "flag": "🇮🇹", "lat": 44.41, "lon": 8.90},
+    "ITGIT": {"name": "Gioia Tauro", "country": "Italie", "flag": "🇮🇹", "lat": 38.45, "lon": 15.90},
+    "MTMAR": {"name": "Malte (Marsaxlokk)", "country": "Malte", "flag": "🇲🇹", "lat": 35.82, "lon": 14.54},
+    "GRPIR": {"name": "Le Pirée", "country": "Grèce", "flag": "🇬🇷", "lat": 37.94, "lon": 23.63},
+}
+for _h in TRANSSHIPMENT_HUBS.values():
+    _h["coast"] = "MED"
+
+# Compagnies qui transbordent couramment à chaque hub (indicatif : opérateurs
+# et actionnaires des terminaux — APM Terminals/Maersk, TIL/MSC, Terminal
+# Link/CMA CGM, COSCO Shipping Ports — et alliances qui y font escale).
+_HUB_CARRIERS: Dict[str, List[str]] = {
+    "MAPTM": ["Maersk", "Hapag-Lloyd", "CMA CGM", "MSC"],
+    "ESALG": ["Maersk", "Hapag-Lloyd"],
+    "ESVLC": ["MSC", "CMA CGM", "COSCO"],
+    "ESBCN": ["Maersk", "MSC"],
+    "FRFOS": ["CMA CGM", "MSC"],
+    "ITGOA": ["MSC", "Hapag-Lloyd", "CMA CGM"],
+    "ITGIT": ["MSC"],
+    "MTMAR": ["CMA CGM"],
+    "GRPIR": ["COSCO", "CMA CGM"],
+    "EGPSD": ["Maersk", "Hapag-Lloyd", "CMA CGM"],
+    "TGLFW": ["MSC", "CMA CGM"],
+    "ZADUR": ["Maersk", "MSC"],
+    "MUPLU": ["MSC", "CMA CGM", "Maersk"],
+    "DJJIB": ["Maersk", "CMA CGM", "MSC", "COSCO"],
+}
+_ALL_HUBS = _HUBS + list(TRANSSHIPMENT_HUBS)
 
 # Paires de régions reliées par des services directs (lignes côtières).
 _DIRECT_REGION_PAIRS = {
@@ -1043,27 +1088,58 @@ def _has_direct_service(a: str, b: str) -> bool:
     ] in _DIRECT_COUNTRY_REGIONS.get(pb["iso"], set())
 
 
-def _best_hub(a: str, b: str):
-    """Hub minimisant la distance totale origine→hub→destination."""
-    return min(
-        ((h, _sea_distance_nm(a, h), _sea_distance_nm(h, b)) for h in _HUBS if h not in (a, b)),
-        key=lambda t: t[1] + t[2],
-    )
+def _hub_info(h: str) -> Dict[str, Any]:
+    p = PORTS.get(h) or TRANSSHIPMENT_HUBS[h]
+    return {"hub_port": p["name"], "hub_country": p["country"], "hub_flag": p["flag"]}
 
 
 def _transshipment_meta(a: str, b: str) -> Optional[Dict[str, Any]]:
-    """Hub et tronçons d'une paire sans service direct (None si service direct)."""
+    """Options de transbordement d'une paire sans service direct (None sinon).
+
+    Chaque hub dont le détour reste plausible (≤ +50 % de la distance la plus
+    courte) devient une option, avec ses compagnies, son fret et son délai.
+    La première option (la moins chère) sert de tarif de référence.
+    """
     if _has_direct_service(a, b):
         return None
-    hub, d1, d2 = _best_hub(a, b)
+    legs = sorted(
+        ((h, _sea_distance_nm(a, h), _sea_distance_nm(h, b)) for h in _ALL_HUBS if h not in (a, b)),
+        key=lambda t: t[1] + t[2],
+    )
+    shortest = legs[0][1] + legs[0][2]
+    options = []
+    for h, d1, d2 in legs[:_TS_MAX_OPTIONS]:
+        dist = d1 + d2
+        if dist > shortest * _TS_MAX_DETOUR:
+            break
+        tmin, tmax = _transit(dist)
+        options.append(
+            {
+                "hub_locode": h,
+                **_hub_info(h),
+                "leg1_nm": d1,
+                "leg2_nm": d2,
+                "distance_nm": dist,
+                "transit_days_min": tmin + _TS_DWELL_DAYS[0],
+                "transit_days_max": tmax + _TS_DWELL_DAYS[1],
+                "carriers": _HUB_CARRIERS[h],
+                **_rates_from_teu(_teu_rate(dist) + _TS_FEE_TEU_USD),
+            }
+        )
+    first = options[0]
     return {
-        "hub_locode": hub,
-        "hub_port": PORTS[hub]["name"],
-        "leg1_nm": d1,
-        "leg2_nm": d2,
+        **{k: first[k] for k in ("hub_locode", "hub_port", "leg1_nm", "leg2_nm")},
         "hub_fee_teu_usd": _TS_FEE_TEU_USD,
         "dwell_days": list(_TS_DWELL_DAYS),
+        "options": options,
     }
+
+
+def _union(*lists: List[str]) -> List[str]:
+    out: List[str] = []
+    for lst in lists:
+        out += [c for c in lst if c not in out]
+    return out
 
 
 def _model_route(a: str, b: str) -> Dict[str, Any]:
@@ -1075,17 +1151,17 @@ def _model_route(a: str, b: str) -> Dict[str, Any]:
         transit_min, transit_max = _transit(dist)
         notes = "Tarif estimé par modèle recalibré 2026 (±15 %)."
     else:
-        hub = transshipment["hub_locode"]
-        dist = transshipment["leg1_nm"] + transshipment["leg2_nm"]
+        first = transshipment["options"][0]
+        dist = first["distance_nm"]
         teu = _teu_rate(dist) + _TS_FEE_TEU_USD
-        transit_min, transit_max = _transit(dist)
-        transit_min += _TS_DWELL_DAYS[0]
-        transit_max += _TS_DWELL_DAYS[1]
+        transit_min, transit_max = first["transit_days_min"], first["transit_days_max"]
+        others = ", ".join(o["hub_port"] for o in transshipment["options"][1:])
         notes = (
-            f"Pas de service direct : transbordement à {PORTS[hub]['name']} "
+            f"Pas de service direct : transbordement à {first['hub_port']} "
             f"(+{_TS_FEE_TEU_USD} USD/EVP de manutention au hub, "
-            f"+{_TS_DWELL_DAYS[0]} à {_TS_DWELL_DAYS[1]} jours de correspondance). "
-            "Tarif estimé par modèle recalibré 2026 (±15 %)."
+            f"+{_TS_DWELL_DAYS[0]} à {_TS_DWELL_DAYS[1]} jours de correspondance)"
+            + (f" ; autres hubs possibles : {others}" if others else "")
+            + ". Tarif estimé par modèle recalibré 2026 (±15 %)."
         )
     if dist < 800:
         freq = "Hebdomadaire (feeder)"
@@ -1108,7 +1184,9 @@ def _model_route(a: str, b: str) -> Dict[str, Any]:
         "transit_days_min": transit_min,
         "transit_days_max": transit_max,
         **_rates_from_teu(teu),
-        "carriers": _carriers_for(a, b),
+        "carriers": _union(
+            _carriers_for(a, b), *[o["carriers"] for o in (transshipment or {}).get("options", [])]
+        ),
         "frequency": freq,
         "transshipment": transshipment,
         "source": (
@@ -1819,14 +1897,22 @@ def _enrich_benchmark(r: Dict[str, Any]) -> Dict[str, Any]:
             "teu_usd": _round5(r["teu_usd"] * ratio),
             "feu_usd": _round5(r["feu_usd"] * ratio),
             "feu_hc_usd": _round5(r["feu_hc_usd"] * ratio),
-            # Le tarif benchmark couvre déjà le passage au hub : seules les
-            # métadonnées (hub, tronçons) sont ajoutées, sans frais en plus.
-            "transshipment": _transshipment_meta(a, b),
+            "transshipment": None,
             "source": r["source"] + " — actualisé au niveau de marché 2026",
             "rate_basis": "benchmark_actualise",
             "is_modeled": True,
         }
     )
+    # Le tarif benchmark couvre déjà le passage au hub : les options gardent
+    # leurs écarts relatifs, calés pour que la moins chère vaille le benchmark.
+    ts = _transshipment_meta(a, b)
+    if ts:
+        ratios = {k: out[k] / ts["options"][0][k] for k in _RATE_KEYS}
+        for o in ts["options"]:
+            for k in _RATE_KEYS:
+                o[k] = _round5(o[k] * ratios[k])
+        out["transshipment"] = ts
+        out["carriers"] = _union(out["carriers"], *[o["carriers"] for o in ts["options"]])
     return out
 
 
@@ -1851,7 +1937,12 @@ def _build_route_matrix():
 def _orient(route: Dict[str, Any], origin: str) -> Dict[str, Any]:
     """Retourne la route orientée avec ``origin`` comme port de départ."""
     if route["origin_locode"] == origin:
-        return dict(route)
+        out = dict(route)
+        if route.get("transshipment"):
+            ts = dict(route["transshipment"])
+            ts["options"] = [dict(o) for o in ts["options"]]
+            out["transshipment"] = ts
+        return out
     rev = dict(route)
     rev["origin_locode"], rev["destination_locode"] = (
         route["destination_locode"],
@@ -1870,6 +1961,9 @@ def _orient(route: Dict[str, Any], origin: str) -> Dict[str, Any]:
     if route.get("transshipment"):
         ts = dict(route["transshipment"])
         ts["leg1_nm"], ts["leg2_nm"] = ts["leg2_nm"], ts["leg1_nm"]
+        ts["options"] = [
+            {**o, "leg1_nm": o["leg2_nm"], "leg2_nm": o["leg1_nm"]} for o in ts["options"]
+        ]
         rev["transshipment"] = ts
     return rev
 
@@ -1888,6 +1982,11 @@ def _priced(route: Dict[str, Any], origin: str) -> Dict[str, Any]:
         )
     out["teu_rf_usd"] = _round5(out["teu_usd"] * _REEFER_FREIGHT_RATIO)
     out["feu_rf_usd"] = _round5(out["feu_hc_usd"] * _REEFER_FREIGHT_RATIO)
+    for o in (out.get("transshipment") or {}).get("options", []):
+        for k in _RATE_KEYS:
+            o[k] = _round5(o[k] * factor)
+        o["teu_rf_usd"] = _round5(o["teu_usd"] * _REEFER_FREIGHT_RATIO)
+        o["feu_rf_usd"] = _round5(o["feu_hc_usd"] * _REEFER_FREIGHT_RATIO)
     return out
 
 
@@ -2045,6 +2144,15 @@ def get_total_cost(
         "destination_thc_usd": destination_thc,
         "total_cost_usd": total,
         "transshipment": route.get("transshipment"),
+        "transshipment_options": [
+            {
+                **{k: o[k] for k in ("hub_locode", "hub_port", "hub_country", "hub_flag")},
+                **{k: o[k] for k in ("distance_nm", "transit_days_min", "transit_days_max")},
+                "carriers": o["carriers"],
+                "ocean_freight_usd": o[rate_key] + dg_surcharge,
+            }
+            for o in (route.get("transshipment") or {}).get("options", [])
+        ],
         "market_factor": route.get("market_factor", 1.0),
         "carriers": route["carriers"],
         "frequency": route["frequency"],
