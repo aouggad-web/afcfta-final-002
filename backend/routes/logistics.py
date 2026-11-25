@@ -818,8 +818,8 @@ async def get_logistics_operators(request: Request, category: Optional[str] = No
     reponse = {
         "operators": data,
         "summary": summary,
-        "data_source": "Sites officiels des opérateurs (HQ vérifiés), Lloyd's List, IATA, BIMCO, UNCTAD 2025",
-        "last_updated": "Juin 2026",
+        "data_source": summary["data_source"],
+        "last_updated": summary["last_updated"],
     }
     if recherches_limitees(request):
         reponse["operators"] = {cat: apercu(ops, _APERCU_INTERVENANT) for cat, ops in data.items()}

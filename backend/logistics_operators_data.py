@@ -7,6 +7,10 @@ Sources : Sites officiels des opérateurs, Lloyd's List, BIMCO, Drewry,
 Mise à jour : Juin 2026
 """
 
+import json
+import re
+import unicodedata
+from pathlib import Path
 from typing import Dict, List, Optional
 
 LOGISTICS_OPERATORS = {
@@ -52,41 +56,6 @@ LOGISTICS_OPERATORS = {
             "contacts": {
                 "website": "https://www.msc.com",
                 "africa_hub": "MSC Africa — Durban & Le Caire",
-                "south_africa": {
-                    "phone": "+27 31 360 7600",
-                    "email": "durban@msc.com",
-                    "address": "8th Floor, Portside, Cape Town 8001",
-                },
-                "egypt": {
-                    "phone": "+20 2 2580 0444",
-                    "email": "msc@mscegypt.com",
-                    "address": "1191 Corniche El Nil, Cairo",
-                },
-                "nigeria": {
-                    "phone": "+234 1 448 4884",
-                    "email": "lagos@msc.com",
-                    "address": "16 Ozumba Mbadiwe Street, Victoria Island, Lagos",
-                },
-                "morocco": {
-                    "phone": "+212 522 542 222",
-                    "email": "casablanca@msc.com",
-                    "address": "Tour Casablanca, Bd. Massira, Casablanca",
-                },
-                "algeria": {
-                    "phone": "+213 21 73 64 00",
-                    "email": "algiers@msc.com",
-                    "address": "18 Rue Didouche Mourad, Alger",
-                },
-                "kenya": {
-                    "phone": "+254 20 434 0900",
-                    "email": "nairobi@msc.com",
-                    "address": "Lonrho House, Standard Street, Nairobi",
-                },
-                "senegal": {
-                    "phone": "+221 33 889 11 00",
-                    "email": "dakar@msc.com",
-                    "address": "Port de Dakar, Sénégal",
-                },
             },
             "africa_offices_count": 30,
             "market_share_africa_pct": 28,
@@ -126,36 +95,6 @@ LOGISTICS_OPERATORS = {
             "contacts": {
                 "website": "https://www.maersk.com",
                 "africa_hq": "Maersk Africa Logistics Hub — Durban",
-                "south_africa": {
-                    "phone": "+27 31 366 9900",
-                    "email": "maerskzaf@maersk.com",
-                    "address": "3 Bowen Way, Umgeni Business Park, Durban 4051",
-                },
-                "egypt": {
-                    "phone": "+20 2 2580 0444",
-                    "email": "maeegypty@maersk.com",
-                    "address": "Smart Village, Building B2, Cairo-Alex Desert Road",
-                },
-                "nigeria": {
-                    "phone": "+234 1 280 8700",
-                    "email": "maenga@maersk.com",
-                    "address": "5 Military Street, Onikan, Lagos",
-                },
-                "morocco": {
-                    "phone": "+212 522 949 600",
-                    "email": "maemary@maersk.com",
-                    "address": "Casanearshore, Shore 11, Bd Sidi Mohamed Ben Abdellah, Casablanca",
-                },
-                "kenya": {
-                    "phone": "+254 20 360 0100",
-                    "email": "maeken@maersk.com",
-                    "address": "6th Floor, Nation House, Tom Mboya Street, Nairobi",
-                },
-                "senegal": {
-                    "phone": "+221 33 839 2800",
-                    "email": "maesen@maersk.com",
-                    "address": "8, Allée Robert Délmas, Dakar",
-                },
                 "ethiopia": {
                     "phone": "+251 11 515 7766",
                     "email": "maeeth@maersk.com",
@@ -201,40 +140,10 @@ LOGISTICS_OPERATORS = {
             "contacts": {
                 "website": "https://www.cmacgm-group.com",
                 "africa_hq": "ANL Africa — Marseille",
-                "south_africa": {
-                    "phone": "+27 21 405 5000",
-                    "email": "capetown@cmacgm.com",
-                    "address": "16th Floor, 22 Bree Street, Cape Town 8001",
-                },
-                "egypt": {
-                    "phone": "+20 2 2418 2000",
-                    "email": "cairo@cmacgm.com",
-                    "address": "35 Sherif Street, Cairo",
-                },
-                "nigeria": {
-                    "phone": "+234 1 260 4321",
-                    "email": "lagos@cmacgm.com",
-                    "address": "5 Broad Street, Lagos Island",
-                },
-                "senegal": {
-                    "phone": "+221 33 849 7900",
-                    "email": "dakar@cmacgm.com",
-                    "address": "1 Place de l'Indépendance, Dakar",
-                },
-                "ivory_coast": {
-                    "phone": "+225 27 20 31 1700",
-                    "email": "abidjan@cmacgm.com",
-                    "address": "Tour BHCI, Avenue Botreau Roussel, Abidjan",
-                },
                 "djibouti": {
                     "phone": "+253 21 35 45 40",
                     "email": "djibouti@cmacgm.com",
                     "address": "Port de Djibouti, Djibouti",
-                },
-                "morocco": {
-                    "phone": "+212 522 430 000",
-                    "email": "casablanca@cmacgm.com",
-                    "address": "Tour CFC, Rond-Point Hassan II, Casablanca",
                 },
             },
             "africa_offices_count": 38,
@@ -254,31 +163,6 @@ LOGISTICS_OPERATORS = {
             "africa_services": ["WAX", "SAECS", "EAX"],
             "contacts": {
                 "website": "https://www.hapag-lloyd.com",
-                "south_africa": {
-                    "phone": "+27 31 360 0900",
-                    "email": "durban@hlag.com",
-                    "address": "3rd Floor, The Marine, 22 Gardiner Street, Durban 4001",
-                },
-                "nigeria": {
-                    "phone": "+234 1 461 5310",
-                    "email": "lagos@hlag.com",
-                    "address": "10 Bishop Aboyade Cole Street, Victoria Island, Lagos",
-                },
-                "egypt": {
-                    "phone": "+20 2 2418 3100",
-                    "email": "cairo@hlag.com",
-                    "address": "31 Sherif Street, Alexandria",
-                },
-                "kenya": {
-                    "phone": "+254 20 422 8800",
-                    "email": "nairobi@hlag.com",
-                    "address": "Woodlands Road, Westlands, Nairobi",
-                },
-                "ghana": {
-                    "phone": "+233 302 664 999",
-                    "email": "accra@hlag.com",
-                    "address": "Westcom Business Plaza, Ring Road Central, Accra",
-                },
             },
             "africa_offices_count": 18,
             "market_share_africa_pct": 9,
@@ -297,26 +181,6 @@ LOGISTICS_OPERATORS = {
             "africa_services": ["FAX", "SAEX"],
             "contacts": {
                 "website": "https://www.evergreen-line.com",
-                "south_africa": {
-                    "phone": "+27 31 305 3555",
-                    "email": "durban@evergreen.com.tw",
-                    "address": "10 Torquay Road, Windermere, Durban",
-                },
-                "nigeria": {
-                    "phone": "+234 1 262 1700",
-                    "email": "lagos@evergreen-line.com",
-                    "address": "17 Adetokunbo Ademola Street, Victoria Island, Lagos",
-                },
-                "egypt": {
-                    "phone": "+20 3 487 5252",
-                    "email": "alexandria@evergreen-line.com",
-                    "address": "Corniche, Alexandria",
-                },
-                "kenya": {
-                    "phone": "+254 20 226 0100",
-                    "email": "nairobi@evergreen-line.com",
-                    "address": "IPS Building, Kimathi Street, Nairobi",
-                },
             },
             "africa_offices_count": 10,
             "market_share_africa_pct": 5,
@@ -347,25 +211,10 @@ LOGISTICS_OPERATORS = {
             "africa_services": ["IEX (India-East Africa)", "SWAC (South West Africa)"],
             "contacts": {
                 "website": "https://www.pilship.com",
-                "south_africa": {
-                    "phone": "+27 21 405 1900",
-                    "email": "capetown@pilship.com",
-                    "address": "8 Riebeek Street, Cape Town 8001",
-                },
-                "kenya": {
-                    "phone": "+254 20 222 0141",
-                    "email": "nairobi@pilship.com",
-                    "address": "Lonrho House, Standard Street, Nairobi",
-                },
                 "mauritius": {
                     "phone": "+230 202 1700",
                     "email": "port-louis@pilship.com",
                     "address": "Caudan Waterfront, Port Louis",
-                },
-                "egypt": {
-                    "phone": "+20 3 487 9500",
-                    "email": "alexandria@pilship.com",
-                    "address": "6 Midan Qahira, Alexandria",
                 },
             },
             "africa_offices_count": 14,
@@ -400,14 +249,6 @@ LOGISTICS_OPERATORS = {
                     "phone": "+39 081 496 111",
                     "email": "grimaldi@grimaldi.napoli.it",
                     "address": "Via Marchese Campodisola 13, 80133 Naples, Italie",
-                },
-                "senegal": {"phone": "+221 33 859 11 00", "email": "dakar@grimaldi.it"},
-                "ivory_coast": {"phone": "+225 27 20 21 3700", "email": "abidjan@grimaldi.it"},
-                "morocco": {"phone": "+212 522 420 000", "email": "casablanca@grimaldi.it"},
-                "algeria": {
-                    "phone": "+213 21 43 50 85",
-                    "email": "alger@grimaldi.it",
-                    "address": "2 Avenue du 1er Novembre, Alger",
                 },
             },
             "africa_offices_count": 12,
@@ -676,9 +517,8 @@ LOGISTICS_OPERATORS = {
             "contacts": {
                 "website": "https://www.apmterminals.com",
                 "nigeria": {
-                    "phone": "+234 1 270 6000",
-                    "email": "apapa@apmterminals.com",
-                    "address": "APMT, Apapa Wharf, Lagos",
+                    "address": "Container Terminal, Apapa Port, Wharf Road, Apapa, Lagos, Nigeria",
+                    "source": "https://www.maersk.com/local-information/nigeria/contact",
                 },
                 "morocco": {
                     "phone": "+212 539 397 000",
@@ -1179,9 +1019,9 @@ LOGISTICS_OPERATORS = {
                     "address": "Port de Dakar, Sénégal",
                 },
                 "cameroon": {
-                    "phone": "+237 233 429 700",
-                    "email": "geodis.douala@geodis.com",
-                    "address": "Zone Logistique, Douala",
+                    "phone": "+237 699 68 47 81",
+                    "address": "Rue Cric Tokoto - Zone Portuaire de Youpwe, BP 359 Douala",
+                    "source": "https://geodis.com/cm/en",
                 },
                 "morocco": {
                     "phone": "+212 522 406 300",
@@ -1274,7 +1114,11 @@ LOGISTICS_OPERATORS = {
                     "email": "info.dakar@aglgroup.com",
                     "address": "Port de Dakar, Sénégal",
                 },
-                "cameroon": {"phone": "+237 233 43 08 00", "email": "info.douala@aglgroup.com"},
+                "cameroon": {
+                    "phone": "+237 233 50 12 12",
+                    "email": "FR037-Infos.servicecotation_cameroun@aglgroup.com",
+                    "source": "https://aglgroup.com/en/transport-logistique-afrique/Cameroun",
+                },
                 "kenya": {"phone": "+254 41 222 0000", "email": "info.mombasa@aglgroup.com"},
                 "djibouti": {"phone": "+253 21 35 01 00", "email": "info.djibouti@aglgroup.com"},
                 "ethiopia": {"phone": "+251 11 551 0000", "email": "info.addis@aglgroup.com"},
@@ -2651,6 +2495,96 @@ LOGISTICS_OPERATORS = {
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Intervenants relevés sur des sources publiques (data/intervenants_sources_publiques.json)
+#
+# Chaque entrée porte l'URL de la page où ses coordonnées ont été lues
+# (``source_url``), le type de source (officielle / annuaire), le niveau de
+# vérification (page lue / extrait de moteur de recherche, à confirmer) et son
+# origine : « source_publique » aujourd'hui, « partenaire » pour les fiches
+# déclarées par les entreprises elles-mêmes (offre commerciale à venir).
+# ─────────────────────────────────────────────────────────────────────────────
+_FICHIER_SOURCES = Path(__file__).parent / "data" / "intervenants_sources_publiques.json"
+
+_LIBELLES_SOURCES = {
+    "armateurs": ("armateur", "Armateur national"),
+    "consignataires": ("consignataire", "Agent maritime consignataire"),
+    "chargeurs": ("chargeur", "Conseil / association de chargeurs"),
+    "affreteurs": ("affreteur", "Affréteur / courtier maritime"),
+    "port_operators": ("autorite_portuaire", "Autorité portuaire"),
+}
+
+
+def _slug(texte: str) -> str:
+    texte = unicodedata.normalize("NFKD", texte).encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]+", "_", texte).strip("_")
+
+
+def _provenance(e: dict) -> dict:
+    return {
+        "source": e["source_url"],
+        "source_type": e["source_type"],
+        "verification": e["verification"],
+        "origine": e["origine"],
+    }
+
+
+def _coordonnees(e: dict) -> dict:
+    return {k: e[k] for k in ("website", "phone", "email", "address") if e.get(k)}
+
+
+def _integrer_sources_publiques(operateurs: Dict[str, List[dict]]) -> None:
+    doc = json.loads(_FICHIER_SOURCES.read_text(encoding="utf-8"))
+    pays = doc["pays"]
+    armateurs = {op["id"]: op for op in operateurs["armateurs"]}
+
+    # Agences locales des armateurs : un bloc de contact par pays et par ville.
+    for agence in doc["agences_armateurs"]:
+        iso = agence["country_iso"]
+        op = armateurs.get(agence["carrier_id"])
+        if op is None:
+            op_id = _slug(agence["carrier"])
+            op = armateurs.get(op_id)
+            if op is None:
+                op = {
+                    "id": op_id,
+                    "name": agence["carrier"],
+                    "type": "armateur",
+                    "type_label": "Compagnie maritime (agences locales)",
+                    "africa_presence": [],
+                    "contacts": {},
+                }
+                operateurs["armateurs"].append(op)
+                armateurs[op_id] = op
+        presence = op.setdefault("africa_presence", [])
+        if iso not in presence:
+            presence.append(iso)
+        contacts = op.setdefault("contacts", {})
+        cle = f"{pays[iso]} — {agence['city'] or agence['name']}"
+        if cle in contacts:
+            cle = f"{cle} · {agence['name']}"
+        contacts[cle] = {**_coordonnees(agence), **_provenance(agence)}
+
+    # Autres intervenants : une fiche par entité.
+    for e in doc["operateurs"]:
+        type_, libelle = _LIBELLES_SOURCES[e["category"]]
+        operateurs.setdefault(e["category"], []).append(
+            {
+                "id": e["id"],
+                "name": e["name"],
+                "type": type_,
+                "type_label": libelle,
+                "country_iso": e["country_iso"],
+                "hq": ", ".join(x for x in (e.get("city"), pays[e["country_iso"]]) if x),
+                **({"description": e["description"]} if e.get("description") else {}),
+                "contacts": _coordonnees(e),
+                "provenance": _provenance(e),
+            }
+        )
+
+
+_integrer_sources_publiques(LOGISTICS_OPERATORS)
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Fonctions d'accès
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -2694,6 +2628,9 @@ def get_operators_summary() -> dict:
         "total_operators": sum(len(v) for v in LOGISTICS_OPERATORS.values()),
         "by_category": {k: len(v) for k, v in LOGISTICS_OPERATORS.items()},
         "categories": list(LOGISTICS_OPERATORS.keys()),
-        "data_source": "Sites officiels des opérateurs (HQ vérifiés), Lloyd's List, IATA, BIMCO, UNCTAD 2025",
-        "last_updated": "Juin 2026",
+        "data_source": (
+            "Sites officiels des opérateurs (HQ vérifiés), Lloyd's List, IATA, BIMCO, UNCTAD 2025 ; "
+            "intervenants locaux relevés sur sources publiques (URL par fiche)"
+        ),
+        "last_updated": "Novembre 2026",
     }

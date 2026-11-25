@@ -50,6 +50,39 @@ const CATEGORY_META = {
     desc: 'Commissionnaires de transport, organisateurs de fret, dédouanement',
     desc_ar: 'وكلاء النقل ومنظمو الشحن والتخليص الجمركي',
   },
+  consignataires: {
+    label: 'Consignataires',
+    label_ar: 'الوكلاء البحريون',
+    icon: Anchor,
+    color: 'teal',
+    bg: 'rgba(20,184,166,0.1)',
+    border: 'rgba(20,184,166,0.3)',
+    badge: 'bg-[color-mix(in_srgb,var(--atlantic)_12%,var(--afcfta-card))] text-[var(--atlantic)] border-[color-mix(in_srgb,var(--atlantic)_30%,transparent)]',
+    desc: 'Agents maritimes consignataires de navires, par port (sources publiques)',
+    desc_ar: 'الوكلاء البحريون للسفن حسب الميناء (مصادر عامة)',
+  },
+  chargeurs: {
+    label: 'Chargeurs',
+    label_ar: 'الشاحنون',
+    icon: Users,
+    color: 'indigo',
+    bg: 'rgba(99,102,241,0.1)',
+    border: 'rgba(99,102,241,0.3)',
+    badge: 'bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)]',
+    desc: 'Conseils nationaux des chargeurs et associations d\'exportateurs (sources publiques)',
+    desc_ar: 'المجالس الوطنية للشاحنين وجمعيات المصدّرين (مصادر عامة)',
+  },
+  affreteurs: {
+    label: 'Affréteurs & courtiers',
+    label_ar: 'المستأجرون والسماسرة البحريون',
+    icon: Building2,
+    color: 'sky',
+    bg: 'rgba(14,165,233,0.1)',
+    border: 'rgba(14,165,233,0.3)',
+    badge: 'bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)]',
+    desc: 'Affréteurs, courtiers maritimes et NVOCC (sources publiques)',
+    desc_ar: 'المستأجرون والسماسرة البحريون وناقلو الحاويات دون سفن (مصادر عامة)',
+  },
   rail_operators: {
     label: 'Opérateurs ferroviaires',
     label_ar: 'مشغلو السكك الحديدية',
@@ -197,6 +230,33 @@ function ContactRow({ icon: Icon, label, value, href, mono = false }) {
   );
 }
 
+// Origine d'une fiche ou d'un bureau : lien vers la page source, mention
+// « à confirmer » pour une valeur lue dans un extrait de moteur de recherche,
+// badge « Partenaire » pour une fiche déclarée par l'entreprise.
+function Provenance({ source, verification, origine, language }) {
+  if (!source) return null;
+  let domaine = source;
+  try { domaine = new URL(source).hostname.replace(/^www\./, ''); } catch { /* URL brute */ }
+  return (
+    <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-[var(--afcfta-muted)] mt-1" data-testid="provenance">
+      <span>{pick(language, 'Source', 'Source', 'المصدر')} :</span>
+      <a href={source} target="_blank" rel="noreferrer" className="underline-offset-2 hover:underline" style={{ overflowWrap: 'anywhere' }}>
+        {domaine}
+      </a>
+      {verification === 'extrait_moteur_recherche' && (
+        <span className="px-1.5 rounded border border-[color-mix(in_srgb,var(--gold)_40%,transparent)] text-[var(--gold)]">
+          {pick(language, 'à confirmer', 'to be confirmed', 'يحتاج تأكيدًا')}
+        </span>
+      )}
+      {origine === 'partenaire' && (
+        <span className="px-1.5 rounded border border-[color-mix(in_srgb,var(--success)_40%,transparent)] text-[var(--success)]">
+          {pick(language, 'Partenaire', 'Partner', 'شريك')}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function FlatContactRow({ contactKey, value, language }) {
   const label = GENERIC_CONTACT_KEYS.has(contactKey) ? null : trDonnee(contactKey.replace(/_/g, ' '), language);
   if (isUrl(value)) {
@@ -236,7 +296,7 @@ function ContactsBlock({ contacts, language }) {
       {officeEntries.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {officeEntries.map(([key, val]) => {
-            const { phone, email, address, website } = val;
+            const { phone, email, address, website, source, verification, origine } = val;
             if (!phone && !email && !address && !website) return null;
             const label = trDonnee(key.replace(/_/g, ' '), language);
             return (
@@ -249,6 +309,7 @@ function ContactsBlock({ contacts, language }) {
                   <ContactRow icon={MapPin} value={address} />
                   <ContactRow icon={ExternalLink} value={website ? website.replace(/^https?:\/\//i, '') : null} href={website} />
                 </div>
+                <Provenance source={source} verification={verification} origine={origine} language={language} />
               </div>
             );
           })}
@@ -423,6 +484,9 @@ function OperatorCard({ operator: liste, catMeta, language, apercu = false }) {
         {/* Full contacts when expanded */}
         {expanded && hasContacts && (
           <ContactsBlock contacts={operator.contacts} language={language} />
+        )}
+        {expanded && operator.provenance && (
+          <Provenance {...operator.provenance} language={language} />
         )}
 
         {/* Services list */}
