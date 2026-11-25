@@ -47,7 +47,14 @@ def test_les_agences_locales_completent_les_fiches_armateurs():
 def test_nouvelles_categories_par_pays():
     categories = {o["category"] for o in get_operators_by_country("MAR")}
     assert {"armateurs", "consignataires", "chargeurs"} <= categories
-    for cat in ("consignataires", "chargeurs", "affreteurs"):
+    for cat in (
+        "consignataires",
+        "chargeurs",
+        "affreteurs",
+        "organisations_routieres",
+        "assistance_fret_aerien",
+        "agents_fret_aerien",
+    ):
         assert LOGISTICS_OPERATORS[cat], cat
         assert all(o.get("provenance", {}).get("source") for o in LOGISTICS_OPERATORS[cat])
 
@@ -57,3 +64,31 @@ def test_les_contacts_armateurs_non_sources_remplaces_ne_reviennent_pas():
     texte = json.dumps(LOGISTICS_OPERATORS["armateurs"], ensure_ascii=False)
     for ancien in ("algiers@msc.com", "durban@msc.com", "maesen@maersk.com", "18 Rue Didouche Mourad"):
         assert ancien not in texte
+
+
+def _valeurs(obj):
+    if isinstance(obj, dict):
+        for v in obj.values():
+            yield from _valeurs(v)
+    elif isinstance(obj, list):
+        for v in obj:
+            yield from _valeurs(v)
+    elif isinstance(obj, str):
+        yield obj
+
+
+def test_les_contacts_routiers_et_aeriens_dementis_ne_reviennent_pas():
+    valeurs = set(_valeurs(LOGISTICS_OPERATORS))
+    for ancien in (
+        "cargo.los@ethiopianairlines.com",
+        "ramcargo@royalairmaroc.com",
+        "cargo@airalgerie.dz",
+        "+234 803 726 8535",
+        "+225 27 20 21 5000",
+    ):
+        assert ancien not in valeurs
+
+
+def test_les_intervenants_routiers_et_aeriens_par_pays():
+    categories = {o["category"] for o in get_operators_by_country("DZA")}
+    assert {"air_cargo", "assistance_fret_aerien", "trucking_companies"} <= categories
