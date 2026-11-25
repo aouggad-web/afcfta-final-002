@@ -363,21 +363,13 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "Mineral Commodity Summaries 2024",
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
-            "GHA": {2022: 127.0, 2023: 130.0},
-            "MLI": {2022: 72.0, 2023: 105.0},
-            "ZAF": {2022: 120.0, 2023: 100.0},
-            "BFA": {2022: 60.0, 2023: 96.0},
-            "SDN": {2022: 60.0, 2023: 64.0},
-            "GIN": {2022: 50.0, 2023: 60.0},
-            "TZA": {2022: 48.0, 2023: 53.0},
-            "CIV": {2022: 35.0, 2023: 51.0},
-            "COD": {2022: 40.0, 2023: 44.0},
-            "ZWE": {2022: 35.0, 2023: 30.0},
-            "EGY": {2022: 14.0, 2023: 16.0},
-            "SEN": {2022: 14.0, 2023: 16.0},
-            "ERI": {2022: 10.0, 2023: 14.0},
-            "MRT": {2022: 14.0, 2023: 14.0},
-            "NER": {2022: 10.0, 2023: 12.0},
+            # MCS 2024 : 2022. Les années 2023 (révisée) et 2024 (estimée)
+            # viennent de MCS 2025, dans etl/mining_extended.py.
+            "BFA": {2022: 58.0},
+            "GHA": {2022: 88.0},
+            "MLI": {2022: 64.0},
+            "ZAF": {2022: 89.0},
+            "TZA": {2022: 57.0},
         },
     ),
     "Crude oil": (
@@ -427,11 +419,10 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "Mineral Commodity Summaries 2024",
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
-            "COD": {2022: 2300000.0, 2023: 2800000.0},
-            "ZMB": {2022: 763000.0, 2023: 760000.0},
-            "ZAF": {2022: 64000.0, 2023: 70000.0},
-            "NAM": {2022: 24000.0, 2023: 26000.0},
-            "BWA": {2022: 20000.0, 2023: 22000.0},
+            # MCS 2024 : 2022. Les années 2023 (révisée) et 2024 (estimée)
+            # viennent de MCS 2025, dans etl/mining_extended.py.
+            "COD": {2022: 2350000.0},
+            "ZMB": {2022: 797000.0},
         },
     ),
     "Cobalt": (
@@ -440,9 +431,10 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "Mineral Commodity Summaries 2024",
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
-            "COD": {2022: 147000.0, 2023: 170000.0},
-            "MDG": {2022: 2800.0, 2023: 3000.0},
-            "MAR": {2022: 2200.0, 2023: 2300.0},
+            # MCS 2024 : 2022. Les années 2023 (révisée) et 2024 (estimée)
+            # viennent de MCS 2025, dans etl/mining_extended.py.
+            "COD": {2022: 144000.0},
+            "MDG": {2022: 3500.0},
         },
     ),
     "Diamonds": (
@@ -451,14 +443,15 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "Mineral Commodity Summaries 2024",
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
-            "BWA": {2022: 24200000.0, 2023: 25100000.0},
-            "AGO": {2022: 8900000.0, 2023: 9700000.0},
-            "ZAF": {2022: 6200000.0, 2023: 5900000.0},
-            "ZWE": {2022: 4500000.0, 2023: 4900000.0},
-            "NAM": {2022: 2100000.0, 2023: 2400000.0},
-            "COD": {2022: 2400000.0, 2023: 2300000.0},
-            "LSO": {2022: 670000.0, 2023: 730000.0},
-            "SLE": {2022: 640000.0, 2023: 690000.0},
+            # Diamant NATUREL INDUSTRIEL (tableau « Natural Industrial Diamond » de MCS) ;
+            # le diamant de qualité gemme est la série « Gemstones ».
+            # MCS 2024 : 2022. Les années 2023 (révisée) et 2024 (estimée)
+            # viennent de MCS 2025, dans etl/mining_extended.py.
+            "AGO": {2022: 1000000.0},
+            "BWA": {2022: 7000000.0},
+            "COD": {2022: 8000000.0},
+            "ZAF": {2022: 6000000.0},
+            "ZWE": {2022: 4000000.0},
         },
     ),
     "Phosphate": (
@@ -467,15 +460,15 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "Mineral Commodity Summaries 2024",
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
-            "MAR": {2022: 37000000.0, 2023: 35000000.0},
-            "EGY": {2022: 5000000.0, 2023: 5000000.0},
-            "TUN": {2022: 3500000.0, 2023: 3800000.0},
-            "SEN": {2022: 2800000.0, 2023: 2800000.0},
-            "ZAF": {2022: 2000000.0, 2023: 2000000.0},
-            "TGO": {2022: 1300000.0, 2023: 1500000.0},
-            # Algérie : MCS 2024 publie 1 800 milliers de tonnes (2022, estimé) ;
-            # 2023 vient de MCS 2025 (etl/mining_extended.py).
+            # MCS 2024 : 2022. Les années 2023 (révisée) et 2024 (estimée)
+            # viennent de MCS 2025, dans etl/mining_extended.py.
             "DZA": {2022: 1800000.0},
+            "EGY": {2022: 5000000.0},
+            "MAR": {2022: 39000000.0},
+            "SEN": {2022: 2600000.0},
+            "ZAF": {2022: 1990000.0},
+            "TGO": {2022: 1500000.0},
+            "TUN": {2022: 3560000.0},
         },
     ),
     "Bauxite": (
@@ -484,9 +477,9 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "Mineral Commodity Summaries 2024",
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
-            "GIN": {2022: 95000000.0, 2023: 97000000.0},
-            "SLE": {2022: 1700000.0, 2023: 1800000.0},
-            "GHA": {2022: 1100000.0, 2023: 1150000.0},
+            # MCS 2024 : 2022. Les années 2023 (révisée) et 2024 (estimée)
+            # viennent de MCS 2025, dans etl/mining_extended.py.
+            "GIN": {2022: 100000000.0},
         },
     ),
     "Uranium": (
@@ -506,10 +499,10 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "Mineral Commodity Summaries 2024",
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
-            "ZAF": {2022: 62000000.0, 2023: 62000000.0},
-            "MRT": {2022: 12000000.0, 2023: 12000000.0},
-            "SLE": {2022: 3000000.0, 2023: 3000000.0},
-            "LBR": {2022: 2400000.0, 2023: 2500000.0},
+            # MCS 2024 : 2022. Les années 2023 (révisée) et 2024 (estimée)
+            # viennent de MCS 2025, dans etl/mining_extended.py.
+            "ZAF": {2022: 63700000.0},
+            "MRT": {2022: 12700000.0},
         },
     ),
     "Manganese": (
@@ -518,10 +511,12 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "Mineral Commodity Summaries 2024",
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
-            "ZAF": {2022: 6900000.0, 2023: 7200000.0},
-            "GAB": {2022: 4500000.0, 2023: 4600000.0},
-            "GHA": {2022: 700000.0, 2023: 800000.0},
-            "CIV": {2022: 1300000.0, 2023: 1300000.0},
+            # MCS 2024 : 2022. Les années 2023 (révisée) et 2024 (estimée)
+            # viennent de MCS 2025, dans etl/mining_extended.py.
+            "ZAF": {2022: 7300000.0},
+            "GAB": {2022: 4670000.0},
+            "GHA": {2022: 844000.0},
+            "CIV": {2022: 394000.0},
         },
     ),
     "Platinum": (
@@ -530,8 +525,11 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "Mineral Commodity Summaries 2024",
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
-            "ZAF": {2022: 120.0, 2023: 120.0},
-            "ZWE": {2022: 18.0, 2023: 19.0},
+            # MCS publie en kilogrammes : convertis en tonnes.
+            # MCS 2024 : 2022. Les années 2023 (révisée) et 2024 (estimée)
+            # viennent de MCS 2025, dans etl/mining_extended.py.
+            "ZAF": {2022: 124.0},
+            "ZWE": {2022: 17.0},
         },
     ),
     "Coal": (
