@@ -135,7 +135,7 @@ const T = {
       tableText: [
         "Volumes produits dans l'année, dans l'unité publiée par la source : tonnes, milliers de tonnes métriques, carats pour les diamants et les pierres. Noms et unités sont traduits de l'anglais de la source.",
         "« estimée » : estimation de la source. « Production minière » : extraction à la mine ; « Production de raffinerie » : métal raffiné ; « Production d'usine » : production d'usine. « non publié » : pas de chiffre pour cette année.",
-        "Source principale : USGS (Service géologique des États-Unis), Mineral Commodity Summaries, publication annuelle qui révise les années précédentes ; le charbon vient de l'AIE (IEA Coal), l'uranium de la World Nuclear Association. Cette vue ne publie ni rang ni part africaine ou mondiale.",
+        "Source principale : USGS (Service géologique des États-Unis), Mineral Commodity Summaries, publication annuelle qui révise les années précédentes ; le pétrole, le gaz et le charbon viennent de l'EIA (International Energy Statistics), l'uranium de la World Nuclear Association. Chaque chiffre est extrait par script des publications de ces sources. Cette vue ne publie ni rang ni part africaine ou mondiale.",
       ],
       coverageTitle: 'Couverture des sources',
       coverage: { status: 'Statut', note: 'Note de la source', edition: 'Édition USGS', consulted: 'Sources consultées' },
@@ -145,7 +145,7 @@ const T = {
         NOT_LISTED_BY_SOURCES: 'Aucune production rapportée par les sources consultées',
       },
       none: 'Aucune valeur de production publiée pour ce pays.',
-      sources: 'USGS, AIE, World Nuclear Association',
+      sources: 'USGS, EIA, World Nuclear Association',
       filename: 'Production_mines',
     },
 
@@ -294,7 +294,7 @@ const T = {
       tableText: [
         'Volumes produced in the year, in the unit published by the source: tonnes (tonnes, metric tons), thousand metric tons, carats for diamonds and gemstones. Names and units are those of the source.',
         '"estimated": estimate by the source. "Mine production": extraction at the mine; "Refinery production": refined metal; "Plant production": plant output. "not published": no figure for that year.',
-        'Main source: USGS (United States Geological Survey), Mineral Commodity Summaries, an annual release that revises previous years; coal comes from the IEA (IEA Coal), uranium from the World Nuclear Association. This view publishes no African or world rank or share.',
+        'Main source: USGS (United States Geological Survey), Mineral Commodity Summaries, an annual release that revises previous years; oil, gas and coal come from the EIA (International Energy Statistics), uranium from the World Nuclear Association. Every figure is extracted by script from the publications of these sources. This view publishes no African or world rank or share.',
       ],
       coverageTitle: 'Source coverage',
       coverage: { status: 'Status', note: 'Source note', edition: 'USGS edition', consulted: 'Sources consulted' },
@@ -304,7 +304,7 @@ const T = {
         NOT_LISTED_BY_SOURCES: 'No production reported by the sources consulted',
       },
       none: 'No production value published for this country.',
-      sources: 'USGS, IEA, World Nuclear Association',
+      sources: 'USGS, EIA, World Nuclear Association',
       filename: 'Production_mining',
     },
 
@@ -453,7 +453,7 @@ const T = {
       tableText: [
         'الأحجام المنتَجة في السنة بالوحدة التي ينشرها المصدر: الطن، ألف طن متري، القيراط للماس والأحجار الكريمة.',
         '«تقديري»: تقدير المصدر. إنتاج المناجم: الاستخراج من المنجم؛ إنتاج المصافي: المعدن المكرَّر؛ إنتاج المصانع: إنتاج المعامل. «غير منشور»: لا رقم لتلك السنة.',
-        'المصدر الرئيسي: هيئة المسح الجيولوجي الأمريكية (USGS)، الملخصات السنوية للسلع المعدنية (Mineral Commodity Summaries) التي تراجع السنوات السابقة؛ الفحم من الوكالة الدولية للطاقة، واليورانيوم من الرابطة النووية العالمية. لا تنشر هذه الواجهة ترتيبًا ولا حصة أفريقية أو عالمية.',
+        'المصدر الرئيسي: هيئة المسح الجيولوجي الأمريكية (USGS)، الملخصات السنوية للسلع المعدنية (Mineral Commodity Summaries) التي تراجع السنوات السابقة؛ النفط والغاز والفحم من إدارة معلومات الطاقة الأمريكية (EIA)، واليورانيوم من الرابطة النووية العالمية. يُستخرج كل رقم آليًا من منشورات هذه المصادر. لا تنشر هذه الواجهة ترتيبًا ولا حصة أفريقية أو عالمية.',
       ],
       coverageTitle: 'تغطية المصادر',
       coverage: { status: 'الحالة', note: 'ملاحظة المصدر', edition: 'إصدار USGS', consulted: 'المصادر المعتمدة' },
@@ -463,7 +463,7 @@ const T = {
         NOT_LISTED_BY_SOURCES: 'لا إنتاج مُبلَّغ عنه لدى المصادر المعتمدة',
       },
       none: 'لا توجد قيمة إنتاج منشورة لهذا البلد.',
-      sources: 'USGS، الوكالة الدولية للطاقة، الرابطة النووية العالمية',
+      sources: 'USGS، EIA، الرابطة النووية العالمية',
       filename: 'Production_mines_ar',
     },
 

@@ -88,29 +88,18 @@ MCS_TO_CURATED = {
 
 
 def curated_commodities() -> set:
-    """Ce que les tables ÉCRITES À LA MAIN couvrent déjà.
+    """Ce que les autres générateurs couvrent déjà (fiches USGS, EIA, WNA).
 
-    Calculé depuis ces tables, et non depuis le jeu construit : l'autorité sur
-    « qu'est-ce qui est déjà curé » est le code source, pas un artefact de
-    build qui peut être en retard d'une exécution.
+    Calculé depuis leurs déclarations, et non depuis le jeu construit :
+    l'autorité est le code source, pas un artefact de build qui peut être en
+    retard d'une exécution. Les commodités des fiches sans producteur africain
+    (plomb, nickel…) en font partie : les réémettre ici rouvrirait la question.
     """
-    import importlib.util
+    from build_energy_from_eia import SERIES
+    from build_mining_from_usgs_pdfs import SPECS
 
-    from etl.mining_extended import MINING_EXTENDED, MINING_YEAR_2024
+    return set(SPECS) | set(SERIES) | {"Uranium"}
 
-    spec = importlib.util.spec_from_file_location(
-        "_socle", SCRIPT_DIR / "build_production_faostat_usgs.py"
-    )
-    socle = importlib.util.module_from_spec(spec)
-    try:
-        spec.loader.exec_module(socle)
-    except SystemExit:  # le script du socle a un main() qui peut sortir
-        pass
-    return (
-        set(MINING_EXTENDED)
-        | set(MINING_YEAR_2024)
-        | set(getattr(socle, "USGS_MULTI_YEAR", {}))
-    )
 
 #: Cellules qui ne sont pas des nombres. ``W`` = retenu par le secret
 #: statistique : une absence de publication, surtout pas un zéro.
