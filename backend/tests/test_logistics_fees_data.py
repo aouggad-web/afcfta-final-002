@@ -113,6 +113,11 @@ def test_transshipment_offers_mediterranean_hubs_and_their_carriers():
     assert {"Hapag-Lloyd", "COSCO"} <= set(result["carriers"])
 
 
+def test_option_freight_excludes_the_separately_reported_imdg_surcharge():
+    dg = get_total_cost("CMDLA", "DZALG", "teu", dangerous=True)
+    assert dg["transshipment_options"][0]["ocean_freight_usd"] == dg["ocean_freight_usd"]
+
+
 def test_benchmark_options_are_anchored_on_the_benchmark_rate():
     route = get_route_between("NGAPP", "DZALG")
     options = route["transshipment"]["options"]

@@ -2149,7 +2149,7 @@ def get_total_cost(
                 **{k: o[k] for k in ("hub_locode", "hub_port", "hub_country", "hub_flag")},
                 **{k: o[k] for k in ("distance_nm", "transit_days_min", "transit_days_max")},
                 "carriers": o["carriers"],
-                "ocean_freight_usd": o[rate_key] + dg_surcharge,
+                "ocean_freight_usd": o[rate_key],
             }
             for o in (route.get("transshipment") or {}).get("options", [])
         ],
