@@ -109,9 +109,10 @@ MINING_EXTENDED: Dict[str, Tuple] = {
             # NB : Burkina Faso retiré — la mine Perkoa (unique mine de zinc du
             # pays) a cessé sa production après l'inondation d'avril 2022 ; toute
             # valeur 2023/2024 serait non sourcée.
+            # Algérie retirée : absente des tableaux zinc, plomb et argent des
+            # MCS 2024 et 2025 — aucune valeur publiée à citer.
             "NAM": {2022: 60000.0, 2023: 62000.0, 2024: 63000.0},
             "MAR": {2022: 90000.0, 2023: 92000.0, 2024: 95000.0},
-            "DZA": {2022: 30000.0, 2023: 32000.0, 2024: 33000.0},
             "COD": {2022: 20000.0, 2023: 22000.0, 2024: 24000.0},
             "ZMB": {2022: 12000.0, 2023: 13000.0, 2024: 14000.0},
         },
@@ -125,7 +126,6 @@ MINING_EXTENDED: Dict[str, Tuple] = {
             "MAR": {2022: 45000.0, 2023: 46000.0, 2024: 47000.0},
             "NAM": {2022: 18000.0, 2023: 19000.0, 2024: 20000.0},
             "ZAF": {2022: 40000.0, 2023: 41000.0, 2024: 42000.0},
-            "DZA": {2022: 6000.0, 2023: 6500.0, 2024: 7000.0},
         },
     ),
     "Tin": (
@@ -225,7 +225,6 @@ MINING_EXTENDED: Dict[str, Tuple] = {
         {
             "MAR": {2022: 250.0, 2023: 260.0, 2024: 270.0},
             "ZAF": {2022: 60.0, 2023: 62.0, 2024: 63.0},
-            "DZA": {2022: 8.0, 2023: 9.0, 2024: 9.0},
         },
     ),
     "Palladium": (
@@ -298,7 +297,9 @@ MINING_EXTENDED: Dict[str, Tuple] = {
         {
             "EGY": {2022: 3000000.0, 2023: 3100000.0, 2024: 3200000.0},
             "TUN": {2022: 250000.0, 2023: 260000.0, 2024: 270000.0},
-            "DZA": {2022: 1800000.0, 2023: 1850000.0, 2024: 1900000.0},
+            # Algérie : MCS 2024 (2022) et MCS 2025 (2023, 2024e) publient
+            # 2 500 milliers de tonnes, estimation USGS.
+            "DZA": {2022: 2500000.0, 2023: 2500000.0, 2024: 2500000.0},
             "MAR": {2022: 900000.0, 2023: 920000.0, 2024: 950000.0},
             "NGA": {2022: 200000.0, 2023: 210000.0, 2024: 220000.0},
         },
@@ -389,7 +390,10 @@ MINING_YEAR_2024: Dict[str, Tuple] = {
             "SEN": {2024: 2900000.0},
             "ZAF": {2024: 2100000.0},
             "TGO": {2024: 1600000.0},
-            "DZA": {2024: 1400000.0},
+            # Algérie : MCS 2025 publie 2 000 milliers de tonnes en 2023
+            # (révisé) comme en 2024 (estimé). 2023 est porté ici, et non au
+            # socle, pour être rattaché à l'édition qui le publie.
+            "DZA": {2023: 2000000.0, 2024: 2000000.0},
         },
     ),
     "Bauxite": (

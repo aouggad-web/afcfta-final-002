@@ -6,7 +6,7 @@ import { Badge } from '../ui/badge';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { trDonnee } from '../../i18n/donnees';
-import { pick } from '../../i18n/lang';
+import { pick, intlLocale } from '../../i18n/lang';
 import OpportunityPdfExport from '../opportunities/OpportunityPdfExport';
 import { specMiningPdf } from '../../utils/productionRapportsPdf';
 
@@ -21,24 +21,23 @@ function ProductionMining({ language = 'fr' }) {
 
   // Translations
 
+  // Les chiffres d'un pays ne restent jamais affichés sous le nom d'un autre :
+  // la réponse précédente est effacée avant l'appel, et une réponse arrivée
+  // après un nouveau choix de pays est ignorée.
   useEffect(() => {
-    if (selectedCountry) {
-      fetchMiningData(selectedCountry);
-    }
-  }, [selectedCountry]);
-
-  const fetchMiningData = async (countryIso3) => {
+    if (!selectedCountry) return undefined;
+    let actif = true;
+    setMiningData(null);
     setLoading(true);
-    try {
-      const response = await axios.get(`${API}/production/mining/${countryIso3}`);
-      const d = response.data;
-      setMiningData(typeof d === 'object' && d !== null && !Array.isArray(d) ? d : null);
-    } catch (error) {
-      console.error('Error fetching mining data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    axios.get(`${API}/production/mining/${selectedCountry}`)
+      .then((response) => {
+        const d = response.data;
+        if (actif) setMiningData(typeof d === 'object' && d !== null && !Array.isArray(d) ? d : null);
+      })
+      .catch((error) => console.error('Error fetching mining data:', error))
+      .finally(() => { if (actif) setLoading(false); });
+    return () => { actif = false; };
+  }, [selectedCountry]);
 
   const availableYears = useMemo(() => {
     if (Array.isArray(miningData?.years_covered) && miningData.years_covered.length) {
@@ -74,17 +73,29 @@ function ProductionMining({ language = 'fr' }) {
   };
 
   // Intitulé de table USGS : « Copper production 2024 » ou
-  // « Perlite — Mine production, estimated 2024 ». En arabe, chaque partie est
-  // traduite ; ailleurs, l'intitulé reste celui de la source.
+  // « Perlite — Mine production, estimated 2024 ». En français et en arabe,
+  // chaque partie est traduite ; en anglais, l'intitulé reste celui de la source.
   const nomTable = (nom) => {
     if (typeof nom !== 'string') return nom;
     const mesure = nom.match(/^(.+) — (.+) (\d{4})$/);
-    if (mesure) {
-      return pick(language, nom, nom, `${trDonnee(mesure[1], language)} — ${trDonnee(mesure[2], language)} ${mesure[3]}`);
-    }
+    if (mesure) return `${trDonnee(mesure[1], language)} — ${trDonnee(mesure[2], language)} ${mesure[3]}`;
     const simple = nom.match(/^(.+) production (\d{4})$/);
-    if (simple) return pick(language, nom, nom, `إنتاج ${trDonnee(simple[1], language)} ${simple[2]}`);
+    if (simple) return pick(language, `${trDonnee(simple[1], language)} — production ${simple[2]}`, nom, `إنتاج ${trDonnee(simple[1], language)} ${simple[2]}`);
     return trDonnee(nom, language);
+  };
+
+  // Le 💎 désignait tous les minerais, pétrole et phosphate compris.
+  const iconeMinerai = (commodity) => {
+    if (commodity === 'Diamonds' || commodity === 'Gemstones') return '💎';
+    if (commodity === 'Crude oil' || commodity === 'Natural gas') return '🛢️';
+    return '⛏️';
+  };
+
+  // Chaque série porte sa propre unité : le pétrole en milliers de barils/jour,
+  // le gaz en milliards de m³, le phosphate en tonnes.
+  const formatTooltip = (value, name, props) => {
+    const unit = miningData.data_by_commodity[props?.dataKey]?.find((r) => r.year === props?.payload?.year)?.unit || '';
+    return `${value.toLocaleString(intlLocale(language))} ${trDonnee(unit, language)}`;
   };
 
   const formatNumber = (num) => {
@@ -169,10 +180,7 @@ function ProductionMining({ language = 'fr' }) {
                     tickFormatter={formatNumber}
                   />
                   <Tooltip 
-                    formatter={(value, name, props) => {
-                      const unit = Object.values(miningData.data_by_commodity)[0]?.[0]?.unit || '';
-                      return `${value.toLocaleString()} ${trDonnee(unit, language)}`;
-                    }}
+                    formatter={formatTooltip}
                     labelFormatter={(label) => `${t('production.mining.panel.year')} ${label}`}
                   />
                   <Legend />
@@ -209,10 +217,7 @@ function ProductionMining({ language = 'fr' }) {
                     tickFormatter={formatNumber}
                   />
                   <Tooltip 
-                    formatter={(value, name, props) => {
-                      const unit = Object.values(miningData.data_by_commodity)[0]?.[0]?.unit || '';
-                      return `${value.toLocaleString()} ${trDonnee(unit, language)}`;
-                    }}
+                    formatter={formatTooltip}
                     labelFormatter={(label) => `${t('production.mining.panel.year')} ${label}`}
                   />
                   <Legend />
@@ -241,7 +246,7 @@ function ProductionMining({ language = 'fr' }) {
                 {Object.entries(miningData.data_by_commodity).map(([commodity, records]) => (
                   <div key={commodity} className="border-l-4 border-[color-mix(in_srgb,var(--gold)_30%,transparent)] pl-4 py-3 bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] rounded-lg">
                     <h4 className="font-bold text-[var(--gold)] text-lg mb-3 flex items-center gap-2">
-                      💎 {trDonnee(commodity, language)}
+                      {iconeMinerai(commodity)} {trDonnee(commodity, language)}
                     </h4>
                     <div className="space-y-2">
                       {records.map(record => (
@@ -257,7 +262,7 @@ function ProductionMining({ language = 'fr' }) {
                           </div>
                           <div className="text-right">
                             <p className="text-xl font-bold text-[var(--gold)]">
-                              {record.value.toLocaleString()}
+                              {record.value.toLocaleString(intlLocale(language))}
                             </p>
                             <p className="text-xs text-[var(--afcfta-muted)]">{trDonnee(record.unit, language)}</p>
                           </div>

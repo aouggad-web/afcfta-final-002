@@ -370,7 +370,7 @@
       }
     },
     "mining": {
-      "title": "Mining",
+      "title": "Mines",
       "subtitle": "USGS",
       "fullTitle": "Production Minière (USGS)",
       "fullSubtitle": "Production de minerais et métaux par pays africain",
@@ -378,7 +378,7 @@
       "source2": "Commodity Summaries",
       "panel": {
         "title": "Production Minière (USGS)",
-        "subtitle": "Production de minerais et métaux par pays africain (2021-2024)",
+        "subtitle": "Production de minerais et métaux par pays africain (2022-2024)",
         "records": "enregistrements",
         "minerals": "minerais",
         "loading": "Chargement des données minières...",

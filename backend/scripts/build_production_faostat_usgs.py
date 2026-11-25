@@ -473,7 +473,9 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
             "SEN": {2022: 2800000.0, 2023: 2800000.0},
             "ZAF": {2022: 2000000.0, 2023: 2000000.0},
             "TGO": {2022: 1300000.0, 2023: 1500000.0},
-            "DZA": {2022: 1200000.0, 2023: 1300000.0},
+            # Algérie : MCS 2024 publie 1 800 milliers de tonnes (2022, estimé) ;
+            # 2023 vient de MCS 2025 (etl/mining_extended.py).
+            "DZA": {2022: 1800000.0},
         },
     ),
     "Bauxite": (
