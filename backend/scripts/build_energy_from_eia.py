@@ -8,7 +8,7 @@ Administration), publié sans clé d'accès :
 https://www.eia.gov/opendata/bulk/INTL.zip (membre ``INTL.txt``, une série
 JSON par ligne).
 
-Trois séries par pays, années 2022 à 2024 :
+Trois séries par pays, années 2022 à 2025 :
 
 - ``INTL.57-1-<ISO3>-TBPD.A`` — pétrole brut, condensats de gisement compris,
   en milliers de barils par jour ;
@@ -47,7 +47,7 @@ OUT_FILE = BACKEND_DIR / "etl" / "energy_eia.py"
 
 BULK_URL = "https://www.eia.gov/opendata/bulk/INTL.zip"
 MEMBER = "INTL.txt"
-ANNEES = ("2022", "2023", "2024")
+ANNEES = ("2022", "2023", "2024", "2025")
 
 #: Commodité -> (série EIA, facteur, unité servie, mesure, décimales).
 SERIES = {

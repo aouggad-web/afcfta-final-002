@@ -5,7 +5,7 @@ Produit par ``backend/scripts/build_uranium_from_wna.py`` depuis le tableau
 de production par pays de la World Nuclear Association :
 https://world-nuclear.org/information-library/nuclear-fuel-cycle/mining-of-uranium/world-uranium-mining-production
 
-Production des mines, en tonnes d'uranium (tU), années 2022-2024.
+Production des mines, en tonnes d'uranium (tU), années 2022-2025.
 
 Régénérer :
     python3 backend/scripts/build_uranium_from_wna.py

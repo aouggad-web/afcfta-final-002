@@ -6,9 +6,7 @@ Mines et énergie — enregistrements DÉRIVÉS des sources publiées
 jamais recopiés à la main :
 
   • ``etl/mining_usgs_tables.py`` — fiches USGS Mineral Commodity Summaries
-    2024 et 2025 (pubs.usgs.gov) ; ``scripts/build_mining_from_usgs_pdfs.py``.
-  • ``etl/mining_usgs_mcs.py`` — CSV du MCS 2025 Data Release (ScienceBase) ;
-    ``scripts/build_mining_from_usgs_mcs.py``.
+    2024, 2025 et 2026 (pubs.usgs.gov) ; ``scripts/build_mining_from_usgs_pdfs.py``.
   • ``etl/energy_eia.py`` — pétrole, gaz et charbon, EIA International Energy
     Statistics (fichier INTL) ; ``scripts/build_energy_from_eia.py``.
   • ``etl/uranium_wna.py`` — uranium, World Nuclear Association ;
@@ -152,14 +150,13 @@ def _record(
 
 
 def build_mcs_tables() -> List[Dict]:
-    """Minerais des fiches USGS MCS : 2022 (MCS 2024), 2023 et 2024e (MCS 2025)."""
-    from etl.mining_usgs_tables import EDITION_PAR_ANNEE, MCS_TABLES, URL_FICHE
+    """Minerais des fiches USGS MCS, chaque valeur rattachée à l'édition qui la publie."""
+    from etl.mining_usgs_tables import MCS_TABLES, URL_FICHE
 
     records: List[Dict] = []
     for commodity, spec in MCS_TABLES.items():
         for iso3, by_year in spec["by_country"].items():
-            for year, value in sorted(by_year.items()):
-                edition = EDITION_PAR_ANNEE[year]
+            for year, (value, edition) in sorted(by_year.items()):
                 records.append(
                     _record(
                         commodity, iso3, year, value, spec["unit"], spec["measure"],
@@ -205,60 +202,9 @@ def build_wna() -> List[Dict]:
     ]
 
 
-def build_mcs_derived() -> List[Dict]:
-    """Minerais DÉRIVÉS du CSV du MCS 2025 Data Release (USGS).
-
-    Les données viennent de ``etl/mining_usgs_mcs.py``, généré depuis le
-    membre CSV de la publication ScienceBase (voir
-    ``scripts/build_mining_from_usgs_mcs.py``). L'émission reste ici, écrite à
-    la main : un fichier généré porte des données, pas de la logique — sans
-    quoi la prochaine régénération effacerait toute correction apportée au
-    code d'émission.
-
-    Ces commodités ne recoupent aucune de celles des fiches USGS, de l'EIA ou
-    de la WNA : le générateur les exclut, pour qu'un même minerai n'ait jamais
-    deux séries concurrentes.
-    """
-    from etl.mining_usgs_mcs import MCS_DERIVED, USGS_MCS_EDITION, USGS_MCS_SOURCE_URL
-
-    records: List[Dict] = []
-    for commodity, spec in MCS_DERIVED.items():
-        for iso3, by_year in spec["by_country"].items():
-            for year, value in sorted(by_year.items()):
-                records.append(
-                    {
-                        "country_name": ISO3_FR_NAME.get(iso3, iso3),
-                        "country_iso3": iso3,
-                        "year": year,
-                        "sector_isic_section": "B",
-                        "sector_detail": "Mining and quarrying",
-                        "indicator_code": "USGS_PROD",
-                        "indicator_label": "Production",
-                        "value": value,
-                        "unit": spec["unit"],
-                        "currency": None,
-                        "price_base_year": None,
-                        "source_institution": "USGS",
-                        "source_dataset": USGS_MCS_EDITION,
-                        "source_url": USGS_MCS_SOURCE_URL,
-                        "commodity_code": _COMMODITY_CODE.get(
-                            commodity, commodity[:2].upper()
-                        ),
-                        "commodity_label": commodity,
-                        # La MESURE est portée jusqu'ici : « Mine production »
-                        # et « Plant production » ne se comparent pas, et le
-                        # lecteur doit pouvoir le voir.
-                        "usgs_table_name": f"{commodity} — {spec['measure']} {year}",
-                        # MCS 2025 publie 2023 révisé et 2024 estimé.
-                        "is_estimate": year >= 2024,
-                    }
-                )
-    return records
-
-
 def build_all() -> List[Dict]:
     """Tous les enregistrements mines et énergie, dérivés des sources publiées."""
-    return build_mcs_tables() + build_eia() + build_wna() + build_mcs_derived()
+    return build_mcs_tables() + build_eia() + build_wna()
 
 
 if __name__ == "__main__":

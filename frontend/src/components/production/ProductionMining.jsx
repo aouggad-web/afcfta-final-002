@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { trDonnee } from '../../i18n/donnees';
 import { pick, intlLocale } from '../../i18n/lang';
@@ -18,8 +18,7 @@ function ProductionMining({ language = 'fr' }) {
   const [selectedCountry, setSelectedCountry] = useState('ZAF');
   const [miningData, setMiningData] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  // Translations
+  const [mineral, setMineral] = useState(null);
 
   // Les chiffres d'un pays ne restent jamais affichés sous le nom d'un autre :
   // la réponse précédente est effacée avant l'appel, et une réponse arrivée
@@ -55,22 +54,23 @@ function ProductionMining({ language = 'fr' }) {
 
   const latestYear = miningData?.latest_year || (availableYears.length ? availableYears[availableYears.length - 1] : null);
 
-  const prepareChartData = () => {
-    if (!miningData?.data_by_commodity || !availableYears.length) return [];
-
-    return availableYears.map(year => {
-      const dataPoint = { year };
-      
-      Object.entries(miningData.data_by_commodity).forEach(([commodity, records]) => {
-        const yearRecord = records.find(r => r.year === year);
-        if (yearRecord) {
-          dataPoint[commodity] = yearRecord.value;
-        }
-      });
-      
-      return dataPoint;
-    });
-  };
+  // Un graphique ne porte qu'UN minerai : ses unités (tonnes, milliers de
+  // barils/jour, milliards de m³, carats) ne se comparent pas sur un même axe.
+  const commodities = useMemo(() => Object.keys(miningData?.data_by_commodity || {}), [miningData]);
+  const mineralActif = commodities.includes(mineral) ? mineral : commodities[0];
+  const serie = useMemo(
+    () => [...(miningData?.data_by_commodity?.[mineralActif] || [])]
+      .filter((r) => typeof r?.value === 'number')
+      .sort((a, b) => a.year - b.year)
+      .map((r) => ({ year: r.year, value: r.value, unit: r.unit, estimate: Boolean(r.is_estimate) })),
+    [miningData, mineralActif],
+  );
+  const uniteSerie = trDonnee(serie[serie.length - 1]?.unit || '', language);
+  const locale = intlLocale(language);
+  const compact = useMemo(
+    () => new Intl.NumberFormat(locale, { notation: 'compact', maximumFractionDigits: 1 }),
+    [locale],
+  );
 
   // Intitulé de table USGS : « Copper production 2024 » ou
   // « Perlite — Mine production, estimated 2024 ». En français et en arabe,
@@ -91,18 +91,11 @@ function ProductionMining({ language = 'fr' }) {
     return '⛏️';
   };
 
-  // Chaque série porte sa propre unité : le pétrole en milliers de barils/jour,
-  // le gaz en milliards de m³, le phosphate en tonnes.
-  const formatTooltip = (value, name, props) => {
-    const unit = miningData.data_by_commodity[props?.dataKey]?.find((r) => r.year === props?.payload?.year)?.unit || '';
-    return `${value.toLocaleString(intlLocale(language))} ${trDonnee(unit, language)}`;
-  };
-
-  const formatNumber = (num) => {
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(0)}K`;
-    return num.toString();
-  };
+  const formatTooltip = (value, _name, props) => [
+    `${value.toLocaleString(locale)} ${trDonnee(props?.payload?.unit || '', language)}`
+      + (props?.payload?.estimate ? ` (${t('production.mining.panel.estimate')})` : ''),
+    trDonnee(mineralActif, language),
+  ];
 
   return (
     <div className="space-y-6">
@@ -115,6 +108,9 @@ function ProductionMining({ language = 'fr' }) {
           </CardTitle>
           <CardDescription className="text-[var(--gold)] text-lg">
             {t('production.mining.panel.subtitle')}
+            {availableYears.length > 0 && (availableYears.length === 1
+              ? ` (${availableYears[0]})`
+              : ` (${availableYears[0]}–${availableYears[availableYears.length - 1]})`)}
           </CardDescription>
         </CardHeader>
       </Card>
@@ -163,74 +159,54 @@ function ProductionMining({ language = 'fr' }) {
         </Card>
       ) : miningData && miningData.total_records > 0 ? (
         <>
-          {/* Line Chart: Evolution Production */}
+          {/* Un minerai à la fois, dans son unité */}
           <Card className="shadow-lg">
             <CardHeader className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))]">
               <CardTitle className="text-xl text-[var(--gold)]">
-                📈 {t('production.mining.panel.evolutionTitle')}
+                📈 {t('production.mining.panel.evolutionTitle')} — {trDonnee(mineralActif, language)}
               </CardTitle>
+              <CardDescription data-testid="mining-chart-unit">
+                {t('production.mining.panel.unit')} : {uniteSerie}
+              </CardDescription>
             </CardHeader>
-            <CardContent className="pt-6">
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart data={prepareChartData()}>
-                  <CartesianGrid strokeDasharray="3 3" />
+            <CardContent className="pt-6 space-y-4">
+              <div className="flex flex-wrap gap-2" role="group" aria-label={t('production.mining.panel.chooseMineral')}>
+                {commodities.map((commodity) => (
+                  <button
+                    key={commodity}
+                    type="button"
+                    aria-pressed={commodity === mineralActif}
+                    onClick={() => setMineral(commodity)}
+                    className={[
+                      'px-3 py-1.5 rounded-full border text-sm transition-colors',
+                      commodity === mineralActif
+                        ? 'bg-[var(--gold)] text-[var(--afcfta-card)] border-[var(--gold)] font-semibold'
+                        : 'border-[color-mix(in_srgb,var(--gold)_35%,transparent)] text-[var(--text)] hover:bg-[color-mix(in_srgb,var(--gold)_12%,transparent)]',
+                    ].join(' ')}
+                  >
+                    {iconeMinerai(commodity)} {trDonnee(commodity, language)}
+                  </button>
+                ))}
+              </div>
+              <ResponsiveContainer width="100%" height={340}>
+                <BarChart data={serie} margin={{ top: 8, right: 16, bottom: 8, left: 8 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
                   <XAxis dataKey="year" />
-                  <YAxis 
-                    label={{ value: t('production.mining.panel.production'), angle: -90, position: 'insideLeft' }}
-                    tickFormatter={formatNumber}
-                  />
-                  <Tooltip 
+                  <YAxis width={72} tickFormatter={(v) => compact.format(v)} />
+                  <Tooltip
                     formatter={formatTooltip}
                     labelFormatter={(label) => `${t('production.mining.panel.year')} ${label}`}
                   />
-                  <Legend />
-                  {Object.keys(miningData.data_by_commodity).map((commodity, index) => (
-                    <Line 
-                      key={commodity}
-                      type="monotone" 
-                      dataKey={commodity} 
-                      name={trDonnee(commodity, language)}
-                      stroke={['#f59e0b', '#ea580c', '#dc2626'][index % 3]}
-                      strokeWidth={2}
-                      dot={{ r: 5 }}
-                    />
-                  ))}
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          {/* Bar Chart: Comparison */}
-          <Card className="shadow-lg">
-            <CardHeader className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))]">
-              <CardTitle className="text-xl text-[var(--terra)]">
-                📊 {t('production.mining.panel.comparisonTitle')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-6">
-              <ResponsiveContainer width="100%" height={400}>
-                <BarChart data={prepareChartData()}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="year" />
-                  <YAxis 
-                    label={{ value: t('production.mining.panel.production'), angle: -90, position: 'insideLeft' }}
-                    tickFormatter={formatNumber}
-                  />
-                  <Tooltip 
-                    formatter={formatTooltip}
-                    labelFormatter={(label) => `${t('production.mining.panel.year')} ${label}`}
-                  />
-                  <Legend />
-                  {Object.keys(miningData.data_by_commodity).map((commodity, index) => (
-                    <Bar 
-                      key={commodity}
-                      dataKey={commodity} 
-                      name={trDonnee(commodity, language)}
-                      fill={['#f59e0b', '#ea580c', '#dc2626'][index % 3]}
-                    />
-                  ))}
+                  <Bar dataKey="value" radius={[4, 4, 0, 0]} maxBarSize={72}>
+                    {serie.map((point) => (
+                      <Cell key={point.year} fill="#d4891a" fillOpacity={point.estimate ? 0.45 : 1} />
+                    ))}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
+              {serie.some((point) => point.estimate) && (
+                <p className="text-xs text-[var(--afcfta-muted)]">{t('production.mining.panel.estimateLegend')}</p>
+              )}
             </CardContent>
           </Card>
 
@@ -249,18 +225,25 @@ function ProductionMining({ language = 'fr' }) {
                       {iconeMinerai(commodity)} {trDonnee(commodity, language)}
                     </h4>
                     <div className="space-y-2">
-                      {records.map(record => (
-                        <div key={record.year} className="bg-[var(--afcfta-card)] p-3 rounded shadow-sm flex justify-between items-center">
+                      {[...records].sort((x, y) => x.year - y.year).map(record => (
+                        <div key={record.year} className="bg-[var(--afcfta-card)] p-3 rounded shadow-sm flex justify-between items-center gap-3">
                           <div>
-                            <p className="text-sm text-[var(--afcfta-muted)]">{t('production.mining.panel.year')} {record.year}</p>
+                            <p className="text-sm text-[var(--afcfta-muted)]">
+                              {t('production.mining.panel.year')} {record.year}
+                              {record.is_estimate && (
+                                <Badge variant="outline" className="text-[10px] ms-2 align-middle">
+                                  {t('production.mining.panel.estimate')}
+                                </Badge>
+                              )}
+                            </p>
                             <p className="text-xs text-[var(--afcfta-muted)]">
-                              {record.commodity_code} - {nomTable(record.usgs_table_name)}
+                              {nomTable(record.usgs_table_name)}
                             </p>
                             <Badge variant="outline" className="text-xs mt-1">
                               {record.source_dataset}
                             </Badge>
                           </div>
-                          <div className="text-right">
+                          <div className="text-end shrink-0">
                             <p className="text-xl font-bold text-[var(--gold)]">
                               {record.value.toLocaleString(intlLocale(language))}
                             </p>

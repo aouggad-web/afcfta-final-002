@@ -26,7 +26,7 @@ for chemin in (_backend_dir, os.path.join(_backend_dir, "scripts")):
         sys.path.insert(0, chemin)
 
 from build_energy_from_eia import deriver as deriver_eia  # noqa: E402
-from build_mining_from_usgs_pdfs import SPECS, extraire, lire_tableau  # noqa: E402
+from build_mining_from_usgs_pdfs import SPECS, combiner, extraire, lire_tableau  # noqa: E402
 from build_uranium_from_wna import lire_tableau as lire_wna  # noqa: E402
 from etl.mining_extended import build_all  # noqa: E402
 
@@ -99,6 +99,49 @@ def test_usgs_la_mesure_choisit_ses_colonnes():
     ])
     assert extraire(texte, SPECS["Bauxite"], (2023, 2024)) == {
         "GIN": {2023: 123_000_000.0, 2024: 130_000_000.0}
+    }
+
+
+def test_usgs_une_phrase_qui_cite_des_annees_n_est_pas_un_en_tete():
+    # MCS 2026, hélium : la prose du tableau cite « 2024 and 2025 » avant l'en-tête.
+    texte = "\n".join([
+        "World Production and Reserves:",
+        "production of helium-3 was estimated to be 40,000 liters in 2024 and 2025 with most",
+        " " * 60 + "2023      2024e",
+        _ligne("Algeria", ["e"], [61]),
+        _ligne("", ["11", "11"], POS),
+        "  World total (rounded)",
+    ])
+    _, pays = lire_tableau(texte)
+    assert pays["DZA"] == {0: 11.0, 1: 11.0}
+
+
+def test_usgs_une_ligne_de_suite_peut_porter_du_texte_a_droite():
+    # MCS 2026, béryllium : la colonne « réserves » est rédigée.
+    texte = "\n".join([
+        ENTETE,
+        _ligne("Nigeria", ["e"], [61]),
+        _ligne("", ["40", "40"], POS) + "        probable bertrandite reserves in Utah total about",
+        _ligne("Uganda", ["e23", "20"], POS),
+        "  World total (rounded)",
+    ])
+    _, pays = lire_tableau(texte)
+    assert pays["NGA"] == {0: 40.0, 1: 40.0}
+    # « e23 » : l'estimation collée au nombre.
+    assert pays["UGA"] == {0: 23.0, 1: 20.0}
+
+
+def test_usgs_chaque_valeur_vient_de_la_plus_recente_edition_qui_la_publie():
+    lectures = {
+        2024: {"BFA": {2022: 58.0, 2023: 60.0}},
+        2025: {"BFA": {2023: 57.0, 2024: 60.0}, "GHA": {2023: 126.0, 2024: 130.0}},
+        # MCS 2026 range le Burkina Faso dans « Other countries ».
+        2026: {"GHA": {2024: 149.0, 2025: 150.0}},
+    }
+    assert combiner(lectures) == {
+        # 2024 du Burkina : seule l'estimation de MCS 2025 le publie.
+        "BFA": {2022: (58.0, 2024), 2023: (57.0, 2025), 2024: (60.0, 2025)},
+        "GHA": {2023: (126.0, 2025), 2024: (149.0, 2026), 2025: (150.0, 2026)},
     }
 
 

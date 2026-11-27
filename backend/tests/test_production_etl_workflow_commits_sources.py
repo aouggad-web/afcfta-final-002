@@ -24,17 +24,27 @@ import yaml
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 _WORKFLOW = os.path.join(_ROOT, ".github", "workflows", "production_etl.yml")
+_MENSUEL = os.path.join(_ROOT, ".github", "workflows", "update_production_data.yml")
 
 #: Les modules que le workflow régénère et dont l'enrichissement dépend.
 _REGENERATED_MODULES = (
     "backend/etl/macro_wdi_data.py",
     "backend/etl/unsd_manufacturing_data.py",
+    # Mines et énergie, dérivées des fiches USGS, de l'EIA et de la WNA.
+    "backend/etl/mining_usgs_tables.py",
+    "backend/etl/energy_eia.py",
+    "backend/etl/uranium_wna.py",
+)
+_GENERATORS = (
+    "build_mining_from_usgs_pdfs.py",
+    "build_energy_from_eia.py",
+    "build_uranium_from_wna.py",
 )
 _DATASET = "data/json/production_africaine.json"
 
 
-def _steps():
-    with open(_WORKFLOW, encoding="utf-8") as fh:
+def _steps(workflow=_WORKFLOW):
+    with open(workflow, encoding="utf-8") as fh:
         doc = yaml.safe_load(fh)
     job = doc["jobs"][next(iter(doc["jobs"]))]
     return job["steps"]
@@ -45,6 +55,19 @@ def test_the_workflow_regenerates_those_modules_in_the_first_place():
     scripts = "\n".join(s.get("run", "") for s in _steps())
     assert "fetch_wdi_macro.py" in scripts
     assert "fetch_unsd_manufacturing.py" in scripts
+    for generator in _GENERATORS:
+        assert generator in scripts, generator
+
+
+def test_les_deux_workflows_regenerent_les_mines_avant_l_enrichissement():
+    """L'enrichissement lit les modules miniers : les régénérer APRÈS lui
+    laisserait le JSON sur l'ancienne version de la source."""
+    for workflow in (_WORKFLOW, _MENSUEL):
+        runs = [s.get("run", "") for s in _steps(workflow)]
+        enrichissement = next(i for i, r in enumerate(runs) if "enrich_production_data.py" in r)
+        for generator in _GENERATORS:
+            rang = next(i for i, r in enumerate(runs) if generator in r)
+            assert rang < enrichissement, (workflow, generator)
 
 
 def test_the_commit_step_stages_the_sources_with_the_dataset():
