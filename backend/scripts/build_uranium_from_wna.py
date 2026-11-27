@@ -8,7 +8,8 @@ Nuclear Association :
 https://world-nuclear.org/information-library/nuclear-fuel-cycle/mining-of-uranium/world-uranium-mining-production
 
 Le tableau publie, par pays, la production des mines en tonnes d'uranium
-(tU). Le script en retient les pays africains, années 2022 à 2024.
+(tU). Le script en retient les pays africains, années 2022 à 2025 (celles que
+le tableau publie).
 
 CE QUE CE SCRIPT REFUSE DE FAIRE
 ----------------------------------
@@ -38,7 +39,7 @@ PAGE_URL = (
     "https://world-nuclear.org/information-library/nuclear-fuel-cycle/"
     "mining-of-uranium/world-uranium-mining-production"
 )
-ANNEES = (2022, 2023, 2024)
+ANNEES = (2022, 2023, 2024, 2025)
 
 #: Noms de pays africains tels que la WNA les écrit -> ISO3.
 WNA_AFRICA = {

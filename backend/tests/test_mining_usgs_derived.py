@@ -1,14 +1,12 @@
 """
-Minerais dérivés du fichier USGS — ce que la dérivation doit garantir.
+Minerais USGS dérivés des fiches MCS — ce que la dérivation doit garantir.
 
 Les minerais vivaient dans des dictionnaires Python recopiés à la main depuis
-les publications USGS : 30 commodités, là où le fichier machine en publie 46
-pour l'Afrique. L'écart ne tenait pas à la disponibilité — le fichier est
-public — mais au coût de la recopie, qui porte en plus une classe d'erreur
-invisible : un chiffre mal transcrit ne se voit pas.
-
-24 commodités sont désormais DÉRIVÉES de ``MCS2025_World_Data.csv``. Ces tests
-verrouillent les trois décisions qui rendent cette dérivation honnête.
+les publications USGS, puis en partie dans un dérivé du CSV ScienceBase (MCS
+2025 seulement, et inaccessible aux clients automatisés). Ils viennent
+désormais tous des fiches PDF MCS 2024, 2025 et 2026 (années 2022 à 2025),
+lues par ``scripts/build_mining_from_usgs_pdfs.py``. Ces tests verrouillent
+les décisions qui rendent cette dérivation honnête.
 """
 
 import os
@@ -20,35 +18,31 @@ if _backend_dir not in sys.path:
 
 import pytest  # noqa: E402
 from etl.energy_eia import EIA_SERIES  # noqa: E402
-from etl.mining_extended import build_mcs_derived  # noqa: E402
-from etl.mining_usgs_mcs import MCS_DERIVED  # noqa: E402
+from etl.mining_extended import build_mcs_tables  # noqa: E402
 from etl.mining_usgs_tables import MCS_TABLES  # noqa: E402
 
 
 @pytest.fixture(scope="module")
 def records():
-    return build_mcs_derived()
+    return build_mcs_tables()
 
 
 def test_the_derivation_brings_real_volume(records):
-    assert len(MCS_DERIVED) >= 20, "la dérivation s'est vidée"
-    assert len(records) >= 80
+    assert len(MCS_TABLES) >= 40, "la dérivation s'est vidée"
+    assert len(records) >= 400
+    assert {r["year"] for r in records} == {2022, 2023, 2024, 2025}
 
 
-def test_no_commodity_competes_with_a_curated_one():
+def test_no_commodity_competes_between_sources():
     """Deux séries pour le même minerai, c'est deux classements concurrents.
 
-    Rien à l'écran ne dirait lequel fait foi. Le générateur exclut donc toute
-    commodité déjà couverte par les autres sources dérivées (fiches USGS, EIA,
-    WNA) — y compris sous un autre nom (« Iron Ore » de l'USGS contre notre
-    « Iron ore »).
+    Rien à l'écran ne dirait lequel fait foi : l'USGS, l'EIA et la WNA ne
+    doivent jamais publier le même produit — y compris sous un autre nom
+    (« Iron Ore » contre « Iron ore »).
     """
-    curated = set(MCS_TABLES) | set(EIA_SERIES) | {"Uranium"}
-    assert not (set(MCS_DERIVED) & curated), set(MCS_DERIVED) & curated
-    # Les alias, qui ne se voient pas par simple intersection.
-    lowered = {c.lower() for c in curated}
-    for commodity in MCS_DERIVED:
-        assert commodity.lower() not in lowered, commodity
+    usgs = {c.lower() for c in MCS_TABLES}
+    autres = {c.lower() for c in EIA_SERIES} | {"uranium"}
+    assert not (usgs & autres), usgs & autres
 
 
 def test_one_measure_per_commodity():
@@ -58,7 +52,7 @@ def test_one_measure_per_commodity():
     raffinerie d'un autre donnerait un palmarès faux sans que rien ne le
     signale. Une seule mesure par commodité, et elle est inscrite.
     """
-    for commodity, spec in MCS_DERIVED.items():
+    for commodity, spec in MCS_TABLES.items():
         assert spec["measure"], commodity
         assert spec["unit"], commodity
 
@@ -71,11 +65,13 @@ def test_the_measure_reaches_each_record(records):
         assert "—" in rec["usgs_table_name"], rec["usgs_table_name"]
 
 
-def test_2024_is_flagged_as_an_estimate(records):
-    """MCS 2025 publie 2023 révisé et 2024 ESTIMÉ. Les confondre ferait passer
+def test_the_last_year_of_each_edition_is_flagged_as_an_estimate(records):
+    """Chaque édition publie son avant-dernière année révisée et sa dernière
+    ESTIMÉE (MCS 2026 : 2024 révisé, 2025 estimé). Les confondre ferait passer
     une estimation pour une observation."""
     for rec in records:
-        assert rec["is_estimate"] is (rec["year"] >= 2024), rec
+        edition = int(rec["source_dataset"].rsplit(" ", 1)[1])
+        assert rec["is_estimate"] is (rec["year"] == edition - 1), rec
 
 
 def test_every_record_carries_its_source(records):

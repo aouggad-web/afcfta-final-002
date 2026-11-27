@@ -337,7 +337,7 @@ HS_TO_COMMODITY_CURATED: List[Tuple[str, str, str]] = [
     # sous laquelle la production vanadium est usuellement rapportée).
     ("282530", "mining", "Vanadium"),  # oxydes/hydroxydes de vanadium (HS6 spécifique)
     ("261400", "mining", "Titanium (ilmenite)"),  # minerais de titane (HS6)
-    # ── Minéraux DÉRIVÉS du fichier USGS (etl/mining_usgs_mcs.py) ──
+    # ── Minéraux DÉRIVÉS des fiches USGS (etl/mining_usgs_tables.py) ──
     # Assignations lues dans la nomenclature SH, pas devinées. Trois positions
     # génériques étaient déjà prises et imposent le HS6 : 7102 = Diamonds,
     # 2523 et 2804 = dimension manufacturière. Le préfixe le plus long gagne,

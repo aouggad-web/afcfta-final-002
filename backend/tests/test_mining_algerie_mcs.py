@@ -1,11 +1,12 @@
 """
 Algérie, onglet Mines : les chiffres servis sont ceux que l'USGS publie.
 
-Relevé le 25/11/2026 dans les fiches « Mineral Commodity Summaries » 2024 et
-2025 (pubs.usgs.gov/periodicals/mcs2024, mcs2025) :
+Relevé dans les fiches « Mineral Commodity Summaries » 2024, 2025 et 2026
+(pubs.usgs.gov/periodicals/mcs2024, mcs2025, mcs2026) :
 
-- phosphate : 1 800 kt en 2022 (MCS 2024), 2 000 kt en 2023 et 2024 (MCS 2025) ;
-- gypse : 2 500 kt en 2022, 2023 et 2024 (estimations USGS) ;
+- phosphate : 1 800 kt en 2022 (MCS 2024), 2 000 kt en 2023 (MCS 2025),
+  2024 et 2025 (MCS 2026) ;
+- gypse : 2 500 kt chaque année de 2022 à 2025 (estimations USGS) ;
 - zinc, plomb, argent : l'Algérie ne figure dans aucun des tableaux de
   production minière de ces deux éditions.
 
@@ -33,12 +34,14 @@ def test_algerie_phosphate_et_gypse_conformes_a_mcs():
     assert _series(par_minerai, "Phosphate") == {
         2022: (1_800_000.0, "Mineral Commodity Summaries 2024"),
         2023: (2_000_000.0, "Mineral Commodity Summaries 2025"),
-        2024: (2_000_000.0, "Mineral Commodity Summaries 2025"),
+        2024: (2_000_000.0, "Mineral Commodity Summaries 2026"),
+        2025: (2_000_000.0, "Mineral Commodity Summaries 2026"),
     }
     assert _series(par_minerai, "Gypsum") == {
         2022: (2_500_000.0, "Mineral Commodity Summaries 2024"),
         2023: (2_500_000.0, "Mineral Commodity Summaries 2025"),
-        2024: (2_500_000.0, "Mineral Commodity Summaries 2025"),
+        2024: (2_500_000.0, "Mineral Commodity Summaries 2026"),
+        2025: (2_500_000.0, "Mineral Commodity Summaries 2026"),
     }
 
 

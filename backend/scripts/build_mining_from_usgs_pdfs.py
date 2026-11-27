@@ -3,18 +3,25 @@
 Minerais africains — DÉRIVÉS des fiches USGS, plus saisis à la main
 ====================================================================
 Écrit ``backend/etl/mining_usgs_tables.py`` à partir des fiches par minerai
-des *Mineral Commodity Summaries* (MCS) 2024 et 2025 publiées sur
+des *Mineral Commodity Summaries* (MCS) 2024, 2025 et 2026 publiées sur
 pubs.usgs.gov. Chaque fiche porte un tableau « World Mine Production and
-Reserves » : MCS 2024 publie 2022 (révisé) et 2023 (estimé), MCS 2025 publie
-2023 (révisé) et 2024 (estimé). Le générateur retient 2022 de MCS 2024, 2023
-et 2024 de MCS 2025 — chaque année vient de la dernière édition qui la publie.
+Reserves » qui publie deux années : l'avant-dernière, révisée, et la
+dernière, estimée (MCS 2026 : 2024 révisé, 2025 estimé).
+
+Années 2022 à 2025. Chaque valeur pays-année vient de la PLUS RÉCENTE
+édition qui la publie pour ce pays : 2024 de MCS 2026 ; à défaut — l'USGS a
+pu renvoyer le pays dans « Other countries » — de l'estimation de MCS 2025.
+L'édition retenue est inscrite avec chaque valeur.
 
 POURQUOI LES FICHES PDF ET NON LE CSV
 --------------------------------------
-``build_mining_from_usgs_mcs.py`` lit le CSV de la publication ScienceBase,
-mais ScienceBase oppose une page de vérification aux clients automatisés, et
-le CSV ne couvre que MCS 2025. Les fiches PDF de pubs.usgs.gov sont publiques,
-stables, et couvrent les deux éditions. Ce script remplace les tables qui
+Un premier générateur lisait le CSV de la publication ScienceBase (MCS 2025
+Data Release), mais ScienceBase oppose une page de vérification aux clients
+automatisés, et le CSV ne couvre que MCS 2025. Les fiches PDF de pubs.usgs.gov sont publiques,
+stables, et couvrent toutes les éditions. Comparées au CSV sur 2023-2024, elles
+concordent pour 22 commodités sur 24 ; les deux écarts tiennent au CSV (le
+Lesotho manquant aux pierres gemmes ; le mica de Madagascar décalé d'une année,
+repris de MCS 2024). Ce script remplace les tables qui
 étaient recopiées à la main dans ``etl/mining_extended.py`` et dans le socle :
 sur 327 valeurs citées « MCS », 24 seulement concordaient avec les fiches.
 
@@ -55,8 +62,9 @@ BACKEND_DIR = SCRIPT_DIR.parent
 OUT_FILE = BACKEND_DIR / "etl" / "mining_usgs_tables.py"
 
 URL = "https://pubs.usgs.gov/periodicals/mcs{edition}/mcs{edition}-{slug}.pdf"
-#: Édition -> années retenues de son tableau.
-EDITIONS = {2024: (2022,), 2025: (2023, 2024)}
+#: Édition -> années publiées par son tableau (révisée, estimée).
+EDITIONS = {2026: (2024, 2025), 2025: (2023, 2024), 2024: (2022, 2023)}
+ANNEES = (2022, 2023, 2024, 2025)
 
 #: Commodité -> (fiche, facteur vers l'unité servie, unité servie, mesure,
 #:               première colonne d'année de la mesure, section du tableau).
@@ -90,6 +98,38 @@ SPECS = {
     "Fluorspar": ("fluorspar", 1000, "tonnes", "Mine production", 0, None),
     "Salt": ("salt", 1000, "tonnes", "Mine production", 0, None),
     "Gypsum": ("gypsum", 1000, "tonnes", "Mine production", 0, None),
+    # Minerais jusqu'ici dérivés du CSV ScienceBase (MCS 2025 seulement) : même
+    # unité et même mesure que lui, pour que l'écran et ses traductions restent
+    # inchangés. Les fiches couvrent en plus 2022 (MCS 2024) et 2025 (MCS 2026).
+    "Arsenic": ("arsenic", 1, "metric tons",
+                "Plant production, arsenic trioxide or calculated equivalent.", 0, None),
+    "Barite": ("barite", 1, "thousand metric tons", "Mine production, barite, estimated", 0, None),
+    "Beryllium": ("beryllium", 1, "metric tons", "Mine production, beryllium content", 0, None),
+    "Cement": ("cement", 1, "thousand metric tons", "Cement production, estimated", 0, None),
+    "Diatomite": ("diatomite", 1, "thousand metric tons", "Mine production, estimated", 0, None),
+    "Feldspar": ("feldspar", 1, "thousand metric tons", "Mine production, estimated", 0, None),
+    "Garnet (industrial)": ("garnet", 1, "metric tons", "Mine production, estimated", 0, None),
+    "Gemstones": ("gemstones", 1, "thousand carats",
+                  "Mine production, thousand carats of gem-quality diamond", 0, None),
+    "Helium": ("helium", 1, "million cubic meters", "Production, helium gas content", 0, None),
+    "Lime": ("lime", 1, "thousand metric tons", "Plant production, lime", 0, None),
+    "Mercury": ("mercury", 1, "metric tons", "Mine production, mercury content", 0, None),
+    "Mica (Natural)": ("mica", 1, "metric tons", "Mine production, mica scrap and flake", 0, None),
+    "Niobium": ("niobium", 1, "metric tons", "Mine production, niobium content", 0, None),
+    "Nitrogen(fixed) - Ammonia": ("nitrogen", 1, "thousand metric tons",
+                                  "Plant production, nitrogen content", 0, None),
+    "Perlite": ("perlite", 1, "thousand metric tons", "Mine production, estimated", 0, None),
+    "Pumice & Pumicite": ("pumice", 1, "thousand metric tons", "Mine production, estimated", 0, None),
+    "Rare earths": ("rare-earths", 1, "metric tons",
+                    "Mine production, rare-earth-oxide equivalent", 0, None),
+    "Selenium": ("selenium", 1, "metric tons", "Refinery production, selenium content", 0, None),
+    "Silicon": ("silicon", 1, "thousand metric tons",
+                "Plant production, Ferosilicon, silicon content", 0, None),
+    "Soda ash": ("soda-ash", 1, "thousand metric tons", "Mine production, natural", 0, "Natural:"),
+    "Talc, crude": ("talc", 1, "thousand metric tons", "Mine production, estimated", 0, None),
+    "Tellurium": ("tellurium", 1, "metric tons", "Refinery production, tellurium content", 0, None),
+    "Tungsten": ("tungsten", 1, "metric tons", "Mine production, tungsten content", 0, None),
+    "Vermiculite": ("vermiculite", 1, "thousand metric tons", "Mine production", 0, None),
 }
 
 #: Noms de pays africains tels que l'USGS les écrit -> ISO3.
@@ -115,8 +155,10 @@ _PAYS = re.compile(
 _ANNEE = re.compile(r"(?<![\d,])((?:19|20)\d{2})e?(?![\d,])")
 _JETON = re.compile(r"\S+")
 _NOMBRE = re.compile(r"^\d{1,3}(?:,\d{3})*(?:\.\d+)?$|^\d+(?:\.\d+)?$")
-#: Ligne de suite : rien que des nombres, des « e » d'estimation et des tirets.
-_SUITE = re.compile(r"^\s+(?:[\d,.]+|e|—|--|W|NA|\(\d+\))(?:\s+(?:[\d,.]+|e|—|--|W|NA|\(\d+\)))*\s*$")
+#: Ligne de suite : indentée, et commençant par un nombre, un « e » ou un tiret.
+#: Du texte peut suivre à droite (colonne « réserves » rédigée) : il ne tombe
+#: sous aucune année et n'est pas lu.
+_SUITE = re.compile(r"^\s+(?:e?[\d,.]+|e|—|--|W|NA|\(\d+\))(?=\s|$)")
 
 
 def _tableau(lignes: list) -> list:
@@ -136,8 +178,12 @@ def _tableau(lignes: list) -> list:
 def _colonnes(lignes: list) -> list:
     """(année, position du dernier caractère) des en-têtes d'années, dans l'ordre."""
     for ligne in lignes:
+        # Un en-tête commence par une année : une phrase qui cite « 2024 and
+        # 2025 » n'en est pas un.
+        if not _ANNEE.match(ligne.lstrip()):
+            continue
         annees = [(int(m.group(1)), m.end(1) - 1) for m in _ANNEE.finditer(ligne)]
-        if len(annees) >= 2 and not _PAYS.match(ligne):
+        if len(annees) >= 2:
             return annees
     raise ValueError("en-tête d'années introuvable")
 
@@ -149,6 +195,8 @@ def _nombres(ligne: str, depuis: int = 0) -> list:
         if m.start() < depuis:
             continue
         jeton = m.group(0)
+        if jeton[:1] == "e" and _NOMBRE.match(jeton[1:]):
+            jeton = jeton[1:]  # « e23 » : estimation collée au nombre
         if _NOMBRE.match(jeton):
             out.append((float(jeton.replace(",", "")), m.end() - 1))
     return out
@@ -220,24 +268,39 @@ def telecharger(edition: int, slug: str, dossier: Path) -> tuple:
     return texte, hashlib.sha256(blob).hexdigest(), url
 
 
+def combiner(lectures: dict) -> dict:
+    """{édition: {iso3: {année: valeur}}} -> {iso3: {année: (valeur, édition)}}.
+
+    Pour chaque pays et chaque année, la PLUS RÉCENTE édition qui la publie
+    l'emporte ; une édition plus ancienne ne comble que ce que les suivantes
+    ne publient pas pour ce pays.
+    """
+    out = {}
+    for edition in sorted(lectures, reverse=True):
+        for iso3, ans in lectures[edition].items():
+            for annee, valeur in ans.items():
+                out.setdefault(iso3, {}).setdefault(annee, (valeur, edition))
+    return {i: dict(sorted(a.items())) for i, a in sorted(out.items())}
+
+
 def deriver() -> tuple:
     tables, empreintes = {}, {}
     with tempfile.TemporaryDirectory() as tmp:
         cache = {}
         for commodite, spec in SPECS.items():
             slug, _facteur, unite, mesure, _premiere, _section = spec
-            par_pays = {}
-            for edition, annees in EDITIONS.items():
+            lectures = {}
+            for edition, publiees in EDITIONS.items():
+                annees = tuple(a for a in publiees if a in ANNEES)
                 if (edition, slug) not in cache:
                     cache[(edition, slug)] = telecharger(edition, slug, Path(tmp))
                 texte, sha, url = cache[(edition, slug)]
                 empreintes[url] = sha
-                for iso3, ans in extraire(texte, spec, annees).items():
-                    par_pays.setdefault(iso3, {}).update(ans)
+                lectures[edition] = extraire(texte, spec, annees)
+            par_pays = combiner(lectures)
             if par_pays:
                 tables[commodite] = {
-                    "slug": slug, "unit": unite, "measure": mesure,
-                    "by_country": {i: dict(sorted(a.items())) for i, a in sorted(par_pays.items())},
+                    "slug": slug, "unit": unite, "measure": mesure, "by_country": par_pays,
                 }
     return tables, empreintes
 
@@ -263,11 +326,12 @@ def render(tables: dict, empreintes: dict, absentes: list) -> str:
 Minerais africains dérivés des fiches USGS MCS — FICHIER GÉNÉRÉ, NE PAS ÉDITER
 ===============================================================================
 Produit par ``backend/scripts/build_mining_from_usgs_pdfs.py`` depuis les
-fiches par minerai des Mineral Commodity Summaries 2024 et 2025
-(https://pubs.usgs.gov/periodicals/mcs2024/, https://pubs.usgs.gov/periodicals/mcs2025/).
+fiches par minerai des Mineral Commodity Summaries {", ".join(str(e) for e in sorted(EDITIONS))}
+(https://pubs.usgs.gov/periodicals/mcs<édition>/).
 
-{len(tables)} commodités, {points} points : 2022 d'après MCS 2024 ; 2023 (révisé) et
-2024 (estimé) d'après MCS 2025.
+{len(tables)} commodités, {points} points, années {ANNEES[0]}-{ANNEES[-1]}. Chaque valeur est
+un couple (valeur, édition MCS qui la publie) : la plus récente édition qui
+publie l'année pour ce pays. La dernière année d'une édition est son estimation.
 
 Sans aucun pays africain au tableau de production : {", ".join(absentes) or "aucune"}.
 Ces commodités n'ont pas de série : l'USGS range leurs producteurs africains
@@ -281,8 +345,6 @@ from __future__ import annotations
 
 from typing import Dict
 
-#: Année -> édition MCS qui la publie.
-EDITION_PAR_ANNEE = {{2022: 2024, 2023: 2025, 2024: 2025}}
 URL_FICHE = {URL!r}
 
 #: Empreinte SHA-256 de chaque fiche lue. Une régénération qui en change une
@@ -291,7 +353,7 @@ USGS_PDF_SHA256: Dict[str, str] = {{
 {sha}
 }}
 
-#: commodité -> {{slug, unit, measure, by_country: {{iso3: {{année: valeur}}}}}}
+#: commodité -> {{slug, unit, measure, by_country: {{iso3: {{année: (valeur, édition)}}}}}}
 MCS_TABLES: Dict[str, dict] = {{
 {chr(10).join(corps)}
 }}
