@@ -2,7 +2,8 @@ name: Production — Ingestion FAOSTAT + USGS
 
 # Ingestion des données de production africaine (réseau ouvert sur runner GitHub) :
 #   • FAOSTAT bulk QCL (Production Crops & Livestock — Afrique), 2019-2024 ;
-#   • USGS Mineral Commodity Summaries (données curées multi-années intégrées) ;
+#   • mines et énergie DÉRIVÉES par script des sources : fiches USGS MCS,
+#     EIA International Energy Statistics, World Nuclear Association ;
 #   • UNIDO INDSTAT (valeur ajoutée manufacturière, curée) ;
 #   • puis la SURCOUCHE d'enrichissement (macro World Bank, minéraux étendus,
 #     manufacturier mesuré UNSD, prévisions OCDE-FAO). Elle est indispensable :
@@ -84,6 +85,28 @@ jobs:
           python3 scripts/fetch_wdi_macro.py
           python3 scripts/fetch_unsd_manufacturing.py
 
+      # Mines et énergie : chaque chiffre est DÉRIVÉ par script des publications
+      # des sources (fiches USGS MCS, fichier INTL de l'EIA, tableau de la WNA),
+      # jamais saisi à la main. Chaque générateur réécrit son module de données
+      # (backend/etl/mining_usgs_tables.py, energy_eia.py, uranium_wna.py), que
+      # l'enrichissement lit ensuite. Une révision de la source change son
+      # empreinte SHA-256 dans le module : elle se voit au diff. Non bloquant,
+      # générateur par générateur : une source injoignable garde le module déjà
+      # committé, sans empêcher les deux autres de se rafraîchir.
+      - name: Installer pdftotext (lecture des fiches USGS)
+        if: ${{ !inputs.faostat_only }}
+        continue-on-error: true
+        run: sudo apt-get update -q && sudo apt-get install -y -q poppler-utils
+
+      - name: Régénérer les sources minières et énergétiques (non bloquant)
+        if: ${{ !inputs.faostat_only }}
+        continue-on-error: true
+        working-directory: backend
+        run: |
+          python3 scripts/build_mining_from_usgs_pdfs.py || echo "::warning::USGS MCS injoignable — module minier inchangé"
+          python3 scripts/build_energy_from_eia.py || echo "::warning::EIA injoignable — module énergie inchangé"
+          python3 scripts/build_uranium_from_wna.py || echo "::warning::WNA injoignable — module uranium inchangé"
+
       - name: Appliquer la surcouche d'enrichissement
         working-directory: backend
         run: python3 scripts/enrich_production_data.py
@@ -145,7 +168,10 @@ jobs:
           git_auth() { git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $auth" "$@"; }
           for f in data/json/production_africaine.json \
                    backend/etl/macro_wdi_data.py \
-                   backend/etl/unsd_manufacturing_data.py; do
+                   backend/etl/unsd_manufacturing_data.py \
+                   backend/etl/mining_usgs_tables.py \
+                   backend/etl/energy_eia.py \
+                   backend/etl/uranium_wna.py; do
             if [ -f "$f" ]; then git add "$f"; fi
           done
           if git diff --cached --quiet; then

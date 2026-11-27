@@ -59,6 +59,26 @@ jobs:
         working-directory: backend
         run: python scripts/fetch_unsd_manufacturing.py
 
+      # Mines et énergie : chaque chiffre est DÉRIVÉ par script des publications
+      # des sources (fiches USGS MCS, fichier INTL de l'EIA, tableau de la WNA),
+      # jamais saisi à la main. Chaque générateur réécrit son module de données
+      # (backend/etl/mining_usgs_tables.py, energy_eia.py, uranium_wna.py), que
+      # l'enrichissement lit ensuite. Une révision de la source change son
+      # empreinte SHA-256 dans le module : elle se voit au diff. Non bloquant,
+      # générateur par générateur : une source injoignable garde le module déjà
+      # committé, sans empêcher les deux autres de se rafraîchir.
+      - name: Installer pdftotext (lecture des fiches USGS)
+        continue-on-error: true
+        run: sudo apt-get update -q && sudo apt-get install -y -q poppler-utils
+
+      - name: Régénérer les sources minières et énergétiques (non bloquant)
+        continue-on-error: true
+        working-directory: backend
+        run: |
+          python scripts/build_mining_from_usgs_pdfs.py || echo "::warning::USGS MCS injoignable — module minier inchangé"
+          python scripts/build_energy_from_eia.py || echo "::warning::EIA injoignable — module énergie inchangé"
+          python scripts/build_uranium_from_wna.py || echo "::warning::WNA injoignable — module uranium inchangé"
+
       # ÉTAPE INDISPENSABLE, et longtemps absente : le script de construction
       # ci-dessus n'écrit que le socle (macro et mines dans leur version
       # minimale). Les dimensions complètes — macro World Bank, minéraux
@@ -110,6 +130,10 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
+          # Le JSON seul décide : l'EIA republie son fichier mondial souvent,
+          # ce qui change l'empreinte de energy_eia.py sans toucher aux chiffres
+          # africains. Quand les chiffres changent, la PR emporte aussi les
+          # modules régénérés (create-pull-request committe tout l'arbre).
           git diff --quiet -- data/json/production_africaine.json || echo "changes=true" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request
@@ -139,7 +163,9 @@ jobs:
             dans le top café), lisibilité par le backend.
 
             **Périmètre** : agriculture (FAOSTAT, automatique),
-            mines/énergie (USGS, table curée multi-années) et manufacturing
+            mines et énergie (fiches USGS MCS, EIA, WNA — régénérés par
+            script à chaque passage, empreinte SHA-256 de chaque source dans
+            son module) et manufacturing
             mesuré (UNSD, API libre et sans clé, rafraîchi par ce même
             passage). UNIDO INDSTAT4 reste fermé (403) : le détail par
             division ISIC qui en dépend demeure curé à la main, et le
