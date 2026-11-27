@@ -95,11 +95,6 @@ LOGISTICS_OPERATORS = {
             "contacts": {
                 "website": "https://www.maersk.com",
                 "africa_hq": "Maersk Africa Logistics Hub — Durban",
-                "ethiopia": {
-                    "phone": "+251 11 515 7766",
-                    "email": "maeeth@maersk.com",
-                    "address": "Meskel Square, Addis-Abeba",
-                },
             },
             "africa_offices_count": 46,
             "market_share_africa_pct": 19,
@@ -140,11 +135,6 @@ LOGISTICS_OPERATORS = {
             "contacts": {
                 "website": "https://www.cmacgm-group.com",
                 "africa_hq": "ANL Africa — Marseille",
-                "djibouti": {
-                    "phone": "+253 21 35 45 40",
-                    "email": "djibouti@cmacgm.com",
-                    "address": "Port de Djibouti, Djibouti",
-                },
             },
             "africa_offices_count": 38,
             "market_share_africa_pct": 15,
@@ -211,11 +201,6 @@ LOGISTICS_OPERATORS = {
             "africa_services": ["IEX (India-East Africa)", "SWAC (South West Africa)"],
             "contacts": {
                 "website": "https://www.pilship.com",
-                "mauritius": {
-                    "phone": "+230 202 1700",
-                    "email": "port-louis@pilship.com",
-                    "address": "Caudan Waterfront, Port Louis",
-                },
             },
             "africa_offices_count": 14,
             "market_share_africa_pct": 3,
@@ -488,11 +473,18 @@ LOGISTICS_OPERATORS = {
                 "africa_hq": "DP World Africa — Dubaï",
                 "email_africa": "africa@dpworld.com",
                 "phone_africa": "+971 4 881 5555",
-                "senegal": {"phone": "+221 33 839 7700", "email": "dakar@dpworld.com"},
-                "ivory_coast": {"phone": "+225 27 21 75 6000", "email": "abidjan@dpworld.com"},
-                "togo": {"phone": "+228 22 21 62 46", "email": "lome@dpworld.com"},
-                "djibouti": {"email": "berbera@dpworld.com"},
-                "egypt": {"phone": "+20 69 336 7777", "email": "sokhna@dpworld.com"},
+                "senegal": {
+                    "phone": "+221 33 839 7700",
+                    "email": "dakar@dpworld.com",
+                },
+                "ivory_coast": {
+                    "phone": "+225 27 21 75 6000",
+                    "email": "abidjan@dpworld.com",
+                },
+                "egypt": {
+                    "phone": "+20 69 336 7777",
+                    "email": "sokhna@dpworld.com",
+                },
             },
             "africa_offices_count": 15,
             "certifications": ["ISO 9001", "ISO 45001", "ISO 14001"],
@@ -569,14 +561,23 @@ LOGISTICS_OPERATORS = {
                     "email": "info.douala@aglgroup.com",
                     "address": "BP 4057, Douala",
                 },
-                "senegal": {"phone": "+221 33 849 7700", "email": "info.dakar@aglgroup.com"},
-                "togo": {
-                    "phone": "+228 22 21 22 21",
-                    "email": "info.lome@aglgroup.com",
-                    "address": "Boulevard du Mono, Lomé",
+                "senegal": {
+                    "phone": "+221 33 849 7700",
+                    "email": "info.dakar@aglgroup.com",
                 },
-                "kenya": {"phone": "+254 20 342 4000", "email": "info.mombasa@aglgroup.com"},
-                "djibouti": {"phone": "+253 21 35 01 00", "email": "info.djibouti@aglgroup.com"},
+                "togo": {
+                    "phone": "+228 22 23 73 50",
+                    "source": "https://www.togo-port.net/contact-port-autonome-de-lome/",
+                },
+                "kenya": {
+                    "phone": "+254 20 342 4000",
+                    "email": "info.mombasa@aglgroup.com",
+                },
+                "djibouti": {
+                    "phone": "+253 21 32 96 00",
+                    "email": "DJ001-djibouti.commercial@aglgroup.com",
+                    "source": "https://aglgroup.com/en/transport-logistique-afrique/Djibouti",
+                },
             },
             "africa_offices_count": 42,
             "certifications": ["ISO 9001", "OHSAS 18001"],
@@ -594,12 +595,10 @@ LOGISTICS_OPERATORS = {
             ],
             "contacts": {
                 "website": "https://www.ictsi.com",
-                "tanzania": {
-                    "phone": "+255 22 211 7930",
-                    "email": "dar@ictsi.com",
-                    "address": "PO Box 9010, Dar es Salaam",
+                "dr_congo": {
+                    "phone": "+243 81 070 0000",
+                    "email": "matadi@ictsi.com",
                 },
-                "dr_congo": {"phone": "+243 81 070 0000", "email": "matadi@ictsi.com"},
             },
             "africa_offices_count": 3,
         },
@@ -851,11 +850,6 @@ LOGISTICS_OPERATORS = {
                     "phone": "+213 21 49 06 49",
                     "email": "dhlgf.algerie@dhl.com",
                     "address": "Zone d'Activités de Bab Ezzouar, Alger",
-                },
-                "ethiopia": {
-                    "phone": "+251 11 661 4200",
-                    "email": "dhlgf.ethiopia@dhl.com",
-                    "address": "Bole Road, Addis-Abeba",
                 },
             },
             "africa_offices_count": 51,
@@ -1119,16 +1113,28 @@ LOGISTICS_OPERATORS = {
                     "email": "FR037-Infos.servicecotation_cameroun@aglgroup.com",
                     "source": "https://aglgroup.com/en/transport-logistique-afrique/Cameroun",
                 },
-                "kenya": {"phone": "+254 41 222 0000", "email": "info.mombasa@aglgroup.com"},
-                "djibouti": {"phone": "+253 21 35 01 00", "email": "info.djibouti@aglgroup.com"},
-                "ethiopia": {"phone": "+251 11 551 0000", "email": "info.addis@aglgroup.com"},
-                "morocco": {"phone": "+212 522 940 400", "email": "info.casablanca@aglgroup.com"},
+                "kenya": {
+                    "phone": "+254 41 222 0000",
+                    "email": "info.mombasa@aglgroup.com",
+                },
+                "djibouti": {
+                    "phone": "+253 21 32 96 00",
+                    "email": "DJ001-djibouti.commercial@aglgroup.com",
+                    "source": "https://aglgroup.com/en/transport-logistique-afrique/Djibouti",
+                },
+                "ethiopia": {
+                    "email": "et004-ethiopia.commercial@aglgroup.com",
+                    "source": "https://aglgroup.com/en/transport-logistique-afrique/Ethiopia",
+                },
+                "morocco": {
+                    "phone": "+212 522 940 400",
+                    "email": "info.casablanca@aglgroup.com",
+                },
                 "algeria": {
                     "phone": "+213 21 74 30 00",
                     "email": "info.alger@aglgroup.com",
                     "address": "Rued des Frères Bouadou, Bir Mourad Raïs, Alger",
                 },
-                "mali": {"phone": "+223 20 24 32 00", "email": "info.bamako@aglgroup.com"},
             },
             "africa_offices_count": 55,
             "iata_accredited": True,
@@ -1556,6 +1562,12 @@ LOGISTICS_OPERATORS = {
                 "website": "https://nrz.co.zw",
                 "address": "NRZ Parkade Centre, Cnr 9th Avenue & Fife Street, Bulawayo, Zimbabwe",
             },
+            "provenance": {
+                "source": "https://nrz.co.zw/contact-us/",
+                "source_type": "officielle",
+                "verification": "page_lue",
+                "origine": "source_publique",
+            },
         },
         {
             "id": "zambia_railways",
@@ -1567,7 +1579,13 @@ LOGISTICS_OPERATORS = {
             "network_km": 1273,
             "contacts": {
                 "website": "https://zrl.com.zm",
-                "address": "Buntungwa Street, Kabwe, Zambie",
+                "address": "1st Floor Shitima House, Kafue River Avenue, P.O. Box 80935, Kabwe",
+            },
+            "provenance": {
+                "source": "https://zrl.com.zm/jobs/",
+                "source_type": "officielle",
+                "verification": "extrait_moteur_recherche",
+                "origine": "source_publique",
             },
         },
     ],
@@ -1637,7 +1655,6 @@ LOGISTICS_OPERATORS = {
                 "phone": "+254 41 231 5100",
                 "email": "freight@mitchellcotts.co.ke",
                 "address": "Mitchell Cotts House, Moi Avenue, Mombasa",
-                "uganda": {"phone": "+256 41 423 8600", "email": "freight@mitchellcotts.co.ug"},
             },
         },
         {
@@ -1781,12 +1798,18 @@ LOGISTICS_OPERATORS = {
             "belly_cargo_fleet": 130,
             "destinations_cargo": 65,
             "contacts": {
-                "website": "https://www.ethiopianairlines.com/cargo",
-                "cargo_reservations": "+251 11 665 7222",
-                "cargo_ops": "+251 11 665 7000",
-                "email": "etcargo@ethiopianairlines.com",
-                "address": "Ethiopian Airlines Group, Bole International Airport, Addis-Abeba",
+                "website": "https://cargo.ethiopianairlines.com",
+                "cargo_reservations": "6787 (local) / +251-116179900 (international) – Cargo Reservation and Global Call Center",
+                "cargo_ops": "+251115174404/05 (Cargo Head Office / Customer Service)",
+                "email": "TLCCSA@ethiopianairlines.com",
+                "address": "Cargo Terminal, Ethiopian Airlines, Bole International Airport, Addis Ababa",
                 "cargo_tracking": "https://www.ethiopianairlines.com/cargo/tracking",
+            },
+            "provenance": {
+                "source": "https://cargo.ethiopianairlines.com/customer-care/worldwide-offices",
+                "source_type": "officielle",
+                "verification": "page_lue",
+                "origine": "source_publique",
             },
             "iata_code": "ET",
             "certifications": ["IATA CEIV Pharma", "IATA CEIV Live Animals"],
@@ -2236,6 +2259,12 @@ LOGISTICS_OPERATORS = {
                 "phone": "+255 22 211 6453",
                 "address": "28 Edward Sokoine Drive, Mchafukoge, Ilala, BP 11491, Dar es Salaam, Tanzanie",
             },
+            "provenance": {
+                "source": "https://www.tra.go.tz/index.php/contact-us",
+                "source_type": "officielle",
+                "verification": "page_lue",
+                "origine": "source_publique",
+            },
         },
         {
             "id": "uganda_revenue",
@@ -2246,8 +2275,14 @@ LOGISTICS_OPERATORS = {
             "country_iso": "UGA",
             "contacts": {
                 "website": "https://www.ura.go.ug",
-                "phone": "+256 417 442 097",
-                "address": "URA Tower, Plot M193/4, Kinnawataka Road, Nakawa, BP 7279, Kampala, Ouganda",
+                "phone": "Toll-free 0800 117 000 / 0800 217 000; 0417444602 / 0417444603; 0323444602 / 0323444603",
+                "address": "Plot M193/M194, Nakawa Industrial Area, P. O. Box 7279, Kampala",
+            },
+            "provenance": {
+                "source": "https://www.ura.go.ug/en/contact-us/",
+                "source_type": "officielle",
+                "verification": "page_lue",
+                "origine": "source_publique",
             },
         },
         {
@@ -2259,8 +2294,12 @@ LOGISTICS_OPERATORS = {
             "country_iso": "ETH",
             "contacts": {
                 "website": "https://www.ecc.gov.et",
-                "phone": "+251 116 67 54 58",
-                "address": "Meshualekia, Yirga Haile Plaza, Addis-Abeba, Éthiopie",
+            },
+            "provenance": {
+                "source": "https://www.ecc.gov.et/",
+                "source_type": "officielle",
+                "verification": "page_lue",
+                "origine": "source_publique",
             },
         },
         {
@@ -2288,7 +2327,13 @@ LOGISTICS_OPERATORS = {
                 "website": "https://www.rra.gov.rw",
                 "phone": "+250 788 185 500",
                 "email": "info@rra.gov.rw",
-                "address": "No. 8, KG 4 Ave, Kimihurura, BP 3987, Kigali, Rwanda",
+                "address": "Rwanda Revenue Authority Headquarters, Kicukiro Sonatubes, Silverback Mall – Kigali",
+            },
+            "provenance": {
+                "source": "https://www.rra.gov.rw/en/contact-us",
+                "source_type": "officielle",
+                "verification": "page_lue",
+                "origine": "source_publique",
             },
         },
     ],
@@ -2544,7 +2589,8 @@ _LIBELLES_SOURCES = {
     "consignataires": ("consignataire", "Agent maritime consignataire"),
     "chargeurs": ("chargeur", "Conseil / association de chargeurs"),
     "affreteurs": ("affreteur", "Affréteur / courtier maritime"),
-    "port_operators": ("autorite_portuaire", "Autorité portuaire"),
+    "port_operators": ("autorite_portuaire", "Autorité ou opérateur portuaire"),
+    "transitaires": ("transitaire", "Transitaire / commissionnaire"),
     "trucking_companies": ("transporteur_routier", "Transporteur routier"),
     "organisations_routieres": ("organisation_routiere", "Organisation du transport routier / port sec"),
     "air_cargo": ("compagnie_cargo", "Compagnie aérienne — fret"),

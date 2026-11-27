@@ -92,3 +92,30 @@ def test_les_contacts_routiers_et_aeriens_dementis_ne_reviennent_pas():
 def test_les_intervenants_routiers_et_aeriens_par_pays():
     categories = {o["category"] for o in get_operators_by_country("DZA")}
     assert {"air_cargo", "assistance_fret_aerien", "trucking_companies"} <= categories
+
+
+def test_lot_2_pays_enclaves_et_portuaires():
+    # Novembre 2026 : 23 pays de plus (13 portuaires, 10 enclavés).
+    for iso in ("TGO", "BEN", "DJI", "TZA", "MLI", "BFA", "NER", "TCD", "ETH", "ZMB"):
+        assert get_operators_by_country(iso), iso
+    chargeurs = {o["country_iso"] for o in LOGISTICS_OPERATORS["chargeurs"]}
+    assert {"BFA", "NER"} <= chargeurs
+
+
+def test_lot_2_contacts_dementis_retires():
+    valeurs = set(_valeurs(LOGISTICS_OPERATORS))
+    for ancien in (
+        "berbera@dpworld.com",
+        "port-louis@pilship.com",
+        "dar@ictsi.com",
+        "maeeth@maersk.com",
+        "djibouti@cmacgm.com",
+        "info.djibouti@aglgroup.com",
+    ):
+        assert ancien not in valeurs
+
+
+def test_un_seul_courriel_par_champ():
+    for e in ENTREES:
+        if e.get("email"):
+            assert e["email"].count("@") == 1, e
