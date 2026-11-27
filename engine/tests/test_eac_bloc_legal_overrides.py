@@ -28,8 +28,9 @@ def test_all_measures_load_and_are_distributed_across_jurisdictions():
     for m in measures:
         by_jur[m.jurisdiction] = by_jur.get(m.jurisdiction, 0) + 1
     # Remises de l'EAC/161/2026, Table A : KEN 3, TZA 79, RWA 57, UGA 149, BDI 14 ;
-    # listes des EAC/162 à EAC/173/2026 : KEN 18, TZA 121, RWA 449, UGA 117, BDI 386.
-    assert by_jur["KEN"] == 38
+    # listes des EAC/162 à EAC/173/2026 : KEN 18, TZA 121, RWA 449, UGA 117, BDI 386 ;
+    # remises nommées des EAC/388 à EAC/413/2026 (Gazette n° 31, 12/11/2026) : KEN 219.
+    assert by_jur["KEN"] == 38 + 219
     assert by_jur["TZA"] == 206
     assert by_jur["RWA"] == 509
     assert by_jur["UGA"] == 268

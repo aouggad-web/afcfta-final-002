@@ -42,6 +42,9 @@ NON_APPLIQUEES = {
 }
 
 
+#: Sociétés nommées citées dans la note d'une remise ; les autres sont comptées.
+SOCIETES_AFFICHEES = 5
+
 #: Taux mixte d'un sursis, tel que la Legal Notice EAC/160/2026 l'écrit :
 #: « 35 % or USD 2/SQM, whichever is higher ».
 TAUX_MIXTE = re.compile(r"^% or USD ([\d.]+)/(metre|SQM), whichever is higher$")
@@ -78,6 +81,17 @@ def _taux_de_la_mesure(mesure, taux):
 @lru_cache(maxsize=1)
 def _mesures():
     return load_legal_measures(MESURES)
+
+
+def _societe_nommee(nom, allocations):
+    """« Société (total MT) » : les allocations d'une même société pour la ligne sont additionnées
+    quand elles sont toutes chiffrées dans la même unité, sinon la société est nommée seule."""
+    unites = {m.allocated_quantity_unit for m in allocations}
+    if len(unites) != 1 or None in unites or any(m.allocated_quantity is None for m in allocations):
+        return nom
+    total = round(sum(m.allocated_quantity for m in allocations), 6)
+    detail = f", {len(allocations)} allocations" if len(allocations) > 1 else ""
+    return f"{nom} ({total:g} {unites.pop()}{detail})"
 
 
 def aujourdhui() -> date:
@@ -131,6 +145,8 @@ def appliquer(
     par_id = {m.measure_id: m for m in mesures}
     # Sans mesure appliquée, la ligne garde son taux tel que le TEC l'écrit.
     notes, champs = [], {k: dd[k] for k in CHAMPS_DU_TAUX if k in dd}
+    # Sociétés nommées par la gazette, par avis, pour les remises non appliquées.
+    nommees = {}
     if resolution["calculation_status"] == "CONFLICT_REVIEW" or any(
         e["outcome"] == "RATE_UNRESOLVED" for e in etapes
     ):
@@ -169,6 +185,25 @@ def appliquer(
                     f"pour les importations qui remplissent ses conditions "
                     f"({NON_APPLIQUEES[e['outcome']]}). Taux du TEC appliqué."
                 )
+                if mesure.named_beneficiary:
+                    nommees.setdefault(mesure.legal_reference, []).append(mesure)
+
+    # Une ligne portée par plusieurs sociétés d'un même avis ne répète pas sa note : une mention
+    # par avis, avec les sociétés nommées.
+    notes = list(dict.fromkeys(notes))
+    for reference, mesures_avis in nommees.items():
+        # Une société peut avoir plusieurs allocations pour la même ligne : on les regroupe
+        # avant de limiter la liste, sinon elle compterait pour plusieurs sociétés.
+        par_societe = {}
+        for m in mesures_avis:
+            par_societe.setdefault(m.named_beneficiary, []).append(m)
+        societes = [_societe_nommee(nom, allocations) for nom, allocations in par_societe.items()]
+        visibles = ", ".join(societes[:SOCIETES_AFFICHEES])
+        reste = len(societes) - SOCIETES_AFFICHEES
+        notes.append(
+            f"{reference} : remise réservée aux sociétés nommées par la gazette, dans la limite de leur "
+            f"quantité allouée : {visibles}" + (f" et {reste} autre{'s' if reste > 1 else ''}." if reste > 0 else ".")
+        )
 
     nouveau_dd = {k: v for k, v in dd.items() if k not in CHAMPS_DU_TAUX}
     nouveau_dd.update(champs)

@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "titre": "État d'application de la ZLECAf entre pays, couple par couple",
- "genere_le": "2026-11-04",
+ "genere_le": "2026-11-17",
  "genere_par": "scripts/build_bilateral_application_matrix.py",
  "avertissement": "La ratification est continentale, l'application est bilatérale. Une case ACCORDEE atteste que l'acte national de la destination nomme cette origine ; elle ne dispense ni de la preuve d'origine ZLECAf ni de la vérification en douane.",
  "methode": "Trois conditions, dans cet ordre : acte national d'application lu en source primaire ; liste nominative des origines qu'il admet ; confrontation à la carte continentale du e-Tariff Book. Les listes sont lues à leur source d'autorité dans le dépôt, jamais recopiées.",
@@ -17,9 +17,9 @@
  "couples_possibles": 2916,
  "destinations_etablies": {
   "DZA": {
-   "origines_admises": 9,
-   "instrument": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024",
-   "niveau_de_preuve": "primaire — texte intégral archivé",
+   "origines_admises": 21,
+   "instrument": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)",
+   "niveau_de_preuve": "primaire pour les 9 origines de la circulaire (texte intégral archivé) ; page officielle de la Douane pour les 12 ajoutées (texte fourni par l'exploitant le 17/11/2026 et archivé, sans date de révision, non récupéré au portail)",
    "fiche": "DZA_application_2026-09-14.json"
   },
   "EGY": {
@@ -148,11 +148,11 @@
   "ZWE"
  ],
  "repartition_des_couples": {
-  "ACCORDEE": 246,
+  "ACCORDEE": 258,
   "ADMISSION_PAR_REGLE": 96,
   "DESTINATION_NON_ETABLIE": 1973,
   "MEME_PAYS": 54,
-  "NON_ACCORDEE": 282,
+  "NON_ACCORDEE": 270,
   "ORIGINE_NON_RATIFIANTE": 265
  },
  "couverture_pct": 18.11,
@@ -164,6 +164,9 @@
   "note": "Croiser les listes vérifiées met la réciprocité à l'épreuve. Une asymétrie n'est pas nécessairement une faute : une liste peut simplement être plus ancienne que l'autre.",
   "confirmees": [
    "DZA<->EGY",
+   "DZA<->MAR",
+   "DZA<->NAM",
+   "DZA<->SYC",
    "DZA<->ZAF",
    "EGY<->KEN",
    "EGY<->MAR",
@@ -185,24 +188,9 @@
     "lecture": "DZA admet KEN à son tarif ZLECAf, KEN n'admet pas DZA."
    },
    {
-    "accorde_par": "MAR",
-    "non_accorde_par": "DZA",
-    "lecture": "MAR admet DZA à son tarif ZLECAf, DZA n'admet pas MAR."
-   },
-   {
-    "accorde_par": "NAM",
-    "non_accorde_par": "DZA",
-    "lecture": "NAM admet DZA à son tarif ZLECAf, DZA n'admet pas NAM."
-   },
-   {
     "accorde_par": "DZA",
     "non_accorde_par": "RWA",
     "lecture": "DZA admet RWA à son tarif ZLECAf, RWA n'admet pas DZA."
-   },
-   {
-    "accorde_par": "SYC",
-    "non_accorde_par": "DZA",
-    "lecture": "SYC admet DZA à son tarif ZLECAf, DZA n'admet pas SYC."
    },
    {
     "accorde_par": "DZA",
@@ -213,6 +201,11 @@
     "accorde_par": "DZA",
     "non_accorde_par": "TZA",
     "lecture": "DZA admet TZA à son tarif ZLECAf, TZA n'admet pas DZA."
+   },
+   {
+    "accorde_par": "DZA",
+    "non_accorde_par": "UGA",
+    "lecture": "DZA admet UGA à son tarif ZLECAf, UGA n'admet pas DZA."
    },
    {
     "accorde_par": "SYC",
@@ -2784,11 +2777,11 @@
   "DZA": {
    "AGO": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "BDI": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "etat": "ACCORDEE",
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "BEN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
@@ -2796,142 +2789,142 @@
    },
    "BFA": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "BWA": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "etat": "ACCORDEE",
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "CAF": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "CIV": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "CMR": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "COD": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "COG": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "COM": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "CPV": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "DJI": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "DZA": {
     "etat": "MEME_PAYS"
    },
    "EGY": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "ERI": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "non signataire"
    },
    "ETH": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "etat": "ACCORDEE",
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "GAB": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "GHA": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "GIN": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "GMB": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "etat": "ACCORDEE",
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "GNB": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "GNQ": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "KEN": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "LBR": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "LBY": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "LSO": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "etat": "ACCORDEE",
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MAR": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "etat": "ACCORDEE",
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MDG": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MLI": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MOZ": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MRT": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MUS": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "MWI": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "etat": "ACCORDEE",
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "NAM": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "etat": "ACCORDEE",
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "NER": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "NGA": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "RWA": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "SDN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
@@ -2939,15 +2932,15 @@
    },
    "SEN": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "SLE": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "SOM": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "SSD": {
     "etat": "ORIGINE_NON_RATIFIANTE",
@@ -2955,47 +2948,47 @@
    },
    "STP": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "SWZ": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "etat": "ACCORDEE",
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "SYC": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "etat": "ACCORDEE",
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "TCD": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "TGO": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "TUN": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "TZA": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "UGA": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "etat": "ACCORDEE",
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "ZAF": {
     "etat": "ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "ZMB": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "etat": "ACCORDEE",
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    },
    "ZWE": {
     "etat": "NON_ACCORDEE",
-    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024"
+    "fondement": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties ayant lancé l'application, page article805 de la Douane (12 origines de plus)"
    }
   },
   "EGY": {

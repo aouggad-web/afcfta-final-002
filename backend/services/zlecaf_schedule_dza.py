@@ -10,10 +10,12 @@ le cadre de la ZLECAf » + listes des concessions tarifaires algériennes
 
 Points clés (sinon le taux ZLECAf générique du moteur serait faux pour
 l'Algérie) :
-  - Seuls 9 pays partenaires ont déclenché l'application effective et
-    réciproque de l'accord avec l'Algérie à ce jour (liste mise à jour
+  - Les pays partenaires admis sont ceux qui ont déclenché l'application
+    effective et réciproque de l'accord avec l'Algérie (liste mise à jour
     périodiquement par le ministère du Commerce) : les autres membres de
-    la ZLECAf restent au droit commun à l'import en Algérie.
+    la ZLECAf restent au droit commun à l'import en Algérie. La circulaire en
+    nommait 9 ; la liste actualisée de la Douane algérienne, contrôlée le
+    16/11/2026, en nomme 22, dont 21 sont servies (voir DZ_ACTIVE_ORIGINS).
   - Le calendrier dépend de la liste du produit (A/B/C) ET du régime
     appliqué au pays partenaire (standard ou "principe de réciprocité"
     pour les pays non-PMA appliquant eux-mêmes le calendrier PMA).
@@ -60,8 +62,52 @@ with open(DATA_DIR / "circular_482_schedule.json", encoding="utf-8") as f:
     CIRCULAR_482_SCHEDULE = json.load(f)
 
 # Pays ayant déclenché l'application effective et réciproque de la ZLECAf
-# avec l'Algérie (circulaire 482/2024, partie I).
-ACTIVE_PARTNERS = frozenset({"ZAF", "CMR", "EGY", "GHA", "KEN", "MUS", "RWA", "TZA", "TUN"})
+# avec l'Algérie (circulaire 482/2024, partie I) : la liste d'origine.
+ORIGINES_CIRCULAIRE_482 = frozenset({"ZAF", "CMR", "EGY", "GHA", "KEN", "MUS", "RWA", "TZA", "TUN"})
+
+# Origines que la liste actualisée de la Douane algérienne ajoute à celles de la
+# circulaire : la liste nomme 13 pays de plus (22 origines étrangères, 23 parties avec
+# l'Algérie), dont 12 sont servies (voir ci-dessous). Le Nigeria et le Mozambique n'y figurent pas : ils restent au droit
+# commun à l'import en Algérie.
+ORIGINES_NOMMEES_LISTE_DOUANE_2026_11 = frozenset(
+    {"BDI", "BWA", "ETH", "SWZ", "GMB", "LSO", "MWI", "MAR", "NAM", "UGA", "SYC", "SSD", "ZMB"}
+)
+
+# Le Soudan du Sud est nommé par la liste de la Douane mais n'a PAS ratifié l'Accord selon le
+# statut continental du dépôt (note dtic/SARS de mars 2026) : une partie qui a lancé
+# l'application a ratifié, donc l'une des deux sources a tort, et le moteur écarte de toute
+# façon une origine non ratifiante avant de lire les listes. Il est écarté de la liste
+# opérante, comme le Bénin pour le Kenya, et y entrera le jour où il ratifiera.
+ORIGINES_ECARTEES_FAUTE_DE_RATIFICATION = frozenset({"SSD"})
+
+ORIGINES_LISTE_DOUANE_2026_11 = (
+    ORIGINES_NOMMEES_LISTE_DOUANE_2026_11 - ORIGINES_ECARTEES_FAUTE_DE_RATIFICATION
+)
+
+# Table versionnée des origines admises à l'import en Algérie.
+#
+# Décision de l'exploitant du 17/11/2026 : suivre la liste actualisée de la Douane algérienne.
+# SOURCE : la page officielle de la Douane (douane.gov.dz, article805), section III
+# « Parties contractantes ayant lancé l'application de l'Accord » : 23 parties, Algérie
+# comprise, « actualisée périodiquement sur la base d'une notification du Ministère chargé du
+# Commerce Extérieur ». Le texte de la page a été fourni par l'exploitant le 17/11/2026 et
+# archivé (sources/DZA_douane_article805_zlecaf.texte-fourni.txt) : le dépôt ne l'a pas
+# récupéré lui-même, le portail refuse son environnement (HTTP 503). La page ne porte AUCUNE
+# DATE DE RÉVISION, d'où `date_derniere_revision` à None.
+# C'est la liste opérante que la circulaire 482 renvoyait au ministère du Commerce extérieur,
+# et non une énumération d'États « ayant mis en œuvre » : voir DZA_application_2026-09-14.json.
+# Les 9 origines de la circulaire restent établies par la circulaire elle-même.
+DZ_ACTIVE_ORIGINS = {
+    "version": "2026-11-16",
+    "date_derniere_revision": None,  # inconnue : la page ne la porte pas
+    "origines": ORIGINES_CIRCULAIRE_482 | ORIGINES_LISTE_DOUANE_2026_11,
+    "origines_circulaire_482": ORIGINES_CIRCULAIRE_482,
+    "origines_liste_douane_2026_11": ORIGINES_LISTE_DOUANE_2026_11,
+    "origines_nommees_non_servies": ORIGINES_ECARTEES_FAUTE_DE_RATIFICATION,
+    "source_liste_douane": "https://www.douane.gov.dz/spip.php?article805",
+    "texte_archive": "sources/DZA_douane_article805_zlecaf.texte-fourni.txt",
+}
+ACTIVE_PARTNERS = DZ_ACTIVE_ORIGINS["origines"]
 
 # Pays en développement (non-PMA) membres de CER appliquant le calendrier
 # PMA : l'Algérie leur applique le "principe de réciprocité" (calendrier
@@ -226,7 +272,13 @@ def compute_dza_zlecaf_rate(
     factor = _factor_reciprocity(lst, year) if reciprocity else _factor_standard(lst, year)
     rate = round(base_rate * factor, 6)
     schedule_label = "réciprocité" if reciprocity else "standard"
-    return rate, f"ZLECAf DZA — liste ({lst}){base_label}, calendrier {schedule_label}, {year}"
+    label = f"ZLECAf DZA — liste ({lst}){base_label}, calendrier {schedule_label}, {year}"
+    if origin in ORIGINES_LISTE_DOUANE_2026_11:
+        label += (
+            " ; origine admise d'après la liste des parties ayant lancé l'application publiée "
+            "par la Douane algérienne (article805, lue le 17/11/2026, date de révision inconnue)"
+        )
+    return rate, label
 
 
 def daps_exempt(hs_code: str, origin_iso3: str) -> bool:

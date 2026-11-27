@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "objet": "Afrique du Sud : droit spécifique sur les sucres (1701.12, 1701.13, 1701.14, 1701.91, 1701.99), ramené à 516,35 c/kg par l'avis R.8180 du 13 novembre 2026, paru après la collecte du tarif",
+  "destination_iso3": "ZAF",
+  "verified_at": "2026-11-17",
+  "etabli": true,
+  "evidence_level": "primaire : avis publié par la SARS (PDF portant numéro de Government Gazette, numéro R. et date), lu sur l'image ; fac-similé paginé de la Government Gazette (gpwonline.co.za) non consulté",
+  "documents_archives": [
+    {
+      "texte_archive": "sources/ZAF_amendement_sucre_R8180.texte-extrait.txt",
+      "sha256": "72142debb70f24447b345701d698be08d016d5a8d77f3f6971183273c3aa2cc4",
+      "note": "Le PDF est une image sans couche de texte : ce texte est la transcription de sa lecture, à relire sur le PDF archivé."
+    },
+    {
+      "pdf_archive": "sources/ZAF_R8180_GG55738_sucre_2026-11-13.pdf",
+      "sha256": "e38b27c9f98af69ab5be3346ec5fc1df9ca8239f92093fb544dd3657fde781ef"
+    }
+  ],
+  "regle": {
+    "sucres": {
+      "valeur": "516,35 c/kg dans les six colonnes (General, EU/UK, EFTA, SADC, MERCOSUR, AfCFTA) pour 1701.12, 1701.13, 1701.14, 1701.91 et 1701.99, en substitution du droit antérieur.",
+      "reference": "Government Gazette n° 55738, R.8180 du 13 novembre 2026, Schedule No. 1 Part 1, section 48 du Customs and Excise Act",
+      "verbatim": "In terms of section 48 of the Customs and Excise Act, 1964, Part 1 of Schedule No. 1 to the said Act is hereby amended to the extent set out in the Schedule hereto."
+    },
+    "avantage_zlecaf": "Aucun : la colonne AfCFTA porte le même montant que la colonne General. Le calcul ne donne donc aucune économie ZLECAf sur ces lignes ; l'origine et l'éligibilité du corridor restent contrôlées à part."
+  },
+  "historique_du_droit_selon_le_registre_sars": {
+    "source": "page « Tariff amendments 2026 » de la SARS, résumé de la page : les avis R.7115 et R.7864 n'ont pas été lus en PDF",
+    "R.7115": "13 février 2026 : 436,38 c/kg portés à 483,72 c/kg",
+    "R.7864": "28 août 2026 : 483,72 c/kg portés à 697,92 c/kg (prix de référence en dollars de 680 à 785 USD la tonne)",
+    "R.8180": "13 novembre 2026 : 697,92 c/kg ramenés à 516,35 c/kg",
+    "constat_sur_le_depot": "Le tarif collecté le 29 août 2026 porte 483,72 c/kg : il ne reprenait pas R.7864 (28 août 2026). R.8180 substituant le montant en vigueur, le socle porte désormais 516,35 c/kg sans passer par 697,92."
+  },
+  "ne_tranche_pas": "La date d'effet exacte : l'avis ne porte que sa date (13 novembre 2026) et ne précise ni effet rétroactif ni date ultérieure ; une modification de la Part 1 de la Schedule 1 prise en vertu de l'article 48 prend effet à sa publication. Le calcul d'une date antérieure au 13 novembre 2026 (697,92 c/kg du 28 août au 12 novembre, 483,72 c/kg avant) n'est pas daté : le socle ne porte qu'une valeur par ligne.",
+  "application_au_calcul": {
+    "route": "POST /calcul",
+    "positions": "scripts/build_socle.py, _amendements_zaf : la ligne DD et les cinq colonnes préférentielles de 170112, 170113, 170114, 170191 et 170199.",
+    "devise": "Droit spécifique en rand par kilogramme (5,1635 R/kg) ; le montant exige la quantité en kg."
+  }
+}

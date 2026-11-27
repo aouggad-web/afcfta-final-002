@@ -155,8 +155,11 @@ def listes_verifiees() -> dict[str, dict]:
     # qui n'y ont pas droit. On prend la liste d'admission.
     listes["DZA"] = {
         "origines": {iso: None for iso in sorted(ACTIVE_PARTNERS)},
-        "instrument": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024",
-        "preuve": "primaire — texte intégral archivé",
+        "instrument": "Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 (9 origines) ; liste des parties "
+                      "ayant lancé l'application, page article805 de la Douane (12 origines de plus)",
+        "preuve": "primaire pour les 9 origines de la circulaire (texte intégral archivé) ; page officielle "
+                  "de la Douane pour les 12 ajoutées (texte fourni par l'exploitant le 17/11/2026 et archivé, "
+                  "sans date de révision, non récupéré au portail)",
         "fiche": "DZA_application_2026-09-14.json",
     }
 

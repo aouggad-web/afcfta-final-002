@@ -75,6 +75,13 @@ class LegalOverrideMeasure(BaseModel):
     origin_scope: Optional[str] = None
     import_purpose: Optional[str] = None
     quantity_limit: Optional[float] = None
+    # Remise accordée à une société NOMMÉE par la gazette, pour une quantité et un produit
+    # fini fixés (EAC/388 à 413/2026). Ces quatre champs décrivent le bénéficiaire ; aucun ne
+    # décide de l'application, qui reste soumise à une autorisation datée qui nomme la ligne.
+    named_beneficiary: Optional[str] = None
+    allocated_quantity: Optional[float] = None
+    allocated_quantity_unit: Optional[str] = None
+    finished_product: Optional[str] = None
     condition_text: Optional[str] = None
     verification_status: str
     requires_human_review: bool = False
