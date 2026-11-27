@@ -73,7 +73,7 @@ def test_absence_is_never_stated_as_absence_of_extraction():
 def test_coverage_names_its_sources_and_edition():
     coverage = pd.get_mining_by_country("SYC")["coverage"]
     joined = " ".join(coverage["sources_consulted"])
-    for expected in ("USGS", "EIA", "OPEC", "World Nuclear Association"):
+    for expected in ("USGS", "EIA", "World Nuclear Association"):
         assert expected in joined, expected
     assert "2025" in coverage["usgs_edition"]
     assert coverage["usgs_source_url"].startswith("https://www.sciencebase.gov/")

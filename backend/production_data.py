@@ -486,9 +486,8 @@ def get_mining_production(
 #: Sources consultées pour la dimension minière, dans l'ordre où elles couvrent
 #: le terrain. Nommées dans la réponse afin qu'une absence soit vérifiable.
 _MINING_SOURCES = (
-    "USGS Mineral Commodity Summaries 2025 (minéraux)",
-    "EIA International Energy Statistics (pétrole, gaz)",
-    "OPEC Annual Statistical Bulletin (pétrole)",
+    "USGS Mineral Commodity Summaries 2024 et 2025 (minéraux)",
+    "EIA International Energy Statistics (pétrole, gaz, charbon)",
     "World Nuclear Association (uranium)",
 )
 

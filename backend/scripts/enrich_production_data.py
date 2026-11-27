@@ -7,7 +7,7 @@ afin de préserver les 10 000+ enregistrements agricoles FAOSTAT bulk déjà en 
 
 Applique quatre enrichissements curés (valeurs publiées uniquement) :
 
-  1. MINING      — nouveaux minéraux + extension 2024   (etl/mining_extended.py)
+  1. MINING      — section remplacée, dérivée des sources (etl/mining_extended.py)
   2. MACRO       — valeur ajoutée sectorielle (parts du PIB et montants en USD
                    courants) & croissance PIB réels, World Bank WDI 2015-2024
                    (etl/macro_extended.py ← etl/macro_wdi_data.py)
@@ -120,16 +120,16 @@ def main() -> None:
     print("\n[AVANT]")
     _summary(data)
 
-    # ── 1. Mining : nouveaux minéraux + 2024 (préserve l'existant) ──────────
+    # ── 1. Mining : section REMPLACÉE par les enregistrements dérivés ───────
+    # Toute la section vient des fichiers générés depuis les sources (USGS,
+    # EIA, WNA). Une fusion qui préserve l'existant y laissait les anciennes
+    # valeurs saisies à la main : une correction de source ne les atteignait pas.
     mining_add = build_mining_additions()
-    data["mining_usgs"], m_add, m_up = _upsert(
-        data.get("mining_usgs", []),
-        mining_add,
-        ["country_iso3", "commodity_label", "year"],
-        overwrite=False,
-    )
+    avant = len(data.get("mining_usgs", []))
+    data["mining_usgs"] = mining_add
     print(
-        f"\n[1] Mining      : +{m_add} enreg. ({len({r['commodity_label'] for r in mining_add})} minéraux apportés)"
+        f"\n[1] Mining      : {avant} → {len(mining_add)} enreg. "
+        f"({len({r['commodity_label'] for r in mining_add})} minéraux, dérivés des sources)"
     )
 
     # ── 2. Macro : World Bank WDI 2023-2024 réels (upsert) ──────────────────
@@ -200,7 +200,14 @@ def main() -> None:
     meta.setdefault("sources", {})
     meta["sources"].update(
         {
-            "mining_extended": "USGS MCS 2024/2025, WNA, EIA/OPEC — etl/mining_extended.py",
+            "mining_energy": (
+                "Fiches USGS MCS 2024/2025, EIA International Energy Statistics, WNA "
+                "— dérivés par script, etl/mining_extended.py"
+            ),
+            "mining_extended": (
+                "Fiches USGS MCS 2024/2025, EIA International Energy Statistics, WNA "
+                "— dérivés par script, etl/mining_extended.py"
+            ),
             "macro": "World Bank WDI 2023-2024 (valeurs réelles API) — etl/macro_wdi_data.py",
             "agriculture_projections": "OECD-FAO Agricultural Outlook 2024-2033 — etl/faostat_projections.py",
             "manufacturing": "UNIDO INDSTAT4 — valeurs publiées (2024, inchangées)",

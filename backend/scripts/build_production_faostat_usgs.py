@@ -343,210 +343,12 @@ COMMODITY_CODES: dict[str, str] = {
 }
 
 # =============================================================================
-# USGS MCS 2024 — données MULTI-ANNÉES vérifiées
-# Sources :
-#   USGS Mineral Commodity Summaries 2024 (pub. Jan 2024)
-#     → https://www.usgs.gov/publications/mineral-commodity-summaries-2024
-#   EIA International Energy Statistics 2023
-#     → https://www.eia.gov/international/data/world
-#   OPEC Annual Statistical Bulletin 2024
-#     → https://www.opec.org/opec_web/en/publications/asb.htm
-#
-# Structure : commodity → (unit, institution, dataset, url,
-#                          {iso3: {year: value}})
-# Règle : on n'inclut QUE les années publiées dans les sources.
+# MINES & ÉNERGIE — enregistrements DÉRIVÉS des sources publiées
+# La table USGS_MULTI_YEAR, saisie à la main, a été retirée : ses valeurs
+# citaient USGS MCS 2024, EIA et OPEC sans correspondre à leurs publications.
+# Les enregistrements viennent désormais de etl/mining_extended.py, qui lit
+# les fichiers générés depuis les fiches USGS MCS, l'EIA et la WNA.
 # =============================================================================
-USGS_MULTI_YEAR: dict[str, tuple] = {
-    "Gold": (
-        "tonnes",
-        "USGS",
-        "Mineral Commodity Summaries 2024",
-        "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
-        {
-            "GHA": {2022: 127.0, 2023: 130.0},
-            "MLI": {2022: 72.0, 2023: 105.0},
-            "ZAF": {2022: 120.0, 2023: 100.0},
-            "BFA": {2022: 60.0, 2023: 96.0},
-            "SDN": {2022: 60.0, 2023: 64.0},
-            "GIN": {2022: 50.0, 2023: 60.0},
-            "TZA": {2022: 48.0, 2023: 53.0},
-            "CIV": {2022: 35.0, 2023: 51.0},
-            "COD": {2022: 40.0, 2023: 44.0},
-            "ZWE": {2022: 35.0, 2023: 30.0},
-            "EGY": {2022: 14.0, 2023: 16.0},
-            "SEN": {2022: 14.0, 2023: 16.0},
-            "ERI": {2022: 10.0, 2023: 14.0},
-            "MRT": {2022: 14.0, 2023: 14.0},
-            "NER": {2022: 10.0, 2023: 12.0},
-        },
-    ),
-    "Crude oil": (
-        "1000 b/d",
-        "EIA / OPEC",
-        "OPEC Annual Statistical Bulletin 2024 / EIA International Energy Statistics",
-        "https://www.eia.gov/international/data/world",
-        {
-            "NGA": {2022: 1430.0, 2023: 1350.0},
-            "LBY": {2022: 1110.0, 2023: 1180.0},
-            "AGO": {2022: 1130.0, 2023: 1110.0},
-            "DZA": {2022: 1030.0, 2023: 1000.0},
-            "EGY": {2022: 590.0, 2023: 560.0},
-            "COG": {2022: 270.0, 2023: 270.0},
-            "GAB": {2022: 215.0, 2023: 200.0},
-            "GHA": {2022: 148.0, 2023: 150.0},
-            "SSD": {2022: 130.0, 2023: 140.0},
-            "TCD": {2022: 110.0, 2023: 110.0},
-            "GNQ": {2022: 88.0, 2023: 90.0},
-            "SDN": {2022: 55.0, 2023: 60.0},
-            "CMR": {2022: 58.0, 2023: 60.0},
-            "TUN": {2022: 38.0, 2023: 40.0},
-            "CIV": {2022: 28.0, 2023: 30.0},
-        },
-    ),
-    "Natural gas": (
-        "bcm",
-        "EIA",
-        "EIA International Energy Statistics 2023",
-        "https://www.eia.gov/international/data/world",
-        {
-            "DZA": {2022: 100.0, 2023: 100.0},
-            "EGY": {2022: 62.0, 2023: 64.0},
-            "NGA": {2022: 47.0, 2023: 40.0},
-            "LBY": {2022: 11.0, 2023: 12.0},
-            "MOZ": {2022: 6.0, 2023: 6.0},
-            "GNQ": {2022: 5.0, 2023: 5.0},
-            "AGO": {2022: 5.0, 2023: 5.0},
-            "CIV": {2022: 2.3, 2023: 2.5},
-            "TUN": {2022: 1.5, 2023: 1.5},
-            "GHA": {2022: 1.1, 2023: 1.2},
-        },
-    ),
-    "Copper": (
-        "tonnes",
-        "USGS",
-        "Mineral Commodity Summaries 2024",
-        "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
-        {
-            "COD": {2022: 2300000.0, 2023: 2800000.0},
-            "ZMB": {2022: 763000.0, 2023: 760000.0},
-            "ZAF": {2022: 64000.0, 2023: 70000.0},
-            "NAM": {2022: 24000.0, 2023: 26000.0},
-            "BWA": {2022: 20000.0, 2023: 22000.0},
-        },
-    ),
-    "Cobalt": (
-        "tonnes",
-        "USGS",
-        "Mineral Commodity Summaries 2024",
-        "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
-        {
-            "COD": {2022: 147000.0, 2023: 170000.0},
-            "MDG": {2022: 2800.0, 2023: 3000.0},
-            "MAR": {2022: 2200.0, 2023: 2300.0},
-        },
-    ),
-    "Diamonds": (
-        "carats",
-        "USGS",
-        "Mineral Commodity Summaries 2024",
-        "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
-        {
-            "BWA": {2022: 24200000.0, 2023: 25100000.0},
-            "AGO": {2022: 8900000.0, 2023: 9700000.0},
-            "ZAF": {2022: 6200000.0, 2023: 5900000.0},
-            "ZWE": {2022: 4500000.0, 2023: 4900000.0},
-            "NAM": {2022: 2100000.0, 2023: 2400000.0},
-            "COD": {2022: 2400000.0, 2023: 2300000.0},
-            "LSO": {2022: 670000.0, 2023: 730000.0},
-            "SLE": {2022: 640000.0, 2023: 690000.0},
-        },
-    ),
-    "Phosphate": (
-        "tonnes",
-        "USGS",
-        "Mineral Commodity Summaries 2024",
-        "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
-        {
-            "MAR": {2022: 37000000.0, 2023: 35000000.0},
-            "EGY": {2022: 5000000.0, 2023: 5000000.0},
-            "TUN": {2022: 3500000.0, 2023: 3800000.0},
-            "SEN": {2022: 2800000.0, 2023: 2800000.0},
-            "ZAF": {2022: 2000000.0, 2023: 2000000.0},
-            "TGO": {2022: 1300000.0, 2023: 1500000.0},
-            # Algérie : MCS 2024 publie 1 800 milliers de tonnes (2022, estimé) ;
-            # 2023 vient de MCS 2025 (etl/mining_extended.py).
-            "DZA": {2022: 1800000.0},
-        },
-    ),
-    "Bauxite": (
-        "tonnes",
-        "USGS",
-        "Mineral Commodity Summaries 2024",
-        "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
-        {
-            "GIN": {2022: 95000000.0, 2023: 97000000.0},
-            "SLE": {2022: 1700000.0, 2023: 1800000.0},
-            "GHA": {2022: 1100000.0, 2023: 1150000.0},
-        },
-    ),
-    "Uranium": (
-        "tonnes",
-        "USGS / World Nuclear Association",
-        "WNA Uranium Production 2023",
-        "https://world-nuclear.org/information-library/nuclear-fuel-cycle/mining-of-uranium/world-uranium-mining-production",
-        {
-            "NAM": {2022: 5700.0, 2023: 5600.0},
-            "NER": {2022: 2020.0, 2023: 2000.0},
-            "ZAF": {2022: 220.0, 2023: 200.0},
-        },
-    ),
-    "Iron ore": (
-        "tonnes",
-        "USGS",
-        "Mineral Commodity Summaries 2024",
-        "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
-        {
-            "ZAF": {2022: 62000000.0, 2023: 62000000.0},
-            "MRT": {2022: 12000000.0, 2023: 12000000.0},
-            "SLE": {2022: 3000000.0, 2023: 3000000.0},
-            "LBR": {2022: 2400000.0, 2023: 2500000.0},
-        },
-    ),
-    "Manganese": (
-        "tonnes",
-        "USGS",
-        "Mineral Commodity Summaries 2024",
-        "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
-        {
-            "ZAF": {2022: 6900000.0, 2023: 7200000.0},
-            "GAB": {2022: 4500000.0, 2023: 4600000.0},
-            "GHA": {2022: 700000.0, 2023: 800000.0},
-            "CIV": {2022: 1300000.0, 2023: 1300000.0},
-        },
-    ),
-    "Platinum": (
-        "tonnes",
-        "USGS",
-        "Mineral Commodity Summaries 2024",
-        "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
-        {
-            "ZAF": {2022: 120.0, 2023: 120.0},
-            "ZWE": {2022: 18.0, 2023: 19.0},
-        },
-    ),
-    "Coal": (
-        "tonnes",
-        "USGS / IEA",
-        "IEA Coal 2023",
-        "https://www.iea.org/reports/coal-2023",
-        {
-            "ZAF": {2022: 237000000.0, 2023: 230000000.0},
-            "MOZ": {2022: 9500000.0, 2023: 9000000.0},
-            "ZWE": {2022: 3200000.0, 2023: 3000000.0},
-            "NGA": {2022: 600000.0, 2023: 600000.0},
-        },
-    ),
-}
 
 # =============================================================================
 # FONCTIONS UTILITAIRES
@@ -915,40 +717,12 @@ def _assign_africa_ranks(records: list[dict]) -> list[dict]:
 
 def build_usgs_multi_year() -> list[dict]:
     """
-    Produit les enregistrements miniers multi-années (2022 + 2023)
-    à partir de la table curée USGS_MULTI_YEAR.
-    Chaque valeur est publiée dans USGS MCS 2024 / EIA / OPEC.
+    Enregistrements mines et énergie multi-années, dérivés des sources publiées
+    (fiches USGS MCS, EIA, WNA) par etl/mining_extended.py.
     """
-    records: list[dict] = []
-    for commodity, (unit, inst, dataset, url, by_country) in USGS_MULTI_YEAR.items():
-        is_energy = commodity in ("Crude oil", "Natural gas")
-        for iso3, year_vals in by_country.items():
-            country_name = ISO3_FR_NAME.get(iso3, iso3)
-            for year, value in sorted(year_vals.items()):
-                records.append(
-                    {
-                        "country_name": country_name,
-                        "country_iso3": iso3,
-                        "year": year,
-                        "sector_isic_section": "B",
-                        "sector_detail": (
-                            "Energy — extraction" if is_energy else "Mining and quarrying"
-                        ),
-                        "indicator_code": "EIA_PROD" if is_energy else "USGS_PROD",
-                        "indicator_label": "Production",
-                        "value": value,
-                        "unit": unit,
-                        "currency": None,
-                        "price_base_year": None,
-                        "source_institution": inst,
-                        "source_dataset": dataset,
-                        "source_url": url,
-                        "commodity_code": commodity[:2].upper(),
-                        "commodity_label": commodity,
-                        "usgs_table_name": f"{commodity} production {year}",
-                    }
-                )
-    return records
+    from etl.mining_extended import build_all
+
+    return build_all()
 
 
 def parse_usgs_excel(excel_path: Path) -> list[dict]:
@@ -966,8 +740,8 @@ def parse_usgs_excel(excel_path: Path) -> list[dict]:
 
     print(f"   Parsing USGS Excel : {excel_path}")
     print("   ℹ Ce parseur couvre uniquement Table 1 (mine production totale).")
-    print("     Pour les données pays, utilisez la table curée USGS_MULTI_YEAR.")
-    print("     Retour aux données curées.")
+    print("     Pour les données pays, voir etl/mining_extended.py (dérivé des sources).")
+    print("     Retour aux données dérivées.")
     return []
 
 
@@ -1058,8 +832,8 @@ def assemble_and_write(
                 ),
                 "manufacturing": "UNIDO INDSTAT4 — backend/etl/unido_data.py",
                 "mining_energy": (
-                    "USGS MCS 2024 (curé) 2022+2023 / EIA International Energy Statistics "
-                    "/ OPEC ASB 2024"
+                    "Fiches USGS MCS 2024/2025, EIA International Energy Statistics, WNA "
+                    "— dérivés par script, etl/mining_extended.py"
                 ),
                 "macro": "World Bank WDI / UNIDO",
             },
@@ -1148,12 +922,12 @@ def main() -> None:
             agri_final = _assign_africa_ranks(curated.build_agriculture())
             print(f"   → {len(agri_final)} enregistrements agri (curé FAO)")
 
-    # ── Mines : USGS multi-années (curé) ou Excel local ───────────────────
+    # ── Mines : dérivées des sources (USGS, EIA, WNA) ou Excel local ──────
     print("\n[2] USGS — données mines & énergie multi-années …")
     if args.usgs_path and args.usgs_path.exists():
         usgs_records = parse_usgs_excel(args.usgs_path)
         if not usgs_records:
-            print("   Fallback sur table curée USGS_MULTI_YEAR.")
+            print("   Fallback sur les données dérivées des sources.")
             usgs_records = build_usgs_multi_year()
     else:
         usgs_records = build_usgs_multi_year()

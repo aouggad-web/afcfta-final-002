@@ -19,12 +19,10 @@ if _backend_dir not in sys.path:
     sys.path.insert(0, _backend_dir)
 
 import pytest  # noqa: E402
-from etl.mining_extended import (  # noqa: E402
-    MINING_EXTENDED,
-    MINING_YEAR_2024,
-    build_mcs_derived,
-)
+from etl.energy_eia import EIA_SERIES  # noqa: E402
+from etl.mining_extended import build_mcs_derived  # noqa: E402
 from etl.mining_usgs_mcs import MCS_DERIVED  # noqa: E402
+from etl.mining_usgs_tables import MCS_TABLES  # noqa: E402
 
 
 @pytest.fixture(scope="module")
@@ -41,10 +39,11 @@ def test_no_commodity_competes_with_a_curated_one():
     """Deux séries pour le même minerai, c'est deux classements concurrents.
 
     Rien à l'écran ne dirait lequel fait foi. Le générateur exclut donc toute
-    commodité déjà couverte par les tables écrites à la main — y compris sous
-    un autre nom (« Iron Ore » de l'USGS contre notre « Iron ore »).
+    commodité déjà couverte par les autres sources dérivées (fiches USGS, EIA,
+    WNA) — y compris sous un autre nom (« Iron Ore » de l'USGS contre notre
+    « Iron ore »).
     """
-    curated = set(MINING_EXTENDED) | set(MINING_YEAR_2024)
+    curated = set(MCS_TABLES) | set(EIA_SERIES) | {"Uranium"}
     assert not (set(MCS_DERIVED) & curated), set(MCS_DERIVED) & curated
     # Les alias, qui ne se voient pas par simple intersection.
     lowered = {c.lower() for c in curated}
