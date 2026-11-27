@@ -151,6 +151,33 @@ describe('ProductionMining', () => {
     expect(screen.getByText(/Hélium/, { selector: 'h4' })).not.toHaveTextContent('💎');
   });
 
+  it('un graphique ne porte qu’un minerai, dans son unité', async () => {
+    // Pétrole (milliers de barils/jour) et hélium (millions de m³) partageaient
+    // un même axe : l'échelle du plus gros écrasait l'autre, et l'unité de
+    // l'axe ne valait pour aucun des deux.
+    axios.get.mockResolvedValue({ data: ALGERIE });
+    render(<ProductionMining language="fr" />);
+    const unite = await screen.findByTestId('mining-chart-unit');
+    expect(unite).toHaveTextContent('Unité : milliers de barils/jour');
+
+    fireEvent.click(screen.getByRole('button', { name: /Hélium/ }));
+    expect(screen.getByTestId('mining-chart-unit')).toHaveTextContent('Unité : millions de mètres cubes');
+    expect(screen.getByRole('button', { name: /Hélium/ })).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('signale les estimations de la source et la période couverte', async () => {
+    const estime = structuredClone(ALGERIE);
+    estime.years_covered = [2023, 2024];
+    estime.data_by_commodity.Helium = [
+      rec('Helium', 2023, 9, 'million cubic meters', 'Helium — Production, helium gas content 2023'),
+      { ...rec('Helium', 2024, 11, 'million cubic meters', 'Helium — Production, helium gas content 2024'), is_estimate: true },
+    ];
+    axios.get.mockResolvedValue({ data: estime });
+    render(<ProductionMining language="fr" />);
+    expect(await screen.findByText(/\(2023–2024\)/)).toBeInTheDocument();
+    expect(screen.getAllByText('estimation')).toHaveLength(1);
+  });
+
   it("n'affiche pas les chiffres d'un pays sous le nom d'un autre", async () => {
     // Afrique du Sud (diamants) chargée, puis l'Algérie échoue : l'écran
     // gardait les diamants sud-africains sous « Algérie ».
